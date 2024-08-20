@@ -1,95 +1,94 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import style from './page.module.css'
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className={style.container}>
+      <div className={style.title}>
+        <h1 className={style.intro}>🍞 de 17.08.2024</h1>
+        <div className={style.tables}>
+        <div className={style.hourly}>
+          <div className={style.frame}>
+            <div className={style.hour}>0:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>1:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>2:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>3:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>4:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>5:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>6:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>7:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+          <div className={style.frame}>
+            <div className={style.hour}>8:00</div>
+            <div className={style.events}>
+              <div className={style.event}>🍞</div>
+              <div className={style.event}>🍞</div>
+            </div>
+          </div>
+        </div>
+        <div className={style.aside}>
+          <div className={style.priorities}>
+            <div className={style.prio}>PRIORITIES</div>
+            <div className={style.priority}>1</div>
+            <div className={style.priority}>2</div>
+            <div className={style.priority}>3</div>
+            </div>
+            <div className={style.open}>
+              <div className={style.opening}>OPEN</div>
+              <div className={style.opened}>🍞</div>
+            </div>
+            <div className={style.notes}>
+              <div className={style.noting}>NOTES</div>
+              <div className={style.noted}>🍞</div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    </div>
+  )
 }
