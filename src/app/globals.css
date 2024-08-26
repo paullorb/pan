@@ -1,4 +1,9 @@
 * {
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
+}
+
+:root {
+  --white-b: solid white;
+  --black-b: solid black;
 }

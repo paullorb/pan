@@ -1,0 +1,31 @@
+.frame {
+  display: flex;
+  border: 2px var(--black-b);
+  align-items: center;
+}
+
+.frame:hover *, .frame:hover {
+  background-color: #333;
+}
+
+.hour {
+  padding: 0 10px;
+}
+
+.hourly {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border: 3px var(--black-b);
+  min-width: 100%;
+}
+
+.events {
+  width: 100%;
+}
+
+.event:first-child {
+  border-style: none none dashed none;
+  border-width: 1px;
+  width: 100%;
+}

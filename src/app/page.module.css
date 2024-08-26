@@ -1,6 +1,9 @@
 .container {
   display: flex;
+  flex-direction: column; /* Ensures vertical stacking */
   justify-content: center;
+  align-items: center; /* Centers the children horizontally */
+  width: 100svw; /* Takes full width to manage child widths */
 }
 
 .tables {
@@ -8,39 +11,17 @@
   justify-content: center;
 }
 
+.introduction {
+  text-align: center; /* Centers the text within the introduction */
+  margin-bottom: 20px; /* Adds space below the introduction */
+}
+
 .title {
   font-size: 1.5em;
-}
-
-.hourly {
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  border: 3px solid white;
-  min-width: 100%;
-}
-
-.frame {
-  display: flex;
-  border: 2px solid white;
-  align-items: center;
-}
-
-.frame:hover *, .frame:hover {
-  background-color: #333;
-}
-.hour {
-  padding: 0 10px;
-}
-
-.events {
-  width: 100%;
-}
-
-.event:first-child {
-  border-style: none none dashed none;
-  border-width: 1px;
-  width: 100%;
+  background-color: #ff3636;
+  border: 2px solid var(--black-b);
 }
 
 .aside {
@@ -51,19 +32,19 @@
 .priorities {
   display: flex;
   flex-direction: column;
-  border: 2px solid white;
+  border: 2px var(--black-b);
 }
 
 .prio {
   display: flex;
   justify-content: center;
   background-color: #ff3636;
-  border: 2px solid white;
+  border: 2px var(--black-b);
 }
 
 .priority {
   padding: 0 10px;
-  border: 2px solid white;
+  border: 2px var(--black-b);
 }
 
 .priority:hover {
@@ -72,18 +53,24 @@
 
 .open {
   margin-top: 30px;
-  border: 2px solid white;
+  border: 2px solid var(--black-b);
 }
 
 .opening {
   display: flex;
   justify-content: center;
   background-color: #ff5e5e;
-  border: 2px solid white;
+  border: 2px solid var(--black-b);
 }
 
 .opened {
   padding: 0 10px;
-  border: 2px solid white;
+  border: 2px solid var(--black-b);
+  min-height: 300px;
+}
+
+.noted {
+  padding: 0 10px;
+  border: 2px solid var(--black-b);
   min-height: 300px;
 }
