@@ -6,7 +6,7 @@ export default function DateComponent() {
   function getTomorrowDate(): string {
     const today = new Date();
     const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setDate(today.getDate());
 
     return tomorrow.toLocaleDateString('de-DE', {
       day: '2-digit',
@@ -18,7 +18,7 @@ export default function DateComponent() {
   function getTomorrowWeekday(): string {
     const today = new Date();
     const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setDate(today.getDate());
 
     return tomorrow.toLocaleDateString('en-EN', { weekday: 'long' });
   }
