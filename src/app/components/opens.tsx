@@ -8,7 +8,7 @@ export default function Opens () {
         <div className={style.open}>🍞 Staubsaugen</div>
         <div className={style.open}>🍞 Notizen übertragen</div>
         <div className={style.open}>🍞 Linkedin Post</div>
-
+        <div className={style.open}>🍞 ea</div>
       </div>
   )
 }
