@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  font-size: 1.8em;
+}
+
+.weekday {
+  display: flex;
+  justify-content: center;
+  font-size: 1.5em;
+  background-color: black;
+  color: white;
+  border-radius: var(--border-r);
+  padding: 5px;
+}

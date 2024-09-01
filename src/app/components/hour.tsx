@@ -1,3 +1,4 @@
+// components/hour.tsx
 import style from './hour.module.css';
 
 export default function Hour({ hour }: { hour: number }) {
@@ -5,8 +6,16 @@ export default function Hour({ hour }: { hour: number }) {
     <div className={style.frame}>
       <div className={style.hour}>{hour}:00</div>
       <div className={style.events}>
-        <div className={style.event}>🍞</div>
-        <div className={style.event}>🍞</div>
+        <input 
+          type="text" 
+          className={style.event} 
+          placeholder={`🍞 at ${hour}:00`} 
+        />
+        <input 
+          type="text" 
+          className={style.event} 
+          placeholder={`🍞 at ${hour}:30`} 
+        />
       </div>
     </div>
   );

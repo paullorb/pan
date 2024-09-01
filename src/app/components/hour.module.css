@@ -1,31 +1,43 @@
 .frame {
   display: flex;
-  border: 2px var(--black-b);
+  border-style: none none solid none;
+  border-width: 2px;
+  border-color: #969696;
   align-items: center;
-}
-
-.frame:hover *, .frame:hover {
-  background-color: #333;
+  width: 100%;
 }
 
 .hour {
   padding: 0 10px;
+  width: 20%;
 }
 
 .hourly {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  border: 3px var(--black-b);
-  min-width: 100%;
+  border: 5px solid #0000004d;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
 }
 
 .events {
   width: 100%;
+  padding: 2px;
+}
+
+.event {
+  width: 100%;
+  border: none;
+  /* filter: grayscale(100%); */
 }
 
 .event:first-child {
   border-style: none none dashed none;
   border-width: 1px;
-  width: 100%;
+}
+
+.frame:last-child {
+  border-style: none none none none;
 }

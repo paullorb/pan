@@ -1,0 +1,19 @@
+.open {
+  display: flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: 1em;
+  text-decoration: none;
+  font-weight: 400;
+  border: 2px dotted var(--black-b);
+  flex: 1;
+}
+
+.title {
+  font-size: 1.5em;
+  display: flex;
+  justify-content: center;
+  background-color: var(--title);
+  border: 2px solid var(--black-b);
+  border-radius: var(--border-r);
+}
