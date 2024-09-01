@@ -3,21 +3,19 @@
   flex-direction: column; 
   justify-content: center;
   align-items: center; 
-  flex: 1;
 }
 
 .tables {
   display: flex;
   justify-content: center;
   gap: 5%;
-  flex: 1;
 }
 
 .aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 33%;
+  width: 50%;
   gap: 2%;
 }
 

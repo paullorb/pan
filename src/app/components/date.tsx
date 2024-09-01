@@ -1,5 +1,6 @@
-// components/Date.tsx
+
 import style from './date.module.css';
+import Print from './print';
 
 export default function DateComponent() {
   function getTomorrowDate(): string {
@@ -24,8 +25,11 @@ export default function DateComponent() {
 
   return (
     <div className={style.container}>
-      <h1 className={style.date}>🍞 {getTomorrowDate()}</h1>
       <h2 className={style.weekday}>{getTomorrowWeekday()}</h2>
+      <div className={style.dates}>
+      <Print />
+      <h1 className={style.date}>{getTomorrowDate()}</h1>
+      </div>
     </div>
   );
 }
