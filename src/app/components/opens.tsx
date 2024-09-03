@@ -6,9 +6,11 @@ export default function Opens () {
       <div className={style.title}>OPEN</div>
         <div className={style.open}>🍞 Cable barberass</div>
         <div className={style.open}>🍞 Staubsaugen</div>
+        <div className={style.open}>🍞 Fahrrad in die Werkstatt</div>
+        <div className={style.open}>🍞 Pasaporte holen</div>
         <div className={style.open}>🍞 Notizen übertragen</div>
         <div className={style.open}>🍞 Linkedin Post</div>
-        <div className={style.open}>🍞 ea</div>
+        <div className={style.open}>🍞 Mieterverein</div>
       </div>
   )
 }

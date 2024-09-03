@@ -1,4 +1,5 @@
-// components/hour.tsx
+// components/Hour.tsx
+import Adjuster from './adjuster';
 import style from './hour.module.css';
 
 interface HourProps {
@@ -8,26 +9,32 @@ interface HourProps {
   onActivityChange: (hourKey: string, value: string) => void;
 }
 
-export default function Hour({ hour, activityFull, activityHalf, onActivityChange }: HourProps) {
+const Hour: React.FC<HourProps> = ({ hour, activityFull, activityHalf, onActivityChange }) => {
   return (
     <div className={style.frame}>
       <div className={style.hour}>{hour}:00</div>
       <div className={style.events}>
-        <input 
+        <div className={style.pan}>
+          <input 
           type="text" 
           className={style.event} 
           placeholder={`🍞 at ${hour}:00`} 
           value={activityFull}
           onChange={(e) => onActivityChange(`${hour}:00`, e.target.value)}
-        />
-        <input 
+        /></div>
+        <Adjuster />
+        <div className={style.pan}>
+          <input 
           type="text" 
           className={style.event} 
           placeholder={`🍞 at ${hour}:30`} 
           value={activityHalf}
           onChange={(e) => onActivityChange(`${hour}:30`, e.target.value)}
-        />
+        /></div>
+        <Adjuster />
       </div>
     </div>
   );
-}
+};
+
+export default Hour;

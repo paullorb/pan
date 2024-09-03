@@ -10,7 +10,7 @@ export default function Print () {
   return (
     <div>
       <button onClick={print} className={style.button}>
-        <h1>🍞</h1>
+        <h1 className={style.pansito}>🍞</h1>
       </button>
     </div>
   )

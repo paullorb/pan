@@ -1,4 +1,4 @@
-// components/hours.tsx
+// components/Hours.tsx
 "use client";
 import React, { useState } from 'react';
 import Hour from './hour';
@@ -9,16 +9,14 @@ interface HoursProps {
   until: number;
 }
 
-export default function Hours({ from, until }: HoursProps) {
-  // State to manage activities for each hour and half-hour
+const Hours: React.FC<HoursProps> = ({ from, until }) => {
   const [activities, setActivities] = useState<{ [key: string]: string }>({});
 
   const validFrom = Math.max(0, Math.min(23, from));
   const validUntil = Math.max(validFrom, Math.min(23, until));
 
-  // Handler to update the state when an input changes
   const handleActivityChange = (hourKey: string, value: string) => {
-    setActivities((prevActivities) => ({
+    setActivities(prevActivities => ({
       ...prevActivities,
       [hourKey]: value,
     }));
@@ -40,4 +38,6 @@ export default function Hours({ from, until }: HoursProps) {
       })}
     </div>
   );
-}
+};
+
+export default Hours;

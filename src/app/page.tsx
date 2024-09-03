@@ -3,8 +3,8 @@ import style from './page.module.css';
 import Hours from './components/hours';
 import Opens from './components/opens';
 import Priority from './components/priorities';
-import Notes from './components/notes';
 import DateComponent from './components/date'; 
+import Bread from './components/bread';
 
 export default function Home() {
   return (
@@ -18,7 +18,7 @@ export default function Home() {
           </div>
           <div className={style.bottom}>
             <Opens />
-            <Notes />
+            <Bread />
           </div>
         </div>
       </div>

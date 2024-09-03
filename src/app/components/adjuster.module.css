@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 20%;
+}
+
+.button {
+  border-radius: 50%;
+  visibility: hidden;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid black;
+}
+
+.container:hover .button {
+  visibility: visible;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+}

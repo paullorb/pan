@@ -2,15 +2,10 @@
   display: flex;
   border-style: none none solid none;
   border-width: 2px;
-  border-color: #969696;
+  border-color: #00000024;
   align-items: center;
   width: 100%;
   height: 100%;
-}
-
-.hour {
-  padding: 0 10px;
-  width: 20%;
 }
 
 .hourly {
@@ -23,9 +18,23 @@
   width: 100%;
 }
 
+.pan {
+  display: flex;
+  width: 90%;
+}
+
+
+
+.hour {
+  padding: 0 10px;
+  width: 20%;
+}
+
 .events {
-  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   padding: 2px;
+  width: 100%;
 }
 
 .event {
@@ -34,7 +43,11 @@
   height: 100%;
 }
 
-.event:first-child {
+.event:hover {
+background-color: #ac343469;
+}
+
+.pan:first-child {
   border-style: none none dashed none;
   border-width: 1px;
 }
