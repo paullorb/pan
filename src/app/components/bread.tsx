@@ -7,7 +7,6 @@ export default function Bread () {
     <div className={style.note}>🍞 Physio Übungen</div>
     <div className={style.note}>🍞 Duolingo</div>
     <div className={style.note}>🍞 Disagreeing techniques</div>
-    
   </div>
   )
 }

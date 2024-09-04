@@ -1,14 +1,19 @@
+/* priorities.module.css */
 .container {
   display: flex;
   flex-direction: column;
+  color: var(--color); /* Use variable for text color */
 }
+
 .title {
   font-size: 1.5em;
   display: flex;
   justify-content: center;
-  background-color: var(--title);
-  border-radius: var(--border-r);
+  background-color: var(--title); /* Background color based on theme */
+  border-radius: var(--border-radius);
+  color: var(--black)
 }
+
 .priorities {
   display: flex;
   flex-direction: column;
@@ -19,8 +24,10 @@
   display: flex;
   align-items: center;
   padding: 0 10px;
-  border: 2px var(--black-b);
+  border: 2px solid var(--border); /* Border color based on theme */
+  background-color: var(--bg); /* Background color based on theme */
   margin: 1px 0;
   min-height: 30px;
-  border-radius: var(--border-r);
+  border-radius: var(--border-radius);
+  color: var(--color)
 }

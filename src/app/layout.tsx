@@ -1,10 +1,4 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "pansito",
-  description: "",
-};
+import { ThemeProvider } from './themeContext'; 
 
 export default function RootLayout({
   children,
@@ -12,8 +6,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <ThemeProvider>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </ThemeProvider>
   );
 }

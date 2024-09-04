@@ -5,6 +5,7 @@ import Opens from './components/opens';
 import Priority from './components/priorities';
 import DateComponent from './components/date'; 
 import Bread from './components/bread';
+import Hamburger from './components/hamburger';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <div className={style.aside}>
           <div className={style.top}>
             <DateComponent />
+            <Hamburger />
             <Priority />
           </div>
           <div className={style.bottom}>

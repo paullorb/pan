@@ -34,6 +34,7 @@
 
 .dates {
   display: flex;
+  justify-content: center;
 }
 
 .date {

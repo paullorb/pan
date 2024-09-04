@@ -1,15 +1,30 @@
 * {
-  background-color: white;
-  color: black;
+  background-color: var(--bg);
+  color: var(--color);
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   box-sizing: border-box;
 }
 
 :root {
+  --black: black;
   --white-b: solid white;
   --black-b: solid black;
-  --title: #1fff2e;
+  --title: rgb(0, 255, 0);
   --border-r: 5px;
+}
+
+:root[data-theme='light'] {
+  --bg: white; /* Light background for title */
+  --border: black; /* Black border in light mode */
+  --color: black; /* Black text in light mode */
+  --border-radius: 10px; /* Example border radius */
+}
+
+:root[data-theme='dark'] {
+  --bg: black; /* Dark background for title */
+  --border: #ccc; /* Lighter border in dark mode */
+  --color: #fff; /* White text in dark mode */
+  --border-radius: 10px; /* Example border radius */
 }
 
 @page {
