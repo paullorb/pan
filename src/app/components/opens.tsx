@@ -11,6 +11,8 @@ export default function Opens () {
         <div className={style.open}>🍞 Notizen übertragen</div>
         <div className={style.open}>🍞 Linkedin Post</div>
         <div className={style.open}>🍞 Mieterverein</div>
+        <div className={style.open}>🍞 Fenster putzen</div>
+        <div className={style.open}>🍞 Wände streichen</div>
       </div>
   )
 }

@@ -15,6 +15,10 @@ const Hour: React.FC<HourProps> = ({ hour, activityFull, activityHalf, onActivit
     onActivityChange(`${hour}:30`, activityFull);
   };
 
+  const handleCopyHalfToNext = () => {
+    onActivityChange(`${hour+1}:00`, activityHalf);
+  };
+
   return (
     <div className={style.frame}>
       <div className={style.hour}>{hour}:00</div>
@@ -37,6 +41,7 @@ const Hour: React.FC<HourProps> = ({ hour, activityFull, activityHalf, onActivit
             value={activityHalf}
             onChange={(e) => onActivityChange(`${hour}:30`, e.target.value)}
           />
+          <Adjuster onIncrease={handleCopyHalfToNext} />
         </div>
       </div>
     </div>

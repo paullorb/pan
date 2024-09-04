@@ -8,7 +8,7 @@
   border-radius: 50%;
   visibility: hidden;
   margin: 0;
-  padding: 4px;
+  padding: 2px 4px;
   border: 1px solid var(--border);
 }
 
