@@ -1,4 +1,4 @@
-import style from './notes.module.css';
+import style from './bread.module.css';
 
 export default function Bread () {
   return (

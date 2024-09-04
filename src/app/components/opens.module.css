@@ -19,4 +19,5 @@
   background-color: var(--title);
   border: 2px solid var(--black-b);
   border-radius: var(--border-r);
+  color: var(--color);
 }

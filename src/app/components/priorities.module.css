@@ -11,7 +11,7 @@
   justify-content: center;
   background-color: var(--title); /* Background color based on theme */
   border-radius: var(--border-radius);
-  color: var(--black)
+  color: var(--color)
 }
 
 .priorities {
