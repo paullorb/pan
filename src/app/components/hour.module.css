@@ -2,7 +2,7 @@
   display: flex;
   border-style: none none solid none;
   border-width: 2px;
-  border-color: #00000024;
+  border-color: #85858542;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  border: 5px solid #0000004d;
+  border: 5px solid var(--border);
   padding: 10px;
   border-radius: 10px;
   width: 100%;
@@ -20,10 +20,8 @@
 
 .pan {
   display: flex;
-  width: 90%;
+  width: 100%;
 }
-
-
 
 .hour {
   padding: 0 10px;
@@ -44,12 +42,13 @@
 }
 
 .event:hover {
-background-color: #c0c0c069;
+background-color: var(--hover-color);
 }
 
 .pan:first-child {
   border-style: none none dashed none;
   border-width: 1px;
+  border-color: #c0c0c069;
 }
 
 .frame:last-child {

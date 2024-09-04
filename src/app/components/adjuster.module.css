@@ -9,7 +9,7 @@
   visibility: hidden;
   margin: 0;
   padding: 4px;
-  border: 1px solid black;
+  border: 1px solid var(--border);
 }
 
 .container:hover .button {
@@ -17,6 +17,6 @@
 }
 
 .button:hover {
-  background-color: black;
-  color: white;
+  background-color: var(--hover);
+  color: var(--color);
 }

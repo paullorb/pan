@@ -18,6 +18,7 @@
   --border: black; /* Black border in light mode */
   --color: black; /* Black text in light mode */
   --border-radius: 10px; /* Example border radius */
+  --hover-color: #c0c0c069; /* Light hover color */
 }
 
 :root[data-theme='dark'] {
@@ -25,6 +26,7 @@
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
   --border-radius: 10px; /* Example border radius */
+  --hover-color: #c0c0c069; /* Dark hover color */
 }
 
 @page {
