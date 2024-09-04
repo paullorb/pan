@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import style from './date.module.css';
-import Print from './print';
 
 // TypeScript component with proper typing
 const DateComponent: React.FC = () => {
@@ -38,7 +37,6 @@ const DateComponent: React.FC = () => {
         <h3 className={style.arrow} onClick={goToNextDay}>&gt;</h3>
       </div>
       <div className={style.dates}>
-        <Print />
         <h1 className={style.date}>{formatDate(currentDate)}</h1>
       </div>
     </div>
