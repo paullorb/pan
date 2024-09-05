@@ -1,15 +1,21 @@
+import React from 'react';
 import { ThemeProvider } from './themeContext'; 
+import { HoursProvider } from './hoursContext';
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+interface RootLayoutProps {
   children: React.ReactNode;
-}>) {
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
-    <ThemeProvider>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
+    <ThemeProvider> 
+      <HoursProvider> 
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      </HoursProvider>
     </ThemeProvider>
   );
-}
+};
+
+export default RootLayout;

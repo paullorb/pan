@@ -1,6 +1,7 @@
 // components/Hours.tsx
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
+import { HoursProvider } from '../hoursContext'; // Adjust the import path as necessary
 import Hour from './hour';
 import style from './hour.module.css';
 
@@ -10,33 +11,18 @@ interface HoursProps {
 }
 
 const Hours: React.FC<HoursProps> = ({ from, until }) => {
-  const [activities, setActivities] = useState<{ [key: string]: string }>({});
-
   const validFrom = Math.max(0, Math.min(23, from));
   const validUntil = Math.max(validFrom, Math.min(23, until));
 
-  const handleActivityChange = (hourKey: string, value: string) => {
-    setActivities(prevActivities => ({
-      ...prevActivities,
-      [hourKey]: value,
-    }));
-  };
-
   return (
-    <div className={style.hourly}>
-      {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => {
-        const hour = validFrom + i;
-        return (
-          <Hour
-            key={hour}
-            hour={hour}
-            activityFull={activities[`${hour}:00`] || ''}
-            activityHalf={activities[`${hour}:30`] || ''}
-            onActivityChange={handleActivityChange}
-          />
-        );
-      })}
-    </div>
+    <HoursProvider> {/* Wrap components in the provider */}
+      <div className={style.hourly}>
+        {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => {
+          const hour = validFrom + i;
+          return <Hour key={hour} hour={hour} />;
+        })}
+      </div>
+    </HoursProvider>
   );
 };
 
