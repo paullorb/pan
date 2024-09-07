@@ -21,6 +21,7 @@
 .pan {
   display: flex;
   width: 100%;
+  position: relative;
 }
 
 .hour {
@@ -42,7 +43,7 @@
 }
 
 .event:hover {
-background-color: var(--hover-color);
+  background-color: var(--hover-color);
 }
 
 .pan:first-child {
@@ -53,4 +54,26 @@ background-color: var(--hover-color);
 
 .frame:last-child {
   border-style: none none none none;
+}
+
+/* Hide the second input unless hovered */
+.hideOnHover {
+  display: none;
+}
+
+.frame:hover .hideOnHover {
+  display: flex;
+}
+
+/* Center the first input field */
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+.centered .event {
+  text-align: center;
 }

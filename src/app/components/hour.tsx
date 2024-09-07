@@ -13,33 +13,28 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
   const activityHalf = activities[`${hour}:30`] || '';
   const nextActivityFull = activities[`${hour + 1}:00`] || '';
 
+  // Generalized copy function
+  const handleCopy = (sourceTime: string, destinationTime: string) => {
+    const value = activities[sourceTime] || '';
+    handleActivityChange(destinationTime, value);
+  };
+
   // State to track if the current hour should be merged with the next
   const [isMergedIntoNext, setIsMergedIntoNext] = useState(false);
-  // State to track if the current hour is in the middle of a repeated activity
   const [isMiddleOfRepeatedActivity, setIsMiddleOfRepeatedActivity] = useState(false);
-  // State to track if activityFull and activityHalf are the same (for merging within the hour)
   const [isMergedWithinHour, setIsMergedWithinHour] = useState(false);
 
-    // Generalized copy function
-    const handleCopy = (sourceTime: string, destinationTime: string) => {
-      const value = activities[sourceTime] || '';
-      handleActivityChange(destinationTime, value);
-    };
-
-  // Check if the current hour's activity is repeated in the next hour
   useEffect(() => {
-    // Check if the current hour's fields should be merged into the next
     if (
       activityFull === activityHalf &&
       activityFull === nextActivityFull &&
       activityFull !== ''
     ) {
-      setIsMergedIntoNext(true); // Hide the middle hours
+      setIsMergedIntoNext(true); // Hide middle hours
     } else {
-      setIsMergedIntoNext(false); // Show the first and last instance of the activity
+      setIsMergedIntoNext(false); // Show first and last instance of the activity
     }
 
-    // Check if the current hour is the middle of a repeated activity (to hide)
     if (
       activityFull === nextActivityFull &&
       activityFull !== '' &&
@@ -50,7 +45,6 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
       setIsMiddleOfRepeatedActivity(false);
     }
 
-    // Check if the activity within the same hour is the same for both fields
     if (activityFull === activityHalf && activityFull !== '') {
       setIsMergedWithinHour(true); // Hide the second input field in the same hour
     } else {
@@ -58,7 +52,6 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
     }
   }, [activityFull, activityHalf, nextActivityFull, activities, hour]);
 
-  // Return null if this is the middle of a repeated activity (hide it)
   if (isMiddleOfRepeatedActivity) {
     return null;
   }
@@ -67,7 +60,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
     <div className={style.frame}>
       <div className={style.hour}>{hour}:00</div>
       <div className={style.events}>
-        <div className={style.pan}>
+        <div className={`${style.pan} ${isMergedWithinHour ? style.centered : ''}`}>
           <input
             type="text"
             className={style.event}
@@ -78,9 +71,9 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
           <Adjuster onIncrease={() => handleCopy(`${hour}:00`, `${hour}:30`)} />
         </div>
 
-        {/* Conditionally render the second input field based on the isMergedWithinHour state */}
+        {/* Conditionally render the second input field with hover effect */}
         {!isMergedWithinHour && (
-          <div className={style.pan}>
+          <div className={`${style.pan} ${style.hideOnHover}`}>
             <input
               type="text"
               className={style.event}
