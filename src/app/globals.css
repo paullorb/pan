@@ -1,7 +1,7 @@
 * {
   background-color: var(--bg);
   color: var(--color);
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   box-sizing: border-box;
   transition: background-color 0.9s, color 0.1s;
 }
@@ -14,16 +14,16 @@
   --border-r: 5px;
 }
 
-:root[data-theme='light'] {
-  --bg: white; /* Light background for title */
+html[data-theme='light'] {
+  --bg: white; /* Light background */
   --border: black; /* Black border in light mode */
   --color: black; /* Black text in light mode */
   --border-radius: 10px; /* Example border radius */
   --hover-color: #c0c0c069; /* Light hover color */
 }
 
-:root[data-theme='dark'] {
-  --bg: black; /* Dark background for title */
+html[data-theme='dark'] {
+  --bg: black; /* Dark background */
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
   --border-radius: 10px; /* Example border radius */
