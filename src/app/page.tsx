@@ -11,7 +11,9 @@ export default function Home() {
   return (
     <div className={style.container}>
       <div className={style.tables}>
+        <div className={style.header}>
         <Hours from={5} until={23} />
+        </div>
         <div className={style.aside}>
           <div className={style.top}>
             <DateComponent />

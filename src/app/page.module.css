@@ -12,12 +12,16 @@
   margin: 0;
 }
 
+.header {
+  display: flex;
+  justify-content: center;
+  flex-basis: 0 1 60%;
+}
+
 .aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 50%;
-  gap: 2%;
 }
 
 .top {
