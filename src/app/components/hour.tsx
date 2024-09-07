@@ -1,5 +1,4 @@
-// Hour.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHours } from '../hoursContext'; // Adjust the import path as necessary
 import Adjuster from './adjuster';
 import style from './hour.module.css';
@@ -13,8 +12,24 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
   const activityFull = activities[`${hour}:00`] || '';
   const activityHalf = activities[`${hour}:30`] || '';
 
-  const handleCopyFullToHalf = () => handleActivityChange(`${hour}:30`, activityFull);
-  const handleCopyHalfToNext = () => handleActivityChange(`${hour+1}:00`, activityHalf);
+  // Generalized copy function
+  const handleCopy = (sourceTime: string, destinationTime: string) => {
+    const value = activities[sourceTime] || '';
+    handleActivityChange(destinationTime, value);
+  };
+
+  // State to track if the fields are merged
+  const [isMergedHalf, setIsMergedHalf] = useState(false); // Merging activityFull with activityHalf
+
+  // Merge function: Check if two input fields have the same value, and if so, merge them
+  useEffect(() => {
+    // Merging activityFull and activityHalf
+    if (activityFull === activityHalf && activityFull !== '') {
+      setIsMergedHalf(true); // Set merged state when values match
+    } else {
+      setIsMergedHalf(false); // Reset merge state if values differ
+    }
+  }, [activityFull, activityHalf]);
 
   return (
     <div className={style.frame}>
@@ -28,18 +43,22 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
             value={activityFull}
             onChange={(e) => handleActivityChange(`${hour}:00`, e.target.value)}
           />
-          <Adjuster onIncrease={handleCopyFullToHalf} />
+          <Adjuster onIncrease={() => handleCopy(`${hour}:00`, `${hour}:30`)} />
         </div>
-        <div className={style.pan}>
-          <input
-            type="text"
-            className={style.event}
-            placeholder={`🍞 at ${hour}:30`}
-            value={activityHalf}
-            onChange={(e) => handleActivityChange(`${hour}:30`, e.target.value)}
-          />
-          <Adjuster onIncrease={handleCopyHalfToNext} />
-        </div>
+
+        {/* Conditionally render the second input field based on the isMergedHalf state */}
+        {!isMergedHalf && (
+          <div className={style.pan}>
+            <input
+              type="text"
+              className={style.event}
+              placeholder={`🍞 at ${hour}:30`}
+              value={activityHalf}
+              onChange={(e) => handleActivityChange(`${hour}:30`, e.target.value)}
+            />
+            <Adjuster onIncrease={() => handleCopy(`${hour}:30`, `${hour + 1}:00`)} />
+          </div>
+        )}
       </div>
     </div>
   );
