@@ -32,7 +32,7 @@ html[data-theme='dark'] {
 
 @page {
   size: A4;
-  margin: 15px;
+  margin: 10px;
 }
 
 @media print {

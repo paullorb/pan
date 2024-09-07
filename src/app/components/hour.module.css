@@ -6,7 +6,6 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  transition: transform 0.3s ease, background-color 0.3s ease; /* Add smooth transition */
 }
 
 .hourly {
@@ -23,7 +22,6 @@
   display: flex;
   width: 100%;
   position: relative;
-  transition: transform 0.3s ease; /* Add smooth transition for the pan div */
 }
 
 .hour {
@@ -44,7 +42,6 @@
   width: 100%;
   border: none;
   height: 100%;
-  transition: background-color 0.3s ease; /* Smooth hover color change */
 }
 
 .event:hover {

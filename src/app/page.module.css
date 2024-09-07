@@ -5,17 +5,24 @@
   align-items: center; 
 }
 
+@media print {
+  .title {
+    display: none;
+  }
+}
+
 .tables {
   display: flex;
   justify-content: center;
-  gap: 5%;
+  gap: 2%;
   margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .header {
   display: flex;
   justify-content: center;
-  flex-basis: 0 1 60%;
 }
 
 .aside {

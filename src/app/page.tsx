@@ -10,6 +10,7 @@ import Hamburger from './components/hamburger';
 export default function Home() {
   return (
     <div className={style.container}>
+      <h1 className={style.title}>🍞 Pansito del día</h1>
       <div className={style.tables}>
         <div className={style.header}>
         <Hours from={5} until={23} />
