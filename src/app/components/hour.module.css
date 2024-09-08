@@ -77,6 +77,16 @@
   z-index: 10;
   border-radius: 50%;
   opacity: 0.8;
+  animation: blink 2s infinite ease-in-out; /* Adding the animation */
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 @media print {
