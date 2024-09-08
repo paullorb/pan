@@ -9,6 +9,7 @@
 }
 
 .hourly {
+  position: relative;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -16,6 +17,7 @@
   padding: 10px;
   border-radius: 10px;
   width: 100%;
+  z-index: 10;
 }
 
 .pan {
@@ -78,4 +80,20 @@
 
 .centered .event {
   text-align: center;
+}
+
+.timeBar {
+  position: absolute;
+  width: 8px;
+  height: 5px;
+  background-color: red;
+  z-index: 10;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+@media print {
+  .timeBar {
+    display: none;
+  }
 }
