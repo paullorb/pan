@@ -25,8 +25,15 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
 
   useEffect(() => {
     setIsMerged({
-      intoNext: activityFull === activityHalf && activityFull === nextActivityFull && activityFull !== '',
+      // Ensure that merging only happens when all three are identical
+      intoNext:
+        activityFull === activityHalf &&
+        activityFull === nextActivityFull &&
+        activityFull !== '',
+      
+      // Make sure the withinHour merging only happens when activityFull and activityHalf are the same
       withinHour: activityFull === activityHalf && activityFull !== '',
+      
       repeatedMiddle:
         activityFull === nextActivityFull &&
         activityFull !== '' &&
@@ -40,6 +47,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
     <div className={style.frame}>
       <div className={style.hour}>{hour}:00</div>
       <div className={style.events}>
+        {/* First input (for the full hour) */}
         <div className={`${style.pan} ${isMerged.withinHour ? style.centered : ''}`}>
           <input
             type="text"
@@ -50,8 +58,10 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
           />
           <Adjuster onIncrease={() => handleCopy(`${hour}:00`, `${hour}:30`)} />
         </div>
+        
+        {/* Second input (for the half-hour) */}
         {!isMerged.withinHour && (
-          <div className={`${style.pan} ${style.hideOnHover}`}>
+          <div className={`${style.pan}`}>
             <input
               type="text"
               className={style.event}
