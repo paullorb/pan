@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import React, { useState, useEffect } from 'react';
-import { HoursProvider } from '../hoursContext'; // Adjust the import path as necessary
+import React, { useEffect, useState } from 'react';
+import { HoursProvider } from '../hoursContext'; 
 import Hour from './hour';
 import style from './hour.module.css';
 
@@ -25,8 +24,7 @@ const Hours: React.FC<HoursProps> = ({ from, until }) => {
 
       if (currentHour >= from && currentHour <= until) {
         const totalHours = validUntil - validFrom + 1;
-        const timeFraction = (currentHour - validFrom) + currentMinute / 60;
-        const position = (timeFraction / totalHours) * 100;
+        const position = ((currentHour - validFrom) + currentMinute / 60) / totalHours * 100;
         setCurrentPosition(position);
       } else {
         setCurrentPosition(null);
@@ -34,24 +32,23 @@ const Hours: React.FC<HoursProps> = ({ from, until }) => {
     };
 
     updateCurrentPosition();
-    const intervalId = setInterval(updateCurrentPosition, 60000); // Update every minute
+    const intervalId = setInterval(updateCurrentPosition, 60000); 
 
     return () => clearInterval(intervalId);
-  }, [from, until]);
+  }, [from, until, validFrom, validUntil]);
 
   return (
-    <HoursProvider> {/* Wrap components in the provider */}
+    <HoursProvider>
       <div className={style.hourly}>
         {currentPosition !== null && (
           <div
             className={style.timeBar}
-            style={{ top: `${currentPosition}%` }} // Position the bar dynamically
+            style={{ top: `${currentPosition}%` }}
           />
         )}
-        {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => {
-          const hour = validFrom + i;
-          return <Hour key={hour} hour={hour} />;
-        })}
+        {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
+          <Hour key={validFrom + i} hour={validFrom + i} />
+        ))}
       </div>
     </HoursProvider>
   );

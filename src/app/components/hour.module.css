@@ -1,8 +1,6 @@
 .frame {
   display: flex;
-  border-style: none none solid none;
-  border-width: 2px;
-  border-color: #85858542;
+  border-bottom: 2px solid #85858542;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -11,26 +9,23 @@
 .hourly {
   position: relative;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   border: 5px solid var(--border);
   padding: 10px;
   border-radius: 10px;
   width: 100%;
-  z-index: 10;
 }
 
 .pan {
   display: flex;
   width: 100%;
-  position: relative;
 }
 
 .hour {
   display: flex;
   justify-content: center;
   padding: 0 5px;
-  min-width: 60px; /* Ensure consistent width for single and double-digit hours */
+  min-width: 60px;
 }
 
 .events {
@@ -51,16 +46,13 @@
 }
 
 .pan:first-child {
-  border-style: none none dashed none;
-  border-width: 1px;
-  border-color: #c0c0c069;
+  border-bottom: 1px dashed #c0c0c069;
 }
 
 .frame:last-child {
-  border-style: none none none none;
+  border-bottom: none;
 }
 
-/* Hide the second input unless hovered */
 .hideOnHover {
   display: none;
 }
@@ -69,7 +61,6 @@
   display: flex;
 }
 
-/* Center the first input field */
 .centered {
   display: flex;
   align-items: center;

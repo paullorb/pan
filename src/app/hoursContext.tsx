@@ -3,7 +3,7 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 interface HourActivity {
-  [key: string]: string; // Using an index signature to describe a dictionary of hour keys to activity descriptions.
+  [key: string]: string;
 }
 
 interface HoursContextType {
@@ -11,7 +11,7 @@ interface HoursContextType {
   handleActivityChange: (hourKey: string, value: string) => void;
 }
 
-const HoursContext = createContext<HoursContextType | undefined>(undefined); // Defining context with undefined initial value for strict mode compliance.
+const HoursContext = createContext<HoursContextType | undefined>(undefined);
 
 export const useHours = () => {
   const context = useContext(HoursContext);
@@ -22,7 +22,7 @@ export const useHours = () => {
 };
 
 interface HoursProviderProps {
-  children: ReactNode; // ReactNode allows any valid React child, including null, string, and React elements.
+  children: ReactNode;
 }
 
 export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
