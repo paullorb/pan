@@ -15,7 +15,7 @@ export default function Home() {
       <div className={style.tables}>
         <div className={style.header}>
           <Controls />
-          <Hours from={5} until={23} />
+          <Hours />
         </div>
         <div className={style.aside}>
           <div className={style.top}>

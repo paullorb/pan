@@ -1,16 +1,12 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { HoursProvider } from '../hoursContext'; 
+import { useHours } from '../hoursContext'; 
 import Hour from './hour';
 import style from './hour.module.css';
 
-interface HoursProps {
-  from: number;
-  until: number;
-}
-
-const Hours: React.FC<HoursProps> = ({ from, until }) => {
+const Hours: React.FC = () => {
+  const { from, until } = useHours(); // Retrieve from context
   const validFrom = Math.max(0, Math.min(23, from));
   const validUntil = Math.max(validFrom, Math.min(23, until));
 
@@ -38,19 +34,17 @@ const Hours: React.FC<HoursProps> = ({ from, until }) => {
   }, [from, until, validFrom, validUntil]);
 
   return (
-    <HoursProvider>
-      <div className={style.hourly}>
-        {currentPosition !== null && (
-          <div
-            className={style.timeBar}
-            style={{ top: `${currentPosition}%` }}
-          />
-        )}
-        {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
-          <Hour key={validFrom + i} hour={validFrom + i} />
-        ))}
-      </div>
-    </HoursProvider>
+    <div className={style.hourly}>
+      {currentPosition !== null && (
+        <div
+          className={style.timeBar}
+          style={{ top: `${currentPosition}%` }}
+        />
+      )}
+      {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
+        <Hour key={validFrom + i} hour={validFrom + i} />
+      ))}
+    </div>
   );
 };
 
