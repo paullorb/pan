@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  position: relative;
   flex-direction: column; 
   justify-content: center;
   align-items: center; 
@@ -11,8 +12,15 @@
   }
 }
 
+.header:hover ~ .controlsContainer,
+.hourly:hover ~ .controlsContainer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .tables {
   display: flex;
+  position: relative;
   justify-content: center;
   gap: 2%;
   margin: 0;

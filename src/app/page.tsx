@@ -13,8 +13,8 @@ export default function Home() {
     <div className={style.container}>
       <h1 className={style.title}>🍞 Pansito del día</h1>
       <div className={style.tables}>
+        <Controls />
         <div className={style.header}>
-          <Controls />
           <Hours />
         </div>
         <div className={style.aside}>
