@@ -6,6 +6,7 @@ import Priority from './components/priorities';
 import DateComponent from './components/date'; 
 import Bread from './components/bread';
 import Hamburger from './components/hamburger';
+import Controls from './components/controls';
 
 export default function Home() {
   return (
@@ -13,7 +14,8 @@ export default function Home() {
       <h1 className={style.title}>🍞 Pansito del día</h1>
       <div className={style.tables}>
         <div className={style.header}>
-        <Hours from={5} until={23} />
+          <Controls />
+          <Hours from={5} until={23} />
         </div>
         <div className={style.aside}>
           <div className={style.top}>
