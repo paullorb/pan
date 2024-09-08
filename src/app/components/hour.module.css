@@ -72,7 +72,7 @@
 .timeBar {
   position: absolute;
   width: 8px;
-  height: 5px;
+  height: 8px;
   background-color: red;
   z-index: 10;
   border-radius: 50%;

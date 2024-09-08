@@ -8,7 +8,11 @@ interface HourActivity {
 
 interface HoursContextType {
   activities: HourActivity;
+  from: number;
+  until: number;
   handleActivityChange: (hourKey: string, value: string) => void;
+  setFrom: (from: number) => void;
+  setUntil: (until: number) => void;
 }
 
 const HoursContext = createContext<HoursContextType | undefined>(undefined);
@@ -27,6 +31,8 @@ interface HoursProviderProps {
 
 export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
   const [activities, setActivities] = useState<HourActivity>({});
+  const [from, setFrom] = useState<number>(5); // Default starting hour
+  const [until, setUntil] = useState<number>(23); // Default ending hour
 
   const handleActivityChange = (hourKey: string, value: string): void => {
     setActivities(prevActivities => ({
@@ -36,7 +42,7 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
   };
 
   return (
-    <HoursContext.Provider value={{ activities, handleActivityChange }}>
+    <HoursContext.Provider value={{ activities, from, until, handleActivityChange, setFrom, setUntil }}>
       {children}
     </HoursContext.Provider>
   );
