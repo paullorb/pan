@@ -10,7 +10,7 @@
   --black: black;
   --white-b: solid white;
   --black-b: solid black;
-  --title: rgb(0, 255, 0);
+  --title: rgb(255, 0, 0);
   --border-r: 5px;
 }
 
@@ -23,7 +23,7 @@ html[data-theme='light'] {
 }
 
 html[data-theme='dark'] {
-  --bg: rgb(3, 110, 30); /* Dark background */
+  --bg: rgb(0, 0, 0); /* Dark background */
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
   --border-radius: 10px; /* Example border radius */
