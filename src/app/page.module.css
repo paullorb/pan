@@ -42,6 +42,12 @@
   max-width: 15%;
 }
 
+@media print {
+  .aside {
+    min-width: 30%;
+  }
+}
+
 .top {
   display: flex;
   flex-direction: column;
