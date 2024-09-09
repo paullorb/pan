@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from './auth.module.css';
+import { useAuth } from '../authContext';
 
 // Define types for Modal props
 interface ModalProps {
@@ -8,14 +9,16 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  
   if (!isOpen) return null;
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log({ email, password });
+    login(email, password);
+    onClose();
   };
 
   const handleBackdropClick = (event: React.MouseEvent) => {
