@@ -14,11 +14,12 @@
 
 .modal {
   background-color: var(--bg);
-  padding: 20px;
+  padding: 20px 20px 30px;
   border-radius: 5px;
   max-width: 400px;
   width: 100%;
-  margin-top: 10%;
+  margin: 10%;
+  border: 1px solid var(--border);
 }
 
 /* Form Styles */
