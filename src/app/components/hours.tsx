@@ -38,7 +38,7 @@ const Hours: React.FC = () => {
       {currentPosition !== null && (
         <div
           className={style.timeBar}
-          style={{ top: `${currentPosition}%` }}
+          style={{ top: `calc(${currentPosition}% - 4px)` }}
         />
       )}
       {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
