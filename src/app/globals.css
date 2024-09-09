@@ -23,7 +23,7 @@ html[data-theme='light'] {
 }
 
 html[data-theme='dark'] {
-  --bg: black; /* Dark background */
+  --bg: rgb(3, 110, 30); /* Dark background */
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
   --border-radius: 10px; /* Example border radius */

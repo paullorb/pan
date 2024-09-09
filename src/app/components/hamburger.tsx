@@ -20,6 +20,7 @@ export default function Hamburger() {
       <button className={style.button} onClick={handlePrint}>
         🖨️
       </button>
+      <button className={style.auth}>🔑</button>
     </div>
   );
 }
