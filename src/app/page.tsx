@@ -7,6 +7,7 @@ import DateComponent from './components/date';
 import Bread from './components/bread';
 import Hamburger from './components/hamburger';
 import Controls from './components/controls';
+import Month from './components/month';
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
           <div className={style.top}>
             <DateComponent />
             <Hamburger />
+            <Month />
             <Priority />
           </div>
           <div className={style.bottom}>

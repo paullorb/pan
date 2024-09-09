@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.navButton {
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  background-color: var(--bg);
+  border-radius: 5px;
+  border: 1px solid transparent;
+  transition: 0.3s ease-in-out;
+}
+
+.navButton:hover {
+  border: 1px solid #ccc;
+}
+
+.monthGrid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%; /* Ensure the container is full width */
+}
+
+.day {
+  flex: 1 0 calc(100% / 7); /* exactly one-seventh of the container */
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg);
+  border: 1px solid #ddd; 
+}
+
+.currentDay {
+  background-color: var(--color); /* Dark background for the current day */
+  color: var(--bg); /* White text for contrast */
+  border-color: #ddd; /* Darker border for better visibility */
+}
+
+.monthYear {
+  margin: 0 10px; /* Space between buttons and text */
+  font-weight: bold; /* Make the month and year text bold */
+  min-width: 100px; /* Ensure the text doesn't shrink too much */
+  text-align: center; /* Center the text */
+}
