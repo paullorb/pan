@@ -1,26 +1,38 @@
 "use client";
 
 import { useTheme } from '../themeContext';
-import style from './hamburger.module.css';
+import { useState } from 'react';
+import AuthModal from './auth'; // Import the AuthModal
+import styles from './hamburger.module.css';
 
-export default function Hamburger() {
-  const { theme, toggleTheme } = useTheme(); // Removed systemPreference
+const Hamburger: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
   const emoji = theme === 'dark' ? '🌞' : '🌑';
 
-  // Function to handle print action
   const handlePrint = () => {
     window.print();
   };
 
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   return (
-    <div className={style.container}>
-      <button className={style.button} onClick={toggleTheme}>
+    <div className={styles.container}>
+      <button className={styles.button} onClick={toggleTheme}>
         {emoji}
       </button>
-      <button className={style.button} onClick={handlePrint}>
+      <button className={styles.button} onClick={handlePrint}>
         🖨️
       </button>
-      <button className={style.button}>🔑</button>
+      <button className={styles.button} onClick={toggleModal}>
+        🔑
+      </button>
+
+      <AuthModal isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );
-}
+};
+
+export default Hamburger;
