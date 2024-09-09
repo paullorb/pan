@@ -11,16 +11,21 @@ import Controls from './components/controls';
 export default function Home() {
   return (
     <div className={style.container}>
+      <div className={style.header}>
+        <div className={style.sides}></div>
       <h1 className={style.title}>🍞 Pansito del día</h1>
+      <div className={style.sides}>
+        <Hamburger />
+      </div>
+      </div>
       <div className={style.tables}>
         <Controls />
-        <div className={style.header}>
+        <div className={style.head}>
           <Hours />
         </div>
         <div className={style.aside}>
           <div className={style.top}>
             <DateComponent />
-            <Hamburger />
             <Priority />
           </div>
           <div className={style.bottom}>

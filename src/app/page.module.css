@@ -6,16 +6,29 @@
   align-items: center; 
 }
 
+.header {
+  display: flex;
+  min-width: 300px;
+  width: 100%; 
+  justify-content: space-between;
+}
+
+.sides {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 1 50%;
+}
+
+.title {
+  flex: 100 1 100%;
+  text-align: center;
+}
+
 @media print {
   .title {
     display: none;
   }
-}
-
-.header:hover ~ .controlsContainer,
-.hourly:hover ~ .controlsContainer {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 .tables {
@@ -26,9 +39,10 @@
   margin: 0;
   padding: 0;
   width: 100%;
+  z-index: 1;
 }
 
-.header {
+.head {
   display: flex;
   justify-content: center;
   flex-direction: column;

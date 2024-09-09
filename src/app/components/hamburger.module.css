@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-basis: 10%;
 }
 
 .button {
@@ -11,12 +12,6 @@
   border: none;
   padding: 8px 8px;
   border-radius: 4px;
-  opacity: 0; /* Make buttons initially invisible */
-  transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity change */
-}
-
-.container:hover .button {
-  opacity: 1; /* Make buttons visible when container is hovered */
 }
 
 @media print {
@@ -25,7 +20,6 @@
   }
 }
 
-/* Modal Styles */
 .backdrop {
   position: fixed;
   top: 0;
@@ -36,6 +30,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* High z-index to ensure it's on top */
 }
 
 .modal {
@@ -44,6 +39,7 @@
   border-radius: 5px;
   max-width: 400px;
   width: 100%;
+  z-index: 1001; /* Ensure the modal is above the backdrop */
 }
 
 .closeButton {
