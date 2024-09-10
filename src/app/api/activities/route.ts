@@ -1,14 +1,25 @@
-// app/api/activities/route.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '../../lib/mongodb';
+import connectDB from "@/app/lib/mongodb";
+import mongoose from "mongoose";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    try {
-        await dbConnect();
+export async function GET(req: Request) {
 
-        res.status(200).json({ message: 'Success' });
-    } catch (error) {
-        console.error('Failed to save activity', error);
-        res.status(500).json({ error: 'Failed to handle POST request' });
+  try {
+    await connectDB();
+    return NextResponse.json({
+      msg: ["Connectado a la base de datos"],
+      success: true,
+    })
+  } catch (error) {
+    if(error instanceof mongoose.Error.ValidationError) {
+      let errorList = []
+      for (let e in error.errors) {
+        errorList.push(error.errors[e].message)
+      }
+
+      return NextResponse.json({ msg:errorList })
+    } else {
+      return NextResponse.json({ msg: "Unable to send message." })
     }
+  }
 }

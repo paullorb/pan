@@ -1,18 +1,18 @@
+// lib/dbConnect.js
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const connectDB = async (dbName = 'test') => {
+  const dbURI = process.env.MONGODB_URI || "";
 
-if (!MONGODB_URI) {
-    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-}
+  try {
+    await mongoose.connect(dbURI, { dbName });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Connection error:', error);
+    throw error;  // Rethrow to handle it outside
+  }
+};
 
-const dbConnect = async () => {
-    if (mongoose.connection.readyState === 0) { // Only connect if no connection already exists
-        await mongoose.connect(MONGODB_URI, {
-            bufferCommands: false,
-        });
-    }
-    return mongoose.connection;
-}
-
-export default dbConnect;
+export default connectDB;
