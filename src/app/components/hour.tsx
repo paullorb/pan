@@ -38,7 +38,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
   }, [activityFull, activityHalf, nextActivityFull, activities, hour]);
 
   // Determine background class based on the evenness of the hour
-  const backgroundClass = hour % 2 === 0 ? style.altBackgroundGray : style.altBackgroundGreen;
+  const backgroundClass = hour % 2 === 0 ? style.altBackground1 : style.altBackground2;
 
   if (isMerged.repeatedMiddle) return null;
 

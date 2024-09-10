@@ -96,11 +96,11 @@
   }
 }
 
-.altBackgroundGray {
+.altBackground1 {
   background-color: var(--bg-alt1);  /* Light gray background */
 }
 
-.altBackgroundGreen {
+.altBackground2 {
   background-color: var(--bg-alt2);  /* Lighter gray background */
 }
 
