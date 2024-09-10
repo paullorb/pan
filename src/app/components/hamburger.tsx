@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from '../themeContext';
+import { useTheme } from '../context/themeContext';
 import { useState } from 'react';
 import AuthModal from './auth'; // Import the AuthModal
 import styles from './hamburger.module.css';

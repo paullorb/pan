@@ -1,5 +1,5 @@
-import './globals.css';
-import style from './page.module.css';
+import './aesthetics/globals.css'
+import style from './aesthetics/page.module.css';
 import Hours from './components/hours';
 import Opens from './components/opens';
 import Priority from './components/priorities';

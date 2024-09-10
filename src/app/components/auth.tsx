@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './auth.module.css';
-import { useAuth } from '../authContext';
+import { useAuth } from '../context/authContext';
 
 // Define types for Modal props
 interface ModalProps {

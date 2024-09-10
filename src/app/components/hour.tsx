@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHours } from '../hoursContext';
+import { useHours } from '../context/hoursContext';
 import Adjuster from './adjuster';
 import style from './hour.module.css';
 
