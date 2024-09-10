@@ -32,7 +32,6 @@
 .events {
   display: flex;
   flex-wrap: wrap;
-  padding: 2px;
   width: 100%;
 }
 
@@ -40,17 +39,10 @@
   width: 100%;
   border: none;
   height: 100%;
+  padding: 0;
 }
 
-.event:hover {
-  background-color: var(--hover-color);
-}
-
-.pan:first-child {
-  border-bottom: 1px dashed #c0c0c069;
-}
-
-.frame:last-child {
+.frame:first-child, .frame:last-child {
   border-bottom: none;
 }
 
