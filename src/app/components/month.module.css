@@ -43,7 +43,8 @@
 
 .currentDay {
   background-color: var(--color); /* Dark background for the current day */
-  color: var(--bg); /* White text for contrast */
+  color: rgb(218, 141, 70);
+  font-weight: bold;
   border-color: #ddd; /* Darker border for better visibility */
 }
 
