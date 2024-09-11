@@ -24,38 +24,43 @@
 
 .navButton:hover {
   border: 1px solid #ccc;
-}
-.nav:hover .navButton {
   color: var(--color);
 }
-
 
 .monthGrid {
   display: flex;
   flex-wrap: wrap;
-  width: 100%; /* Ensure the container is full width */
+  width: 100%;
 }
 
 .day {
-  flex: 1 0 calc(100% / 7); /* exactly one-seventh of the container */
+  flex: 1 0 calc(100% / 7);
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--bg);
-  border: 1px solid #ddd; 
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
 
 .currentDay {
-  background-color: var(--color); /* Dark background for the current day */
+  background-color: var(--color);
   color: rgb(218, 141, 70);
   font-weight: bold;
-  border-color: #ddd; /* Darker border for better visibility */
+  border-color: #ddd;
 }
 
 .monthYear {
-  margin: 0 10px; /* Space between buttons and text */
-  font-weight: bold; /* Make the month and year text bold */
-  min-width: 100px; /* Ensure the text doesn't shrink too much */
-  text-align: center; /* Center the text */
+  margin: 0 10px;
+  font-weight: bold;
+  min-width: 100px;
+  text-align: center;
+}
+
+.selectedDay {
+  background-color: lightblue; /* Highlight the selected day */
+  font-weight: bold;
+  border-color: #000;
+  color: black;
 }
