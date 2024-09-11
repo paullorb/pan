@@ -13,13 +13,10 @@ import Moments from './components/moments';
 export default function Home() {
   return (
     <div className={style.container}>
-      <h1 className={style.title}>🍞 Pansito del día</h1>
+      <div className={style.side}></div>
+      <div className={style.titleC}><h1 className={style.title}>🍞 Pansito del día</h1></div>
+      <div className={style.side}></div>
       <div className={style.tables}>
-        <Controls />
-        <div className={style.header}>
-          <Hours />
-          {/* <Moments /> */}
-        </div>
         <div className={style.aside}>
           <div className={style.top}>
             <DateComponent />
@@ -31,6 +28,11 @@ export default function Home() {
             <Opens />
             <Bread />
           </div>
+        </div>
+        <Controls />
+        <div className={style.header}>
+          <Hours />
+          {/* <Moments /> */}
         </div>
       </div>
     </div>
