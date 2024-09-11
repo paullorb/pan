@@ -1,3 +1,60 @@
+/* Container for the whole Moments component */
 .container {
-  border: 1px solid green;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 1%;
+}
+
+/* Styling for each moment block (Morning, Afternoon, Evening) */
+.moment {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 1%;
+}
+
+/* Container for individual tasks in each moment block */
+.inputC {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 10%;
+  max-height: 50px;
+}
+
+/* Individual task pane style */
+.pan {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1%;
+  height: 100%;
+}
+
+/* Checkbox styling */
+.checkbox {
+  width: 10%;
+  padding: 0;
+  margin: 0;
+}
+
+/* Input field styling */
+.input {
+  width: 60%;
+  flex: 1 1 auto;
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.smartC {
+  display: flex;
+  opacity: 0;
+}
+
+.moment:hover .smartC {
+  opacity: 0.5;
 }
