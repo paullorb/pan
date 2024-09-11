@@ -8,6 +8,7 @@ import Bread from './components/bread';
 import Hamburger from './components/hamburger';
 import Controls from './components/controls';
 import Month from './components/month';
+import Moments from './components/moments';
 
 export default function Home() {
   return (
@@ -16,7 +17,8 @@ export default function Home() {
       <div className={style.tables}>
         <Controls />
         <div className={style.header}>
-          <Hours />
+          {/* <Hours /> */}
+          <Moments />
         </div>
         <div className={style.aside}>
           <div className={style.top}>
