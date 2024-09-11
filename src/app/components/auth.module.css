@@ -10,6 +10,7 @@
   justify-content: center;
   align-items: flex-start; /* Aligns the modal towards the top */
   padding-top: 10%; /* Moves the modal slightly towards the top */
+  z-index: 10000;
 }
 
 .modal {

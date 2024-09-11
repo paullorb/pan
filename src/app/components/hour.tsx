@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHours } from '../context/hoursContext';
+import { useDate } from '../context/dateContext'; // Import DateContext to get selectedDate
 import Adjuster from './adjuster';
 import style from './hour.module.css';
 
@@ -9,11 +10,15 @@ interface HourProps {
 
 const Hour: React.FC<HourProps> = ({ hour }) => {
   const { activities, handleActivityChange } = useHours();
-  const activityFull = activities[`${hour}:00`] || '';
-  const activityHalf = activities[`${hour}:30`] || '';
+  const { selectedDate } = useDate(); // Get selectedDate from DateContext
+
+  // Use selectedDate to store activities based on the date
+  const dayKey = selectedDate.toDateString(); // Create a unique key for each day
+  const activityFull = activities[`${dayKey}_${hour}:00`] || '';
+  const activityHalf = activities[`${dayKey}_${hour}:30`] || '';
 
   const handleCopy = (sourceTime: string, destinationTime: string) => {
-    handleActivityChange(destinationTime, activities[sourceTime] || '');
+    handleActivityChange(`${dayKey}_${destinationTime}`, activities[`${dayKey}_${sourceTime}`] || '');
   };
 
   const backgroundClass = hour % 2 === 0 ? style.altBackground1 : style.altBackground2;
@@ -28,7 +33,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
             className={`${style.event} ${backgroundClass}`}
             placeholder={`🍞 at ${hour}:00`}
             value={activityFull}
-            onChange={(e) => handleActivityChange(`${hour}:00`, e.target.value)}
+            onChange={(e) => handleActivityChange(`${dayKey}_${hour}:00`, e.target.value)}
           />
           <Adjuster backgroundClass={backgroundClass} onIncrease={() => handleCopy(`${hour}:00`, `${hour}:30`)} />
         </div>
@@ -38,7 +43,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
             className={`${style.event} ${backgroundClass}`}
             placeholder={`🍞 at ${hour}:30`}
             value={activityHalf}
-            onChange={(e) => handleActivityChange(`${hour}:30`, e.target.value)}
+            onChange={(e) => handleActivityChange(`${dayKey}_${hour}:30`, e.target.value)}
           />
           <Adjuster backgroundClass={backgroundClass} onIncrease={() => handleCopy(`${hour}:30`, `${hour + 1}:00`)} />
         </div>
