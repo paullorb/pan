@@ -1,19 +1,20 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './month.module.css';
 import { useDate } from '../context/dateContext'; // Import the DateContext
 
 const Month = () => {
-  const [date, setDate] = useState(new Date());
-  const { selectedDate, setSelectedDate } = useDate(); // Get both selectedDate and setSelectedDate from context
-  const currentYear = date.getFullYear();
-  const currentMonth = date.getMonth();
+  const { selectedDate, setSelectedDate } = useDate(); // Get selectedDate from the context
+  const currentYear = selectedDate.getFullYear();
+  const currentMonth = selectedDate.getMonth();
   const today = new Date().getDate();
+  const thisYear = new Date().getFullYear(); // Get the current year
 
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-  const isCurrentYear = currentYear === new Date().getFullYear();
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const startingDayOfWeek = (firstDayOfMonth.getDay() === 0 ? 7 : firstDayOfMonth.getDay());
 
@@ -21,6 +22,7 @@ const Month = () => {
   for (let i = 1; i < startingDayOfWeek; i++) {
     days.push(null); // Empty slots for days before the first day of the month
   }
+
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   for (let i = 1; i <= daysInMonth; i++) {
     days.push(i);
@@ -35,11 +37,15 @@ const Month = () => {
   }
 
   const incrementMonth = () => {
-    setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+    const newDate = new Date(selectedDate);
+    newDate.setMonth(currentMonth + 1);
+    setSelectedDate(newDate); // Update the selected date to the next month
   };
 
   const decrementMonth = () => {
-    setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+    const newDate = new Date(selectedDate);
+    newDate.setMonth(currentMonth - 1);
+    setSelectedDate(newDate); // Update the selected date to the previous month
   };
 
   const isCurrentDay = (day: number) =>
@@ -63,7 +69,8 @@ const Month = () => {
       <div className={styles.nav}>
         <button onClick={decrementMonth} className={styles.navButton}>{"<"}</button>
         <span className={styles.monthYear}>
-          {monthNames[currentMonth]} {isCurrentYear ? '' : currentYear}
+          {monthNames[currentMonth]} {currentYear !== thisYear && currentYear}
+          {/* Display the year only if it's not the current year */}
         </span>
         <button onClick={incrementMonth} className={styles.navButton}>{">"}</button>
       </div>
