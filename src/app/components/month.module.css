@@ -19,11 +19,16 @@
   border-radius: 5px;
   border: 1px solid transparent;
   transition: 0.3s ease-in-out;
+  color: transparent;
 }
 
 .navButton:hover {
   border: 1px solid #ccc;
 }
+.nav:hover .navButton {
+  color: var(--color);
+}
+
 
 .monthGrid {
   display: flex;

@@ -1,18 +1,26 @@
 import style from './opens.module.css';
 
-export default function Opens () {
-  return ( 
+const openTasks = [
+  { id: 1, text: '🍞 Cable barberass' },
+  { id: 2, text: '🍞 Staubsaugen' },
+  { id: 3, text: '🍞 Fahrrad in die Werkstatt' },
+  { id: 4, text: '🍞 Pasaporte holen' },
+  { id: 5, text: '🍞 Notizen übertragen' },
+  { id: 6, text: '🍞 Linkedin Post' },
+  { id: 7, text: '🍞 Mieterverein' },
+  { id: 8, text: '🍞 Fenster putzen' },
+  { id: 9, text: '🍞 Wände streichen' }
+];
+
+export default function Opens() {
+  return (
     <div className={style.opens}>
       <div className={style.title}>OPEN</div>
-        <div className={style.open}>🍞 Cable barberass</div>
-        <div className={style.open}>🍞 Staubsaugen</div>
-        <div className={style.open}>🍞 Fahrrad in die Werkstatt</div>
-        <div className={style.open}>🍞 Pasaporte holen</div>
-        <div className={style.open}>🍞 Notizen übertragen</div>
-        <div className={style.open}>🍞 Linkedin Post</div>
-        <div className={style.open}>🍞 Mieterverein</div>
-        <div className={style.open}>🍞 Fenster putzen</div>
-        <div className={style.open}>🍞 Wände streichen</div>
-      </div>
-  )
+      {openTasks.map(task => (
+        <div key={task.id} className={style.open}>
+          {task.text}
+        </div>
+      ))}
+    </div>
+  );
 }
