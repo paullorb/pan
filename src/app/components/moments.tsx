@@ -1,4 +1,4 @@
-import styles from './moments.module.css';
+import styles from './moment.module.css';
 import Moment from './moment';
 
 export default function Moments() {
