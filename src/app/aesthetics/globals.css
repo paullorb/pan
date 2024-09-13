@@ -5,7 +5,6 @@
   box-sizing: border-box;
   transition: background-color 0.9s, color 0.1s;
 }
-
 :root {
   --black: black;
   --white-b: solid white;
@@ -41,6 +40,9 @@ html[data-theme='dark'] {
 
 @media print {
   html, body {
+    --title: white;
+    --bg-alt1: white;
+    --bg-alt2: white;
     width: 210mm;
     height: 297mm;
   }

@@ -9,7 +9,7 @@
   font-size: 1.5em;
   display: flex;
   justify-content: center;
-  background-color: var(--title); /* Background color based on theme */
+  background-color: var(--title);
   border-radius: var(--border-radius);
   color: var(--color)
 }

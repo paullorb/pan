@@ -5,7 +5,7 @@
 
 .weekdays {
   display: flex;
-  background-color: black;
+  background-color: var(--black);
   color: white;
   border-radius: var(--border-r);
   height: 50px;
@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   font-size: 1.5em;
-  background-color: black;
+  background-color: transparent;
   color: white;
   width: 100%;
   cursor: pointer;
