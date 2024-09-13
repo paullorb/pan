@@ -1,0 +1,28 @@
+.statusLight {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin: 0 5px;
+  background-color: red; /* Default color */
+}
+
+.greenBlink {
+  background-color: green;
+  animation: blink 1s infinite;
+}
+
+.redSolid {
+  background-color: red;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -8,7 +8,7 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup } = useAuth();
+  const { login, signup, userEmail } = useAuth(); // Access userEmail
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,12 +19,17 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   // Ref for email input
   const emailInputRef = useRef<HTMLInputElement>(null);
 
-  // Focus on email input when modal opens
+  // Focus on email input and pre-fill email when modal opens
   useEffect(() => {
-    if (isOpen && emailInputRef.current) {
-      emailInputRef.current.focus();
+    if (isOpen) {
+      if (userEmail) {
+        setEmail(userEmail); // Pre-fill the email field
+      }
+      if (emailInputRef.current) {
+        emailInputRef.current.focus();
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, userEmail]);
 
   if (!isOpen) return null;
 
@@ -73,7 +78,7 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             <input
               type="email"
               id="email"
-              ref={emailInputRef} // Add ref here
+              ref={emailInputRef}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
