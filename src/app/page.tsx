@@ -14,11 +14,11 @@ export default function Home() {
   return (
     <div className={style.container}>
       <nav className={style.nav}>
-      <div className={style.side}>
+      <div className={`${style.side} ${style.sideLeft}`}>
 
       </div>
       <div className={style.titleC}><h1 className={style.title}>🍞 Pansito del día</h1></div>
-      <div className={style.side}>
+      <div className={`${style.side} ${style.sideRight}`}>
         <Hamburger />
       </div>
       </nav>

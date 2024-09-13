@@ -5,19 +5,12 @@
   justify-content: center;
   align-items: center; 
   padding: 0 20%;
-  /* border: 3px solid aqua; */
 }
 
 .nav {
   display: flex;
   width: 100%;
   gap: 1%;
-}
-
-@media print {
-  .container {
-    padding: 0;
-  }
 }
 
 .header:hover ~ .controlsContainer,
@@ -55,12 +48,6 @@
   width: 40%;
 }
 
-@media print {
-  .aside {
-    min-width: 30%;
-  }
-}
-
 .top {
   display: flex;
   flex-direction: column;
@@ -78,7 +65,26 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  /* border: 3px solid green; */
   flex: 1;
   padding: 0 50px;
+}
+
+@media print {
+  .container {
+    padding: 0;
+  }
+  .aside {
+    min-width: 30%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 0;
+    padding: 0;
+    overflow:hidden
+  }
+  .sideLeft {
+    display: none;
+  }
 }

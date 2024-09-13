@@ -44,3 +44,16 @@
   font-size: 1.8em;
   margin: 2% 0 0;
 }
+
+@media screen and (max-width: 768px) {
+  .weekday {
+    font-size: 1.2em;
+  }
+  .arrow {
+    display: flex;
+    opacity: 0.2;
+  }
+  .date {
+    font-size: 1.4em;
+  }
+}
