@@ -13,14 +13,19 @@ import Moments from './components/moments';
 export default function Home() {
   return (
     <div className={style.container}>
-      <div className={style.side}></div>
+      <nav className={style.nav}>
+      <div className={style.side}>
+
+      </div>
       <div className={style.titleC}><h1 className={style.title}>🍞 Pansito del día</h1></div>
-      <div className={style.side}></div>
+      <div className={style.side}>
+        <Hamburger />
+      </div>
+      </nav>
       <div className={style.tables}>
         <div className={style.aside}>
           <div className={style.top}>
             <DateComponent />
-            <Hamburger />
             <Month />
             <Priority />
           </div>
