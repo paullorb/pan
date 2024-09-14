@@ -52,6 +52,9 @@ const Hamburger: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.indicators}>
+      <Status />
+      </div>
       <button className={styles.button} onClick={toggleTheme}>
         {emoji}
       </button>
@@ -84,8 +87,6 @@ const Hamburger: React.FC = () => {
           🔑
         </button>
       )}
-
-      <Status />
 
       <AuthModal isOpen={isModalOpen} onClose={toggleModal} />
     </div>
