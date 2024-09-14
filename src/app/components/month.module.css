@@ -58,6 +58,7 @@
   right: 0;
   bottom: 0;
 }
+
 .currentDay {
   background-color: var(--color);
   color: rgb(218, 141, 70);
