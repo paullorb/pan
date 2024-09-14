@@ -9,13 +9,14 @@ import Hamburger from './components/hamburger';
 import Controls from './components/controls';
 import Month from './components/month';
 import Moments from './components/moments';
+import Toggles from './components/toggles';
 
 export default function Home() {
   return (
     <div className={style.container}>
       <nav className={style.nav}>
       <div className={`${style.side} ${style.sideLeft}`}>
-
+        {/* <Toggles /> */}
       </div>
       <div className={style.titleC}><h1 className={style.title}><span className={style.emoji}>🍞 </span>Pansito del día</h1></div>
       <div className={`${style.side} ${style.sideRight}`}>
