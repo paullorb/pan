@@ -34,8 +34,9 @@
 }
 
 .day {
+  position: relative;
+  aspect-ratio: 1 / 1;
   flex: 1 0 calc(100% / 7);
-  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,6 +45,19 @@
   cursor: pointer;
 }
 
+.day::before {
+  content: "";
+  display: block;
+  padding-bottom: 100%; /* Sets height equal to width */
+}
+
+.day > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .currentDay {
   background-color: var(--color);
   color: rgb(218, 141, 70);
@@ -59,7 +73,7 @@
 }
 
 .selectedDay {
-  background-color: lightblue; /* Highlight the selected day */
+  background-color: lightblue;
   font-weight: bold;
   border-color: #000;
   color: black;
