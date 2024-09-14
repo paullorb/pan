@@ -85,7 +85,6 @@ const Hamburger: React.FC = () => {
         </button>
       )}
 
-      {/* Include the StatusIndicator */}
       <Status />
 
       <AuthModal isOpen={isModalOpen} onClose={toggleModal} />

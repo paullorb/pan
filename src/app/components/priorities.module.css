@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   color: var(--color); /* Use variable for text color */
+  user-select: none;
 }
 
 .title {
@@ -29,5 +30,10 @@
   margin: 1px 0;
   min-height: 30px;
   border-radius: var(--border-radius);
-  color: var(--color)
+  gap: 2px;
+}
+
+.input {
+  width: 100%;
+  border: none;
 }

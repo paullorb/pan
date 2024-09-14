@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/themeContext';
 import { HoursProvider } from './context/hoursContext';
 import { AuthProvider } from './context/authContext';
 import { DateProvider } from './context/dateContext';
+import { PrioritiesProvider } from './context/prioritiesContext';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -22,7 +23,9 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
           <HoursProvider>
             <AuthProvider>
               <DateProvider>
-                {children}
+                <PrioritiesProvider>
+                  {children}
+                </PrioritiesProvider>
               </DateProvider>
             </AuthProvider>
           </HoursProvider>
