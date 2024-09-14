@@ -10,7 +10,7 @@
   background-color: transparent;
   cursor: pointer;
   border: none;
-  padding: 8px;
+  padding: 4px;
   border-radius: 4px;
 }
 
@@ -43,7 +43,7 @@
 
 .closeButton {
   background-color: #007bff;
-  color: white;
+  color: var(--color);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
