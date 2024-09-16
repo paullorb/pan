@@ -4,7 +4,7 @@ import Hours from './components/hours';
 import Tasks from './components/tasks';
 import Priority from './components/priorities';
 import DateComponent from './components/date'; 
-import Panes from './components/Panes';
+import Panes from './components/panes';
 import Hamburger from './components/hamburger';
 import Controls from './components/controls';
 import Month from './components/month';
