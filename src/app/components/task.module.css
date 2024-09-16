@@ -1,8 +1,6 @@
-/* open.module.css */
 .container {
   display: flex;
   flex-direction: column;
-  border: 2px solid yellow;
 }
 
 .titleC {
@@ -40,17 +38,8 @@
   align-items: center;
 }
 
-.open:hover {
-  filter: grayscale(0);
-}
-
 .placeholder {
   opacity: 0.5;
-}
-
-.placeholder:hover,
-.placeholder.hovered {
-  opacity: 1;
 }
 
 .input {

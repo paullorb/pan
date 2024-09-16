@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+// prioritiesContext.tsx
 "use client";
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
 
@@ -14,6 +16,7 @@ export const PrioritiesProvider: React.FC<{ children: ReactNode }> = ({ children
   const [priorities, setPriorities] = useState<string[]>(['', '', '']);
   const { isAuthenticated } = useAuth();
   const { selectedDate } = useDate();
+  const isFirstLoad = useRef(true);
 
   // Function to format the date as 'YYYY-MM-DD'
   const formatDate = (date: Date): string => {
@@ -43,35 +46,52 @@ export const PrioritiesProvider: React.FC<{ children: ReactNode }> = ({ children
         } catch (error) {
           console.error('Error fetching priorities:', error);
           setPriorities(['', '', '']); // Reset priorities if error occurs
+        } finally {
+          isFirstLoad.current = false; // Mark that the first load is complete
         }
       };
       fetchPriorities();
     } else {
       setPriorities(['', '', '']);
+      isFirstLoad.current = false;
     }
   }, [isAuthenticated, selectedDate]);
 
-  // Save priorities when they change
+  // Save priorities when they change, but not on initial load or when fetching
   useEffect(() => {
-    if (isAuthenticated && selectedDate) {
+    if (isAuthenticated && selectedDate && !isFirstLoad.current) {
       // Save priorities to backend whenever they change
       const savePriorities = async () => {
         try {
-          await fetch('/api/priorities', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            body: JSON.stringify({ priorities, date: formatDate(selectedDate) }),
-          });
+          // Check if all priorities are empty
+          const allEmpty = priorities.every((p) => p.trim() === '');
+          if (allEmpty) {
+            // Delete priorities from backend
+            await fetch('/api/priorities', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ date: formatDate(selectedDate) }),
+            });
+          } else {
+            await fetch('/api/priorities', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+              body: JSON.stringify({ priorities, date: formatDate(selectedDate) }),
+            });
+          }
         } catch (error) {
           console.error('Error saving priorities:', error);
         }
       };
       savePriorities();
     }
-  }, [priorities, isAuthenticated, selectedDate]);
+  }, [priorities]);
 
   return (
     <PrioritiesContext.Provider value={{ priorities, setPriorities }}>

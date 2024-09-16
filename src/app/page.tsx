@@ -4,7 +4,7 @@ import Hours from './components/hours';
 import Tasks from './components/tasks';
 import Priority from './components/priorities';
 import DateComponent from './components/date'; 
-import Bread from './components/bread';
+import Panes from './components/Panes';
 import Hamburger from './components/hamburger';
 import Controls from './components/controls';
 import Month from './components/month';
@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div className={style.bottom}>
             <Tasks />
-            <Bread />
+            <Panes />
           </div>
         </div>
         <Controls />
