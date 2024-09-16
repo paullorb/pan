@@ -40,11 +40,13 @@ const DateComponent: React.FC = () => {
         <h3 className={style.arrow} onClick={goToPreviousDay}>&lt;</h3>
         <h2 className={style.weekday} onClick={resetToToday}>
           {formatWeekday(selectedDate)}
-        </h2> {/* Clicking this will reset the date to today */}
+        </h2>
         <h3 className={style.arrow} onClick={goToNextDay}>&gt;</h3>
       </div>
-      <div className={style.dates}>
-        <h1 className={style.date}>{formatDate(selectedDate)}</h1>
+      <div>
+        <div className={style.dateC}>
+          <h3 className={style.date}>{formatDate(selectedDate)}</h3>
+        </div>
       </div>
     </div>
   );
