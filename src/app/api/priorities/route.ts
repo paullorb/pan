@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/app/lib/mongodb';
-import Priority from '@/app/lib/models/Priority';
+import connectDB from '../../lib/mongodb';
+import Priority from '../../lib/models/Priority';
 import jwt from 'jsonwebtoken';
 
 export async function GET(request: Request) {

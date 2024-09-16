@@ -2,7 +2,7 @@
 "use client";
 import React from 'react';
 import style from './task.module.css';
-import Task from './task';
+import Open from './task';
 import { useTasks } from '../context/tasksContext';
 import { useDate } from '../context/dateContext';
 
@@ -29,10 +29,10 @@ const Opens: React.FC = () => {
       </div>
       {/* Render existing tasks */}
       {openTasks.map((task) => (
-        <Task key={task.id} task={task} />
+        <Open key={Number(task.id)} task={{ ...task, id: String(task.id) }} />
       ))}
       {/* Render the placeholder input field */}
-      <Task isPlaceholder addTask={addTask} />
+      <Open isPlaceholder addTask={addTask} />
     </div>
   );
 };
