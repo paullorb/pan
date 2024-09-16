@@ -3,13 +3,11 @@
   display: flex;
   flex-direction: column;
   color: var(--color); /* Use variable for text color */
-  user-select: none;
 }
 
 .title {
   font-size: 1.5em;
-  display: flex;
-  justify-content: center;
+  padding: 0 50px;
   background-color: var(--title);
   border-radius: var(--border-radius);
   color: var(--color)

@@ -1,7 +1,7 @@
 import './aesthetics/globals.css'
 import style from './aesthetics/page.module.css';
 import Hours from './components/hours';
-import Opens from './components/opens';
+import Tasks from './components/tasks';
 import Priority from './components/priorities';
 import DateComponent from './components/date'; 
 import Bread from './components/bread';
@@ -31,7 +31,7 @@ export default function Home() {
             <Priority />
           </div>
           <div className={style.bottom}>
-            <Opens />
+            <Tasks />
             <Bread />
           </div>
         </div>
