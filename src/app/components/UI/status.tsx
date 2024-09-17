@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './status.module.css';
-import { useAuth } from '../context/authContext';
+import { useAuth } from '../../context/authContext';
 
 const Status: React.FC = () => {
   const { isAuthenticated } = useAuth();

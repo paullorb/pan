@@ -1,6 +1,6 @@
 "use client";
 
-import { useDate } from '../context/dateContext'; // Import the useDate hook
+import { useDate } from '../../context/dateContext'; // Import the useDate hook
 import style from './date.module.css';
 
 const DateComponent: React.FC = () => {

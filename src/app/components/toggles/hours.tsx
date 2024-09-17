@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { useHours } from '../context/hoursContext'; 
+import { useHours } from '../../context/hoursContext'; 
 import Hour from './hour';
 import style from './hour.module.css';
 

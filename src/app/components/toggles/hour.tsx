@@ -1,6 +1,6 @@
 import React from 'react';
-import { useHours } from '../context/hoursContext';
-import { useDate } from '../context/dateContext'; // Import DateContext to get selectedDate
+import { useHours } from '../../context/hoursContext';
+import { useDate } from '../../context/dateContext'; // Import DateContext to get selectedDate
 import Adjuster from './adjuster';
 import style from './hour.module.css';
 

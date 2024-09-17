@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import style from './priorities.module.css';
-import { usePriorities } from '../context/prioritiesContext';
+import { usePriorities } from '../../context/prioritiesContext';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();

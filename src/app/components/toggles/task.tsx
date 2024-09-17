@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from 'react';
 import style from './task.module.css';
-import { useTasks } from '../context/tasksContext';
+import { useTasks } from '../../context/tasksContext';
 
 interface OpenProps {
   task?: {

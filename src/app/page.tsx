@@ -1,15 +1,15 @@
 import './aesthetics/globals.css'
 import style from './aesthetics/page.module.css';
-import Hours from './components/hours';
-import Tasks from './components/tasks';
-import Priority from './components/priorities';
-import DateComponent from './components/date'; 
-import Panes from './components/panes';
-import Hamburger from './components/hamburger';
-import Controls from './components/controls';
-import Month from './components/month';
-import Moments from './components/moments';
-import Toggles from './components/toggles';
+import Hours from './components/toggles/hours';
+import Tasks from './components/toggles/tasks';
+import Priority from './components/toggles/priorities';
+import DateComponent from './components/toggles/date'; 
+import Panes from './components/toggles/panes';
+import Hamburger from './components/layout/hamburger';
+import Controls from './components/toggles/controls';
+import Month from './components/toggles/month';
+import Moments from './components/toggles/moments';
+import Toggles from './components/UI/toggles';
 
 export default function Home() {
   return (

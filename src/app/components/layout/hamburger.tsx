@@ -1,11 +1,11 @@
 "use client";
 
-import { useTheme } from '../context/themeContext';
+import { useTheme } from '../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
-import AuthModal from './auth';
+import AuthModal from '../UI/auth';
 import styles from './hamburger.module.css';
-import { useAuth } from '../context/authContext';
-import Status from './status';
+import { useAuth } from '../../context/authContext';
+import Status from '../UI/status';
 
 const Hamburger: React.FC = () => {
   const { theme, toggleTheme } = useTheme();

@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import styles from './month.module.css';
-import { useDate } from '../context/dateContext'; // Import the DateContext
+import { useDate } from '../../context/dateContext'; // Import the DateContext
 
 const Month = () => {
   const { selectedDate, setSelectedDate } = useDate(); // Get selectedDate from the context

@@ -3,8 +3,8 @@
 import React from 'react';
 import style from './task.module.css';
 import Open from './task';
-import { useTasks } from '../context/tasksContext';
-import { useDate } from '../context/dateContext';
+import { useTasks } from '../../context/tasksContext';
+import { useDate } from '../../context/dateContext';
 
 const Opens: React.FC = () => {
   const { tasks, addTask } = useTasks();
