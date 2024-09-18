@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHours } from '../../context/hoursContext'; 
 import Hour from './hour';
 import style from './hour.module.css';
+import { TogglesContext } from '../../context/togglesContext';
 
 const Hours: React.FC = () => {
   const { from, until } = useHours(); // Retrieve from context
@@ -32,6 +33,19 @@ const Hours: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [from, until, validFrom, validUntil]);
+
+  const togglesContext = useContext(TogglesContext);
+
+  if (!togglesContext) {
+    throw new Error("Hours must be used within a TogglesProvider");
+  }
+
+  const { togglesState } = togglesContext;
+
+  if (!togglesState.hours) {
+    return null;
+  }
+
 
   return (
     <div className={style.hourly}>

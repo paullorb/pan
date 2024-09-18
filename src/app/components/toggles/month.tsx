@@ -1,14 +1,28 @@
 "use client";
-import React from 'react';
+import React, { useContext} from 'react';
 import styles from './month.module.css';
-import { useDate } from '../../context/dateContext'; // Import the DateContext
+import { TogglesContext } from '@/app/context/togglesContext';
+import { useDate } from '../../context/dateContext'; 
 
 const Month = () => {
-  const { selectedDate, setSelectedDate } = useDate(); // Get selectedDate from the context
+  const { selectedDate, setSelectedDate } = useDate(); 
   const currentYear = selectedDate.getFullYear();
   const currentMonth = selectedDate.getMonth();
   const today = new Date().getDate();
-  const thisYear = new Date().getFullYear(); // Get the current year
+  const thisYear = new Date().getFullYear(); 
+
+  const togglesContext = useContext(TogglesContext);
+
+  if (!togglesContext) {
+    throw new Error("Month must be used within a TogglesProvider");
+  }
+
+  const { togglesState } = togglesContext;
+
+  if (!togglesState.month) {
+    return null;
+  }
+
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -20,7 +34,7 @@ const Month = () => {
 
   let days = [];
   for (let i = 1; i < startingDayOfWeek; i++) {
-    days.push(null); // Empty slots for days before the first day of the month
+    days.push(null); 
   }
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -32,20 +46,20 @@ const Month = () => {
   const fillerDays = 7 - (totalDays % 7);
   if (fillerDays < 7) {
     for (let i = 0; i < fillerDays; i++) {
-      days.push(null); // Empty slots after the last day of the month
+      days.push(null); 
     }
   }
 
   const incrementMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(currentMonth + 1);
-    setSelectedDate(newDate); // Update the selected date to the next month
+    setSelectedDate(newDate); 
   };
 
   const decrementMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(currentMonth - 1);
-    setSelectedDate(newDate); // Update the selected date to the previous month
+    setSelectedDate(newDate); 
   };
 
   const isCurrentDay = (day: number) =>
@@ -59,8 +73,8 @@ const Month = () => {
 
   const handleDayClick = (day: number | null) => {
     if (day !== null) {
-      const selectedFullDate = new Date(currentYear, currentMonth, day); // Create full date object
-      setSelectedDate(selectedFullDate); // Update the date in DateContext
+      const selectedFullDate = new Date(currentYear, currentMonth, day); 
+      setSelectedDate(selectedFullDate); 
     }
   };
 
@@ -80,8 +94,8 @@ const Month = () => {
             key={index}
             className={`${styles.day} ${
               day !== null && isCurrentDay(day) ? styles.currentDay : ''
-            } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`} // Apply styles based on the current day or selected day
-            onClick={() => handleDayClick(day)} // Set selected day on click
+            } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`} 
+            onClick={() => handleDayClick(day)}
           >
             {day || ""}
           </div>

@@ -1,10 +1,24 @@
 "use client";
-import React from 'react';
+import React, {useContext} from 'react';
 import style from './priorities.module.css';
 import { usePriorities } from '../../context/prioritiesContext';
+import { TogglesContext } from '../../context/togglesContext';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();
+
+  const togglesContext = useContext(TogglesContext);
+
+  if (!togglesContext) {
+    throw new Error("Priorities must be used within a TogglesProvider");
+  }
+
+  const { togglesState } = togglesContext;
+
+  if (!togglesState.priorities) {
+    return null;
+  }
+
 
   const handleChange = (index: number, value: string) => {
     const newPriorities = [...priorities];
@@ -14,7 +28,7 @@ export default function Priorities() {
 
   return (
     <div className={style.container}>
-      <div className={style.title}>PRIORITIES</div>
+      <div className={style.title}>Priority</div>
       <div className={style.priorities}>
         {[1, 2, 3].map((num, index) => (
           <div className={style.priority} key={num}>

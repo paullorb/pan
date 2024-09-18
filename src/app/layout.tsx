@@ -5,6 +5,8 @@ import { AuthProvider } from './context/authContext';
 import { DateProvider } from './context/dateContext';
 import { PrioritiesProvider } from './context/prioritiesContext';
 import { TasksProvider } from './context/tasksContext';
+import { TogglesProvider } from './context/togglesContext';
+import { MomentumProvider } from './context/momentumContext';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -21,17 +23,21 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       </head>
       <body>
         <ThemeProvider>
-          <HoursProvider>
-            <AuthProvider>
-              <DateProvider>
-                <PrioritiesProvider>
-                  <TasksProvider>
-                    {children}
-                  </TasksProvider>
-                </PrioritiesProvider>
-              </DateProvider>
-            </AuthProvider>
-          </HoursProvider>
+          <TogglesProvider>
+            <HoursProvider>
+              <AuthProvider>
+                <DateProvider>
+                  <MomentumProvider>
+                    <PrioritiesProvider>
+                      <TasksProvider>
+                        {children}
+                      </TasksProvider>
+                    </PrioritiesProvider>
+                  </MomentumProvider>
+                </DateProvider>
+              </AuthProvider>
+            </HoursProvider>
+          </TogglesProvider>
         </ThemeProvider>
       </body>
     </html>

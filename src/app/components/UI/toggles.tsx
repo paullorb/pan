@@ -1,25 +1,28 @@
+// toggles.tsx
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styles from "./toggles.module.css";
+import { TogglesContext, TogglesState } from "../../context/togglesContext"; // Adjust the import path as necessary
 
 export default function Toggles() {
   const [isOpen, setIsOpen] = useState(false);
-  const [togglesState, setTogglesState] = useState({
-    hours: false,
-    priorities: false,
-    tasks: false,
-    month: false,
-    date: false,
-  });
-
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Use the context
+  const context = useContext(TogglesContext);
+
+  if (!context) {
+    throw new Error("Toggles must be used within a TogglesProvider");
+  }
+
+  const { togglesState, setTogglesState } = context;
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleToggleChange = (event: { target: { name: string; checked: boolean; }; }) => {
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     setTogglesState((prevState) => ({
       ...prevState,
@@ -35,12 +38,10 @@ export default function Toggles() {
       }
     };
 
-    // Add event listener when dropdown is open
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    // Cleanup the event listener when dropdown is closed
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -54,12 +55,12 @@ export default function Toggles() {
         </button>
         {isOpen && (
           <div className={styles.dropdown} ref={dropdownRef}>
-            {Object.keys(togglesState).map((toggle) => (
+            {(Object.keys(togglesState) as Array<keyof TogglesState>).map((toggle) => (
               <label key={toggle} className={styles.toggleOption}>
                 <input
                   type="checkbox"
                   name={toggle}
-                  checked={togglesState[toggle as keyof typeof togglesState]}
+                  checked={togglesState[toggle]}
                   onChange={handleToggleChange}
                 />
                 {toggle.charAt(0).toUpperCase() + toggle.slice(1)}

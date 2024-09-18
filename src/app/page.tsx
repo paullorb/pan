@@ -4,12 +4,12 @@ import Hours from './components/toggles/hours';
 import Tasks from './components/toggles/tasks';
 import Priority from './components/toggles/priorities';
 import DateComponent from './components/toggles/date'; 
-import Panes from './components/toggles/panes';
 import Hamburger from './components/layout/hamburger';
 import Controls from './components/toggles/controls';
 import Month from './components/toggles/month';
 import Moments from './components/toggles/moments';
 import Toggles from './components/UI/toggles';
+import Momentum from './components/toggles/momentum';
 
 export default function Home() {
   return (
@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div className={style.bottom}>
             <Tasks />
-            <Panes />
+            <Momentum />
           </div>
         </div>
         <Controls />

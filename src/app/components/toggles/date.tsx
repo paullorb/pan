@@ -1,11 +1,25 @@
+// date.tsx
 "use client";
 
-import { useDate } from '../../context/dateContext'; // Import the useDate hook
+import React, { useContext } from 'react';
+import { useDate } from '../../context/dateContext'; 
+import { TogglesContext } from '../../context/togglesContext'; 
 import style from './date.module.css';
 
 const DateComponent: React.FC = () => {
-  // Get selectedDate from the context
   const { selectedDate, setSelectedDate } = useDate();
+
+  const togglesContext = useContext(TogglesContext);
+
+  if (!togglesContext) {
+    throw new Error("DateComponent must be used within a TogglesProvider");
+  }
+
+  const { togglesState } = togglesContext;
+
+  if (!togglesState.date) {
+    return null;
+  }
 
   // Function to format the selected date
   const formatDate = (date: Date): string => {
@@ -21,17 +35,19 @@ const DateComponent: React.FC = () => {
   };
 
   const goToNextDay = (): void => {
-    const nextDay = new Date(selectedDate.setDate(selectedDate.getDate() + 1));
-    setSelectedDate(nextDay); // Update the selectedDate in the context
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setSelectedDate(nextDay); 
   };
 
   const goToPreviousDay = (): void => {
-    const previousDay = new Date(selectedDate.setDate(selectedDate.getDate() - 1));
-    setSelectedDate(previousDay); // Update the selectedDate in the context
+    const previousDay = new Date(selectedDate);
+    previousDay.setDate(previousDay.getDate() - 1);
+    setSelectedDate(previousDay); 
   };
 
   const resetToToday = (): void => {
-    setSelectedDate(new Date()); // Reset to current day
+    setSelectedDate(new Date()); 
   };
 
   return (
