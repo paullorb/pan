@@ -51,7 +51,7 @@ export async function GET(request: Request) {
           habitDoc = new Habit({
             userId,
             date,
-            habits: previousHabits.habits.map((habit) => ({
+            habits: previousHabits.habits.map((habit: { name: any; }) => ({
               name: habit.name,
               completed: false,
             })),
