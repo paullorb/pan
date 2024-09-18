@@ -15,13 +15,44 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // Load authentication state and email from localStorage on initial render
+  // Function to validate token with the server
+  const validateToken = async (token: string): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/validateToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      return response.ok;
+    } catch (error) {
+      console.error('Token validation error:', error);
+      return false;
+    }
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const email = localStorage.getItem('email');
-    setIsAuthenticated(!!token);
-    setUserEmail(email);
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('token');
+      const email = localStorage.getItem('email');
+
+      if (token && email) {
+        const isValid = await validateToken(token);
+        if (isValid) {
+          setIsAuthenticated(true);
+          setUserEmail(email);
+        } else {
+          // Token is invalid or expired, log the user out
+          logout();
+        }
+      }
+    };
+
+    initializeAuth();
   }, []);
+
 
   const login = async (email: string, password: string) => {
     try {

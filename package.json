@@ -14,10 +14,10 @@
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.2",
-    "next": "^14.2.9",
-    "react": "^18",
+    "next": "^14.2.12",
+    "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
-    "react-dom": "^18"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -27,7 +27,7 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5",
+    "eslint-config-next": "^14.2.12",
     "typescript": "^5"
   }
 }
