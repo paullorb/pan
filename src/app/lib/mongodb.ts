@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { encode } from 'punycode';
 dotenv.config();
 
 const connectDB = async (dbName = 'test') => {

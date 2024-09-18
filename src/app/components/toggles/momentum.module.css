@@ -61,3 +61,34 @@
 .note span {
   margin-left: 10px;
 }
+
+.habitName {
+  flex: 1;
+  cursor: pointer;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+.addHabit {
+  display: flex;
+  margin-top: 10px;
+}
+
+.addHabit input {
+  flex: 1;
+  padding: 5px;
+  font-size: 1em;
+}
+
+.addHabit button {
+  padding: 5px 10px;
+  font-size: 1em;
+  margin-left: 5px;
+  cursor: pointer;
+}
