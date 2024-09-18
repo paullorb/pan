@@ -79,7 +79,7 @@ export async function GET(request: Request) {
           userId,
           date,
           habits: lastAvailableHabits
-            ? lastAvailableHabits.habits.map((habit) => ({
+            ? lastAvailableHabits.habits.map((habit: { name: any; }) => ({
                 name: habit.name,
                 completed: false,
               }))
