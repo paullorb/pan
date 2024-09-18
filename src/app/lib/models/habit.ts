@@ -1,10 +1,10 @@
-// models/Habit.ts
+// models/habit.ts
 
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IHabit extends Document {
   userId: mongoose.Types.ObjectId;
-  date: string; // Dates stored as strings in 'YYYY-MM-DD' format
+  date: string; // We'll store dates as strings in 'YYYY-MM-DD' format
   habits: {
     name: string;
     completed: boolean;

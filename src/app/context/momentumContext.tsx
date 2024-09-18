@@ -79,14 +79,13 @@ export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [isAuthenticated, selectedDate]);
 
-  // Save habits when they change, but not on initial load or when fetching
   useEffect(() => {
     if (isAuthenticated && selectedDate && !isFirstLoad.current) {
       const saveHabits = async () => {
         try {
           const dateStr = formatDate(selectedDate);
           const todayStr = formatDate(new Date());
-
+  
           const allEmpty = habits.length === 0;
           if (allEmpty) {
             // Delete habits from backend

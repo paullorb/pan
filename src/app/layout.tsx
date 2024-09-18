@@ -22,23 +22,23 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <title>Pansito</title>
       </head>
       <body>
-        <ThemeProvider>
-          <TogglesProvider>
-            <HoursProvider>
-              <AuthProvider>
-                <DateProvider>
-                  <MomentumProvider>
-                    <PrioritiesProvider>
-                      <TasksProvider>
-                        {children}
-                      </TasksProvider>
-                    </PrioritiesProvider>
-                  </MomentumProvider>
-                </DateProvider>
-              </AuthProvider>
-            </HoursProvider>
-          </TogglesProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <TogglesProvider>
+              <HoursProvider>
+                  <DateProvider>
+                    <MomentumProvider>
+                      <PrioritiesProvider>
+                        <TasksProvider>
+                          {children}
+                        </TasksProvider>
+                      </PrioritiesProvider>
+                    </MomentumProvider>
+                  </DateProvider>
+              </HoursProvider>
+            </TogglesProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -145,4 +145,38 @@ export async function POST(request: Request) {
   }
 }
 
-// ... DELETE handler remains the same
+export async function DELETE(request: Request) {
+  try {
+    await connectDB();
+
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.split(' ')[1];
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    let userId;
+    try {
+      const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
+      userId = decoded.userId;
+    } catch (error) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { date } = body;
+
+    if (!date) {
+      return NextResponse.json({ error: 'Date is required' }, { status: 400 });
+    }
+
+    // Delete the habit document for the user and date
+    await Habit.findOneAndDelete({ userId, date });
+
+    return NextResponse.json({ message: 'Habits deleted' }, { status: 200 });
+  } catch (error) {
+    console.error('DELETE /api/momentum error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
