@@ -1,16 +1,42 @@
 .container {
+  position: relative;
   display: flex;
-  border: 2px solid green;
   width: 100%;
-  height: 100%;
   padding: 10px;
+  user-select: none;
 }
 
 .toggles {
+  position: relative;
+}
+
+.label {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 40px; /* Adjust based on your button height */
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.toggleOption {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  height: 100%;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.toggleOption input {
+  margin-right: 8px;
+}
+
+@media print {
+  .container {
+    display: none;
+  }
 }
