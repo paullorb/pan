@@ -16,7 +16,7 @@ export default function Home() {
     <div className={style.container}>
       <nav className={style.nav}>
       <div className={`${style.side} ${style.sideLeft}`}>
-        {/* <Toggles /> */}
+        <Toggles />
       </div>
       <div className={style.titleC}><h1 className={style.title}><span className={style.emoji}>🍞 </span>Pansito del día</h1></div>
       <div className={`${style.side} ${style.sideRight}`}>
