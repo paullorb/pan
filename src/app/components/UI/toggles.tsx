@@ -51,7 +51,7 @@ export default function Toggles() {
     <div className={styles.container}>
       <div className={styles.toggles}>
         <button className={styles.label} onClick={handleButtonClick}>
-          Toggles
+        ▶️
         </button>
         {isOpen && (
           <div className={styles.dropdown} ref={dropdownRef}>

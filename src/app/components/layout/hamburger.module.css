@@ -13,13 +13,6 @@
   padding: 4px;
   border-radius: 4px;
 }
-
-@media print {
-  .container {
-    opacity: 0;
-  }
-}
-
 /* Modal Styles */
 .backdrop {
   position: fixed;

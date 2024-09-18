@@ -11,6 +11,7 @@
 }
 
 .label {
+  border: none;
   padding: 8px 16px;
   cursor: pointer;
 }

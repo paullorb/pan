@@ -10,6 +10,7 @@ import Month from './components/toggles/month';
 import Moments from './components/toggles/moments';
 import Toggles from './components/UI/toggles';
 import Momentum from './components/toggles/momentum';
+import Language from './components/toggles/language';
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <nav className={style.nav}>
       <div className={`${style.side} ${style.sideLeft}`}>
         <Toggles />
+        <Language />
       </div>
       <div className={style.titleC}><h1 className={style.title}><span className={style.emoji}>🍞 </span>Pansito del día</h1></div>
       <div className={`${style.side} ${style.sideRight}`}>

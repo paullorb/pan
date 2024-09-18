@@ -14,16 +14,13 @@
 
 .side {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   flex: 1;
   padding: 0 30px;
-  /* border: 3px solid aqua; */
 }
 
 .titleC {
-  /* border: 3px solid gold; */
   margin-left: calc(13px + 100px + 2px)
 }
 
@@ -90,6 +87,9 @@
   }
   .aside {
     min-width: 30%;
+  }
+  .side * {
+    display: none;
   }
 }
 
