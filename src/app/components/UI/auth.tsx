@@ -8,13 +8,14 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup, userEmail, isAuthenticated } = useAuth(); // Access userEmail and isAuthenticated
+  const { login, signup, userEmail, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // State to track login or signup mode
+  // State to track login or signup mode and closing animation
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Ref for email input
   const emailInputRef = useRef<HTMLInputElement>(null);
@@ -23,7 +24,7 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
       if (userEmail) {
-        setEmail(userEmail); // Pre-fill the email field
+        setEmail(userEmail);
       }
       if (emailInputRef.current) {
         emailInputRef.current.focus();
@@ -31,7 +32,26 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen, userEmail]);
 
-  if (!isOpen) return null;
+  // Close modal with animation when authenticated
+  useEffect(() => {
+    if (isAuthenticated && isOpen) {
+      setIsClosing(true);
+    }
+  }, [isAuthenticated, isOpen]);
+
+  // After animation ends, close the modal
+  useEffect(() => {
+    if (isClosing) {
+      const timer = setTimeout(() => {
+        setIsClosing(false);
+        onClose();
+      }, 300); // Duration matches CSS transition
+
+      return () => clearTimeout(timer);
+    }
+  }, [isClosing, onClose]);
+
+  if (!isOpen && !isClosing) return null;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -44,22 +64,21 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       }
       await signup(email, password);
     }
-  
-    // Close the modal only if authentication was successful
-    if (isAuthenticated) {
-      onClose();
-    }
+    // No need to call onClose() here
   };
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget) {
-      onClose();
+      setIsClosing(true);
     }
   };
 
   return (
-    <div className={styles.backdrop} onClick={handleBackdropClick}>
-      <div className={styles.modal}>
+    <div
+      className={`${styles.backdrop} ${isClosing ? styles.fadeOut : ''}`}
+      onClick={handleBackdropClick}
+    >
+      <div className={`${styles.modal} ${isClosing ? styles.modalFadeOut : ''}`}>
         {/* Login / Signup Tabs */}
         <div className={styles.tabContainer}>
           <button

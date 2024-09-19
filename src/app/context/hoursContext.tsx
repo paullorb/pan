@@ -44,6 +44,7 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
     if (isAuthenticated) {
       const fetchActivities = async () => {
         try {
+          // Fetch activities for the current date
           const response = await fetch(`/api/activities?date=${selectedDate.toDateString()}`, {
             method: 'GET',
             headers: {
@@ -54,12 +55,54 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
 
           if (response.ok) {
             const data = await response.json();
-            setActivities(data.activities);
+
+            if (Object.keys(data.activities).length === 0) {
+              // No activities for today, fetch activities for the previous day
+              const prevDate = new Date(selectedDate);
+              prevDate.setDate(prevDate.getDate() - 1);
+
+              const prevResponse = await fetch(`/api/activities?date=${prevDate.toDateString()}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+              });
+
+              if (prevResponse.ok) {
+                const prevData = await prevResponse.json();
+
+                if (Object.keys(prevData.activities).length > 0) {
+                  // Copy activities from the previous day
+                  const newActivities: HourActivity = {};
+
+                  for (const key in prevData.activities) {
+                    // Extract the time part from the key
+                    const timePart = key.substring(key.indexOf('_') + 1);
+                    // Create a new key for today's date
+                    const newKey = `${selectedDate.toDateString()}_${timePart}`;
+                    newActivities[newKey] = prevData.activities[key];
+                  }
+
+                  setActivities(newActivities);
+                } else {
+                  setActivities({});
+                }
+              } else {
+                console.error('Failed to fetch previous day activities');
+                setActivities({});
+              }
+            } else {
+              // Activities exist for today
+              setActivities(data.activities);
+            }
           } else {
             console.error('Failed to fetch activities');
+            setActivities({});
           }
         } catch (error) {
           console.error('Error fetching activities:', error);
+          setActivities({});
         }
       };
       fetchActivities();
