@@ -49,12 +49,12 @@ export default function Toggles() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.toggles}>
+      <div className={styles.toggles} ref={dropdownRef}>
         <button className={styles.label} onClick={handleButtonClick}>
-        ▶️
+          ▶️
         </button>
         {isOpen && (
-          <div className={styles.dropdown} ref={dropdownRef}>
+          <div className={styles.dropdown}>
             {(Object.keys(togglesState) as Array<keyof TogglesState>).map((toggle) => (
               <label key={toggle} className={styles.toggleOption}>
                 <input

@@ -2,10 +2,10 @@
 
 import { useTheme } from '../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
-import AuthModal from '../UI/auth';
+import AuthModal from './auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../context/authContext';
-import Status from '../UI/status';
+import Status from './status';
 
 const Hamburger: React.FC = () => {
   const { theme, toggleTheme } = useTheme();

@@ -4,7 +4,7 @@ import Hours from './components/toggles/hours';
 import Tasks from './components/toggles/tasks';
 import Priority from './components/toggles/priorities';
 import DateComponent from './components/toggles/date'; 
-import Hamburger from './components/layout/hamburger';
+import Hamburger from './components/UI/hamburger';
 import Controls from './components/toggles/controls';
 import Month from './components/toggles/month';
 import Moments from './components/toggles/moments';
