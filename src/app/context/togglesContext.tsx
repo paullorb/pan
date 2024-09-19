@@ -24,13 +24,15 @@ export const TogglesContext = createContext<TogglesContextType | undefined>(unde
 
 export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
+
+  // Set default togglesState to have all toggles activated
   const [togglesState, setTogglesState] = useState<TogglesState>({
-    hours: false,
-    priorities: false,
-    tasks: false,
-    month: false,
-    date: false,
-    momentum: false,
+    hours: true,
+    priorities: true,
+    tasks: true,
+    month: true,
+    date: true,
+    momentum: true,
   });
 
   // Fetch togglesState when the user is authenticated
