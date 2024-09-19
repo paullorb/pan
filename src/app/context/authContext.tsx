@@ -15,7 +15,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // Function to validate token with the server
+  useEffect(() => {
+    // Clear localStorage on app start (use with caution)
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+  }, []);
+
   const validateToken = async (token: string): Promise<boolean> => {
     try {
       const response = await fetch('/api/validateToken', {
@@ -26,9 +31,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         body: JSON.stringify({ token }),
       });
 
-      return response.ok;
+      if (response.ok) {
+        return true;
+      } else if (response.status === 401) {
+        // Token is invalid or expired
+        return false;
+      } else {
+        // Handle other server errors
+        console.error('Server error during token validation');
+        return false;
+      }
     } catch (error) {
-      console.error('Token validation error:', error);
+      console.error('Network error during token validation:', error);
       return false;
     }
   };
@@ -47,6 +61,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           // Token is invalid or expired, log the user out
           logout();
         }
+      } else {
+        // No token found, ensure the user is logged out
+        logout();
       }
     };
 
@@ -67,7 +84,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token and email
+        // Clear any existing tokens
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
+
+        // Store the new token and email
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
         setIsAuthenticated(true);

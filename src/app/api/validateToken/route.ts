@@ -15,7 +15,12 @@ export async function POST(request: Request) {
     jwt.verify(token, secret);
     return NextResponse.json({ valid: true }, { status: 200 });
   } catch (error) {
-    console.error('Token validation error:', error);
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    if ((error as Error).name === 'TokenExpiredError') {
+      console.warn('Token expired:', error);
+      return NextResponse.json({ error: 'Token expired' }, { status: 401 });
+    } else {
+      console.error('Token validation error:', error);
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
   }
 }

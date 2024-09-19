@@ -8,7 +8,7 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup, userEmail } = useAuth(); // Access userEmail
+  const { login, signup, userEmail, isAuthenticated } = useAuth(); // Access userEmail and isAuthenticated
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -33,18 +33,22 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isLoginMode) {
-      login(email, password);
+      await login(email, password);
     } else {
       if (password !== confirmPassword) {
         alert('Passwords do not match');
         return;
       }
-      signup(email, password);
+      await signup(email, password);
     }
-    onClose();
+  
+    // Close the modal only if authentication was successful
+    if (isAuthenticated) {
+      onClose();
+    }
   };
 
   const handleBackdropClick = (event: React.MouseEvent) => {
