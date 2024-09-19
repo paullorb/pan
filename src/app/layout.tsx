@@ -25,8 +25,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <AuthProvider>
           <ThemeProvider>
             <TogglesProvider>
-              <HoursProvider>
-                  <DateProvider>
+              <DateProvider>
+                <HoursProvider>
                     <MomentumProvider>
                       <PrioritiesProvider>
                         <TasksProvider>
@@ -34,8 +34,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                         </TasksProvider>
                       </PrioritiesProvider>
                     </MomentumProvider>
-                  </DateProvider>
-              </HoursProvider>
+                </HoursProvider>
+              </DateProvider>
             </TogglesProvider>
           </ThemeProvider>
         </AuthProvider>

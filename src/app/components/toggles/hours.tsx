@@ -1,4 +1,5 @@
-"use client"
+// hours.tsx
+"use client";
 
 import React, { useEffect, useState, useContext } from 'react';
 import { useHours } from '../../context/hoursContext'; 
@@ -46,7 +47,6 @@ const Hours: React.FC = () => {
     return null;
   }
 
-
   return (
     <div className={style.hourly}>
       {currentPosition !== null && (
@@ -62,4 +62,4 @@ const Hours: React.FC = () => {
   );
 };
 
-export default Hours;
+export default Hours; // Ensure default export
