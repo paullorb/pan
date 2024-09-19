@@ -1,6 +1,7 @@
+// app/api/signup/route.ts
 import { NextResponse } from 'next/server';
-import connectDB from '@/app/lib/mongodb';
-import User from '@/app/lib/models/User';
+import connectDB from '../../lib/mongodb';
+import User from '../../lib/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -38,17 +39,35 @@ export async function POST(request: Request) {
 
     await newUser.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
+    // Generate Access Token (Short-lived)
+    const accessToken = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET as string,
-      { expiresIn: '1h' }
+      { expiresIn: '15m' } // Access token expires in 15 minutes
     );
 
-    return NextResponse.json(
-      { message: 'User created successfully', token },
+    // Generate Refresh Token (Long-lived)
+    const refreshToken = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWT_REFRESH_SECRET as string,
+      { expiresIn: '7d' } // Refresh token expires in 7 days
+    );
+
+    // Set Refresh Token as HTTP-only cookie
+    const response = NextResponse.json(
+      { message: 'User created successfully', accessToken },
       { status: 201 }
     );
+
+    response.cookies.set('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict', // Adjust as needed
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Signup error:', error);
     return NextResponse.json(
