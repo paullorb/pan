@@ -71,9 +71,9 @@
 
 .currentHour {
   /* background-color: #fdfae0 !important; */
-  border: 5px solid green;
+  border: 5px solid var(--title);
   border-style: none none none solid;
-  margin-left: -5px;
+  padding-left: -5px;
 }
 
 @keyframes blink {
