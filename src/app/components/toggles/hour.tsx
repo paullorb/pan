@@ -7,9 +7,10 @@ import style from './hour.module.css';
 
 interface HourProps {
   hour: number;
+  currentHour: number | null;
 }
 
-const Hour: React.FC<HourProps> = ({ hour }) => {
+const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
   const { activities, handleActivityChange } = useHours();
   const { selectedDate } = useDate(); // Get selectedDate from DateContext
 
@@ -26,9 +27,11 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
   };
 
   const backgroundClass = hour % 2 === 0 ? style.altBackground1 : style.altBackground2;
+  const isCurrentHour = currentHour === hour;
+  const currentHourClass = isCurrentHour ? style.currentHour : '';
 
   return (
-    <div className={`${style.frame} ${backgroundClass}`}>
+    <div className={`${style.frame} ${backgroundClass} ${currentHourClass}`}>
       <div className={`${style.hour} ${backgroundClass}`}>{hour}:00</div>
       <div className={style.events}>
         <div className={`${style.pan} ${backgroundClass}`}>

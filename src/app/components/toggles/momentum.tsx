@@ -50,6 +50,7 @@ export default function Momentum() {
           type="text"
           placeholder="Add new habit"
           value={newHabitName}
+          style={{ border: 'none', outline: 'none' }}
           onChange={(e) => setNewHabitName(e.target.value)}
         />
         <button

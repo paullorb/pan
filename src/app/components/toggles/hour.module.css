@@ -59,15 +59,21 @@
   text-align: center;
 }
 
-.timeBar {
+/* .timeBar {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 90%;
+  height: 2px;
   background-color: red;
   z-index: 10;
-  border-radius: 50%;
   opacity: 0.8;
-  animation: blink 2s infinite ease-in-out; /* Adding the animation */
+  animation: blink 2s infinite ease-in-out; 
+} */
+
+.currentHour {
+  /* background-color: #fdfae0 !important; */
+  border: 5px solid green;
+  border-style: none none none solid;
+  margin-left: -5px;
 }
 
 @keyframes blink {
@@ -86,10 +92,10 @@
 }
 
 .altBackground1 {
-  background-color: var(--bg-alt1);  /* Light gray background */
+  background-color: var(--bg-alt1);  
 }
 
 .altBackground2 {
-  background-color: var(--bg-alt2);  /* Lighter gray background */
+  background-color: var(--bg-alt2);  
 }
 

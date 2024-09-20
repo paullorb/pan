@@ -13,16 +13,20 @@ const Hours: React.FC = () => {
   const validUntil = Math.max(validFrom, Math.min(23, until));
 
   const [currentPosition, setCurrentPosition] = useState<number | null>(null);
+  const [currentHour, setCurrentHour] = useState<number | null>(null);
+  const [currentMinute, setCurrentMinute] = useState<number | null>(null);
 
   useEffect(() => {
     const updateCurrentPosition = () => {
       const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
+      const nowHour = now.getHours();
+      const nowMinute = now.getMinutes();
+      setCurrentHour(nowHour);
+      setCurrentMinute(nowMinute);
 
-      if (currentHour >= from && currentHour <= until) {
+      if (nowHour >= from && nowHour <= until) {
         const totalHours = validUntil - validFrom + 1;
-        const position = ((currentHour - validFrom) + currentMinute / 60) / totalHours * 100;
+        const position = ((nowHour - validFrom) + nowMinute / 60) / totalHours * 100;
         setCurrentPosition(position);
       } else {
         setCurrentPosition(null);
@@ -56,10 +60,10 @@ const Hours: React.FC = () => {
         />
       )}
       {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
-        <Hour key={validFrom + i} hour={validFrom + i} />
+        <Hour key={validFrom + i} hour={validFrom + i} currentHour={currentHour} />
       ))}
     </div>
   );
 };
 
-export default Hours; // Ensure default export
+export default Hours;
