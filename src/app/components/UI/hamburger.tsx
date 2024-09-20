@@ -6,6 +6,7 @@ import AuthModal from './auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../context/authContext';
 import Status from './status';
+import Toggles from './toggles';
 
 const Hamburger: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -55,6 +56,7 @@ const Hamburger: React.FC = () => {
       <div className={styles.indicators}>
       <Status />
       </div>
+      <Toggles />
       <button className={styles.button} onClick={toggleTheme}>
         {emoji}
       </button>

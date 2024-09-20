@@ -7,7 +7,7 @@ import { useTasks } from '../../context/tasksContext';
 import { useDate } from '../../context/dateContext';
 import { TogglesContext } from '@/app/context/togglesContext';
 
-const Opens: React.FC = () => {
+const Tasks: React.FC = () => {
   const { tasks, addTask } = useTasks();
   const { selectedDate } = useDate();
 
@@ -51,4 +51,4 @@ const Opens: React.FC = () => {
   );
 };
 
-export default Opens;
+export default Tasks;

@@ -13,6 +13,7 @@ interface HoursContextType {
   activities: HourActivity;
   from: number;
   until: number;
+  loading: boolean; // Add loading state
   handleActivityChange: (hourKey: string, value: string) => void;
   setFrom: (from: number) => void;
   setUntil: (until: number) => void;
@@ -38,11 +39,13 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
   const [activities, setActivities] = useState<HourActivity>({});
   const [from, setFrom] = useState<number>(5); // Default starting hour
   const [until, setUntil] = useState<number>(23); // Default ending hour
+  const [loading, setLoading] = useState<boolean>(false); // Initialize loading state
 
   // Fetch activities when selectedDate or isAuthenticated changes
   useEffect(() => {
     if (isAuthenticated) {
       const fetchActivities = async () => {
+        setLoading(true); // Start loading
         try {
           // Fetch activities for the current date
           const response = await fetch(`/api/activities?date=${selectedDate.toDateString()}`, {
@@ -103,6 +106,8 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
         } catch (error) {
           console.error('Error fetching activities:', error);
           setActivities({});
+        } finally {
+          setLoading(false); // End loading
         }
       };
       fetchActivities();
@@ -143,7 +148,7 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
   };
 
   return (
-    <HoursContext.Provider value={{ activities, from, until, handleActivityChange, setFrom, setUntil }}>
+    <HoursContext.Provider value={{ activities, from, until, loading, handleActivityChange, setFrom, setUntil }}>
       {children}
     </HoursContext.Provider>
   );

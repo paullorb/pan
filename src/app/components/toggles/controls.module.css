@@ -3,7 +3,6 @@
   top: 0;
   left: 45%;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   z-index: 10; /* Make sure this is on top of the Hours component */
   opacity: 0; /* Make controls initially invisible */
@@ -26,10 +25,10 @@
 
 .modal {
   position: fixed;
-  top: 50%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: var(--bg);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);

@@ -4,6 +4,7 @@ import { useHours } from '../../context/hoursContext';
 import { useDate } from '../../context/dateContext';
 import Adjuster from './adjuster';
 import style from './hour.module.css';
+import Skeleton from '../UI/skeleton';
 
 interface HourProps {
   hour: number;
@@ -11,20 +12,12 @@ interface HourProps {
 }
 
 const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
-  const { activities, handleActivityChange } = useHours();
-  const { selectedDate } = useDate(); // Get selectedDate from DateContext
+  const { activities, handleActivityChange, loading } = useHours();
+  const { selectedDate } = useDate();
 
-  const dayKey = selectedDate.toDateString(); // Unique key for each day
-
+  const dayKey = selectedDate.toDateString();
   const activityFullKey = `${dayKey}_${hour}:00`;
-  const activityHalfKey = `${dayKey}_${hour}:30`;
-
   const activityFull = activities[activityFullKey] || '';
-  const activityHalf = activities[activityHalfKey] || '';
-
-  const handleCopy = (sourceTime: string, destinationTime: string) => {
-    handleActivityChange(`${dayKey}_${destinationTime}`, activities[`${dayKey}_${sourceTime}`] || '');
-  };
 
   const backgroundClass = hour % 2 === 0 ? style.altBackground1 : style.altBackground2;
   const isCurrentHour = currentHour === hour;
@@ -33,28 +26,25 @@ const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
   return (
     <div className={`${style.frame} ${backgroundClass} ${currentHourClass}`}>
       <div className={`${style.hour} ${backgroundClass}`}>{hour}:00</div>
-      <div className={style.events}>
         <div className={`${style.pan} ${backgroundClass}`}>
-          <input
-            type="text"
-            className={`${style.event} ${backgroundClass}`}
-            placeholder={`🍞 at ${hour}:00`}
-            value={activityFull}
-            onChange={(e) => handleActivityChange(activityFullKey, e.target.value)}
-          />
-          <Adjuster backgroundClass={backgroundClass} onIncrease={() => handleCopy(`${hour}:00`, `${hour}:30`)} />
+          {loading ? (
+            <Skeleton /> 
+          ) : (
+            <>
+              <input
+                type="text"
+                className={`${style.input} ${backgroundClass}`}
+                placeholder={`🍞 at ${hour}:00`}
+                value={activityFull}
+                onChange={(e) => handleActivityChange(activityFullKey, e.target.value)}
+              />
+              <Adjuster
+                backgroundClass={backgroundClass}
+                onIncrease={() => handleActivityChange(`${hour}:30`, activityFull)}
+              />
+            </>
+          )}
         </div>
-        <div className={`${style.pan} ${backgroundClass}`}>
-          <input
-            type="text"
-            className={`${style.event} ${backgroundClass}`}
-            placeholder={`🍞 at ${hour}:30`}
-            value={activityHalf}
-            onChange={(e) => handleActivityChange(activityHalfKey, e.target.value)}
-          />
-          <Adjuster backgroundClass={backgroundClass} onIncrease={() => handleCopy(`${hour}:30`, `${hour + 1}:00`)} />
-        </div>
-      </div>
     </div>
   );
 };

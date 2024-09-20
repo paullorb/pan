@@ -8,7 +8,6 @@ import Hamburger from './components/UI/hamburger';
 import Controls from './components/toggles/controls';
 import Month from './components/toggles/month';
 import Moments from './components/toggles/moments';
-import Toggles from './components/UI/toggles';
 import Momentum from './components/toggles/momentum';
 import Language from './components/toggles/language';
 
@@ -17,7 +16,6 @@ export default function Home() {
     <div className={style.container}>
       <nav className={style.nav}>
       <div className={`${style.side} ${style.sideLeft}`}>
-        <Toggles />
         <Language />
       </div>
       <div className={style.titleC}><h1 className={style.title}><span className={style.emoji}>🍞 </span>Pansito del día</h1></div>
@@ -26,7 +24,7 @@ export default function Home() {
       </div>
       </nav>
       <div className={style.tables}>
-        <div className={style.aside}>
+        <aside className={style.aside}>
           <div className={style.top}>
             <DateComponent />
             <Month />
@@ -36,12 +34,12 @@ export default function Home() {
             <Tasks />
             <Momentum />
           </div>
-        </div>
+        </aside>
         <Controls />
-        <div className={style.header}>
+        <main className={style.main}>
           <Hours />
           {/* <Moments /> */}
-        </div>
+        </main>
       </div>
     </div>
   );

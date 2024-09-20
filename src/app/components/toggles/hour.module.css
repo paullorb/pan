@@ -1,3 +1,13 @@
+/* hour.module.css */
+
+.hourly {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--border);
+  border-radius: 7px;
+}
 .frame {
   display: flex;
   border-bottom: 2px solid #85858542;
@@ -5,17 +15,13 @@
   width: 100%;
   height: 100%;
   border-radius: 1px;
-}
-
-.hourly {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  min-height: 2rem;
+  gap: 1rem;
 }
 
 .pan {
   display: flex;
+  align-items: center;
   width: 100%;
 }
 
@@ -26,13 +32,7 @@
   min-width: 60px;
 }
 
-.events {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.event {
+.input {
   width: 100%;
   border: none;
   height: 100%;
@@ -43,54 +43,6 @@
   border-bottom: none;
 }
 
-.hideOnHover {
-  display: none;
-}
-
-.frame:hover .hideOnHover {
-  display: flex;
-}
-
-.centered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  text-align: center;
-}
-
-/* .timeBar {
-  position: absolute;
-  width: 90%;
-  height: 2px;
-  background-color: red;
-  z-index: 10;
-  opacity: 0.8;
-  animation: blink 2s infinite ease-in-out; 
-} */
-
-.currentHour {
-  /* background-color: #fdfae0 !important; */
-  border: 5px solid var(--title);
-  border-style: none none none solid;
-  padding-left: -5px;
-}
-
-@keyframes blink {
-  0%, 100% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
-@media print {
-  .timeBar {
-    display: none;
-  }
-}
-
 .altBackground1 {
   background-color: var(--bg-alt1);  
 }
@@ -99,3 +51,7 @@
   background-color: var(--bg-alt2);  
 }
 
+.currentHour {
+  border: 5px solid var(--title);
+  border-style: none none none solid;
+}
