@@ -2,13 +2,14 @@
 "use client";
 
 import React, { useEffect, useState, useContext } from 'react';
-import { useHours } from '../../context/hoursContext'; 
+import { useHours } from '../../context/hoursContext';
 import Hour from './hour';
 import style from './hour.module.css';
 import { TogglesContext } from '../../context/togglesContext';
+import Controls from './controls'; // Imported Controls
 
 const Hours: React.FC = () => {
-  const { from, until } = useHours(); // Retrieve from context
+  const { from, until } = useHours();
   const validFrom = Math.max(0, Math.min(23, from));
   const validUntil = Math.max(validFrom, Math.min(23, until));
 
@@ -22,7 +23,7 @@ const Hours: React.FC = () => {
     };
 
     updateCurrentHour();
-    const intervalId = setInterval(updateCurrentHour, 60000); 
+    const intervalId = setInterval(updateCurrentHour, 60000);
 
     return () => clearInterval(intervalId);
   }, [from, until, validFrom, validUntil]);
@@ -40,10 +41,15 @@ const Hours: React.FC = () => {
   }
 
   return (
-    <div className={style.hourly}>
-      {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
-        <Hour key={validFrom + i} hour={validFrom + i} currentHour={currentHour} />
-      ))}
+    <div className={style.hoursContainer}>
+      <div className={style.modal}>
+      <Controls /> 
+      </div>
+      <div className={style.hourly}>
+        {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
+          <Hour key={validFrom + i} hour={validFrom + i} currentHour={currentHour} />
+        ))}
+      </div>
     </div>
   );
 };

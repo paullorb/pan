@@ -1,8 +1,23 @@
 /* hour.module.css */
 
+.hoursContainer {
+  position: relative;
+  width: 100%;
+}
+
+.modal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.hoursContainer:hover .modal {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .hourly {
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
   width: 100%;
   border: 4px solid var(--border);
