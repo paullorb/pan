@@ -49,6 +49,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  width: 40%;
 }
 
 .aside {

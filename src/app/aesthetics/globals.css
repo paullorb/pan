@@ -11,6 +11,12 @@
   --black-b: solid black;
   --title: rgb(255, 0, 0);
   --border-r: 5px;
+  --spacing-xs: 0.5rem;
+  --spacing-s: 1rem;
+  --spacing-m: 2rem;
+  --spacing-l: 3rem;
+  --spacing-xl: 4rem;
+  --spacing-xxl: 5rem;
 }
 
 html[data-theme='light'] {
