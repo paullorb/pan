@@ -51,7 +51,6 @@
   padding: 0 20px;
   flex: 1; /* Allows it to grow and shrink equally */
   min-width: 0; /* Prevents content overflow */
-  border: 3px solid orange;
   width: 100%;
 }
 
@@ -62,19 +61,6 @@
   gap: 10px;
   flex: 1; /* Allows it to grow and shrink equally */
   min-width: 0; /* Prevents content overflow */
-  border: 3px solid green;
-}
-
-.top {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.bottom {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
 }
 
 @media print {

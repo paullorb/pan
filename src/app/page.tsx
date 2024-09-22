@@ -8,6 +8,7 @@ import Hamburger from './components/UI/hamburger';
 import Month from './components/toggles/month';
 import Momentum from './components/toggles/momentum';
 import Language from './components/toggles/language';
+import Aside from './components/layout/aside';
 
 export default function Home() {
   return (
@@ -26,13 +27,7 @@ export default function Home() {
         </div>
       </nav>
       <div className={style.tables}>
-        <aside className={style.aside}>
-            <DateComponent />
-            <Month />
-            <Priority />
-            <Tasks />
-            <Momentum />
-        </aside>
+        <Aside />
         <main className={style.main}>
           <Hours />
           {/* <Moments /> */}
