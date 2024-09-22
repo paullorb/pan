@@ -1,6 +1,6 @@
 // Skeleton.tsx
 import React from 'react';
-import styles from './Skeleton.module.css';
+import styles from './skeleton.module.css';
 
 interface SkeletonProps {
   height?: string;
