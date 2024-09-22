@@ -27,17 +27,12 @@ export default function Home() {
       </nav>
       <div className={style.tables}>
         <aside className={style.aside}>
-          <div className={style.top}>
             <DateComponent />
             <Month />
             <Priority />
-          </div>
-          <div className={style.bottom}>
             <Tasks />
             <Momentum />
-          </div>
         </aside>
-        {/* Removed Controls from here */}
         <main className={style.main}>
           <Hours />
           {/* <Moments /> */}
