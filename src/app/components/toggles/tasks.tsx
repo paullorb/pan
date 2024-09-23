@@ -41,9 +41,11 @@ const Tasks: React.FC = () => {
           {tasksToDoCount} / {totalTasksCount}
         </div>
       </div>
-      {/* Render existing tasks */}
-      {openTasks.map((task) => (
-        <Open key={Number(task.id)} task={{ ...task, id: String(task.id) }} />
+      {openTasks.map((task, index) => (
+        <Open
+          key={task.id || `task-${index}`}
+          task={{ ...task, id: task.id ? String(task.id) : `task-${index}` }}
+        />
       ))}
       {/* Render the placeholder input field */}
       <Open isPlaceholder addTask={addTask} />
