@@ -33,6 +33,19 @@
   width: 100%;
 }
 
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.arriba {
+  font-size: 0.2em;
+  color: transparent;
+}
+
 .day {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -57,6 +70,11 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.abajo {
+  font-size: 0.9em;
+  background-color: transparent;
 }
 
 .currentDay {

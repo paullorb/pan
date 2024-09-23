@@ -1,15 +1,16 @@
+// month.tsx
 "use client";
-import React, { useContext} from 'react';
+import React, { useContext } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
-import { useDate } from '../../context/dateContext'; 
+import { useDate } from '../../context/dateContext';
 
 const Month = () => {
-  const { selectedDate, setSelectedDate } = useDate(); 
+  const { selectedDate, setSelectedDate } = useDate();
   const currentYear = selectedDate.getFullYear();
   const currentMonth = selectedDate.getMonth();
   const today = new Date().getDate();
-  const thisYear = new Date().getFullYear(); 
+  const thisYear = new Date().getFullYear();
 
   const togglesContext = useContext(TogglesContext);
 
@@ -23,7 +24,6 @@ const Month = () => {
     return null;
   }
 
-
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -34,7 +34,7 @@ const Month = () => {
 
   let days = [];
   for (let i = 1; i < startingDayOfWeek; i++) {
-    days.push(null); 
+    days.push(null);
   }
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -46,20 +46,20 @@ const Month = () => {
   const fillerDays = 7 - (totalDays % 7);
   if (fillerDays < 7) {
     for (let i = 0; i < fillerDays; i++) {
-      days.push(null); 
+      days.push(null);
     }
   }
 
   const incrementMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(currentMonth + 1);
-    setSelectedDate(newDate); 
+    setSelectedDate(newDate);
   };
 
   const decrementMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(currentMonth - 1);
-    setSelectedDate(newDate); 
+    setSelectedDate(newDate);
   };
 
   const isCurrentDay = (day: number) =>
@@ -73,8 +73,8 @@ const Month = () => {
 
   const handleDayClick = (day: number | null) => {
     if (day !== null) {
-      const selectedFullDate = new Date(currentYear, currentMonth, day); 
-      setSelectedDate(selectedFullDate); 
+      const selectedFullDate = new Date(currentYear, currentMonth, day);
+      setSelectedDate(selectedFullDate);
     }
   };
 
@@ -94,10 +94,18 @@ const Month = () => {
             key={index}
             className={`${styles.day} ${
               day !== null && isCurrentDay(day) ? styles.currentDay : ''
-            } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`} 
+            } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`}
             onClick={() => handleDayClick(day)}
           >
-            {day || ""}
+            {day ? (
+              <div className={styles.content}>
+                <div className={styles.arriba}>...</div>
+                <div className={styles.dayNumber}>{day}</div>
+                <div className={styles.abajo}>•••</div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         ))}
       </div>
