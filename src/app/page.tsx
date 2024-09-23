@@ -28,11 +28,8 @@ export default function Home() {
       </nav>
       <div className={style.tables}>
         <Aside />
-        <main className={style.main}>
-          <Hours />
-          {/* <Moments /> */}
-        </main>
+        <Hours />
       </div>
-    </div>
+  </div>
   );
 }

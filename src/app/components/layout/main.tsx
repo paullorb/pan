@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';
 import Hours from '../toggles/hours';
-import style from '../../aesthetics/page.module.css';
+import style from './main.module.css';
 
 const Main: React.FC = () => {
   const context = useContext(TogglesContext);

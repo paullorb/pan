@@ -7,7 +7,7 @@ import Month from '../toggles/month';
 import Priority from '../toggles/priorities';
 import Tasks from '../toggles/tasks';
 import Momentum from '../toggles/momentum';
-import style from '../../aesthetics/page.module.css';
+import style from './aside.module.css';
 
 const Aside: React.FC = () => {
   const context = useContext(TogglesContext);

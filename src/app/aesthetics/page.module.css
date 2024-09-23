@@ -44,25 +44,6 @@
   /* Removed justify-content: center; */
 }
 
-.aside {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex: 1; /* Allows it to grow and shrink equally */
-  min-width: 0; /* Prevents content overflow */
-  width: 100%;
-}
-
-.main {
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1; /* Allows it to grow and shrink equally */
-  min-width: 0; /* Prevents content overflow */
-}
-
 @media print {
   .container {
     padding: 0;
