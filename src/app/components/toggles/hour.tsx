@@ -24,7 +24,7 @@ const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
   const currentHourClass = isCurrentHour ? style.currentHour : '';
 
   return (
-    <div className={`${style.frame} ${backgroundClass} ${currentHourClass}`}>
+    <label htmlFor={`activity-${hour}`} className={`${style.frame} ${backgroundClass} ${currentHourClass}`}>
       <div className={`${style.hour} ${backgroundClass}`}>{hour}:00</div>
         <div className={`${style.pan} ${backgroundClass}`}>
           {loading ? (
@@ -33,6 +33,7 @@ const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
             <>
               <input
                 type="text"
+                id={`activity-${hour}`}
                 className={`${style.input} ${backgroundClass}`}
                 placeholder={`🍞 at ${hour}:00`}
                 value={activityFull}
@@ -45,7 +46,7 @@ const Hour: React.FC<HourProps> = ({ hour, currentHour }) => {
             </>
           )}
         </div>
-    </div>
+    </label>
   );
 };
 

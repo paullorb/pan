@@ -1,12 +1,7 @@
 import './aesthetics/globals.css';
 import style from './aesthetics/page.module.css';
 import Hours from './components/toggles/hours';
-import Tasks from './components/toggles/tasks';
-import Priority from './components/toggles/priorities';
-import DateComponent from './components/toggles/date';
 import Hamburger from './components/UI/hamburger';
-import Month from './components/toggles/month';
-import Momentum from './components/toggles/momentum';
 import Language from './components/toggles/language';
 import Aside from './components/layout/aside';
 

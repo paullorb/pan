@@ -48,6 +48,7 @@ export default function Momentum() {
       <div className={style.addHabit}>
         <input
           type="text"
+          id="new-habit"
           placeholder="Add new habit"
           value={newHabitName}
           style={{ border: 'none', outline: 'none' }}
