@@ -19,13 +19,9 @@ const Main: React.FC = () => {
   }
 
   return (
-    <>
-      {togglesState.hours && (
-        <main className={style.main}>
-          <Hours />
-        </main>
-      )}
-    </>
+    <main className={style.main}>
+      {togglesState.hours && <Hours />}
+    </main>
   );
 };
 
