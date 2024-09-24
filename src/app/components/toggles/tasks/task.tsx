@@ -32,18 +32,21 @@ const Task: React.FC<OpenProps> = ({ task, isPlaceholder = false, addTask }) => 
         onMouseEnter={(e) => e.currentTarget.classList.add(style.hovered)}
         onMouseLeave={(e) => e.currentTarget.classList.remove(style.hovered)}
       >
-        <input
-          type="text"
-          className={style.input}
-          placeholder="Add a new task"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              handleAddTask();
-            }
-          }}
-        />
+      <input
+        type="text"
+        className={style.input}
+        placeholder="Add a new task"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleAddTask();
+          }
+        }}
+        id="add-task-input"  // Adding an id
+        name="add-task"      // Adding a name attribute
+      />
+
       </div>
     );
   }
