@@ -25,13 +25,13 @@ const Tasks: React.FC = () => {
   }
 
   // Show skeleton loader when loading
-  if (loading) {
-    return (
-      <div className={style.container}>
-        <Skeleton height="80px" />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className={style.container}>
+  //       <Skeleton height="0px" />
+  //     </div>
+  //   );
+  // }
 
   // tasks already contains tasks for the selected date
   const openTasks = tasks;

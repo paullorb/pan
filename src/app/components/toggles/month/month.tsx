@@ -104,10 +104,16 @@ const Month = () => {
       <div className={styles.monthGrid}>
         {days.map((day, index) => {
           let hasUncompletedTasks = false;
+          let allTasksCompleted = false;
+
           if (day !== null) {
             const dateString = getDateString(day);
             const tasksForDay = tasksByDate[dateString] || [];
-            hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
+
+            if (tasksForDay.length > 0) {
+              hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
+              allTasksCompleted = tasksForDay.every((task) => task.completed);
+            }
           }
 
           return (
@@ -121,8 +127,17 @@ const Month = () => {
               {day ? (
                 <div className={styles.content}>
                   <div className={styles.arriba}>•••</div>
-                  <div className={styles.dayNumber}>{day}</div>
-                  <Dots hasUncompletedTasks={hasUncompletedTasks} />
+                  <div
+                    className={`${styles.dayNumber} ${
+                      day !== null && isCurrentDay(day) ? styles.currentDayNumber : ''
+                    }`}
+                  >
+                    {day}
+                  </div>
+                  <Dots
+                    hasUncompletedTasks={hasUncompletedTasks}
+                    allTasksCompleted={allTasksCompleted}
+                  />
                 </div>
               ) : (
                 ''

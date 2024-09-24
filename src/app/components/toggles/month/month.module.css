@@ -80,7 +80,6 @@
 .currentDay {
   background-color: var(--color);
   color: rgb(218, 141, 70);
-  font-weight: bold;
   border-color: #ddd;
 }
 
@@ -92,8 +91,6 @@
 }
 
 .selectedDay {
-  background-color: lightblue;
-  font-weight: bold;
   border-color: #000;
   color: black;
 }
