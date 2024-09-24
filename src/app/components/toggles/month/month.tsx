@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
 import { useDate } from '../../../context/dateContext';
+import Dots from './dots';
 
 const Month = () => {
   const { selectedDate, setSelectedDate } = useDate();
@@ -101,7 +102,7 @@ const Month = () => {
               <div className={styles.content}>
                 <div className={styles.arriba}>•••</div>
                 <div className={styles.dayNumber}>{day}</div>
-                <div className={styles.abajo}>•••</div>
+                <Dots />
               </div>
             ) : (
               ""

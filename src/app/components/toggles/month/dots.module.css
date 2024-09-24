@@ -1,0 +1,10 @@
+.container {
+  flex-direction: row;
+  display: flex;
+  background-color: transparent;
+}
+
+.dot {
+  background-color: transparent;
+  font-size: 0.7rem;
+}
