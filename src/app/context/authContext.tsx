@@ -13,13 +13,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Clear localStorage on app start (use with caution)
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-  }, []);
+  const [userEmail, setUserEmail] = useState<string | null>(null); 
 
   const validateToken = async (token: string): Promise<boolean> => {
     try {

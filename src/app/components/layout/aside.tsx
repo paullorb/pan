@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';
-import DateComponent from '../toggles/hours/date';
+import DateComponent from '../toggles/date/date';
 import Month from '../toggles/month/month';
 import Priority from '../toggles/priorities/priorities';
 import Tasks from '../toggles/tasks/tasks';

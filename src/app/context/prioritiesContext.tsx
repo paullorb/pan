@@ -57,42 +57,6 @@ export const PrioritiesProvider: React.FC<{ children: ReactNode }> = ({ children
     }
   }, [isAuthenticated, selectedDate]);
 
-  // Save priorities when they change, but not on initial load or when fetching
-  useEffect(() => {
-    if (isAuthenticated && selectedDate && !isFirstLoad.current) {
-      // Save priorities to backend whenever they change
-      const savePriorities = async () => {
-        try {
-          // Check if all priorities are empty
-          const allEmpty = priorities.every((p) => p.trim() === '');
-          if (allEmpty) {
-            // Delete priorities from backend
-            await fetch('/api/priorities', {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-              },
-              body: JSON.stringify({ date: formatDate(selectedDate) }),
-            });
-          } else {
-            await fetch('/api/priorities', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-              },
-              body: JSON.stringify({ priorities, date: formatDate(selectedDate) }),
-            });
-          }
-        } catch (error) {
-          console.error('Error saving priorities:', error);
-        }
-      };
-      savePriorities();
-    }
-  }, [priorities]);
-
   return (
     <PrioritiesContext.Provider value={{ priorities, setPriorities }}>
       {children}

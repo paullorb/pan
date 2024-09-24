@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let userId;
+    let userId: any;
     try {
       const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
       userId = decoded.userId;
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     const month = searchParams.get('month');
     const year = searchParams.get('year');
 
-    let tasks;
+    let tasks: any[];
 
     if (date) {
       // Fetch tasks for the specific date
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let userId;
+    let userId: any;
     try {
       const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
       userId = decoded.userId;

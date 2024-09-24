@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import style from './task.module.css';
 import { useTasks } from '../../../context/tasksContext';
+import Skeleton from '../../UI/shared/skeleton';
 
 interface OpenProps {
   task?: {
     id: string;
     text: string;
     completed: boolean;
+    loading?: boolean;
   };
   isPlaceholder?: boolean;
   addTask?: (text: string) => void;
@@ -47,6 +49,15 @@ const Task: React.FC<OpenProps> = ({ task, isPlaceholder = false, addTask }) => 
         name="add-task"      // Adding a name attribute
       />
 
+      </div>
+    );
+  }
+
+  if (task?.loading) {
+    // Render the skeleton
+    return (
+      <div className={style.open}>
+        <Skeleton height="20px" />
       </div>
     );
   }

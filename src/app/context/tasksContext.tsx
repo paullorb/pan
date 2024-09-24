@@ -10,6 +10,7 @@ interface Task {
   text: string;
   completed: boolean;
   date: string; // Store date as 'YYYY-MM-DD'
+  loading?: boolean; // Optional loading flag
 }
 
 interface TasksContextType {
@@ -25,7 +26,6 @@ const TasksContext = createContext<TasksContextType | undefined>(undefined);
 export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { selectedDate } = useDate(); // Get selected date from dateContext
   const { isAuthenticated } = useAuth();
-  const [tasks, setTasks] = useState<Task[]>([]);
   const [tasksByDate, setTasksByDate] = useState<{ [date: string]: Task[] }>({});
 
   const selectedDateString = selectedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
@@ -35,22 +35,22 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (isAuthenticated) {
       fetchTasks();
     }
-  }, [selectedDate, isAuthenticated]);
+  }, [selectedDateString, isAuthenticated]);
 
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token');
       const month = selectedDate.getMonth() + 1; // Months are zero-based in JavaScript
       const year = selectedDate.getFullYear();
-  
+
       const response = await fetch(`/api/tasks?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         // Group tasks by date
         const tasksByDateData = data.tasks.reduce((acc: any, task: any) => {
@@ -66,7 +66,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           });
           return acc;
         }, {});
-  
+
         setTasksByDate(tasksByDateData);
       } else {
         console.error('Failed to fetch tasks:', data.error);
@@ -78,6 +78,28 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Function to add a new task
   const addTask = async (text: string) => {
+    // Generate a temporary ID
+    const tempId = 'temp-' + Date.now();
+
+    // Create a temporary task object
+    const tempTask: Task = {
+      id: tempId,
+      text,
+      completed: false,
+      date: selectedDateString,
+      loading: true,
+    };
+
+    // Optimistically update tasksByDate
+    setTasksByDate((prev) => {
+      const updated = { ...prev };
+      if (!updated[selectedDateString]) {
+        updated[selectedDateString] = [];
+      }
+      updated[selectedDateString] = [...updated[selectedDateString], tempTask];
+      return updated;
+    });
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/tasks', {
@@ -98,29 +120,58 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const data = await response.json();
 
       if (response.ok) {
-        setTasks((prevTasks) => [
-          ...prevTasks,
-          {
-            id: data.task._id,
-            text: data.task.text,
-            completed: data.task.completed,
-            date: data.task.date,
-          },
-        ]);
+        // Replace the temporary task with the real task
+        setTasksByDate((prev) => {
+          const updated = { ...prev };
+          updated[selectedDateString] = updated[selectedDateString].map((task) =>
+            task.id === tempId
+              ? { ...task, id: data.task._id, loading: false }
+              : task
+          );
+          return updated;
+        });
       } else {
+        // Remove the temporary task on failure
+        setTasksByDate((prev) => {
+          const updated = { ...prev };
+          updated[selectedDateString] = updated[selectedDateString].filter(
+            (task) => task.id !== tempId
+          );
+          return updated;
+        });
         console.error('Failed to add task:', data.error);
       }
     } catch (error) {
+      // Remove the temporary task on error
+      setTasksByDate((prev) => {
+        const updated = { ...prev };
+        updated[selectedDateString] = updated[selectedDateString].filter(
+          (task) => task.id !== tempId
+        );
+        return updated;
+      });
       console.error('Error adding task:', error);
     }
   };
 
+
   // Function to toggle task completion
   const toggleTaskCompletion = async (id: string) => {
-    try {
-      const task = tasks.find((t) => t.id === id);
-      if (!task) return;
+    const taskDate = selectedDateString;
+    const tasksForDate = tasksByDate[taskDate] || [];
+    const task = tasksForDate.find((t) => t.id === id);
+    if (!task) return;
 
+    // Optimistically update
+    setTasksByDate((prev) => {
+      const updated = { ...prev };
+      updated[taskDate] = tasksForDate.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      );
+      return updated;
+    });
+
+    try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/tasks', {
         method: 'POST',
@@ -137,24 +188,42 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setTasks((prevTasks) =>
-          prevTasks.map((t) =>
-            t.id === id ? { ...t, completed: !t.completed } : t
-          )
-        );
-      } else {
+      if (!response.ok) {
+        // Revert optimistic update on failure
+        setTasksByDate((prev) => {
+          const updated = { ...prev };
+          updated[taskDate] = tasksForDate;
+          return updated;
+        });
+        const data = await response.json();
         console.error('Failed to update task:', data.error);
       }
     } catch (error) {
+      // Revert optimistic update on error
+      setTasksByDate((prev) => {
+        const updated = { ...prev };
+        updated[taskDate] = tasksForDate;
+        return updated;
+      });
       console.error('Error updating task:', error);
     }
   };
 
+
   // Function to delete a task
   const deleteTask = async (id: string) => {
+    const taskDate = selectedDateString;
+    const tasksForDate = tasksByDate[taskDate] || [];
+    const taskExists = tasksForDate.some((t) => t.id === id);
+    if (!taskExists) return;
+
+    // Optimistically remove the task
+    setTasksByDate((prev) => {
+      const updated = { ...prev };
+      updated[taskDate] = tasksForDate.filter((task) => task.id !== id);
+      return updated;
+    });
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/tasks', {
@@ -170,27 +239,28 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           },
         }),
       });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  
-        // Also update tasksByDate
-        setTasksByDate((prevTasksByDate) => {
-          const updatedTasksByDate = { ...prevTasksByDate };
-          for (const date in updatedTasksByDate) {
-            updatedTasksByDate[date] = updatedTasksByDate[date].filter((task) => task.id !== id);
-          }
-          return updatedTasksByDate;
+
+      if (!response.ok) {
+        // Revert optimistic removal on failure
+        setTasksByDate((prev) => {
+          const updated = { ...prev };
+          updated[taskDate] = tasksForDate;
+          return updated;
         });
-      } else {
+        const data = await response.json();
         console.error('Failed to delete task:', data.error);
       }
     } catch (error) {
+      // Revert optimistic removal on error
+      setTasksByDate((prev) => {
+        const updated = { ...prev };
+        updated[taskDate] = tasksForDate;
+        return updated;
+      });
       console.error('Error deleting task:', error);
     }
   };
+
   
 
   return (
