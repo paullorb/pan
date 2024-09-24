@@ -41,7 +41,7 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  /* Removed justify-content: center; */
+  gap: var(--spacing-xl);
 }
 
 @media print {

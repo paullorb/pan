@@ -1,4 +1,4 @@
-"use client"; // Ensure this runs client-side
+"use client";
 
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';

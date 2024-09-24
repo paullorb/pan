@@ -99,7 +99,7 @@ const Month = () => {
           >
             {day ? (
               <div className={styles.content}>
-                <div className={styles.arriba}>...</div>
+                <div className={styles.arriba}>•••</div>
                 <div className={styles.dayNumber}>{day}</div>
                 <div className={styles.abajo}>•••</div>
               </div>
