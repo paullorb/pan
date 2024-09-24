@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import AuthModal from '../UI/auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../context/authContext';
-import Status from '../UI/status';
+import Status from '../UI/hamburger/status';
 
 const Hamburger: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
