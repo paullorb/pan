@@ -2,8 +2,8 @@
 "use client";
 
 import React, { useContext } from 'react';
-import { useDate } from '../../context/dateContext'; 
-import { TogglesContext } from '../../context/togglesContext'; 
+import { useDate } from '../../../context/dateContext'; 
+import { TogglesContext } from '../../../context/togglesContext'; 
 import style from './date.module.css';
 
 const DateComponent: React.FC = () => {

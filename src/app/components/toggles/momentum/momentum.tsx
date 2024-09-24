@@ -3,8 +3,8 @@
 "use client";
 import React, { useContext, useState } from 'react';
 import style from './momentum.module.css';
-import { useMomentum } from '../../context/momentumContext';
-import { TogglesContext } from '../../context/togglesContext';
+import { useMomentum } from '../../../context/momentumContext';
+import { TogglesContext } from '../../../context/togglesContext';
 
 export default function Momentum() {
   const { habits, toggleHabit, addHabit, deleteHabit } = useMomentum();

@@ -1,10 +1,10 @@
 "use client";
 
-import { useTheme } from '../../context/themeContext';
+import { useTheme } from '../../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
-import AuthModal from './auth';
+import AuthModal from '../auth/auth';
 import styles from './hamburger.module.css';
-import { useAuth } from '../../context/authContext';
+import { useAuth } from '../../../context/authContext';
 import Status from './status';
 import Toggles from './toggles';
 

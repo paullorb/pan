@@ -1,8 +1,8 @@
 "use client";
 import React, {useContext} from 'react';
 import style from './priorities.module.css';
-import { usePriorities } from '../../context/prioritiesContext';
-import { TogglesContext } from '../../context/togglesContext';
+import { usePriorities } from '../../../context/prioritiesContext';
+import { TogglesContext } from '../../../context/togglesContext';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();

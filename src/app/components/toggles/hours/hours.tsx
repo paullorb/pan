@@ -2,11 +2,11 @@
 "use client";
 
 import React, { useEffect, useState, useContext } from 'react';
-import { useHours } from '../../context/hoursContext';
+import { useHours } from '../../../context/hoursContext';
 import Hour from './hour';
 import style from './hour.module.css';
-import { TogglesContext } from '../../context/togglesContext';
-import Controls from './controls'; // Imported Controls
+import { TogglesContext } from '../../../context/togglesContext';
+import Controls from './controls'; 
 
 const Hours: React.FC = () => {
   const { from, until } = useHours();

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useHours } from '../../context/hoursContext';
+import { useHours } from '../../../context/hoursContext';
 import style from './controls.module.css';
 
 const Controls: React.FC = () => {

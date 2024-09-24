@@ -1,10 +1,10 @@
 // hour.tsx
 import React from 'react';
-import { useHours } from '../../context/hoursContext';
-import { useDate } from '../../context/dateContext';
+import { useHours } from '../../../context/hoursContext';
+import { useDate } from '../../../context/dateContext';
 import Adjuster from './adjuster';
 import style from './hour.module.css';
-import Skeleton from '../UI/skeleton';
+import Skeleton from '../../UI/shared/skeleton';
 
 interface HourProps {
   hour: number;

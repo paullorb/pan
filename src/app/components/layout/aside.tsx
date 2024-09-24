@@ -1,12 +1,12 @@
-"use client"; // Ensure this runs client-side
+"use client"; 
 
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';
-import DateComponent from '../toggles/date';
-import Month from '../toggles/month';
-import Priority from '../toggles/priorities';
-import Tasks from '../toggles/tasks';
-import Momentum from '../toggles/momentum';
+import DateComponent from '../toggles/hours/date';
+import Month from '../toggles/month/month';
+import Priority from '../toggles/priorities/priorities';
+import Tasks from '../toggles/tasks/tasks';
+import Momentum from '../toggles/momentum/momentum';
 import style from './aside.module.css';
 
 const Aside: React.FC = () => {

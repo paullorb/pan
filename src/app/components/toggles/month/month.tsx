@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
-import { useDate } from '../../context/dateContext';
+import { useDate } from '../../../context/dateContext';
 
 const Month = () => {
   const { selectedDate, setSelectedDate } = useDate();

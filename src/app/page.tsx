@@ -1,8 +1,8 @@
 import './aesthetics/globals.css';
 import style from './aesthetics/page.module.css';
-import Hours from './components/toggles/hours';
-import Hamburger from './components/UI/hamburger';
-import Language from './components/toggles/language';
+import Hours from './components/toggles/hours/hours';
+import Hamburger from './components/UI/hamburger/hamburger';
+import Language from './components/UI//hamburger/language';
 import Aside from './components/layout/aside';
 
 export default function Home() {

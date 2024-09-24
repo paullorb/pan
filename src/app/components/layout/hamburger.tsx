@@ -2,7 +2,7 @@
 
 import { useTheme } from '../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
-import AuthModal from '../UI/auth';
+import AuthModal from '../UI/auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../context/authContext';
 import Status from '../UI/status';
