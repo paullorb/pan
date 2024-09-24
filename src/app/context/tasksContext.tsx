@@ -170,11 +170,20 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           },
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+  
+        // Also update tasksByDate
+        setTasksByDate((prevTasksByDate) => {
+          const updatedTasksByDate = { ...prevTasksByDate };
+          for (const date in updatedTasksByDate) {
+            updatedTasksByDate[date] = updatedTasksByDate[date].filter((task) => task.id !== id);
+          }
+          return updatedTasksByDate;
+        });
       } else {
         console.error('Failed to delete task:', data.error);
       }
@@ -182,6 +191,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Error deleting task:', error);
     }
   };
+  
 
   return (
     <TasksContext.Provider
