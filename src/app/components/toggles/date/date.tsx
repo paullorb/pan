@@ -47,7 +47,16 @@ const DateComponent: React.FC = () => {
   };
 
   const resetToToday = (): void => {
-    setSelectedDate(new Date()); 
+    // Create a new Date object with time set to 00:00:00
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+  
+    if (selectedDate.getTime() !== today.getTime()) {
+      setSelectedDate(today);
+    } else {
+      // Force update by setting selectedDate to a new instance
+      setSelectedDate(new Date(today.getTime()));
+    }
   };
 
   return (

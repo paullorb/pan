@@ -16,6 +16,7 @@ interface Task {
 interface TasksContextType {
   tasks: Task[];
   tasksByDate: { [date: string]: Task[] };
+  loading: boolean;
   addTask: (text: string) => Promise<void>;
   toggleTaskCompletion: (id: string) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
@@ -27,6 +28,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const { selectedDate } = useDate(); // Get selected date from dateContext
   const { isAuthenticated } = useAuth();
   const [tasksByDate, setTasksByDate] = useState<{ [date: string]: Task[] }>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const selectedDateString = selectedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -35,22 +37,23 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (isAuthenticated) {
       fetchTasks();
     }
-  }, [selectedDateString, isAuthenticated]);
+  }, [selectedDate.getTime(), isAuthenticated]);
 
   const fetchTasks = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const month = selectedDate.getMonth() + 1; // Months are zero-based in JavaScript
       const year = selectedDate.getFullYear();
-
+  
       const response = await fetch(`/api/tasks?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         // Group tasks by date
         const tasksByDateData = data.tasks.reduce((acc: any, task: any) => {
@@ -66,15 +69,18 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           });
           return acc;
         }, {});
-
+  
         setTasksByDate(tasksByDateData);
       } else {
         console.error('Failed to fetch tasks:', data.error);
       }
     } catch (error) {
       console.error('Error fetching tasks:', error);
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   // Function to add a new task
   const addTask = async (text: string) => {
@@ -268,6 +274,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       value={{
         tasks: tasksByDate[selectedDateString] || [],
         tasksByDate,
+        loading,
         addTask,
         toggleTaskCompletion,
         deleteTask,

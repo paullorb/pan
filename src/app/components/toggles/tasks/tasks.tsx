@@ -6,9 +6,10 @@ import Task from './task';
 import { useTasks } from '../../../context/tasksContext';
 import { useDate } from '../../../context/dateContext';
 import { TogglesContext } from '@/app/context/togglesContext';
+import Skeleton from '../../UI/shared/skeleton'; // Import Skeleton component
 
 const Tasks: React.FC = () => {
-  const { tasks, addTask } = useTasks();
+  const { tasks, addTask, loading } = useTasks();
   const { selectedDate } = useDate();
 
   const togglesContext = useContext(TogglesContext);
@@ -21,6 +22,15 @@ const Tasks: React.FC = () => {
 
   if (!togglesState.tasks) {
     return null;
+  }
+
+  // Show skeleton loader when loading
+  if (loading) {
+    return (
+      <div className={style.container}>
+        <Skeleton height="80px" />
+      </div>
+    );
   }
 
   // tasks already contains tasks for the selected date
