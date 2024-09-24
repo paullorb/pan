@@ -14,6 +14,7 @@ interface Task {
 
 interface TasksContextType {
   tasks: Task[];
+  tasksByDate: { [date: string]: Task[] };
   addTask: (text: string) => Promise<void>;
   toggleTaskCompletion: (id: string) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
@@ -25,6 +26,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const { selectedDate } = useDate(); // Get selected date from dateContext
   const { isAuthenticated } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksByDate, setTasksByDate] = useState<{ [date: string]: Task[] }>({});
 
   const selectedDateString = selectedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -38,23 +40,34 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`/api/tasks?date=${selectedDateString}`, {
+      const month = selectedDate.getMonth() + 1; // Months are zero-based in JavaScript
+      const year = selectedDate.getFullYear();
+  
+      const response = await fetch(`/api/tasks?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        setTasks(
-          data.tasks.map((task: any) => ({
+        // Group tasks by date
+        const tasksByDateData = data.tasks.reduce((acc: any, task: any) => {
+          const date = task.date; // 'YYYY-MM-DD'
+          if (!acc[date]) {
+            acc[date] = [];
+          }
+          acc[date].push({
             id: task._id,
             text: task.text,
             completed: task.completed,
             date: task.date,
-          }))
-        );
+          });
+          return acc;
+        }, {});
+  
+        setTasksByDate(tasksByDateData);
       } else {
         console.error('Failed to fetch tasks:', data.error);
       }
@@ -172,7 +185,13 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   return (
     <TasksContext.Provider
-      value={{ tasks, addTask, toggleTaskCompletion, deleteTask }}
+      value={{
+        tasks: tasksByDate[selectedDateString] || [],
+        tasksByDate,
+        addTask,
+        toggleTaskCompletion,
+        deleteTask,
+      }}
     >
       {children}
     </TasksContext.Provider>

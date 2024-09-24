@@ -7,4 +7,11 @@
 .dot {
   background-color: transparent;
   font-size: 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: transparent;
+}
+
+.uncompleted {
+  color: rgb(255, 90, 90);
 }
