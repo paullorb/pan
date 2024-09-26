@@ -18,7 +18,9 @@ const DarkMode: React.FC = () => {
       {modes.map((mode) => (
         <button
           key={mode.value}
-          className={`${styles.button} ${theme === mode.value ? styles.active : ''}`}
+          className={`${styles.button} ${
+            theme === mode.value ? styles.active : ''
+          }`}
           onClick={() => setTheme(mode.value as 'light' | 'dark' | 'system')}
         >
           {mode.icon}

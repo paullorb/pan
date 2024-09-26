@@ -71,7 +71,7 @@ const Hamburger: React.FC = () => {
                 {userEmail}
               </div>
               <div className={styles.dropdownItem}>
-                <DarkMode /> {/* Updated to use the new slider */}
+                <DarkMode />
               </div>
               <div
                 className={`${styles.dropdownItem} ${styles.internationalization}`}
