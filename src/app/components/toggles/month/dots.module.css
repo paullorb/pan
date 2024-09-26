@@ -20,3 +20,7 @@
 .completed {
   color: green;
 }
+
+.todo {
+  color: gray;
+}

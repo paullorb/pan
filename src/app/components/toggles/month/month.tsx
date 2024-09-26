@@ -12,8 +12,9 @@ const Month = () => {
   const { tasksByDate } = useTasks();
   const currentYear = selectedDate.getFullYear();
   const currentMonth = selectedDate.getMonth();
-  const today = new Date().getDate();
-  const thisYear = new Date().getFullYear();
+  const todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0); // Reset time for accurate comparison
+  const thisYear = todayDate.getFullYear();
 
   const togglesContext = useContext(TogglesContext);
 
@@ -71,9 +72,9 @@ const Month = () => {
   };
 
   const isCurrentDay = (day: number) =>
-    day === today &&
-    currentMonth === new Date().getMonth() &&
-    currentYear === new Date().getFullYear();
+    day === todayDate.getDate() &&
+    currentMonth === todayDate.getMonth() &&
+    currentYear === todayDate.getFullYear();
 
   const isSelectedDay = (day: number) =>
     selectedDate &&
@@ -105,15 +106,26 @@ const Month = () => {
         {days.map((day, index) => {
           let hasUncompletedTasks = false;
           let allTasksCompleted = false;
+          let isTodo = false;
 
           if (day !== null) {
             const dateString = getDateString(day);
             const tasksForDay = tasksByDate[dateString] || [];
 
+            // Create Date object for the day
+            const dayDate = new Date(currentYear, currentMonth, day);
+            dayDate.setHours(0, 0, 0, 0);
+
+            // Determine if the day is in the future
+            const isFutureDay = dayDate > todayDate;
+
             if (tasksForDay.length > 0) {
               hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
               allTasksCompleted = tasksForDay.every((task) => task.completed);
             }
+
+            // Set isTodo to true if the day is in the future and has tasks scheduled
+            isTodo = isFutureDay && tasksForDay.length > 0;
           }
 
           return (
@@ -135,10 +147,11 @@ const Month = () => {
                     {day}
                   </div>
                   <div className={styles.abajo}>
-                  <Dots
-                    hasUncompletedTasks={hasUncompletedTasks}
-                    allTasksCompleted={allTasksCompleted}
-                  />
+                    <Dots
+                      hasUncompletedTasks={hasUncompletedTasks}
+                      allTasksCompleted={allTasksCompleted}
+                      isTodo={isTodo} 
+                    />
                   </div>
                 </div>
               ) : (
