@@ -1,18 +1,18 @@
 "use client";
 
-import { useTheme } from '../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
 import AuthModal from '../UI/auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../context/authContext';
 import Status from '../UI/hamburger/status';
+import Toggles from '../UI/hamburger/toggles';
+import Language from '../UI/hamburger/language';
+import DarkMode from '../UI/darkMode/darkMode';
 
 const Hamburger: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, userEmail, logout } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const emoji = theme === 'dark' ? '🌞' : '🌑';
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -53,11 +53,9 @@ const Hamburger: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.indicators}>
-      <Status />
+        <Status />
       </div>
-      <button className={styles.button} onClick={toggleTheme}>
-        {emoji}
-      </button>
+      <Toggles />
       <button className={styles.button} onClick={handlePrint}>
         🖨️
       </button>
@@ -69,7 +67,17 @@ const Hamburger: React.FC = () => {
           </button>
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
-              <div className={styles.dropdownItem}>{userEmail}</div>
+              <div className={`${styles.dropdownItem} ${styles.email}`}>
+                {userEmail}
+              </div>
+              <div className={styles.dropdownItem}>
+                <DarkMode />
+              </div>
+              <div
+                className={`${styles.dropdownItem} ${styles.internationalization}`}
+              >
+                <Language />
+              </div>
               <button
                 className={styles.logoutButton}
                 onClick={() => {
