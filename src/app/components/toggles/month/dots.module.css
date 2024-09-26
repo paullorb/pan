@@ -2,13 +2,15 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: transparent;
+  width: 100%;
 }
 
 .dot {
-  color: #cccccc11; /* Default color */
+  display: flex;
+  color: #cccccc11; 
   background-color: transparent;
+  font-size: 1.1rem;
 }
 
 .uncompleted {

@@ -42,8 +42,22 @@
 }
 
 .arriba {
-  font-size: 0.2em;
+  width: 100%;
   color: transparent;
+  max-height: 20%;
+}
+
+.dayNumber {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.abajo {
+  width: 100%;
+  background-color: transparent;
 }
 
 .day {
@@ -71,12 +85,6 @@
   right: 0;
   bottom: 0;
 }
-
-.abajo {
-  font-size: 0.9em;
-  background-color: transparent;
-}
-
 .currentDay {
   background-color: var(--color);
   color: rgb(218, 141, 70);

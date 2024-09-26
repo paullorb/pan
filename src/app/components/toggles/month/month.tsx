@@ -134,10 +134,12 @@ const Month = () => {
                   >
                     {day}
                   </div>
+                  <div className={styles.abajo}>
                   <Dots
                     hasUncompletedTasks={hasUncompletedTasks}
                     allTasksCompleted={allTasksCompleted}
                   />
+                  </div>
                 </div>
               ) : (
                 ''
