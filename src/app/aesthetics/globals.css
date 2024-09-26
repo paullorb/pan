@@ -11,6 +11,7 @@
   --black-b: solid black;
   --title: rgb(255, 0, 0);
   --border-r: 5px;
+  --bg-active: rgba(0, 0, 0, 0.2);
   --spacing-xs: 0.5rem;
   --spacing-s: 1rem;
   --spacing-m: 2rem;

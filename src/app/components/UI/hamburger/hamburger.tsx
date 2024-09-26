@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from '../../../context/themeContext';
 import { useState, useEffect, useRef } from 'react';
 import AuthModal from '../auth/auth';
 import styles from './hamburger.module.css';
@@ -8,13 +7,12 @@ import { useAuth } from '../../../context/authContext';
 import Status from './status';
 import Toggles from './toggles';
 import Language from './language';
+import DarkMode from '../darkMode/darkMode';
 
 const Hamburger: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, userEmail, logout } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const emoji = theme === 'dark' ? '🌞' : '🌑';
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +53,7 @@ const Hamburger: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.indicators}>
-      <Status />
+        <Status />
       </div>
       <Toggles />
       <button className={styles.button} onClick={handlePrint}>
@@ -69,9 +67,17 @@ const Hamburger: React.FC = () => {
           </button>
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
-              <div className={`${styles.dropdownItem} ${styles.email}`}>{userEmail}</div>
-              <div className={styles.dropdownItem}><button className={styles.button} onClick={toggleTheme}>{emoji}</button></div>
-              <div className={`${styles.dropdownItem} ${styles.internationalization}`}><Language  /></div>
+              <div className={`${styles.dropdownItem} ${styles.email}`}>
+                {userEmail}
+              </div>
+              <div className={styles.dropdownItem}>
+                <DarkMode /> {/* Updated to use the new slider */}
+              </div>
+              <div
+                className={`${styles.dropdownItem} ${styles.internationalization}`}
+              >
+                <Language />
+              </div>
               <button
                 className={styles.logoutButton}
                 onClick={() => {
