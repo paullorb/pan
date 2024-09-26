@@ -7,6 +7,7 @@ import styles from './hamburger.module.css';
 import { useAuth } from '../../../context/authContext';
 import Status from './status';
 import Toggles from './toggles';
+import Language from './language';
 
 const Hamburger: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -57,9 +58,6 @@ const Hamburger: React.FC = () => {
       <Status />
       </div>
       <Toggles />
-      <button className={styles.button} onClick={toggleTheme}>
-        {emoji}
-      </button>
       <button className={styles.button} onClick={handlePrint}>
         🖨️
       </button>
@@ -71,7 +69,9 @@ const Hamburger: React.FC = () => {
           </button>
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
-              <div className={styles.dropdownItem}>{userEmail}</div>
+              <div className={`${styles.dropdownItem} ${styles.email}`}>{userEmail}</div>
+              <div className={styles.dropdownItem}><button className={styles.button} onClick={toggleTheme}>{emoji}</button></div>
+              <div className={`${styles.dropdownItem} ${styles.internationalization}`}><Language  /></div>
               <button
                 className={styles.logoutButton}
                 onClick={() => {

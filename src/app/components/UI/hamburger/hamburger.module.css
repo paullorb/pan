@@ -66,10 +66,15 @@
 }
 
 .dropdownItem {
+  display: flex;
+  justify-content: center;
   padding: 10px;
   font-size: 14px;
   color: var(--color);
   border-bottom: 1px solid var(--color);
+}
+
+.email {
   opacity: 0.5;
 }
 

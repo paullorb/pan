@@ -2,7 +2,6 @@ import './aesthetics/globals.css';
 import style from './aesthetics/page.module.css';
 import Hours from './components/toggles/hours/hours';
 import Hamburger from './components/UI/hamburger/hamburger';
-import Language from './components/UI//hamburger/language';
 import Aside from './components/layout/aside';
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
     <div className={style.container}>
       <nav className={style.nav}>
         <div className={`${style.side} ${style.sideLeft}`}>
-          <Language />
         </div>
         <div className={style.titleC}>
           <h1 className={style.title}>
