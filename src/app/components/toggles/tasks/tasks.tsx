@@ -1,16 +1,16 @@
-// tasks.tsx
+// components/tasks/tasks.tsx
+
 "use client";
 import React, { useContext } from 'react';
-import style from './task.module.css';
+import style from './tasks.module.css';
 import Task from './task';
 import { useTasks } from '../../../context/tasksContext';
-import { useDate } from '../../../context/dateContext';
-import { TogglesContext } from '@/app/context/togglesContext';
-import Skeleton from '../../UI/shared/skeleton'; // Import Skeleton component
+import { TogglesContext } from '../../../context/togglesContext';
+import AddItem from '../../UI/shared/addItem';
+import Title from '../../UI/shared/title';
 
 const Tasks: React.FC = () => {
-  const { tasks, addTask, loading } = useTasks();
-  const { selectedDate } = useDate();
+  const { tasks, addTask } = useTasks();
 
   const togglesContext = useContext(TogglesContext);
 
@@ -24,16 +24,6 @@ const Tasks: React.FC = () => {
     return null;
   }
 
-  // Show skeleton loader when loading
-  // if (loading) {
-  //   return (
-  //     <div className={style.container}>
-  //       <Skeleton height="0px" />
-  //     </div>
-  //   );
-  // }
-
-  // tasks already contains tasks for the selected date
   const openTasks = tasks;
 
   // Calculate counts, excluding loading tasks
@@ -42,20 +32,17 @@ const Tasks: React.FC = () => {
 
   return (
     <div className={style.container}>
-      <div className={style.titleC}>
-        <h3 className={style.title}>Tasks</h3>
-        <div className={style.count}>
-          {tasksToDoCount} / {totalTasksCount}
-        </div>
-      </div>
+      <Title
+        title="Tasks"
+        count={{ completed: tasksToDoCount, total: totalTasksCount }}
+      />
       {openTasks.map((task, index) => (
         <Task
           key={task.id || `task-${index}`}
           task={{ ...task, id: task.id ? String(task.id) : `task-${index}` }}
         />
       ))}
-      {/* Render the placeholder input field */}
-      <Task isPlaceholder addTask={addTask} />
+      <AddItem placeholder="Add a new task" onAdd={(text) => addTask(text)} />
     </div>
   );
 };

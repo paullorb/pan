@@ -6,8 +6,8 @@ import DateComponent from '../toggles/date/date';
 import Month from '../toggles/month/month';
 import Priority from '../toggles/priorities/priorities';
 import Tasks from '../toggles/tasks/tasks';
-import Momentum from '../toggles/momentum/momentum';
 import style from './aside.module.css';
+import Habits from '../toggles/habits/habits';
 
 const Aside: React.FC = () => {
   const context = useContext(TogglesContext);
@@ -30,7 +30,7 @@ const Aside: React.FC = () => {
       {togglesState.month && <Month />}
       {togglesState.priorities && <Priority />}
       {togglesState.tasks && <Tasks />}
-      {togglesState.momentum && <Momentum />}
+      {togglesState.momentum && <Habits />}
     </aside>
   );
 };

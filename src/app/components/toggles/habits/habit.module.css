@@ -1,6 +1,6 @@
-/* task.module.css */
+/* habit.module.css */
 
-.task {
+.habit {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +14,7 @@
   border: 2px solid var(--black-b);
 }
 
-.task:hover {
+.habit:hover {
   background-color: var(--note-hover-bg);
 }
 
@@ -23,7 +23,7 @@
   text-decoration: line-through;
 }
 
-.taskText {
+.habitName {
   flex: 1;
   cursor: pointer;
 }

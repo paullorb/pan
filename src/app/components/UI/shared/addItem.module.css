@@ -1,0 +1,25 @@
+/* addItem.module.css */
+
+.addItem {
+  display: flex;
+  margin-top: 10px;
+}
+
+.input {
+  width: 100%;
+  font-size: 1em;
+  border: 2px solid var(--black-b);
+  border-radius: var(--border-r);
+  background-color: var(--background);
+  outline: none;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+@media print {
+  .addItem {
+    display: none;
+  }
+}

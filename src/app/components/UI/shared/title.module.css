@@ -1,0 +1,25 @@
+/* title.module.css */
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: var(--title);
+  border: 2px solid var(--black-b);
+  border-radius: var(--border-r);
+  color: var(--color);
+  margin-bottom: 10px;
+}
+
+.title {
+  padding: 0;
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 400;
+  background-color: transparent;
+}
+
+.count {
+  background-color: transparent;
+}

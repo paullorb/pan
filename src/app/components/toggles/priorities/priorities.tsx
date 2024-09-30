@@ -1,8 +1,11 @@
+// components/priorities/priorities.tsx
+
 "use client";
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import style from './priorities.module.css';
 import { usePriorities } from '../../../context/prioritiesContext';
 import { TogglesContext } from '../../../context/togglesContext';
+import Title from '../../UI/shared/title';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();
@@ -19,7 +22,6 @@ export default function Priorities() {
     return null;
   }
 
-
   const handleChange = (index: number, value: string) => {
     const newPriorities = [...priorities];
     newPriorities[index] = value;
@@ -28,7 +30,7 @@ export default function Priorities() {
 
   return (
     <div className={style.container}>
-      <div className={style.title}>Priority</div>
+      <Title title="Priorities" />
       <div className={style.priorities}>
         {[1, 2, 3].map((num, index) => (
           <div className={style.priority} key={num}>
