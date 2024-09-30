@@ -2,5 +2,5 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  flex: 1; /* Allows it to grow and shrink equally */
+  flex: 1 1 50%;
 }
