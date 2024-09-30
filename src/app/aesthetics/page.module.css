@@ -43,7 +43,6 @@
   width: 100%;
   gap: var(--spacing-xl);
   padding: 1rem;
-  border: 2px solid blue;
 }
 
 @media print {

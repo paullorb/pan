@@ -9,7 +9,6 @@
   --black: black;
   --white-b: solid white;
   --black-b: solid black;
-  --title: rgb(255, 0, 0);
   --border-r: 5px;
   --bg-active: rgba(0, 0, 0, 0.2);
   --spacing-xs: 0.5rem;
@@ -22,6 +21,7 @@
 
 html[data-theme='light'] {
   --bg: white; /* Light background */
+  --title: black;
   --bg-alt1: #f0f0f0; /* Lighter background */
   --bg-alt2: #e0e0e0; /* Lightest background */
   --border: black; /* Black border in light mode */
@@ -32,6 +32,7 @@ html[data-theme='light'] {
 
 html[data-theme='dark'] {
   --bg: rgb(0, 0, 0); /* Dark background */
+  --title: white;
   --bg-alt1: #333; /* Darker background */
   --bg-alt2: #222; /* Darkest background */
   --border: #ccc; /* Lighter border in dark mode */
