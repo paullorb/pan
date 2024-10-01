@@ -7,6 +7,7 @@ import Hour from './hour';
 import style from './hour.module.css';
 import { TogglesContext } from '../../../context/togglesContext';
 import Controls from './controls'; 
+import Title from '../../UI/shared/title';
 
 const Hours: React.FC = () => {
   const { from, until } = useHours();
@@ -41,7 +42,8 @@ const Hours: React.FC = () => {
   }
 
   return (
-    <div className={style.hoursContainer}>
+    <div className={style.container}>
+      <Title title="Hours" />
       <div className={style.modal}>
       <Controls /> 
       </div>
