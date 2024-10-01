@@ -20,6 +20,4 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  border: 4px solid var(--border);
-  border-radius: 7px;
 }
