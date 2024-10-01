@@ -1,0 +1,48 @@
+/* item.module.css */
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  font-size: 1em;
+  background-color: var(--note-bg);
+  border-radius: var(--border-r);
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+  border: 2px solid var(--black-b);
+}
+
+.item:hover {
+  background-color: var(--note-hover-bg);
+}
+
+.completed .text {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.text {
+  flex: 1;
+  cursor: pointer;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: 10px;
+}
+
+.label {
+  margin-right: 10px;
+}
+
+.input {
+  flex: 1;
+  padding: 5px;
+  font-size: 1em;
+  border: none;
+  background: transparent;
+  outline: none;
+}

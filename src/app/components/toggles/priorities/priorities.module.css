@@ -1,37 +1,18 @@
 /* priorities.module.css */
+
 .container {
   display: flex;
   flex-direction: column;
-  color: var(--color); /* Use variable for text color */
-}
-
-.title {
-  font-size: 1.5em;
-  padding: 0 50px;
-  background-color: var(--title);
-  border-radius: var(--border-radius);
-  color: var(--color)
+  background-color: var(--background);
+  border-radius: var(--border-r);
+  border: 2px solid var(--black-b);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .priorities {
   display: flex;
   flex-direction: column;
   margin: 5px 0;
-}
-
-.priority {
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  border: 2px solid var(--border); /* Border color based on theme */
-  background-color: var(--bg); /* Background color based on theme */
-  margin: 1px 0;
-  min-height: 30px;
-  border-radius: var(--border-radius);
-  gap: 2px;
-}
-
-.input {
-  width: 100%;
-  border: none;
 }

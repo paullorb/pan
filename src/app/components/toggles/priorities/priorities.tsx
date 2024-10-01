@@ -6,6 +6,7 @@ import style from './priorities.module.css';
 import { usePriorities } from '../../../context/prioritiesContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import Title from '../../UI/shared/title';
+import Item from '../../UI/shared/item';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();
@@ -33,19 +34,13 @@ export default function Priorities() {
       <Title title="Priorities" />
       <div className={style.priorities}>
         {[1, 2, 3].map((num, index) => (
-          <div className={style.priority} key={num}>
-            <label htmlFor={`priority-${num}`} className={style.label}>
-              {num}
-            </label>
-            <input
-              className={style.input}
-              type="text"
-              name={`priority-${num}`}
-              id={`priority-${num}`}
-              value={priorities[index]}
-              onChange={(e) => handleChange(index, e.target.value)}
-            />
-          </div>
+          <Item
+            key={num}
+            text={priorities[index]}
+            inputMode={true}
+            onChange={(value) => handleChange(index, value)}
+            label={`${num}`}
+          />
         ))}
       </div>
     </div>

@@ -22,4 +22,5 @@
 
 .count {
   background-color: transparent;
+  color: var(--bg);
 }
