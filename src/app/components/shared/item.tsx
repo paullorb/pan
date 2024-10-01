@@ -1,17 +1,19 @@
-// components/UI/shared/item.tsx
+// components/shared/item.tsx
 
 "use client";
 import React from 'react';
 import styles from './item.module.css';
 
 interface ItemProps {
-  text: string;
+  text?: string;
   completed?: boolean;
   onToggle?: () => void;
   onDelete?: () => void;
   inputMode?: boolean; // For input fields (e.g., Priorities)
   onChange?: (value: string) => void;
   label?: string; // For labels (e.g., Priorities)
+  className?: string;
+  children?: React.ReactNode;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -22,12 +24,14 @@ const Item: React.FC<ItemProps> = ({
   inputMode = false,
   onChange,
   label,
+  className,
+  children,
 }) => {
   return (
-    <div
-      className={`${styles.item} ${completed ? styles.completed : ''}`}
-    >
-      {inputMode ? (
+    <div className={`${styles.item} ${completed ? styles.completed : ''} ${className || ''}`}>
+      {children ? (
+        children
+      ) : inputMode ? (
         <>
           {label && <label className={styles.label}>{label}</label>}
           <input

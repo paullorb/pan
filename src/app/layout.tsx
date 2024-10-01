@@ -7,6 +7,7 @@ import { PrioritiesProvider } from './context/prioritiesContext';
 import { TasksProvider } from './context/tasksContext';
 import { TogglesProvider } from './context/togglesContext';
 import { MomentumProvider } from './context/momentumContext';
+import { CurrentHourProvider } from './context/currentHourContext';
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
           <ThemeProvider>
             <TogglesProvider>
               <DateProvider>
+                <CurrentHourProvider>
                 <HoursProvider>
                     <MomentumProvider>
                       <PrioritiesProvider>
@@ -35,6 +37,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                       </PrioritiesProvider>
                     </MomentumProvider>
                 </HoursProvider>
+                </CurrentHourProvider>
               </DateProvider>
             </TogglesProvider>
           </ThemeProvider>

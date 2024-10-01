@@ -1,36 +1,18 @@
 /* hour.module.css */
 
 .container {
-  position: relative;
-  width: 100%;
-}
-
-.modal {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.hoursContainer:hover .modal {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.hourly {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  border: 4px solid var(--border);
-  border-radius: 7px;
-}
-.frame {
   display: flex;
   border-bottom: 2px solid #85858542;
   align-items: center;
   width: 100%;
   height: 3rem;
-  border-radius: 1px;
-  gap: 1rem;
+}
+
+.label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
 }
 
 .hour {
@@ -50,19 +32,19 @@
   width: 100%;
   border: none;
   height: 100%;
-  padding: 0;
 }
 
-.frame:first-child, .frame:last-child {
+.frame:first-child,
+.frame:last-child {
   border-bottom: none;
 }
 
 .altBackground1 {
-  background-color: var(--bg-alt1);  
+  background-color: var(--bg-alt1);
 }
 
 .altBackground2 {
-  background-color: var(--bg-alt2);  
+  background-color: var(--bg-alt2);
 }
 
 .currentHour {
