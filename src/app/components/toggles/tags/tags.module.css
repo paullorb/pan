@@ -1,0 +1,65 @@
+/* tags.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--background);
+  border-radius: var(--border-r);
+  border: 2px solid var(--black-b);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.tagList {
+  display: flex;
+  flex-direction: column;
+}
+
+.tagItem {
+  margin-bottom: 10px;
+}
+
+.tagContent {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.tagColor {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.tagName {
+  flex: 1;
+}
+
+.tagCount {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  margin-left: 10px;
+}
+
+.addTagContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.colorPicker {
+  margin-right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}

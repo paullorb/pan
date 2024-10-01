@@ -80,12 +80,12 @@ const DateComponent: React.FC = () => {
   };
 
   return (
-    <div className={style.container}>
-      <div 
-        className={style.weekdays}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+    <div 
+      className={style.container}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className={style.weekdays}>
         <h3 className={style.arrow} onClick={goToPreviousDay}>&lt;</h3>
         <h2 className={style.weekday} onClick={resetToToday}>
           {isHovered ? getDayDifference(selectedDate) : formatWeekday(selectedDate)}
