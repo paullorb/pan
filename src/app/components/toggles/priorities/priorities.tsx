@@ -5,8 +5,8 @@ import React, { useContext } from 'react';
 import style from './priorities.module.css';
 import { usePriorities } from '../../../context/prioritiesContext';
 import { TogglesContext } from '../../../context/togglesContext';
-import Title from '../../UI/shared/title';
-import Item from '../../UI/shared/item';
+import Title from '../../shared/title';
+import Item from '../../shared/item';
 
 export default function Priorities() {
   const { priorities, setPriorities } = usePriorities();

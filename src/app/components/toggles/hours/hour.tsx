@@ -4,7 +4,7 @@ import { useHours } from '../../../context/hoursContext';
 import { useDate } from '../../../context/dateContext';
 import Adjuster from './adjuster';
 import style from './hour.module.css';
-import Skeleton from '../../UI/shared/skeleton';
+import Skeleton from '../../shared/skeleton';
 
 interface HourProps {
   hour: number;
