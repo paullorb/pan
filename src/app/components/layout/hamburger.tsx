@@ -9,7 +9,7 @@ import Toggles from '../UI/hamburger/toggles';
 import Language from '../UI/hamburger/language';
 import DarkMode from '../UI/darkMode/darkMode';
 
-const Hamburger: React.FC = () => {
+export default function Hamburger () {
   const { isAuthenticated, userEmail, logout } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -100,5 +100,3 @@ const Hamburger: React.FC = () => {
     </div>
   );
 };
-
-export default Hamburger;

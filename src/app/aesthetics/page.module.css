@@ -12,14 +12,8 @@
 .nav {
   display: flex;
   width: 100%;
-}
-
-.side {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  padding: 0 30px;
+  justify-content: space-between;
+  padding: 1rem; /* should be same as .tables div */
 }
 
 .titleC {
@@ -52,9 +46,6 @@
   .aside {
     min-width: 30%;
   }
-  .side * {
-    display: none;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -62,9 +53,6 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-  }
-  .sideLeft {
-    display: none;
   }
   .titleC {
     margin-left: 0;

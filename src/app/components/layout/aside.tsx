@@ -2,7 +2,6 @@
 
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';
-import DateComponent from '../toggles/date/date';
 import Month from '../toggles/month/month';
 import Priority from '../toggles/priorities/priorities';
 import Tasks from '../toggles/tasks/tasks';
@@ -26,7 +25,6 @@ const Aside: React.FC = () => {
 
   return (
     <aside className={style.aside}>
-      {togglesState.date && <DateComponent />}
       {togglesState.month && <Month />}
       {togglesState.priorities && <Priority />}
       {togglesState.tasks && <Tasks />}

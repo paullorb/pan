@@ -1,18 +1,21 @@
 .container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
   user-select: none;
-  width: 100%;
+  width: 20%;
 }
 
 .weekdays {
   display: flex;
   align-items: center;
   background-color: var(--black);
-  color: white;
   border-radius: var(--border-r);
   height: 50px;
   width: 100%;
   max-height: 60%;
 }
+
 .weekday {
   display: flex;
   justify-content: center;

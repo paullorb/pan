@@ -1,13 +1,14 @@
 // date.tsx
 "use client";
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useDate } from '../../../context/dateContext'; 
 import { TogglesContext } from '../../../context/togglesContext'; 
 import style from './date.module.css';
 
 const DateComponent: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();
+  const [isHovered, setIsHovered] = useState(false); // New hover state
 
   const togglesContext = useContext(TogglesContext);
 
@@ -32,6 +33,25 @@ const DateComponent: React.FC = () => {
 
   const formatWeekday = (date: Date): string => {
     return date.toLocaleDateString('en-EN', { weekday: 'long' });
+  };
+
+  // Function to calculate the difference in days between selectedDate and today
+  const getDayDifference = (date: Date): string => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
+    const selected = new Date(date);
+    selected.setHours(0, 0, 0, 0); // Reset time
+
+    const diffTime = selected.getTime() - today.getTime();
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) {
+      return "Today";
+    } else if (diffDays > 0) {
+      return `+${diffDays}`;
+    } else {
+      return `${diffDays}`;
+    }
   };
 
   const goToNextDay = (): void => {
@@ -61,10 +81,14 @@ const DateComponent: React.FC = () => {
 
   return (
     <div className={style.container}>
-      <div className={style.weekdays}>
+      <div 
+        className={style.weekdays}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <h3 className={style.arrow} onClick={goToPreviousDay}>&lt;</h3>
         <h2 className={style.weekday} onClick={resetToToday}>
-          {formatWeekday(selectedDate)}
+          {isHovered ? getDayDifference(selectedDate) : formatWeekday(selectedDate)}
         </h2>
         <h3 className={style.arrow} onClick={goToNextDay}>&gt;</h3>
       </div>
