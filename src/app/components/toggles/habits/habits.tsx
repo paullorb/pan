@@ -42,7 +42,11 @@ export default function Habits() {
           onDelete={() => deleteHabit(index)}
         />
       ))}
-      <AddItem placeholder="Add new habit" onAdd={(name) => addHabit(name)} />
+      <AddItem
+        placeholder="Add new habit"
+        onAdd={(name) => addHabit(name)}
+        className={style.addItem}
+      />
     </div>
   );
-}
+};

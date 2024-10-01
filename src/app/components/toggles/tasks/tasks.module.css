@@ -10,3 +10,11 @@
   max-width: 400px;
   margin: 0 auto;
 }
+
+.addItem {
+  display: none; /* Hide by default */
+}
+
+.container:hover .addItem {
+  display: flex; /* Show when hovering over container */
+}

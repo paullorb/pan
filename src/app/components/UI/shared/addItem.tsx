@@ -7,9 +7,10 @@ import style from './addItem.module.css';
 interface AddItemProps {
   placeholder: string;
   onAdd: (text: string) => void;
+  className?: string;
 }
 
-const AddItem: React.FC<AddItemProps> = ({ placeholder, onAdd }) => {
+const AddItem: React.FC<AddItemProps> = ({ placeholder, onAdd, className }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleAddItem = () => {
@@ -20,7 +21,7 @@ const AddItem: React.FC<AddItemProps> = ({ placeholder, onAdd }) => {
   };
 
   return (
-    <div className={style.addItem}>
+    <div className={`${style.container} ${className || ''}`}>
       <input
         type="text"
         className={style.input}

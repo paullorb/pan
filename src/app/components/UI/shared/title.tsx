@@ -14,7 +14,7 @@ interface TitleProps {
 
 const Title: React.FC<TitleProps> = ({ title, count }) => {
   return (
-    <div className={styles.titleContainer}>
+    <div className={styles.container}>
       <h3 className={styles.title}>{title}</h3>
       {count && (
         <div className={styles.count}>

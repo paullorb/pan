@@ -1,7 +1,6 @@
 /* addItem.module.css */
 
-.addItem {
-  display: flex;
+.container {
   margin-top: 10px;
 }
 
@@ -19,7 +18,7 @@
 }
 
 @media print {
-  .addItem {
+  .container {
     display: none;
   }
 }

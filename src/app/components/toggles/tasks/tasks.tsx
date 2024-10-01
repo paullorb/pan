@@ -9,7 +9,7 @@ import AddItem from '../../UI/shared/addItem';
 import Title from '../../UI/shared/title';
 import Item from '../../UI/shared/item';
 
-const Tasks: React.FC = () => {
+export default function Tasks ()  {
   const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTasks();
 
   const togglesContext = useContext(TogglesContext);
@@ -42,9 +42,11 @@ const Tasks: React.FC = () => {
           onDelete={() => deleteTask(task.id)}
         />
       ))}
-      <AddItem placeholder="Add a new task" onAdd={(text) => addTask(text)} />
+      <AddItem
+        placeholder="Add a new task"
+        onAdd={(text) => addTask(text)}
+        className={style.addItem}
+      />
     </div>
   );
 };
-
-export default Tasks;
