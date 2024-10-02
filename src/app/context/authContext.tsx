@@ -1,3 +1,4 @@
+// /context/authContext.tsx
 "use client";
 import { createContext, useContext, useState, ReactNode } from 'react';
 
@@ -27,8 +28,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token and email in state
+        // Store the token in state and localStorage
         setToken(data.token);
+        localStorage.setItem('token', data.token);
+
         setIsAuthenticated(true);
         setUserEmail(email);
       } else {
@@ -51,8 +54,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token and email in state
+        // Store the token in state and localStorage
         setToken(data.token);
+        localStorage.setItem('token', data.token);
+
         setIsAuthenticated(true);
         setUserEmail(email);
       } else {
@@ -65,10 +70,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    // Clear authentication state
+    // Clear authentication state and localStorage
     setToken(null);
     setIsAuthenticated(false);
     setUserEmail(null);
+    localStorage.removeItem('token');
   };
 
   return (
