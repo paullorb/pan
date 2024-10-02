@@ -8,7 +8,7 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup, userEmail, isAuthenticated } = useAuth();
+  const { login, signup, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -20,17 +20,12 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   // Ref for email input
   const emailInputRef = useRef<HTMLInputElement>(null);
 
-  // Focus on email input and pre-fill email when modal opens
+  // Focus on email input when modal opens
   useEffect(() => {
-    if (isOpen) {
-      if (userEmail) {
-        setEmail(userEmail);
-      }
-      if (emailInputRef.current) {
-        emailInputRef.current.focus();
-      }
+    if (isOpen && emailInputRef.current) {
+      emailInputRef.current.focus();
     }
-  }, [isOpen, userEmail]);
+  }, [isOpen]);
 
   // Close modal with animation when authenticated
   useEffect(() => {

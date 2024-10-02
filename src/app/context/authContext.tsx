@@ -1,5 +1,5 @@
-"use client"
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+"use client";
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -13,78 +13,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null); 
-
-  const validateToken = async (token: string): Promise<boolean> => {
-    try {
-      const response = await fetch('/api/validateToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      if (response.ok) {
-        return true;
-      } else if (response.status === 401) {
-        // Token is invalid or expired
-        return false;
-      } else {
-        // Handle other server errors
-        console.error('Server error during token validation');
-        return false;
-      }
-    } catch (error) {
-      console.error('Network error during token validation:', error);
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    const initializeAuth = async () => {
-      const token = localStorage.getItem('token');
-      const email = localStorage.getItem('email');
-
-      if (token && email) {
-        const isValid = await validateToken(token);
-        if (isValid) {
-          setIsAuthenticated(true);
-          setUserEmail(email);
-        } else {
-          // Token is invalid or expired, log the user out
-          logout();
-        }
-      } else {
-        // No token found, ensure the user is logged out
-        logout();
-      }
-    };
-
-    initializeAuth();
-  }, []);
-
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Clear any existing tokens
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-
-        // Store the new token and email
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('email', email);
+        // Store the token and email in state
+        setToken(data.token);
         setIsAuthenticated(true);
         setUserEmail(email);
       } else {
@@ -100,18 +44,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const response = await fetch('/api/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Store the token and email
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('email', email);
+        // Store the token and email in state
+        setToken(data.token);
         setIsAuthenticated(true);
         setUserEmail(email);
       } else {
@@ -124,9 +65,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    // Remove the token and email from storage
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    // Clear authentication state
+    setToken(null);
     setIsAuthenticated(false);
     setUserEmail(null);
   };
