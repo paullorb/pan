@@ -9,13 +9,20 @@ import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 
-export default function Tasks ()  {
-  const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTasks();
+export default function Tasks() {
+  const {
+    tasks,
+    addTask,
+    toggleTaskCompletion,
+    deleteTask,
+    addTagToTask,
+    removeTagFromTask,
+  } = useTasks();
 
   const togglesContext = useContext(TogglesContext);
 
   if (!togglesContext) {
-    throw new Error("Tasks must be used within a TogglesProvider");
+    throw new Error('Tasks must be used within a TogglesProvider');
   }
 
   const { togglesState } = togglesContext;
@@ -40,6 +47,9 @@ export default function Tasks ()  {
           completed={task.completed}
           onToggle={() => toggleTaskCompletion(task.id)}
           onDelete={() => deleteTask(task.id)}
+          tags={task.tags}
+          onAddTag={(tagId) => addTagToTask(task.id, tagId)}
+          onRemoveTag={(tagId) => removeTagFromTask(task.id, tagId)}
         />
       ))}
       <AddItem
@@ -49,4 +59,4 @@ export default function Tasks ()  {
       />
     </div>
   );
-};
+}

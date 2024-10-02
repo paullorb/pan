@@ -1,8 +1,9 @@
 // components/shared/item.tsx
 
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './item.module.css';
+import TagSelector from './tagSelector'; // Import the TagSelector component
 
 interface ItemProps {
   text?: string;
@@ -14,6 +15,9 @@ interface ItemProps {
   label?: string; // For labels (e.g., Priorities)
   className?: string;
   children?: React.ReactNode;
+  tags?: string[];
+  onAddTag?: (tagId: string) => void;
+  onRemoveTag?: (tagId: string) => void;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -26,7 +30,12 @@ const Item: React.FC<ItemProps> = ({
   label,
   className,
   children,
+  tags = [],
+  onAddTag,
+  onRemoveTag,
 }) => {
+  const [showTagSelector, setShowTagSelector] = useState(false);
+
   return (
     <div className={`${styles.item} ${completed ? styles.completed : ''} ${className || ''}`}>
       {children ? (
@@ -42,16 +51,45 @@ const Item: React.FC<ItemProps> = ({
           />
         </>
       ) : (
-        <>
+        <div className={styles.itemContent}>
           <span onClick={onToggle} className={styles.text}>
             {text}
           </span>
-          {onDelete && (
-            <button className={styles.deleteButton} onClick={onDelete}>
-              🗑️
-            </button>
-          )}
-        </>
+          <div className={styles.buttons}>
+            {onDelete && (
+              <button className={styles.deleteButton} onClick={onDelete}>
+                🗑️
+              </button>
+            )}
+            {onAddTag && onRemoveTag && (
+              <button
+                className={styles.tagButton}
+                onClick={() => setShowTagSelector(!showTagSelector)}
+              >
+                🏷️
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      {/* Render tags if any */}
+      {tags.length > 0 && (
+        <div className={styles.tags}>
+          {tags.map(tagId => (
+            <span key={tagId} className={styles.tag}>
+              {/* For simplicity, display tag ID; you can update this to show tag names */}
+              {tagId}
+            </span>
+          ))}
+        </div>
+      )}
+      {/* Include TagSelector if showTagSelector is true */}
+      {showTagSelector && onAddTag && onRemoveTag && (
+        <TagSelector
+          selectedTags={tags}
+          onAddTag={onAddTag}
+          onRemoveTag={onRemoveTag}
+        />
       )}
     </div>
   );

@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// tasksContext.tsx
+// context/tasksContext.tsx
 "use client";
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useDate } from './dateContext';
 import { useAuth } from './authContext';
+import { useTags } from './tagsContext';
 
 interface Task {
   id: string;
@@ -11,6 +11,7 @@ interface Task {
   completed: boolean;
   date: string; // Store date as 'YYYY-MM-DD'
   loading?: boolean; // Optional loading flag
+  tags: string[];
 }
 
 interface TasksContextType {
@@ -20,6 +21,8 @@ interface TasksContextType {
   addTask: (text: string) => Promise<void>;
   toggleTaskCompletion: (id: string) => Promise<void>;
   deleteTask: (id: string) => Promise<void>;
+  addTagToTask: (taskId: string, tagId: string) => void;
+  removeTagFromTask: (taskId: string, tagId: string) => void;
 }
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
@@ -29,6 +32,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const { isAuthenticated } = useAuth();
   const [tasksByDate, setTasksByDate] = useState<{ [date: string]: Task[] }>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const { incrementTagCount, decrementTagCount } = useTags();
 
   const selectedDateString = selectedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
 
@@ -45,15 +49,15 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const token = localStorage.getItem('token');
       const month = selectedDate.getMonth() + 1; // Months are zero-based in JavaScript
       const year = selectedDate.getFullYear();
-  
+
       const response = await fetch(`/api/tasks?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         // Group tasks by date
         const tasksByDateData = data.tasks.reduce((acc: any, task: any) => {
@@ -66,10 +70,11 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             text: task.text,
             completed: task.completed,
             date: task.date,
+            tags: task.tags || [], // Ensure tags are included
           });
           return acc;
         }, {});
-  
+
         setTasksByDate(tasksByDateData);
       } else {
         console.error('Failed to fetch tasks:', data.error);
@@ -80,7 +85,6 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setLoading(false);
     }
   };
-  
 
   // Function to add a new task
   const addTask = async (text: string) => {
@@ -94,6 +98,7 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       completed: false,
       date: selectedDateString,
       loading: true,
+      tags: [],
     };
 
     // Optimistically update tasksByDate
@@ -160,7 +165,6 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-
   // Function to toggle task completion
   const toggleTaskCompletion = async (id: string) => {
     const taskDate = selectedDateString;
@@ -215,7 +219,6 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-
   // Function to delete a task
   const deleteTask = async (id: string) => {
     const taskDate = selectedDateString;
@@ -267,7 +270,37 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  
+  // Function to add a tag to a task
+  const addTagToTask = (taskId: string, tagId: string) => {
+    setTasksByDate((prev) => {
+      const updated = { ...prev };
+      const tasksForDate = updated[selectedDateString] || [];
+      updated[selectedDateString] = tasksForDate.map((task) => {
+        if (task.id === taskId && !task.tags.includes(tagId)) {
+          incrementTagCount(tagId);
+          return { ...task, tags: [...task.tags, tagId] };
+        }
+        return task;
+      });
+      return updated;
+    });
+  };
+
+  // Function to remove a tag from a task
+  const removeTagFromTask = (taskId: string, tagId: string) => {
+    setTasksByDate((prev) => {
+      const updated = { ...prev };
+      const tasksForDate = updated[selectedDateString] || [];
+      updated[selectedDateString] = tasksForDate.map((task) => {
+        if (task.id === taskId && task.tags.includes(tagId)) {
+          decrementTagCount(tagId);
+          return { ...task, tags: task.tags.filter((id) => id !== tagId) };
+        }
+        return task;
+      });
+      return updated;
+    });
+  };
 
   return (
     <TasksContext.Provider
@@ -278,6 +311,8 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         addTask,
         toggleTaskCompletion,
         deleteTask,
+        addTagToTask,
+        removeTagFromTask,
       }}
     >
       {children}
