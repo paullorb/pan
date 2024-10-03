@@ -1,26 +1,13 @@
 // date.tsx
 "use client";
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useDate } from '../../../context/dateContext'; 
-import { TogglesContext } from '../../../context/togglesContext'; 
 import style from './date.module.css';
 
 const DateComponent: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();
   const [isHovered, setIsHovered] = useState(false); // New hover state
-
-  const togglesContext = useContext(TogglesContext);
-
-  if (!togglesContext) {
-    throw new Error("DateComponent must be used within a TogglesProvider");
-  }
-
-  const { togglesState } = togglesContext;
-
-  if (!togglesState.date) {
-    return null;
-  }
 
   // Function to format the selected date
   const formatDate = (date: Date): string => {

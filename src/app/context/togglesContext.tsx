@@ -9,7 +9,6 @@ export interface TogglesState {
   priorities: boolean;
   tasks: boolean;
   month: boolean;
-  date: boolean;
   momentum: boolean;
 }
 
@@ -31,7 +30,6 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     priorities: true,
     tasks: true,
     month: true,
-    date: true,
     momentum: true,
   });
 
