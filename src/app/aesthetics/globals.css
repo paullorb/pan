@@ -38,7 +38,7 @@ html[data-theme='dark'] {
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
   --border-radius: 10px; /* Example border radius */
-  --hover-color: #c0c0c069; /* Dark hover color */
+  --hover-color: #8f8f8f; /* Dark hover color */
 }
 
 @page {

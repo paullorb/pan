@@ -18,8 +18,7 @@
 .hour {
   display: flex;
   justify-content: center;
-  padding: 0 5px;
-  min-width: 60px;
+  min-width: var(--spacing-l);
 }
 
 .pan {

@@ -13,14 +13,36 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding: 1rem; /* should be same as .tables div */
+  gap: var(--spacing-xl);
 }
 
-.titleC {
-  margin-left: calc(13px + 100px + 2px);
+.leftUp {
+  display: flex;
+  align-items: center;
+  flex: 1 1 45%;
+}
+
+.rightUp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 1 55%;
+}
+
+.leftDown {
+  display: flex;
+  justify-content: center;
+  flex: 1 1 45%;
+}
+
+.rightDown {
+  display: flex;
+  justify-content: center;
+  flex: 1 1 55%;
 }
 
 .title {
+  padding-left: var(--spacing-l);
   font-size: 1.4rem;
   letter-spacing: -1px;
 }
@@ -36,7 +58,6 @@
   padding: 0;
   width: 100%;
   gap: var(--spacing-xl);
-  padding: 1rem;
 }
 
 @media print {
