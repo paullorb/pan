@@ -18,7 +18,7 @@ const Aside: React.FC = () => {
 
   const { togglesState } = context;
 
-  const isAsideVisible = togglesState.priorities || togglesState.tasks || togglesState.month || togglesState.date || togglesState.momentum;
+  const isAsideVisible = togglesState.priorities || togglesState.tasks || togglesState.month || togglesState.momentum;
 
   if (!isAsideVisible) {
     return null;
