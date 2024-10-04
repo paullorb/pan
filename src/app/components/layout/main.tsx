@@ -15,6 +15,10 @@ const MainComponent: React.FC = () => {
 
   const { togglesState } = context;
 
+  if (!togglesState.hours) {
+    return null;
+  }
+
   return (
     <main className={style.main}>
       {togglesState.hours && <Hours />}

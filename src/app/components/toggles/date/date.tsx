@@ -79,10 +79,8 @@ const DateComponent: React.FC = () => {
         </h2>
         <h3 className={style.arrow} onClick={goToNextDay}>&gt;</h3>
       </div>
-      <div>
-        <div className={style.dateC}>
+      <div className={style.dateC}>
           <h3 className={style.date}>{formatDate(selectedDate)}</h3>
-        </div>
       </div>
     </div>
   );

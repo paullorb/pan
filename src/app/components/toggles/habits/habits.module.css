@@ -7,14 +7,12 @@
   border-radius: var(--border-r);
   border: 2px solid var(--black-b);
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .addItem {
-  display: none; /* Hide by default */
+  display: none; 
 }
 
 .container:hover .addItem {
-  display: flex; /* Show when hovering over container */
+  display: flex; 
 }

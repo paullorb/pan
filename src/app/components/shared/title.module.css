@@ -9,6 +9,7 @@
   border: 2px solid var(--black-b);
   border-radius: var(--border-r);
   margin-bottom: 10px;
+  width: 100%;
 }
 
 .title {
