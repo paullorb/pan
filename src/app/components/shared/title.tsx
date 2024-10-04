@@ -1,3 +1,5 @@
+// /components/shared/title.tsx
+
 "use client";
 import React from 'react';
 import styles from './title.module.css';

@@ -7,19 +7,16 @@ import { useMomentum } from '../../../context/momentumContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
-import Item from '../../shared/item'; // Import the shared Item component
+import Item from '../../shared/item';
 
 export default function Habits() {
   const { habits, toggleHabit, addHabit, deleteHabit } = useMomentum();
 
   const togglesContext = useContext(TogglesContext);
-
   if (!togglesContext) {
     throw new Error('Habits must be used within a TogglesProvider');
   }
-
   const { togglesState } = togglesContext;
-
   if (!togglesState.momentum) {
     return null;
   }

@@ -1,4 +1,4 @@
-// components/UI/shared/addItem.tsx
+// components/shared/addItem.tsx
 
 "use client";
 import React, { useState } from 'react';

@@ -1,4 +1,5 @@
-// Skeleton.tsx
+// /components/shared/skeleton.tsx
+
 import React from 'react';
 import styles from './skeleton.module.css';
 
