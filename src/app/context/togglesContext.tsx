@@ -10,6 +10,7 @@ export interface TogglesState {
   tasks: boolean;
   month: boolean;
   momentum: boolean;
+  tags: boolean;
 }
 
 // Define the context type
@@ -31,6 +32,7 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     tasks: true,
     month: true,
     momentum: true,
+    tags: true,
   });
 
   // Fetch togglesState when the user is authenticated
