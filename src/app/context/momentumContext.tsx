@@ -1,15 +1,7 @@
-// context/momentumContext.tsx
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
 
@@ -20,33 +12,32 @@ interface Habit {
 
 interface MomentumContextType {
   habits: Habit[];
-  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  loading: boolean;
   toggleHabit: (index: number) => void;
-  addHabit: (name: string) => void;          // New function
-  deleteHabit: (index: number) => void;      // New function
+  addHabit: (name: string) => void;
+  deleteHabit: (index: number) => void;
 }
 
-const MomentumContext = createContext<MomentumContextType | undefined>(
+const MomentumContext = React.createContext<MomentumContextType | undefined>(
   undefined
 );
 
-export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
+export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
+  const [loading, setLoading] = useState<boolean>(false); // Renamed from isLoading to loading
   const { isAuthenticated } = useAuth();
   const { selectedDate } = useDate();
-  const isFirstLoad = useRef(true);
 
   // Function to format the date as 'YYYY-MM-DD'
-  const formatDate = (date: Date): string => {
-    return date.toISOString().split('T')[0];
-  };
+  const formatDate = (date: Date): string => date.toISOString().split('T')[0];
 
   // Fetch habits when the user is authenticated or when the selected date changes
   useEffect(() => {
     if (isAuthenticated && selectedDate) {
       const fetchHabits = async () => {
+        setLoading(true); // Start loading
         try {
           const response = await fetch(
             `/api/momentum?date=${formatDate(selectedDate)}`,
@@ -69,23 +60,23 @@ export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
           console.error('Error fetching habits:', error);
           setHabits([]); // Reset habits if error occurs
         } finally {
-          isFirstLoad.current = false; // Mark that the first load is complete
+          setLoading(false); // End loading
         }
       };
       fetchHabits();
     } else {
       setHabits([]);
-      isFirstLoad.current = false;
     }
   }, [isAuthenticated, selectedDate]);
 
+  // Save habits when they change
   useEffect(() => {
-    if (isAuthenticated && selectedDate && !isFirstLoad.current) {
+    if (isAuthenticated && selectedDate && !loading) {
       const saveHabits = async () => {
         try {
           const dateStr = formatDate(selectedDate);
           const todayStr = formatDate(new Date());
-  
+
           const allEmpty = habits.length === 0;
           if (allEmpty) {
             // Delete habits from backend
@@ -126,10 +117,7 @@ export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
 
   // Add a new habit
   const addHabit = (name: string) => {
-    setHabits((prevHabits) => [
-      ...prevHabits,
-      { name, completed: false },
-    ]);
+    setHabits((prevHabits) => [...prevHabits, { name, completed: false }]);
   };
 
   // Delete a habit
@@ -143,7 +131,7 @@ export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <MomentumContext.Provider
-      value={{ habits, setHabits, toggleHabit, addHabit, deleteHabit }}
+      value={{ habits, loading, toggleHabit, addHabit, deleteHabit }}
     >
       {children}
     </MomentumContext.Provider>
@@ -151,11 +139,9 @@ export const MomentumProvider: React.FC<{ children: ReactNode }> = ({
 };
 
 export const useMomentum = () => {
-  const context = useContext(MomentumContext);
+  const context = React.useContext(MomentumContext);
   if (context === undefined) {
-    throw new Error(
-      'useMomentum must be used within a MomentumProvider'
-    );
+    throw new Error('useMomentum must be used within a MomentumProvider');
   }
   return context;
 };
