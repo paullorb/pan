@@ -9,8 +9,8 @@ interface TitleProps {
     total: number;
   };
   pagination?: boolean;
-  onPrevious?: () => void; // Added onPrevious prop
-  onNext?: () => void;     // Added onNext prop
+  onPrevious?: () => void; 
+  onNext?: () => void;   
 }
 
 const Title: React.FC<TitleProps> = ({ title, count, pagination, onPrevious, onNext }) => {
