@@ -7,7 +7,7 @@ import { useMomentum } from '../../../context/momentumContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
-import Item from '../../shared/item';
+import Item from '../../shared/item'; // Import the shared Item component
 
 export default function Habits() {
   const { habits, toggleHabit, addHabit, deleteHabit } = useMomentum();
@@ -32,6 +32,7 @@ export default function Habits() {
       <Title
         title="Habits"
         count={{ completed: completedHabitsCount, total: totalHabitsCount }}
+        pagination={true}
       />
       {habits.map((habit, index) => (
         <Item
@@ -49,4 +50,4 @@ export default function Habits() {
       />
     </div>
   );
-};
+}

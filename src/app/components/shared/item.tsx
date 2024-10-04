@@ -18,10 +18,10 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({
   text,
-  completed = false,
+  completed,
   onToggle,
   onDelete,
-  inputMode = false,
+  inputMode,
   onChange,
   label,
   className,

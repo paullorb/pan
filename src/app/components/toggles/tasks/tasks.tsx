@@ -7,9 +7,9 @@ import { useTasks } from '../../../context/tasksContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
-import Item from '../../shared/item';
+import Item from '../../shared/item'; // Import the shared Item component
 
-export default function Tasks ()  {
+export default function Tasks() {
   const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTasks();
 
   const togglesContext = useContext(TogglesContext);
@@ -50,4 +50,4 @@ export default function Tasks ()  {
       />
     </div>
   );
-};
+}
