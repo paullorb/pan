@@ -1,24 +1,57 @@
-/* title.module.css */
+/* /components/shared/title.module.css */
 
 .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--spacing-m);
+  padding-right: var(--spacing-m);
   background-color: var(--title);
-  border: 2px solid var(--black-b);
   border-radius: var(--border-r);
   margin-bottom: 10px;
   width: 100%;
 }
 
+.first {
+  display: flex;
+  background-color: inherit;
+  border-radius: var(--border-r);
+}
+
+.second {
+  background-color: inherit;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  background-color: inherit;
+  border: 1px solid transparent;
+  border-radius: var(--border-r);
+}
+
+.paginationButton {
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  opacity: 0;
+}
+
+.container:hover .paginationButton {
+  opacity: 1;
+}
+
+.titleC {
+  background-color: inherit;
+  border: none;
+}
+
 .title {
-  padding: var(--spacing-xs);
-  margin: 0;
-  font-size: 1.5em;
   font-weight: 400;
+  padding: var(--spacing-xs);
   background-color: transparent;
   color: var(--bg);
+  margin: 0;
+  font-size: 1.5em;
 }
 
 .count {

@@ -32,6 +32,7 @@ export default function Tasks ()  {
       <Title
         title="Tasks"
         count={{ completed: tasksToDoCount, total: totalTasksCount }}
+        pagination={true}
       />
       {tasks.map((task) => (
         <Item

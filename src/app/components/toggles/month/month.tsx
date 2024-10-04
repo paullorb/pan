@@ -1,4 +1,3 @@
-// month.tsx
 "use client";
 import React, { useContext } from 'react';
 import styles from './month.module.css';
@@ -6,6 +5,7 @@ import { TogglesContext } from '@/app/context/togglesContext';
 import { useDate } from '../../../context/dateContext';
 import { useTasks } from '../../../context/tasksContext';
 import Dots from './dots';
+import Title from '../../shared/title';
 
 const Month = () => {
   const { selectedDate, setSelectedDate } = useDate();
@@ -38,6 +38,7 @@ const Month = () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
+  // Generate days array
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const startingDayOfWeek = firstDayOfMonth.getDay() === 0 ? 7 : firstDayOfMonth.getDay();
 
@@ -91,17 +92,12 @@ const Month = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.nav}>
-        <button onClick={decrementMonth} className={styles.navButton}>
-          {"<"}
-        </button>
-        <span className={styles.monthYear}>
-          {monthNames[currentMonth]} {currentYear !== thisYear && currentYear}
-        </span>
-        <button onClick={incrementMonth} className={styles.navButton}>
-          {">"}
-        </button>
-      </div>
+      <Title
+        title={`${monthNames[currentMonth]} ${currentYear !== thisYear ? currentYear : ''}`}
+        pagination={true}
+        onPrevious={decrementMonth}
+        onNext={incrementMonth}
+      />
       <div className={styles.monthGrid}>
         {days.map((day, index) => {
           let hasUncompletedTasks = false;
@@ -150,13 +146,11 @@ const Month = () => {
                     <Dots
                       hasUncompletedTasks={hasUncompletedTasks}
                       allTasksCompleted={allTasksCompleted}
-                      isTodo={isTodo} 
+                      isTodo={isTodo}
                     />
                   </div>
                 </div>
-              ) : (
-                ''
-              )}
+              ) : null}
             </div>
           );
         })}
