@@ -16,28 +16,10 @@
   gap: var(--spacing-xl);
 }
 
-.leftUp {
-  display: flex;
-  align-items: center;
-  flex: 1 1 45%;
-}
-
 .rightUp {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex: 1 1 55%;
-}
-
-.leftDown {
-  display: flex;
-  justify-content: center;
-  flex: 1 1 45%;
-}
-
-.rightDown {
-  display: flex;
-  justify-content: center;
   flex: 1 1 55%;
 }
 

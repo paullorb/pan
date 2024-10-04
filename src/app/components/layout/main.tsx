@@ -1,4 +1,4 @@
-// /components/layout/main.tsx
+// components/layout/main.tsx
 "use client";
 
 import React, { useContext } from 'react';
@@ -6,7 +6,7 @@ import { TogglesContext } from '../../context/togglesContext';
 import Hours from '../toggles/hours/hours';
 import style from './main.module.css';
 
-const Main: React.FC = () => {
+const MainComponent: React.FC = () => {
   const context = useContext(TogglesContext);
 
   if (!context) {
@@ -15,10 +15,6 @@ const Main: React.FC = () => {
 
   const { togglesState } = context;
 
-  if (!togglesState.hours) {
-    return null;
-  }
-
   return (
     <main className={style.main}>
       {togglesState.hours && <Hours />}
@@ -26,4 +22,4 @@ const Main: React.FC = () => {
   );
 };
 
-export default Main;
+export default MainComponent;

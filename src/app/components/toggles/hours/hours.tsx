@@ -5,7 +5,7 @@
 import React, { useContext } from 'react';
 import { useHours } from '../../../context/hoursContext';
 import Hour from './hour';
-import style from './hours.module.css'; // Updated import path
+import style from './hours.module.css';
 import { TogglesContext } from '../../../context/togglesContext';
 import Controls from './controls';
 import Title from '../../shared/title';

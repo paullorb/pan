@@ -25,7 +25,7 @@ const Aside: React.FC = () => {
   }
 
   return (
-    <aside className={style.aside}>
+    <aside className={style.container}>
       {togglesState.month && <Month />}
       {togglesState.priorities && <Priority />}
       {togglesState.tasks && <Tasks />}

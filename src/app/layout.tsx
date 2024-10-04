@@ -1,4 +1,6 @@
-import React from 'react';
+// app/layout.tsx
+
+import './aesthetics/globals.css'
 import { ThemeProvider } from './context/themeContext';
 import { HoursProvider } from './context/hoursContext';
 import { AuthProvider } from './context/authContext';
@@ -10,44 +12,34 @@ import { MomentumProvider } from './context/momentumContext';
 import { CurrentHourProvider } from './context/currentHourContext';
 import { TagsProvider } from './context/tagsContext';
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
-
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/icon?<generated>" type="image/png" sizes="any" />
-        <link rel="apple-icon" href="/apple-icon?<generated>" type="image/png" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-icon?<generated>" type="image/<generated>" sizes="any" />
+        <link rel="icon" href="/icon" type="image/png" sizes="any" />
         <title>Pansito</title>
       </head>
       <body>
         <AuthProvider>
           <ThemeProvider>
             <TagsProvider>
-            <TogglesProvider>
-              <DateProvider>
-                <CurrentHourProvider>
-                <HoursProvider>
-                    <MomentumProvider>
-                      <PrioritiesProvider>
-                        <TasksProvider>
-                          {children}
-                        </TasksProvider>
-                      </PrioritiesProvider>
-                    </MomentumProvider>
-                </HoursProvider>
-                </CurrentHourProvider>
-              </DateProvider>
-            </TogglesProvider>
+              <TogglesProvider>
+                <DateProvider>
+                  <CurrentHourProvider>
+                    <HoursProvider>
+                      <MomentumProvider>
+                        <PrioritiesProvider>
+                          <TasksProvider>{children}</TasksProvider>
+                        </PrioritiesProvider>
+                      </MomentumProvider>
+                    </HoursProvider>
+                  </CurrentHourProvider>
+                </DateProvider>
+              </TogglesProvider>
             </TagsProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

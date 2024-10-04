@@ -1,8 +1,11 @@
 /* hours.module.css */
 
 .container {
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
+  flex: 1 1 55%;
 }
 
 .modal {

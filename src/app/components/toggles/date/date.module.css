@@ -1,11 +1,13 @@
+/* /components/toggles/date/date.module.css */
+
 .container {
   display: flex;
-
   align-items: center;
   gap: var(--spacing-s);
   user-select: none;
   width: 100%;
   height: 100%;
+  flex: 1 1 45%;
 }
 
 .weekdays {

@@ -1,6 +1,8 @@
-.aside {
+/* /components/layout/aside.module.css */
+
+.container {
   display: flex;
   flex-direction: column;
-  flex: 1 1 50%;
+  flex: 1 1 45%;
   gap: var(--spacing-m);
 }
