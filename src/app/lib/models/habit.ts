@@ -1,4 +1,5 @@
 // /models/Habit.ts
+// DO NOT RENAME FOR NOW
 
 import mongoose, { Schema, Document } from 'mongoose';
 
