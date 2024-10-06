@@ -36,9 +36,7 @@ const Title: React.FC<TitleProps> = ({
             </button>
           </div>
         )}
-        <div className={styles.titleC}>
-          <h3 className={styles.title}>{title}</h3>
-        </div>
+        <h3 className={styles.title}>{title}</h3>
         {pagination && (
           <div className={styles.pagination}>
             <button
