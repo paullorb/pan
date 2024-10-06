@@ -1,8 +1,7 @@
-// /components/context/togglesContext.tsx
+// /context/togglesContext.tsx
 "use client";
 
-import React, { createContext, useState, ReactNode, useEffect } from "react";
-import { useAuth } from './authContext';
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
 
 export interface TogglesState {
   hours: boolean;
@@ -23,20 +22,20 @@ interface TogglesContextType {
 export const TogglesContext = createContext<TogglesContextType | undefined>(undefined);
 
 export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-
   // Initialize togglesState from localStorage or use defaults
   const [togglesState, setTogglesState] = useState<TogglesState>(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const storedToggles = localStorage.getItem('togglesState');
-      return storedToggles ? JSON.parse(storedToggles) : {
-        hours: true,
-        priorities: true,
-        tasks: true,
-        month: true,
-        habits: true,
-        tags: true,
-      };
+      return storedToggles
+        ? JSON.parse(storedToggles)
+        : {
+            hours: true,
+            priorities: true,
+            tasks: true,
+            month: true,
+            habits: true,
+            tags: true,
+          };
     } else {
       // Default state if window is undefined (e.g., during server-side rendering)
       return {
@@ -50,16 +49,9 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     }
   });
 
-    // Save togglesState to localStorage whenever it changes
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        localStorage.setItem('togglesState', JSON.stringify(togglesState));
-      }
-    }, [togglesState]);
-
   // Save togglesState to localStorage whenever it changes
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       localStorage.setItem('togglesState', JSON.stringify(togglesState));
     }
   }, [togglesState]);

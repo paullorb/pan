@@ -1,3 +1,5 @@
+// /components/UI/auth/auth.tsx
+
 import { useState, useEffect, useRef } from 'react';
 import styles from './auth.module.css';
 import { useAuth } from '../../../context/authContext';
@@ -8,7 +10,7 @@ interface ModalProps {
 }
 
 const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { login, signup, isAuthenticated } = useAuth();
+  const { login, signup, isAuthenticated, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -47,6 +49,9 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   }, [isClosing, onClose]);
 
   if (!isOpen && !isClosing) return null;
+
+  // Adjust modal rendering based on isLoading if necessary
+  if (isLoading) return null; // Or a loading indicator
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

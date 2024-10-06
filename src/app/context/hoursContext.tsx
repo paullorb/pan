@@ -1,4 +1,4 @@
-// hoursContext.tsx
+// /context/hoursContext.tsx
 "use client";
 
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
@@ -13,7 +13,7 @@ interface HoursContextType {
   activities: HourActivity;
   from: number;
   until: number;
-  loading: boolean; // Add loading state
+  loading: boolean;
   handleActivityChange: (hourKey: string, value: string) => void;
   setFrom: (from: number) => void;
   setUntil: (until: number) => void;
@@ -34,25 +34,26 @@ interface HoursProviderProps {
 }
 
 export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  const { selectedDate } = useDate(); // Get selectedDate from DateContext
+  const { isAuthenticated, isLoading, token, logout } = useAuth();
+  const { selectedDate } = useDate();
   const [activities, setActivities] = useState<HourActivity>({});
-  const [from, setFrom] = useState<number>(5); // Default starting hour
-  const [until, setUntil] = useState<number>(23); // Default ending hour
-  const [loading, setLoading] = useState<boolean>(false); // Initialize loading state
+  const [from, setFrom] = useState<number>(5);
+  const [until, setUntil] = useState<number>(23);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Fetch activities when selectedDate or isAuthenticated changes
   useEffect(() => {
+    if (isLoading) return; // Wait until authentication state is initialized
+
     if (isAuthenticated) {
       const fetchActivities = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
-          // Fetch activities for the current date
           const response = await fetch(`/api/activities?date=${selectedDate.toDateString()}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${token}`,
             },
           });
 
@@ -68,7 +69,7 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
                 method: 'GET',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  Authorization: `Bearer ${token}`,
                 },
               });
 
@@ -91,6 +92,9 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
                 } else {
                   setActivities({});
                 }
+              } else if (prevResponse.status === 401) {
+                console.error('Unauthorized access. Logging out.');
+                logout();
               } else {
                 console.error('Failed to fetch previous day activities');
                 setActivities({});
@@ -99,6 +103,9 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
               // Activities exist for today
               setActivities(data.activities);
             }
+          } else if (response.status === 401) {
+            console.error('Unauthorized access. Logging out.');
+            logout();
           } else {
             console.error('Failed to fetch activities');
             setActivities({});
@@ -107,25 +114,25 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
           console.error('Error fetching activities:', error);
           setActivities({});
         } finally {
-          setLoading(false); // End loading
+          setLoading(false);
         }
       };
       fetchActivities();
     } else {
       setActivities({});
     }
-  }, [selectedDate, isAuthenticated]);
+  }, [selectedDate, isAuthenticated, isLoading, token, logout]);
 
   // Save activities when they change
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !loading) {
       const saveActivities = async () => {
         try {
           await fetch('/api/activities', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               date: selectedDate.toDateString(),
@@ -138,17 +145,19 @@ export const HoursProvider: React.FC<HoursProviderProps> = ({ children }) => {
       };
       saveActivities();
     }
-  }, [activities, isAuthenticated, selectedDate]);
+  }, [activities, isAuthenticated, selectedDate, loading, token]);
 
   const handleActivityChange = (hourKey: string, value: string): void => {
-    setActivities(prevActivities => ({
+    setActivities((prevActivities) => ({
       ...prevActivities,
       [hourKey]: value,
     }));
   };
 
   return (
-    <HoursContext.Provider value={{ activities, from, until, loading, handleActivityChange, setFrom, setUntil }}>
+    <HoursContext.Provider
+      value={{ activities, from, until, loading, handleActivityChange, setFrom, setUntil }}
+    >
       {children}
     </HoursContext.Provider>
   );

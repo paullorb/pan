@@ -1,3 +1,4 @@
+// /context/habitsContext.tsx
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
@@ -18,16 +19,12 @@ interface HabitsContextType {
   deleteHabit: (index: number) => void;
 }
 
-const HabitsContext = React.createContext<HabitsContextType | undefined>(
-  undefined
-);
+const HabitsContext = React.createContext<HabitsContextType | undefined>(undefined);
 
-export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
-  const [loading, setLoading] = useState<boolean>(false); // Renamed from isLoading to loading
-  const { isAuthenticated } = useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { isAuthenticated, isLoading, token, logout } = useAuth();
   const { selectedDate } = useDate();
 
   // Function to format the date as 'YYYY-MM-DD'
@@ -35,9 +32,11 @@ export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Fetch habits when the user is authenticated or when the selected date changes
   useEffect(() => {
+    if (isLoading) return; // Wait until authentication state is initialized
+
     if (isAuthenticated && selectedDate) {
       const fetchHabits = async () => {
-        setLoading(true); // Start loading
+        setLoading(true);
         try {
           const response = await fetch(
             `/api/habits?date=${formatDate(selectedDate)}`,
@@ -45,33 +44,34 @@ export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${token}`,
               },
             }
           );
           if (response.ok) {
             const data = await response.json();
             setHabits(data.habits);
+          } else if (response.status === 401) {
+            console.error('Unauthorized access. Logging out.');
+            logout();
           } else {
             console.error('Failed to fetch habits');
-            setHabits([]); // Reset habits if fetch fails
           }
         } catch (error) {
           console.error('Error fetching habits:', error);
-          setHabits([]); // Reset habits if error occurs
         } finally {
-          setLoading(false); // End loading
+          setLoading(false);
         }
       };
       fetchHabits();
     } else {
       setHabits([]);
     }
-  }, [isAuthenticated, selectedDate]);
+  }, [isAuthenticated, isLoading, selectedDate, token, logout]);
 
   // Save habits when they change
   useEffect(() => {
-    if (isAuthenticated && selectedDate && !loading) {
+    if (isAuthenticated && selectedDate && !loading && !isLoading) {
       const saveHabits = async () => {
         try {
           const dateStr = formatDate(selectedDate);
@@ -84,7 +84,7 @@ export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({ date: dateStr }),
             });
@@ -94,7 +94,7 @@ export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({ habits, date: dateStr }),
             });
@@ -105,7 +105,7 @@ export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
       };
       saveHabits();
     }
-  }, [habits]);
+  }, [habits, isAuthenticated, selectedDate, loading, isLoading, token]);
 
   const toggleHabit = (index: number) => {
     setHabits((prevHabits) => {

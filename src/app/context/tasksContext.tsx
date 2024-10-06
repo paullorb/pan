@@ -26,34 +26,39 @@ const TasksContext = createContext<TasksContextType | undefined>(undefined);
 
 export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { selectedDate } = useDate(); // Get selected date from dateContext
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token, isLoading, logout } = useAuth();
   const [tasksByDate, setTasksByDate] = useState<{ [date: string]: Task[] }>({});
   const [loading, setLoading] = useState<boolean>(false);
 
-  const selectedDateString = selectedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+  const selectedDateString = selectedDate ? selectedDate.toISOString().split('T')[0] : '';
 
   // Fetch tasks when the selected date changes or on initial render
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isLoading) return; // Wait until authentication state is initialized
+
+    if (isAuthenticated && selectedDate) {
       fetchTasks();
+    } else {
+      setTasksByDate({});
     }
-  }, [selectedDate.getTime(), isAuthenticated]);
+  }, [isAuthenticated, isLoading, selectedDate, token, logout]);
 
   const fetchTasks = async () => {
+    if (!selectedDate) return; // Ensure selectedDate is available
+
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const month = selectedDate.getMonth() + 1; // Months are zero-based in JavaScript
       const year = selectedDate.getFullYear();
-  
+
       const response = await fetch(`/api/tasks?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         // Group tasks by date
         const tasksByDateData = data.tasks.reduce((acc: any, task: any) => {
@@ -69,8 +74,11 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           });
           return acc;
         }, {});
-  
+
         setTasksByDate(tasksByDateData);
+      } else if (response.status === 401) {
+        console.error('Unauthorized access. Logging out.');
+        logout();
       } else {
         console.error('Failed to fetch tasks:', data.error);
       }
@@ -80,7 +88,6 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setLoading(false);
     }
   };
-  
 
   // Function to add a new task
   const addTask = async (text: string) => {
@@ -266,8 +273,6 @@ export const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Error deleting task:', error);
     }
   };
-
-  
 
   return (
     <TasksContext.Provider

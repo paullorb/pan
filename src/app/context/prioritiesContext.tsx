@@ -1,7 +1,8 @@
+// /context/prioritiesContext.tsx
 /* eslint-disable react-hooks/exhaustive-deps */
-// prioritiesContext.tsx
 "use client";
-import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from 'react';
+
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
 
@@ -14,48 +15,70 @@ const PrioritiesContext = createContext<PrioritiesContextType | undefined>(undef
 
 export const PrioritiesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [priorities, setPriorities] = useState<string[]>(['', '', '']);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading, token, logout } = useAuth();
   const { selectedDate } = useDate();
-  const isFirstLoad = useRef(true);
 
   // Function to format the date as 'YYYY-MM-DD'
-  const formatDate = (date: Date): string => {
-    return date.toISOString().split('T')[0];
-  };
+  const formatDate = (date: Date): string => date.toISOString().split('T')[0];
 
   // Fetch priorities when the user is authenticated or when the selected date changes
   useEffect(() => {
+    if (isLoading) return; // Wait until authentication state is initialized
+
     if (isAuthenticated && selectedDate) {
-      // Fetch priorities from backend
       const fetchPriorities = async () => {
         try {
           const response = await fetch(`/api/priorities?date=${formatDate(selectedDate)}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              Authorization: `Bearer ${token}`,
             },
           });
           if (response.ok) {
             const data = await response.json();
             setPriorities(data.priorities);
+          } else if (response.status === 401) {
+            console.error('Unauthorized access. Logging out.');
+            logout();
           } else {
             console.error('Failed to fetch priorities');
-            setPriorities(['', '', '']); // Reset priorities if fetch fails
+            setPriorities(['', '', '']);
           }
         } catch (error) {
           console.error('Error fetching priorities:', error);
-          setPriorities(['', '', '']); // Reset priorities if error occurs
-        } finally {
-          isFirstLoad.current = false; // Mark that the first load is complete
+          setPriorities(['', '', '']);
         }
       };
       fetchPriorities();
     } else {
       setPriorities(['', '', '']);
-      isFirstLoad.current = false;
     }
-  }, [isAuthenticated, selectedDate]);
+  }, [isAuthenticated, isLoading, selectedDate, token, logout]);
+
+  // Save priorities when they change
+  useEffect(() => {
+    if (isAuthenticated && !isLoading) {
+      const savePriorities = async () => {
+        try {
+          await fetch('/api/priorities', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              date: formatDate(selectedDate),
+              priorities,
+            }),
+          });
+        } catch (error) {
+          console.error('Error saving priorities:', error);
+        }
+      };
+      savePriorities();
+    }
+  }, [priorities, isAuthenticated, isLoading, selectedDate, token]);
 
   return (
     <PrioritiesContext.Provider value={{ priorities, setPriorities }}>
