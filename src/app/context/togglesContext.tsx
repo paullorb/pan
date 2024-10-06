@@ -29,7 +29,7 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
       return storedToggles
         ? JSON.parse(storedToggles)
         : {
-            hours: true,
+            hours: false,
             priorities: true,
             tasks: true,
             month: true,
@@ -39,7 +39,7 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     } else {
       // Default state if window is undefined (e.g., during server-side rendering)
       return {
-        hours: true,
+        hours: false,
         priorities: true,
         tasks: true,
         month: true,

@@ -41,11 +41,6 @@
   opacity: 1;
 }
 
-.titleC {
-  background-color: inherit;
-  border: none;
-}
-
 .title {
   font-weight: 400;
   padding: var(--spacing-xs);
