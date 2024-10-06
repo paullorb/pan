@@ -1,7 +1,7 @@
 // /components/layout/nav.tsx
 
 import DateComponent from '../toggles/date/date';
-import Hamburger from './hamburger';
+import Hamburger from '../UI/hamburger/hamburger';
 import style from './nav.module.css';
 
 export default function Nav () {
