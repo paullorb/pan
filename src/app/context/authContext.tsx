@@ -1,7 +1,7 @@
 // /context/authContext.tsx
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -18,6 +18,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const storedEmail = localStorage.getItem('userEmail');
+
+    if (storedToken) {
+      setToken(storedToken);
+      setIsAuthenticated(true);
+      if (storedEmail) {
+        setUserEmail(storedEmail);
+      }
+    }
+  }, []);
+
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch('/api/login', {
@@ -32,6 +45,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Store the token in state and localStorage
         setToken(data.token);
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userEmail', email);
 
         setIsAuthenticated(true);
         setUserEmail(email);
@@ -58,6 +72,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Store the token in state and localStorage
         setToken(data.token);
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userEmail', email);
 
         setIsAuthenticated(true);
         setUserEmail(email);
