@@ -34,8 +34,8 @@ export async function GET(request: Request) {
           priorities: false,
           tasks: false,
           month: false,
-          date: false,
-          momentum: false,
+          habits: false,
+          tags: false,
         },
       }, { status: 200 });
     }

@@ -1,4 +1,4 @@
-// togglesContext.tsx
+// /components/context/togglesContext.tsx
 "use client";
 
 import React, { createContext, useState, ReactNode, useEffect } from "react";
@@ -9,7 +9,7 @@ export interface TogglesState {
   priorities: boolean;
   tasks: boolean;
   month: boolean;
-  momentum: boolean;
+  habits: boolean;
   tags: boolean;
 }
 
@@ -31,7 +31,7 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     priorities: true,
     tasks: true,
     month: true,
-    momentum: true,
+    habits: true,
     tags: true,
   });
 

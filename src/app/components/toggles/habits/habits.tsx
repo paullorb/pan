@@ -3,22 +3,18 @@
 "use client";
 import React, { useContext } from 'react';
 import style from './habits.module.css';
-import { useMomentum } from '../../../context/momentumContext';
+import { useHabits } from '../../../context/habitsContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 
 export default function Habits() {
-  const { habits, toggleHabit, addHabit, deleteHabit } = useMomentum();
+  const { habits, toggleHabit, addHabit, deleteHabit } = useHabits();
 
   const togglesContext = useContext(TogglesContext);
   if (!togglesContext) {
     throw new Error('Habits must be used within a TogglesProvider');
-  }
-  const { togglesState } = togglesContext;
-  if (!togglesState.momentum) {
-    return null;
   }
 
   const completedHabitsCount = habits.filter((habit) => habit.completed).length;

@@ -1,4 +1,4 @@
-// models/Toggle.ts
+// /lib/models/Toggle.ts
 
 import mongoose, { Schema, Document } from 'mongoose';
 
@@ -9,8 +9,8 @@ export interface IToggle extends Document {
     priorities: boolean;
     tasks: boolean;
     month: boolean;
-    date: boolean;
-    momentum: boolean;
+    habits: boolean;
+    tags: boolean;
   };
 }
 
@@ -21,8 +21,8 @@ const ToggleSchema: Schema = new Schema({
     priorities: { type: Boolean, default: false },
     tasks: { type: Boolean, default: false },
     month: { type: Boolean, default: false },
-    date: { type: Boolean, default: false },
-    momentum: { type: Boolean, default: false },
+    habits: { type: Boolean, default: false },
+    tags: { type: Boolean, default: false },
   },
 });
 

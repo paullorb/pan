@@ -10,7 +10,7 @@ interface Habit {
   completed: boolean;
 }
 
-interface MomentumContextType {
+interface HabitsContextType {
   habits: Habit[];
   loading: boolean;
   toggleHabit: (index: number) => void;
@@ -18,11 +18,11 @@ interface MomentumContextType {
   deleteHabit: (index: number) => void;
 }
 
-const MomentumContext = React.createContext<MomentumContextType | undefined>(
+const HabitsContext = React.createContext<HabitsContextType | undefined>(
   undefined
 );
 
-export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
+export const HabitsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -40,7 +40,7 @@ export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoading(true); // Start loading
         try {
           const response = await fetch(
-            `/api/momentum?date=${formatDate(selectedDate)}`,
+            `/api/habits?date=${formatDate(selectedDate)}`,
             {
               method: 'GET',
               headers: {
@@ -80,7 +80,7 @@ export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
           const allEmpty = habits.length === 0;
           if (allEmpty) {
             // Delete habits from backend
-            await fetch('/api/momentum', {
+            await fetch('/api/habits', {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
             });
           } else if (dateStr <= todayStr) {
             // Save habits to backend
-            await fetch('/api/momentum', {
+            await fetch('/api/habits', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -130,18 +130,18 @@ export const MomentumProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <MomentumContext.Provider
+    <HabitsContext.Provider
       value={{ habits, loading, toggleHabit, addHabit, deleteHabit }}
     >
       {children}
-    </MomentumContext.Provider>
+    </HabitsContext.Provider>
   );
 };
 
-export const useMomentum = () => {
-  const context = React.useContext(MomentumContext);
+export const useHabits = () => {
+  const context = React.useContext(HabitsContext);
   if (context === undefined) {
-    throw new Error('useMomentum must be used within a MomentumProvider');
+    throw new Error('useHabits must be used within a HabitsProvider');
   }
   return context;
 };

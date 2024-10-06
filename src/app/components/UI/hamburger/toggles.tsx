@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styles from "./toggles.module.css";
-import { TogglesContext, TogglesState } from "../../../context/togglesContext"; // Adjust the import path as necessary
+import { TogglesContext, TogglesState } from "../../../context/togglesContext"; 
 
 export default function Toggles() {
   const [isOpen, setIsOpen] = useState(false);

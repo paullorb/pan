@@ -1,8 +1,8 @@
-// app/api/momentum/route.ts
+// app/api/habits/route.ts
 
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/mongodb';
-import Habit from '../../lib/models/habit';
+import Habit from '../../lib/models/Habit';
 import jwt from 'jsonwebtoken';
 
 export async function GET(request: Request) {
@@ -93,7 +93,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ habits: habitDoc.habits }, { status: 200 });
   } catch (error) {
-    console.error('GET /api/momentum error:', error);
+    console.error('GET /api/habits error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -140,7 +140,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Habits updated' }, { status: 200 });
   } catch (error) {
-    console.error('POST /api/momentum error:', error);
+    console.error('POST /api/habits error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -176,7 +176,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'Habits deleted' }, { status: 200 });
   } catch (error) {
-    console.error('DELETE /api/momentum error:', error);
+    console.error('DELETE /api/habits error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

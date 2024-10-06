@@ -19,7 +19,7 @@ const Aside: React.FC = () => {
 
   const { togglesState } = context;
 
-  const isAsideVisible = togglesState.priorities || togglesState.tasks || togglesState.month || togglesState.momentum;
+  const isAsideVisible = togglesState.priorities || togglesState.tasks || togglesState.month || togglesState.habits;
 
   if (!isAsideVisible) {
     return null;
@@ -30,7 +30,7 @@ const Aside: React.FC = () => {
       {togglesState.month && <Month />}
       {togglesState.priorities && <Priority />}
       {togglesState.tasks && <Tasks />}
-      {togglesState.momentum && <Habits />}
+      {togglesState.habits && <Habits />}
       {togglesState.tags && <Tags />}
     </aside>
   );

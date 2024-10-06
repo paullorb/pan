@@ -8,7 +8,7 @@ import { DateProvider } from './context/dateContext';
 import { PrioritiesProvider } from './context/prioritiesContext';
 import { TasksProvider } from './context/tasksContext';
 import { TogglesProvider } from './context/togglesContext';
-import { MomentumProvider } from './context/momentumContext';
+import { HabitsProvider } from './context/habitsContext';
 import { CurrentHourProvider } from './context/currentHourContext';
 import { TagsProvider } from './context/tagsContext';
 
@@ -22,21 +22,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AuthProvider>
           <ThemeProvider>
-            <TagsProvider>
               <TogglesProvider>
+            <TagsProvider>
                 <DateProvider>
                   <CurrentHourProvider>
                     <HoursProvider>
-                      <MomentumProvider>
+                      <HabitsProvider>
                         <PrioritiesProvider>
                           <TasksProvider>{children}</TasksProvider>
                         </PrioritiesProvider>
-                      </MomentumProvider>
+                      </HabitsProvider>
                     </HoursProvider>
                   </CurrentHourProvider>
                 </DateProvider>
-              </TogglesProvider>
             </TagsProvider>
+              </TogglesProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>
