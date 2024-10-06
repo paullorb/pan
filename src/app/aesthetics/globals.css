@@ -43,15 +43,13 @@ html[data-theme='dark'] {
 
 @page {
   size: A4;
-  margin: 50px;
+  margin: 0;
 }
 
 @media print {
   html, body {
-    --title: white;
-    --bg-alt1: white;
-    --bg-alt2: white;
     width: 210mm;
     height: 297mm;
+    padding-right: 1rem;
   }
 }
