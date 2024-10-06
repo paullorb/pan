@@ -7,6 +7,11 @@
   gap: var(--spacing-s);
 }
 
+.title * {
+  color: black !important;
+  background-color: white !important;
+}
+
 .monthGrid {
   display: flex;
   flex-wrap: wrap;

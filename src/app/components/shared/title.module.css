@@ -4,7 +4,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: var(--spacing-m);
   background-color: var(--title);
   border-radius: var(--border-r);
   margin-bottom: 10px;
@@ -15,10 +14,12 @@
   display: flex;
   background-color: inherit;
   border-radius: var(--border-r);
+  flex: 1;
 }
 
 .second {
   background-color: inherit;
+  padding-right: var(--spacing-m);
 }
 
 .pagination {

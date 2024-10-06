@@ -1,4 +1,6 @@
+// /components/toggles/month/month.tsx
 "use client";
+
 import React, { useContext } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
@@ -97,6 +99,7 @@ const Month = () => {
         pagination={true}
         onPrevious={decrementMonth}
         onNext={incrementMonth}
+        className={styles.title}
       />
       <div className={styles.monthGrid}>
         {days.map((day, index) => {

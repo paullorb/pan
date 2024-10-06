@@ -1,5 +1,3 @@
-// /components/shared/title.tsx
-
 "use client";
 import React from 'react';
 import styles from './title.module.css';
@@ -11,32 +9,42 @@ interface TitleProps {
     total: number;
   };
   pagination?: boolean;
-  onPrevious?: () => void; 
-  onNext?: () => void;   
+  onPrevious?: () => void;
+  onNext?: () => void;
+  className?: string; // Add className prop
 }
 
-const Title: React.FC<TitleProps> = ({ title, count, pagination, onPrevious, onNext }) => {
+const Title: React.FC<TitleProps> = ({
+  title,
+  count,
+  pagination,
+  onPrevious,
+  onNext,
+  className, // Destructure className
+}) => {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${className || ''}`}>
       <div className={styles.first}>
         {pagination && (
           <div className={styles.pagination}>
             <button
               aria-label="Previous"
               className={styles.paginationButton}
-              onClick={onPrevious} // Added onClick handler
+              onClick={onPrevious}
             >
               &lt;
             </button>
           </div>
         )}
-        <h3 className={styles.title}>{title}</h3>
+        <div className={styles.titleC}>
+          <h3 className={styles.title}>{title}</h3>
+        </div>
         {pagination && (
           <div className={styles.pagination}>
             <button
               aria-label="Next"
               className={styles.paginationButton}
-              onClick={onNext} // Added onClick handler
+              onClick={onNext}
             >
               &gt;
             </button>
