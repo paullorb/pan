@@ -25,42 +25,37 @@ export const TogglesContext = createContext<TogglesContextType | undefined>(unde
 export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
 
-  // Set default togglesState to have all toggles activated
-  const [togglesState, setTogglesState] = useState<TogglesState>({
-    hours: true,
-    priorities: true,
-    tasks: true,
-    month: true,
-    habits: true,
-    tags: true,
+  // Initialize togglesState from localStorage or use defaults
+  const [togglesState, setTogglesState] = useState<TogglesState>(() => {
+    if (typeof window !== "undefined") {
+      const storedToggles = localStorage.getItem('togglesState');
+      return storedToggles ? JSON.parse(storedToggles) : {
+        hours: true,
+        priorities: true,
+        tasks: true,
+        month: true,
+        habits: true,
+        tags: true,
+      };
+    } else {
+      // Default state if window is undefined (e.g., during server-side rendering)
+      return {
+        hours: true,
+        priorities: true,
+        tasks: true,
+        month: true,
+        habits: true,
+        tags: true,
+      };
+    }
   });
 
-  // Fetch togglesState when the user is authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      const fetchTogglesState = async () => {
-        try {
-          const response = await fetch('/api/toggles', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            setTogglesState(data.togglesState);
-          } else {
-            console.error('Failed to fetch toggles state');
-          }
-        } catch (error) {
-          console.error('Error fetching toggles state:', error);
-        }
-      };
-      fetchTogglesState();
-    }
-  }, [isAuthenticated]);
+    // Save togglesState to localStorage whenever it changes
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        localStorage.setItem('togglesState', JSON.stringify(togglesState));
+      }
+    }, [togglesState]);
 
   // Save togglesState when it changes
   useEffect(() => {
