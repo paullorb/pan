@@ -50,3 +50,7 @@
   border: 5px solid var(--title);
   border-style: none none none solid;
 }
+
+.boldHour {
+  font-weight: bold;
+}

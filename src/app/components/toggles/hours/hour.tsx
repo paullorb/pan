@@ -1,5 +1,3 @@
-// components/hours/hour.tsx
-
 import React from 'react';
 import { useHours } from '../../../context/hoursContext';
 import { useDate } from '../../../context/dateContext';
@@ -34,7 +32,7 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
   return (
     <Item className={`${style.container} ${backgroundClass} ${currentHourClass}`}>
       <label htmlFor={`activity-${hour}`} className={style.label}>
-        <div className={`${style.hour} ${backgroundClass}`}>
+        <div className={`${style.hour} ${backgroundClass} ${isCurrentHour ? style.boldHour : ''}`}>
           {hourLabel}
         </div>
         <div className={`${style.pan} ${backgroundClass}`}>
