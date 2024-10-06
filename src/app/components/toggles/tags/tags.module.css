@@ -1,4 +1,4 @@
-/* tags.module.css */
+/* /components/toggles/tags/tags.module.css */
 
 .container {
   display: flex;
@@ -59,4 +59,13 @@
   border: none;
   background: transparent;
   cursor: pointer;
+}
+
+
+.addItem, .addTagContainer {
+  display: none; 
+}
+
+.container:hover .addItem, .container:hover .addTagContainer {
+  display: flex; 
 }

@@ -1,5 +1,6 @@
-// components/tags/tags.tsx
+// /components/toggles/tags/tags.tsx
 "use client";
+
 import React, { useState } from 'react';
 import { useTags } from '../../../context/tagsContext';
 import style from './tags.module.css';
@@ -19,7 +20,7 @@ const Tags: React.FC = () => {
     <div className={style.container}>
       <Title title="Tags" />
       <div className={style.tagList}>
-        {tags.map(tag => (
+        {tags.map((tag) => (
           <Item
             key={tag.id}
             text={tag.name}
@@ -32,8 +33,7 @@ const Tags: React.FC = () => {
                 style={{ backgroundColor: tag.color || '#cccccc' }}
               ></span>
               <span className={style.tagName}>{tag.name}</span>
-              {/* Placeholder for count */}
-              <span className={style.tagCount}>0</span>
+              <span className={style.tagCount}>{tag.count}</span>
               <button
                 className={style.deleteButton}
                 onClick={() => deleteTag(tag.id)}
@@ -44,7 +44,6 @@ const Tags: React.FC = () => {
           </Item>
         ))}
       </div>
-      {/* Color Picker and Add Tag Input */}
       <div className={style.addTagContainer}>
         <input
           type="color"
@@ -52,7 +51,11 @@ const Tags: React.FC = () => {
           onChange={(e) => setSelectedColor(e.target.value)}
           className={style.colorPicker}
         />
-        <AddItem placeholder="Add new tag" onAdd={handleAddTag} />
+        <AddItem
+          placeholder="Add new tag"
+          onAdd={handleAddTag}
+          className={style.addItem}
+        />
       </div>
     </div>
   );
