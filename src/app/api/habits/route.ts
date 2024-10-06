@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/mongodb';
-import Habit from '../../lib/models/Habit';
+import Habit from '../../lib/models/habit';
 import jwt from 'jsonwebtoken';
 
 export async function GET(request: Request) {
