@@ -57,26 +57,12 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
       }
     }, [togglesState]);
 
-  // Save togglesState when it changes
+  // Save togglesState to localStorage whenever it changes
   useEffect(() => {
-    if (isAuthenticated) {
-      const saveTogglesState = async () => {
-        try {
-          await fetch('/api/toggles', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-            body: JSON.stringify({ togglesState }),
-          });
-        } catch (error) {
-          console.error('Error saving toggles state:', error);
-        }
-      };
-      saveTogglesState();
+    if (typeof window !== "undefined") {
+      localStorage.setItem('togglesState', JSON.stringify(togglesState));
     }
-  }, [togglesState, isAuthenticated]);
+  }, [togglesState]);
 
   return (
     <TogglesContext.Provider value={{ togglesState, setTogglesState }}>
