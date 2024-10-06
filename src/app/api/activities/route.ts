@@ -1,4 +1,4 @@
-// app/api/activities/route.ts
+// /api/activities/route.ts
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/mongodb';
 import Activity from '../../lib/models/Activity';
