@@ -1,4 +1,4 @@
-// models/habit.ts
+// models/Habit.ts
 
 import mongoose, { Schema, Document } from 'mongoose';
 
