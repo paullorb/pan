@@ -1,3 +1,30 @@
 .container {
-  border: 3px solid green;
+  display: flex;
+  width: 100%;
+  gap: var(--spacing-xl);
+  justify-content: space-between;
+}
+
+.leftUp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 1 45%;
+}
+
+.rightUp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1 1 50%;
+}
+
+.title {
+  padding-left: var(--spacing-l);
+  font-size: 1.4rem;
+  letter-spacing: -1px;
+}
+
+.emoji {
+  font-size: 1rem;
 }
