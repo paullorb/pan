@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import AuthModal from '../auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../../context/authContext';
-import Status from './status';
-import Toggles from './toggles';
-import Language from './language';
+import Status from '../status/status';
+import Toggles from '../toggles/toggles';
+import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
 
 const Hamburger: React.FC = () => {
