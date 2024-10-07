@@ -1,9 +1,8 @@
-// components/shared/item.tsx
-
 "use client";
 import React from 'react';
 import styles from './item.module.css';
-import Skeleton from './skeleton'; // Import the Skeleton component
+import Skeleton from './skeleton';
+import DelItem from './delItem'; // Import the DelItem component
 
 interface ItemProps {
   text?: string;
@@ -15,7 +14,7 @@ interface ItemProps {
   label?: string;
   className?: string;
   children?: React.ReactNode;
-  loading?: boolean; // New prop for loading state
+  loading?: boolean;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -28,10 +27,9 @@ const Item: React.FC<ItemProps> = ({
   label,
   className,
   children,
-  loading = false, // Default to false
+  loading = false,
 }) => {
   if (loading) {
-    // Render the Skeleton component when loading
     return (
       <div className={`${styles.item} ${className || ''}`}>
         <Skeleton height="20px" width="100%" />
@@ -58,11 +56,7 @@ const Item: React.FC<ItemProps> = ({
           <span onClick={onToggle} className={styles.text}>
             {text}
           </span>
-          {onDelete && (
-            <button className={styles.deleteButton} onClick={onDelete}>
-              🗑️
-            </button>
-          )}
+          {onDelete && <DelItem onDelete={onDelete} />} {/* Use DelItem for deletion */}
         </>
       )}
     </div>
