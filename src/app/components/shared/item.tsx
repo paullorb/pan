@@ -1,4 +1,6 @@
+// /components/shared/item.tsx
 "use client";
+
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
@@ -56,7 +58,9 @@ const Item: React.FC<ItemProps> = ({
           <span onClick={onToggle} className={styles.text}>
             {text}
           </span>
+          <div className={styles.deleteButton}>
           {onDelete && <DelItem onDelete={onDelete} />}
+          </div>
         </>
       )}
     </div>

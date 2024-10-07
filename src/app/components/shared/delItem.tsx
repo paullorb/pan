@@ -6,6 +6,7 @@ import styles from './delItem.module.css';
 
 interface DelItemProps {
   onDelete: () => void;
+  className?: string;
 }
 
 const DelItem: React.FC<DelItemProps> = ({ onDelete }) => {

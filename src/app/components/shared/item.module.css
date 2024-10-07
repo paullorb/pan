@@ -4,10 +4,13 @@
   display: flex;
   align-items: center;
   background-color: var(--note-bg);
-  border-radius: var(--border-r);
   margin-bottom: var(--spacing-xs);
   transition: background-color 0.3s ease;
-  border: 2px solid var(--black-b);
+  border: 1px solid var(--black-b);
+}
+
+.item:hover {
+  border-bottom: 1px solid black;
 }
 
 .completed .text {
