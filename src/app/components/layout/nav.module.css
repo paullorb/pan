@@ -3,6 +3,7 @@
   width: 100%;
   gap: var(--spacing-xl);
   justify-content: space-between;
+  min-height: 5rem;
 }
 
 .leftUp {
@@ -30,7 +31,13 @@
 }
 
 @media screen and (max-width: 768px) {
+  .container {
+    gap: 0;
+  }
   .titleC {
     display: none;
+  }
+  .rightUp {
+    justify-content: flex-end;
   }
 }

@@ -10,30 +10,6 @@
   gap: var(--spacing-xl);
 }
 
-.nav {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  gap: var(--spacing-xl);
-}
-
-.rightUp {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1 1 55%;
-}
-
-.title {
-  padding-left: var(--spacing-l);
-  font-size: 1.4rem;
-  letter-spacing: -1px;
-}
-
-.emoji {
-  font-size: 1rem;
-}
-
 .tables {
   display: flex;
   position: relative;
@@ -46,20 +22,11 @@
   .container {
     padding: 0;
   }
-  .aside {
-    min-width: 30%;
-  }
 }
 
 @media screen and (max-width: 768px) {
   .container {
     margin: 0;
-    padding: 0;
-  }
-  .titleC {
-    margin-left: 0;
-  }
-  .aside {
     padding: 0;
   }
   .tables {
