@@ -56,7 +56,7 @@ const Item: React.FC<ItemProps> = ({
           <span onClick={onToggle} className={styles.text}>
             {text}
           </span>
-          {onDelete && <DelItem onDelete={onDelete} />} {/* Use DelItem for deletion */}
+          {onDelete && <DelItem onDelete={onDelete} />}
         </>
       )}
     </div>
