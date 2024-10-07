@@ -5,8 +5,7 @@
   align-items: center;
   background-color: var(--note-bg);
   margin-bottom: var(--spacing-xs);
-  transition: background-color 0.3s ease;
-  border: 1px solid var(--black-b);
+  transition: all 0.3s ease;
 }
 
 .item:hover {

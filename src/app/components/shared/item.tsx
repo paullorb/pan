@@ -4,7 +4,7 @@
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
-import DelItem from './delItem'; // Import the DelItem component
+import DelItem from './delItem'; 
 
 interface ItemProps {
   text?: string;
