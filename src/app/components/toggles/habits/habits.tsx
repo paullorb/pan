@@ -17,6 +17,11 @@ export default function Habits() {
     throw new Error('Habits must be used within a TogglesProvider');
   }
 
+  const { togglesState } = togglesContext;
+  if (!togglesState.tasks) {
+    return null;
+  }
+
   const completedHabitsCount = habits.filter((habit) => habit.completed).length;
   const totalHabitsCount = habits.length;
 
@@ -32,7 +37,7 @@ export default function Habits() {
           key={`${habit.name}-${index}`}
           text={habit.name}
           completed={habit.completed}
-          onToggle={() => toggleHabit(index)}
+          onToggle={() => toggleHabit(index)} 
           onDelete={() => deleteHabit(index)}
         />
       ))}
