@@ -13,6 +13,7 @@ interface TitleProps {
   pagination?: boolean;
   onPrevious?: () => void;
   onNext?: () => void;
+  onClick?: () => void;
   className?: string;
 }
 
@@ -22,16 +23,20 @@ const Title: React.FC<TitleProps> = ({
   pagination,
   onPrevious,
   onNext,
+  onClick,
   className,
 }) => {
   return (
-    <div className={`${styles.container} ${className || ''}`}>
+    <div className={`${styles.container} ${className || ''}`} onClick={onClick}>
       <div className={styles.first}>
         {pagination && onPrevious && (
           <button
             aria-label="Previous"
             className={styles.paginationButton}
-            onClick={onPrevious}
+            onClick={(e) => {
+              e.stopPropagation();
+              onPrevious();
+            }}
           >
             &lt;
           </button>
@@ -41,7 +46,10 @@ const Title: React.FC<TitleProps> = ({
           <button
             aria-label="Next"
             className={styles.paginationButton}
-            onClick={onNext}
+            onClick={(e) => {
+              e.stopPropagation();
+              onNext();
+            }}
           >
             &gt;
           </button>

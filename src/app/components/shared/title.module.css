@@ -7,7 +7,9 @@
   border-radius: var(--border-r);
   margin-bottom: 10px;
   width: 100%;
-  position: relative; /* Ensures the hover effect applies correctly */
+  position: relative; 
+  transition: 0.3s ease-in-out;
+  padding: 0 var(--spacing-xs);
 }
 
 .first {

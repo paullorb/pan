@@ -1,13 +1,14 @@
-// date.tsx
+// Refactored date.tsx
 "use client";
 
 import React, { useState } from 'react';
-import { useDate } from '../../../context/dateContext'; 
+import { useDate } from '../../../context/dateContext';
 import style from './date.module.css';
+import Title from '../../shared/title';
 
 const DateComponent: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();
-  const [isHovered, setIsHovered] = useState(false); // New hover state
+  const [isHovered, setIsHovered] = useState(false);
 
   // Function to format the selected date
   const formatDate = (date: Date): string => {
@@ -44,41 +45,40 @@ const DateComponent: React.FC = () => {
   const goToNextDay = (): void => {
     const nextDay = new Date(selectedDate);
     nextDay.setDate(nextDay.getDate() + 1);
-    setSelectedDate(nextDay); 
+    setSelectedDate(nextDay);
   };
 
   const goToPreviousDay = (): void => {
     const previousDay = new Date(selectedDate);
     previousDay.setDate(previousDay.getDate() - 1);
-    setSelectedDate(previousDay); 
+    setSelectedDate(previousDay);
   };
 
   const resetToToday = (): void => {
-    // Create a new Date object with time set to 00:00:00
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-  
+
     if (selectedDate.getTime() !== today.getTime()) {
       setSelectedDate(today);
     } else {
-      // Force update by setting selectedDate to a new instance
       setSelectedDate(new Date(today.getTime()));
     }
   };
 
   return (
-    <div 
+    <div
       className={style.container}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className={style.weekdays}>
-        <h3 className={style.arrow} onClick={goToPreviousDay}>&lt;</h3>
-        <h2 className={style.weekday} onClick={resetToToday}>
-          {isHovered ? getDayDifference(selectedDate) : formatWeekday(selectedDate)}
-        </h2>
-        <h3 className={style.arrow} onClick={goToNextDay}>&gt;</h3>
-      </div>
+      <Title
+        title={isHovered ? getDayDifference(selectedDate) : formatWeekday(selectedDate)}
+        pagination={true}
+        onPrevious={goToPreviousDay}
+        onNext={goToNextDay}
+        onClick={resetToToday}
+        className={style.weekday}
+      />
       <div className={style.dateC}>
           <h3 className={style.date}>{formatDate(selectedDate)}</h3>
       </div>
