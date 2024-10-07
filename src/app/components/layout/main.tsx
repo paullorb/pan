@@ -10,14 +10,10 @@ const MainComponent: React.FC = () => {
   const context = useContext(TogglesContext);
 
   if (!context) {
-    return null;
+    return <main className={style.main} />;
   }
 
   const { togglesState } = context;
-
-  if (!togglesState.hours) {
-    return null;
-  }
 
   return (
     <main className={style.main}>
