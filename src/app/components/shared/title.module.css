@@ -7,6 +7,7 @@
   border-radius: var(--border-r);
   margin-bottom: 10px;
   width: 100%;
+  position: relative; /* Ensures the hover effect applies correctly */
 }
 
 .first {
@@ -23,13 +24,20 @@
   padding-right: var(--spacing-m);
 }
 
+/* Hide the pagination buttons by default */
 .paginationButton {
-  transition: 0.3s ease-in-out;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
   cursor: pointer;
   background: none;
   border: none;
   color: var(--bg);
   font-size: 1.2rem;
+}
+
+/* Show pagination buttons when the container is hovered */
+.container:hover .paginationButton {
+  opacity: 1;
 }
 
 .title {
@@ -49,5 +57,11 @@
 @media print {
   .title {
     color: var(--hover-color);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .paginationButton {
+    opacity: 0.1;
   }
 }
