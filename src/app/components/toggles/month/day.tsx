@@ -1,3 +1,4 @@
+// /components/toggles/month/day.tsx
 "use client";
 
 import React from 'react';
@@ -12,6 +13,7 @@ interface DayProps {
   todayDate: Date;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
+  onDayHover: (day: number | null) => void;
 }
 
 const Day: React.FC<DayProps> = ({
@@ -21,6 +23,7 @@ const Day: React.FC<DayProps> = ({
   todayDate,
   selectedDate,
   setSelectedDate,
+  onDayHover,
 }) => {
   const { tasksByDate } = useTasks();
 
@@ -61,18 +64,19 @@ const Day: React.FC<DayProps> = ({
         isSelectedDay() ? styles.selectedDay : ''
       }`}
       onClick={handleDayClick}
+      onMouseEnter={() => onDayHover(day)}
+      onMouseLeave={() => onDayHover(null)}
     >
       <div className={styles.content}>
+      <div className={styles.dot}>•</div>
         <div className={`${styles.dayNumber} ${isCurrentDay() ? styles.currentDayNumber : ''}`}>
           {day}
         </div>
-        <div className={styles.abajo}>
-          <Dots
-            hasUncompletedTasks={hasUncompletedTasks}
-            allTasksCompleted={allTasksCompleted}
-            isTodo={isTodo}
-          />
-        </div>
+        <Dots
+          hasUncompletedTasks={hasUncompletedTasks}
+          allTasksCompleted={allTasksCompleted}
+          isTodo={isTodo}
+        />
       </div>
     </div>
   );

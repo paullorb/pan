@@ -34,10 +34,9 @@
   margin: 0;
 }
 
-.arriba {
-  width: 100%;
-  color: transparent;
-  max-height: 20%;
+.dot {
+  opacity: 0;
+  user-select: none;
 }
 
 .dayNumber {
@@ -46,17 +45,6 @@
   padding: 0;
   margin: 0;
   width: 100%;
-}
-
-.abajo {
-  width: 100%;
-  background-color: transparent;
-}
-
-.currentDay {
-  background-color: var(--color);
-  color: rgb(218, 141, 70);
-  border-color: #ddd;
 }
 
 .currentDayNumber {

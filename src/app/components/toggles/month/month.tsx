@@ -71,9 +71,8 @@ const Month: React.FC = () => {
     }
   }
 
-  const handleSelectDate = (day: number) => {
-    const selectedFullDate = new Date(currentYear, currentMonth, day);
-    setSelectedDate(selectedFullDate);
+  const handleSelectDate = (date: Date) => {
+    setSelectedDate(date);
   };
 
   const handleDayHover = (day: number | null) => {
@@ -105,8 +104,6 @@ const Month: React.FC = () => {
         selectedDate={selectedDate}
         onSelectDate={handleSelectDate}
         onDayHover={handleDayHover}
-        tasksByDate={tasksByDate}
-        getDateString={getDateString}
       />
     </div>
   );
