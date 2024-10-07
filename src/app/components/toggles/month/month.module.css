@@ -76,6 +76,11 @@
   border-color: #ddd;
 }
 
+.currentDayNumber {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
 .monthYear {
   margin: 0 10px;
   font-weight: bold;
