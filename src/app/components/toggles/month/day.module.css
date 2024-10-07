@@ -1,0 +1,70 @@
+/* / components/toggles/month/day.module.css */
+
+.day {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  flex: 1 0 calc(100% / 7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg);
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.day::before {
+  content: "";
+  display: block;
+  padding-bottom: 100%; /* Sets height equal to width */
+}
+
+.day > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+.arriba {
+  width: 100%;
+  color: transparent;
+  max-height: 20%;
+}
+
+.dayNumber {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.abajo {
+  width: 100%;
+  background-color: transparent;
+}
+
+.currentDay {
+  background-color: var(--color);
+  color: rgb(218, 141, 70);
+  border-color: #ddd;
+}
+
+.currentDayNumber {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.selectedDay {
+  border-color: #000;
+  color: black;
+}

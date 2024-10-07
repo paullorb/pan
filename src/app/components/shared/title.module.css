@@ -1,5 +1,4 @@
 /* /components/shared/title.module.css */
-
 .container {
   display: flex;
   justify-content: space-between;
@@ -12,9 +11,11 @@
 
 .first {
   display: flex;
+  align-items: center;
   background-color: inherit;
   border-radius: var(--border-r);
   flex: 1;
+  gap: var(--spacing-xs); 
 }
 
 .second {
@@ -22,23 +23,13 @@
   padding-right: var(--spacing-m);
 }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  background-color: inherit;
-  border: 1px solid transparent;
-  border-radius: var(--border-r);
-}
-
 .paginationButton {
   transition: 0.3s ease-in-out;
   cursor: pointer;
-  border: 1px solid #ccc;
-  opacity: 0;
-}
-
-.container:hover .paginationButton {
-  opacity: 1;
+  background: none;
+  border: none;
+  color: var(--bg);
+  font-size: 1.2rem;
 }
 
 .title {

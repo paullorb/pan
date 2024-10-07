@@ -4,7 +4,17 @@
   display: flex;
   flex-direction: column;
   user-select: none;
-  gap: var(--spacing-s);
+}
+
+.weekDaysHeader {
+  display: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.container:hover .weekDaysHeader {
+  display: flex;
+  opacity: 1;
 }
 
 .title * {

@@ -1,4 +1,6 @@
+// /components/shared/title.tsx
 "use client";
+
 import React from 'react';
 import styles from './title.module.css';
 
@@ -11,7 +13,7 @@ interface TitleProps {
   pagination?: boolean;
   onPrevious?: () => void;
   onNext?: () => void;
-  className?: string; // Add className prop
+  className?: string;
 }
 
 const Title: React.FC<TitleProps> = ({
@@ -20,33 +22,29 @@ const Title: React.FC<TitleProps> = ({
   pagination,
   onPrevious,
   onNext,
-  className, // Destructure className
+  className,
 }) => {
   return (
     <div className={`${styles.container} ${className || ''}`}>
       <div className={styles.first}>
-        {pagination && (
-          <div className={styles.pagination}>
-            <button
-              aria-label="Previous"
-              className={styles.paginationButton}
-              onClick={onPrevious}
-            >
-              &lt;
-            </button>
-          </div>
+        {pagination && onPrevious && (
+          <button
+            aria-label="Previous"
+            className={styles.paginationButton}
+            onClick={onPrevious}
+          >
+            &lt;
+          </button>
         )}
         <h3 className={styles.title}>{title}</h3>
-        {pagination && (
-          <div className={styles.pagination}>
-            <button
-              aria-label="Next"
-              className={styles.paginationButton}
-              onClick={onNext}
-            >
-              &gt;
-            </button>
-          </div>
+        {pagination && onNext && (
+          <button
+            aria-label="Next"
+            className={styles.paginationButton}
+            onClick={onNext}
+          >
+            &gt;
+          </button>
         )}
       </div>
       {count && (
