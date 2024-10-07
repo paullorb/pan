@@ -71,17 +71,20 @@ const Month: React.FC = () => {
     }
   }
 
-  const handleSelectDate = (date: Date) => {
-    setSelectedDate(date);
-  };
-
+  // Adjusted function to fix the off-by-one error
   const handleDayHover = (day: number | null) => {
     if (day !== null) {
       const hoveredDate = new Date(currentYear, currentMonth, day);
-      setHoveredDayIndex(hoveredDate.getDay());
+      // Ensure Monday is 0, and Sunday is 6
+      const dayIndex = (hoveredDate.getDay() + 6) % 7; // Shift days so Monday is 0
+      setHoveredDayIndex(dayIndex);
     } else {
       setHoveredDayIndex(null);
     }
+  };
+
+  const handleSelectDate = (date: Date) => {
+    setSelectedDate(date);
   };
 
   const getDateString = (day: number) => formatDate(new Date(currentYear, currentMonth, day));
