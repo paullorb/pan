@@ -8,6 +8,7 @@ import Status from '../status/status';
 import Toggles from '../toggles/toggles';
 import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
+import MobileMenu from '../mobileMenu/mobileMenu';
 
 const Hamburger: React.FC = () => {
   const { isAuthenticated, userEmail, logout } = useAuth();
@@ -26,6 +27,24 @@ const Hamburger: React.FC = () => {
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   // Close dropdown when clicking outside
@@ -52,50 +71,74 @@ const Hamburger: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.indicators}>
-        <Status />
-      </div>
-      <Toggles />
-      <button className={styles.button} onClick={handlePrint}>
-        🖨️
-      </button>
-
-      {isAuthenticated ? (
-        <div className={styles.dropdownContainer} ref={dropdownRef}>
-          <button className={styles.button} onClick={toggleDropdown}>
-            👤
+      {isMobile ? (
+        <>
+          <button className={styles.hamburgerButton} onClick={toggleMobileMenu}>
+            ☰
           </button>
-          {isDropdownOpen && (
-            <div className={styles.dropdownMenu}>
-              <div className={`${styles.dropdownItem} ${styles.email}`}>
-                {userEmail}
-              </div>
-              <div className={styles.dropdownItem}>
-                <DarkMode />
-              </div>
-              <div
-                className={`${styles.dropdownItem} ${styles.internationalization}`}
-              >
-                <Language />
-              </div>
-              <button
-                className={styles.logoutButton}
-                onClick={() => {
-                  logout();
-                  setIsDropdownOpen(false);
-                }}
-              >
-                Logout
-              </button>
-            </div>
+          {isMobileMenuOpen && (
+            <MobileMenu
+              onClose={() => {
+                toggleMobileMenu();
+                setIsModalOpen(true);
+              }}
+            />
           )}
-        </div>
+        </>
       ) : (
-        <button className={styles.button} onClick={toggleModal}>
-          🔑
-        </button>
-      )}
+        // Desktop layout
+        <>
+          <div className={`${styles.indicators} ${styles.desktopOnly}`}>
+            <Status />
+          </div>
+          <Toggles />
+          <button className={styles.button} onClick={handlePrint}>
+            🖨️
+          </button>
 
+          {isAuthenticated ? (
+            <div
+              className={`${styles.dropdownContainer} ${styles.desktopOnly}`}
+              ref={dropdownRef}
+            >
+              <button className={styles.button} onClick={toggleDropdown}>
+                👤
+              </button>
+              {isDropdownOpen && (
+                <div className={styles.dropdownMenu}>
+                  <div className={`${styles.dropdownItem} ${styles.email}`}>
+                    {userEmail}
+                  </div>
+                  <div className={styles.dropdownItem}>
+                    <DarkMode />
+                  </div>
+                  <div
+                    className={`${styles.dropdownItem} ${styles.internationalization}`}
+                  >
+                    <Language />
+                  </div>
+                  <button
+                    className={styles.logoutButton}
+                    onClick={() => {
+                      logout();
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              className={`${styles.button} ${styles.desktopOnly}`}
+              onClick={toggleModal}
+            >
+              🔑
+            </button>
+          )}
+        </>
+      )}
       <AuthModal isOpen={isModalOpen} onClose={toggleModal} />
     </div>
   );

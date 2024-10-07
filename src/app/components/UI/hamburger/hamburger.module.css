@@ -93,3 +93,10 @@
   color: var(--bg);
   background-color: #f5f5f5;
 }
+
+.hamburgerButton {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
