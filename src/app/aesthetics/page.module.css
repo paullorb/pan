@@ -55,12 +55,14 @@
   .container {
     margin: 0;
     padding: 0;
-    /* overflow: hidden; */
   }
   .titleC {
     margin-left: 0;
   }
   .aside {
     padding: 0;
+  }
+  .tables {
+    gap: var(--spacing-s);
   }
 }
