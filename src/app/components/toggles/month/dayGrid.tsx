@@ -1,4 +1,6 @@
 // /components/toggles/month/DayGrid.tsx
+"use client";
+
 import React from 'react';
 import styles from './dayGrid.module.css';
 import Dots from './dots';
@@ -10,6 +12,7 @@ interface DayGridProps {
   todayDate: Date;
   selectedDate: Date;
   onSelectDate: (day: number) => void;
+  onDayHover: (day: number | null) => void;
   tasksByDate: Record<string, any[]>;
   getDateString: (day: number) => string;
 }
@@ -21,6 +24,7 @@ const DayGrid: React.FC<DayGridProps> = ({
   todayDate,
   selectedDate,
   onSelectDate,
+  onDayHover,
   tasksByDate,
   getDateString,
 }) => {
@@ -35,63 +39,40 @@ const DayGrid: React.FC<DayGridProps> = ({
     currentMonth === selectedDate.getMonth() &&
     currentYear === selectedDate.getFullYear();
 
-  const handleDayClick = (day: number | null) => {
-    if (day !== null) {
-      onSelectDate(day);
-    }
+  // Function to calculate the weekday index starting from Monday (0 = Monday, 6 = Sunday)
+  const getMondayStartIndex = (date: Date) => {
+    const dayIndex = date.getDay();
+    return (dayIndex + 5) % 7; 
   };
 
   return (
     <div className={styles.grid}>
-      {days.map((day, index) => {
-        let hasUncompletedTasks = false;
-        let allTasksCompleted = false;
-        let isTodo = false;
-
-        if (day !== null) {
-          const dateString = getDateString(day);
-          const tasksForDay = tasksByDate[dateString] || [];
-
-          // Create Date object for the day
-          const dayDate = new Date(currentYear, currentMonth, day);
-          dayDate.setHours(0, 0, 0, 0);
-
-          // Determine if the day is in the future
-          const isFutureDay = dayDate > todayDate;
-
-          if (tasksForDay.length > 0) {
-            hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
-            allTasksCompleted = tasksForDay.every((task) => task.completed);
+      {days.map((day, index) => (
+        <div
+          key={index}
+          className={`${styles.day} ${
+            day !== null && isCurrentDay(day) ? styles.currentDay : ''
+          } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`}
+          onClick={() => day !== null && onSelectDate(day)}
+          onMouseEnter={() =>
+            day !== null
+              ? onDayHover(getMondayStartIndex(new Date(currentYear, currentMonth, day)))
+              : onDayHover(null)
           }
-
-          isTodo = isFutureDay && tasksForDay.length > 0;
-        }
-
-        return (
-          <div
-            key={index}
-            className={`${styles.day} ${
-              day !== null && isCurrentDay(day) ? styles.currentDay : ''
-            } ${day !== null && isSelectedDay(day) ? styles.selectedDay : ''}`}
-            onClick={() => handleDayClick(day)}
-          >
-            {day ? (
-              <div className={styles.content}>
-                <div className={styles.dots}>
-                  <Dots
-                    hasUncompletedTasks={hasUncompletedTasks}
-                    allTasksCompleted={allTasksCompleted}
-                    isTodo={isTodo}
-                  />
-                </div>
-                <div className={styles.dayNumber}>
-                  {day}
-                </div>
-              </div>
-            ) : null}
-          </div>
-        );
-      })}
+          onMouseLeave={() => onDayHover(null)}
+        >
+          {day && (
+            <div className={styles.content}>
+              <Dots 
+                hasUncompletedTasks={!!tasksByDate[getDateString(day)]?.some(task => !task.completed)}
+                allTasksCompleted={!!tasksByDate[getDateString(day)]?.every(task => task.completed)}
+                isTodo={!!tasksByDate[getDateString(day)]?.length}
+              />
+              <div className={styles.dayNumber}>{day}</div>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };

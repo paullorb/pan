@@ -1,7 +1,7 @@
 // /components/toggles/month/Month.tsx
 "use client";
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
 import { useDate } from '../../../context/dateContext';
@@ -12,7 +12,6 @@ import {
   getDaysInMonth,
   getFirstDayOfMonth,
   formatDate,
-  isToday,
 } from './utils';
 import WeekDaysHeader from './weekDaysHeader';
 
@@ -24,6 +23,8 @@ const Month: React.FC = () => {
   const todayDate = new Date();
   todayDate.setHours(0, 0, 0, 0);
   const thisYear = todayDate.getFullYear();
+
+  const [hoveredDayIndex, setHoveredDayIndex] = useState<number | null>(null);
 
   const togglesContext = useContext(TogglesContext);
   if (!togglesContext) {
@@ -52,7 +53,6 @@ const Month: React.FC = () => {
     setSelectedDate(newDate);
   };
 
-  // Generate days array using utility functions
   const startingDayOfWeek = getFirstDayOfMonth(currentYear, currentMonth) === 0
     ? 7
     : getFirstDayOfMonth(currentYear, currentMonth);
@@ -76,6 +76,15 @@ const Month: React.FC = () => {
     setSelectedDate(selectedFullDate);
   };
 
+  const handleDayHover = (day: number | null) => {
+    if (day !== null) {
+      const hoveredDate = new Date(currentYear, currentMonth, day);
+      setHoveredDayIndex(hoveredDate.getDay());
+    } else {
+      setHoveredDayIndex(null);
+    }
+  };
+
   const getDateString = (day: number) => formatDate(new Date(currentYear, currentMonth, day));
 
   return (
@@ -87,7 +96,7 @@ const Month: React.FC = () => {
         onNext={incrementMonth}
         className={styles.title}
       />
-      <WeekDaysHeader className={styles.weekDaysHeader} />
+      <WeekDaysHeader className={styles.weekDaysHeader} hoveredDayIndex={hoveredDayIndex} />
       <DayGrid
         days={days}
         currentMonth={currentMonth}
@@ -95,6 +104,7 @@ const Month: React.FC = () => {
         todayDate={todayDate}
         selectedDate={selectedDate}
         onSelectDate={handleSelectDate}
+        onDayHover={handleDayHover}
         tasksByDate={tasksByDate}
         getDateString={getDateString}
       />
