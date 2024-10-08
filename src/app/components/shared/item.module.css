@@ -6,7 +6,7 @@
   background-color: var(--note-bg);
   margin-bottom: var(--spacing-xs);
   transition: all 0.3s ease;
-  padding: var(--spacing-xs);
+  padding: 0 var(--spacing-xs);
 }
 
 .item:hover {
