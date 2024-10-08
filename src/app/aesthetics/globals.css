@@ -11,8 +11,9 @@
   --black: black;
   --white-b: solid white;
   --black-b: solid black;
-  --border-r: 5px;
   --bg-active: rgba(0, 0, 0, 0.2);
+  --border-radius-s: 0.5rem;
+  --border-radius-m: 1rem;
   --spacing-xs: 0.5rem;
   --spacing-s: 1rem;
   --spacing-m: 2rem;
@@ -28,7 +29,6 @@ html[data-theme='light'] {
   --bg-alt2: #e0e0e0; /* Lightest background */
   --border: black; /* Black border in light mode */
   --color: black; /* Black text in light mode */
-  --border-radius: 10px; /* Example border radius */
   --hover-color: #c0c0c069; /* Light hover color */
 }
 
@@ -39,7 +39,6 @@ html[data-theme='dark'] {
   --bg-alt2: #222; /* Darkest background */
   --border: #ccc; /* Lighter border in dark mode */
   --color: #fff; /* White text in dark mode */
-  --border-radius: 10px; /* Example border radius */
   --hover-color: #8f8f8f; /* Dark hover color */
 }
 

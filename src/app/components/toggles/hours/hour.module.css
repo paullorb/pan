@@ -2,8 +2,9 @@
 
 .container {
   display: flex;
-  border-bottom: 3px solid #85858542;
   align-items: center;
+  border-bottom: 3px solid #85858542;
+  border-radius: var(--border-radius-s);
   width: 100%;
   height: 2.5rem;
   padding: 0 var(--spacing-xs);
@@ -14,6 +15,7 @@
   justify-content: center;
   align-items: center;
   background-color: transparent;
+  gap: var(--spacing-xs);
 }
 
 .hour {
