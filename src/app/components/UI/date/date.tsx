@@ -35,6 +35,10 @@ const DateComponent: React.FC = () => {
 
     if (diffDays === 0) {
       return "Today";
+    } else if (diffDays === -1) {
+      return "Yesterday";
+    } else if (diffDays === 1) {
+      return "Tomorrow";
     } else if (diffDays > 0) {
       return `+${diffDays}`;
     } else {
