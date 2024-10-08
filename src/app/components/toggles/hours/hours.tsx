@@ -42,9 +42,7 @@ const Hours: React.FC = () => {
   return (
     <CurrentHourProvider>
       <div className={style.container}>
-        <div className={style.titleC}>
           <Title title="Hours" />
-        </div>
         <div className={style.modal}>
           <Controls />
         </div>

@@ -4,7 +4,6 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--title);
-  border-radius: var(--border-r);
   margin-bottom: var(--spacing-s);
   height: 100%;
   width: 100%;

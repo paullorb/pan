@@ -3,14 +3,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  position: relative;
+  /* position: relative; */
   width: 100%;
   flex: 1 1 55%;
-  border: 3px sollid green;
-}
-
-.titleC {
-  max-height: 2rem;
+  border: 3px solid green;
 }
 
 .modal {
