@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ITask extends Document {
   userId: mongoose.Types.ObjectId;
-  date: string; // Store dates as strings in 'YYYY-MM-DD' format
+  date: string; 
   text: string;
   completed: boolean;
 }

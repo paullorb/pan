@@ -10,12 +10,13 @@ import Title from '../../shared/title';
 import Item from '../../shared/item';
 
 export default function Tasks() {
-  const { tasks, addTask, toggleTaskCompletion, deleteTask, loading } = useTasks();
+  const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTasks();
 
   const togglesContext = useContext(TogglesContext);
   if (!togglesContext) {
     throw new Error("Tasks must be used within a TogglesProvider");
   }
+  
   const { togglesState } = togglesContext;
   if (!togglesState.tasks) {
     return null;
@@ -31,11 +32,7 @@ export default function Tasks() {
         count={{ completed: completedTasksCount, total: totalTasksCount }}
         pagination={true}
       />
-      {loading
-        ? Array.from({ length: 5 }).map((_, index) => (
-            <Item key={index} loading={true} />
-          ))
-        : tasks.map((task) => (
+      {tasks.map((task) => (
             <Item
               key={task.id}
               text={task.text}

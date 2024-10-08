@@ -1,11 +1,12 @@
-// /models/Habit.ts
+// /models/habit.ts
 // DO NOT RENAME FOR NOW
 
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IHabit extends Document {
   userId: mongoose.Types.ObjectId;
-  date: string; // We'll store dates as strings in 'YYYY-MM-DD' format
+  name: string
+  date: string; 
   habits: {
     name: string;
     completed: boolean;
@@ -14,6 +15,7 @@ export interface IHabit extends Document {
 
 const HabitSchema: Schema = new Schema({
   userId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
   date: { type: String, required: true },
   habits: [
     {
