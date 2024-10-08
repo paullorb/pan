@@ -16,7 +16,7 @@ const MainComponent: React.FC = () => {
   const { togglesState } = context;
 
   return (
-    <div className={style.main}>
+    <div className={style.container}>
       {togglesState.hours && <Hours />}
     </div>
   );
