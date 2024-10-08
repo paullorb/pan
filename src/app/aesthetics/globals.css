@@ -12,8 +12,10 @@
   --white-b: solid white;
   --black-b: solid black;
   --bg-active: rgba(0, 0, 0, 0.2);
+  --border-radius-xs: 0.25rem;
   --border-radius-s: 0.5rem;
   --border-radius-m: 1rem;
+  --border-radius-l: 2rem;
   --spacing-xs: 0.5rem;
   --spacing-s: 1rem;
   --spacing-m: 2rem;
