@@ -3,7 +3,6 @@
   width: 100%;
   gap: var(--spacing-xl);
   justify-content: space-between;
-  min-height: 5rem;
 }
 
 .leftUp {
