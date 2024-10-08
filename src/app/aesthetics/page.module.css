@@ -30,6 +30,7 @@
     padding: var(--spacing-xs);
   }
   .tables {
+    flex-wrap: wrap;
     gap: var(--spacing-s);
   }
 }

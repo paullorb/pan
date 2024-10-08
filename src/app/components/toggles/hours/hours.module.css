@@ -6,6 +6,11 @@
   position: relative;
   width: 100%;
   flex: 1 1 55%;
+  border: 3px sollid green;
+}
+
+.titleC {
+  max-height: 2rem;
 }
 
 .modal {

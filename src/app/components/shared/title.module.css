@@ -6,6 +6,7 @@
   background-color: var(--title);
   border-radius: var(--border-r);
   margin-bottom: var(--spacing-s);
+  height: 100%;
   width: 100%;
   position: relative; 
   transition: 0.3s ease-in-out;

@@ -1,6 +1,5 @@
 .container {
   display: flex;
-  align-items: center;
   gap: var(--spacing-s);
   user-select: none;
   width: 100%;
@@ -15,6 +14,7 @@
 
 .dateC {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   flex: 1 1 50%;
 }
@@ -22,6 +22,5 @@
 .date {
   margin: 0;
   padding: 0;
-  height: 100%;
   font-size: 1.35em;
 }
