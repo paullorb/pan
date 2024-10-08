@@ -3,4 +3,5 @@
   position: relative;
   flex-direction: column;
   flex: 1 1 50%;
+  border: 3px solid green;
 }

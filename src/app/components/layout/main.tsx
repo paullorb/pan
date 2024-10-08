@@ -10,15 +10,15 @@ const MainComponent: React.FC = () => {
   const context = useContext(TogglesContext);
 
   if (!context) {
-    return <main className={style.main} />;
+    return null;
   }
 
   const { togglesState } = context;
 
   return (
-    <main className={style.main}>
+    <div className={style.main}>
       {togglesState.hours && <Hours />}
-    </main>
+    </div>
   );
 };
 

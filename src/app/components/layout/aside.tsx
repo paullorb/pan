@@ -14,7 +14,7 @@ const Aside: React.FC = () => {
   const context = useContext(TogglesContext);
 
   if (!context) {
-    return null; // or handle the undefined case appropriately
+    return null; 
   }
 
   const { togglesState } = context;

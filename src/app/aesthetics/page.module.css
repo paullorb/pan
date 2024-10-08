@@ -12,7 +12,7 @@
 
 .tables {
   display: flex;
-  position: relative;
+  /* position: relative; */
   padding: 0;
   width: 100%;
   gap: var(--spacing-xl);
