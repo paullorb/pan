@@ -21,6 +21,7 @@
 }
 
 .title {
+  text-decoration: none;
   padding-left: var(--spacing-l);
   font-size: 1.4rem;
   letter-spacing: -1px;

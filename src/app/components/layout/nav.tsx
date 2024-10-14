@@ -1,5 +1,6 @@
 // /components/layout/nav.tsx
 
+import Link from 'next/link';
 import DateComponent from '../UI/date/date';
 import Hamburger from '../UI/hamburger/hamburger';
 import style from './nav.module.css';
@@ -12,9 +13,7 @@ export default function Nav () {
       </div>
       <div className={style.rightUp}>
         <div className={style.titleC}>
-          <h1 className={style.title}>
-            <span className={style.emoji}>🍞 </span>Pansito del día
-          </h1>
+          <Link href="/" className={style.title}> 🍞Pansito del día </Link>
         </div>
           <Hamburger />
         </div>
