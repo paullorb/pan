@@ -1,6 +1,14 @@
 .container {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  /* padding: 0 10%; */
   border: 3px solid green;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: var(--spacing-xs);
 }
