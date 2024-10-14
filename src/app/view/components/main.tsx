@@ -22,7 +22,7 @@ export default function MainComponent() {
       case 'month':
         return <Month />;
       default:
-        return null;
+        return <Week />;
     }
   };
 
