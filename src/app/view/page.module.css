@@ -1,0 +1,24 @@
+/* page.module.css */
+
+.container {
+  display: flex;
+  position: relative;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
+  padding: 0 10%;
+  border: 3px solid yellow;
+}
+
+
+@media print {
+  .container {
+    padding: var(--spacing-s);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: var(--spacing-xs);
+  }
+}
