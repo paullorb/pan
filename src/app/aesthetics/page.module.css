@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center; 
   padding: 0 20%;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-l);
 }
 
 .tables {
