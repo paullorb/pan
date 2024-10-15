@@ -1,10 +1,9 @@
-// /components/shared/item.tsx
-"use client";
+// File: app/components/shared/Item.tsx
 
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
-import DelItem from './delItem'; 
+import DelItem from './delItem';
 
 interface ItemProps {
   text?: string;
@@ -17,6 +16,7 @@ interface ItemProps {
   className?: string;
   children?: React.ReactNode;
   loading?: boolean;
+  bullet?: boolean;
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -30,7 +30,31 @@ const Item: React.FC<ItemProps> = ({
   className,
   children,
   loading = false,
+  bullet = false,
 }) => {
+  const renderTextItem = () => (
+    <>
+      <span onClick={onToggle} className={styles.text}>
+        {bullet && '• '}{text}
+      </span>
+      <div className={styles.deleteButton}>
+        {onDelete && <DelItem onDelete={onDelete} />}
+      </div>
+    </>
+  );
+
+  const renderInputItem = () => (
+    <>
+      {label && <label className={styles.label}>{label}</label>}
+      <input
+        className={styles.input}
+        type="text"
+        value={text}
+        onChange={(e) => onChange && onChange(e.target.value)}
+      />
+    </>
+  );
+
   if (loading) {
     return (
       <div className={`${styles.item} ${className || ''}`}>
@@ -44,24 +68,9 @@ const Item: React.FC<ItemProps> = ({
       {children ? (
         children
       ) : inputMode ? (
-        <>
-          {label && <label className={styles.label}>{label}</label>}
-          <input
-            className={styles.input}
-            type="text"
-            value={text}
-            onChange={(e) => onChange && onChange(e.target.value)}
-          />
-        </>
+        renderInputItem()
       ) : (
-        <>
-          <span onClick={onToggle} className={styles.text}>
-            {text}
-          </span>
-          <div className={styles.deleteButton}>
-          {onDelete && <DelItem onDelete={onDelete} />}
-          </div>
-        </>
+        renderTextItem()
       )}
     </div>
   );

@@ -39,6 +39,7 @@ export default function Tasks() {
               completed={task.completed}
               onToggle={() => toggleTaskCompletion(task.id)}
               onDelete={() => deleteTask(task.id)}
+              bullet={true}
             />
           ))}
       <AddItem
