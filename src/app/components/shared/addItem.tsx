@@ -28,7 +28,7 @@ const AddItem: React.FC<AddItemProps> = ({ placeholder, onAdd, className }) => {
         placeholder={placeholder}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        onKeyPress={(e) => {
+        onKeyUp={(e) => {
           if (e.key === 'Enter') {
             handleAddItem();
           }
