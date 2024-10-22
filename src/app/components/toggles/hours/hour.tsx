@@ -30,12 +30,11 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
     : `${hour}:00`;
 
   return (
-    <>
       <label htmlFor={`activity-${hour}`} className={`${style.label}`}>
         <div className={`${style.hour} ${isCurrentHour ? style.boldHour : ''}`}>
           {hourLabel}
         </div>
-        <Item className={`${style.container} ${backgroundClass} ${currentHourClass}`}>
+        <Item className={`${style.item} ${backgroundClass} ${currentHourClass}`}>
           <div className={`${style.pan} ${backgroundClass}`}>
             {loading ? (
               <Skeleton />
@@ -52,7 +51,6 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
           </div>
         </Item>
       </label>
-    </>
   );
 };
 
