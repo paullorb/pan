@@ -36,12 +36,6 @@
   margin: 0;
 }
 
-.arriba {
-  width: 100%;
-  color: transparent;
-  max-height: 20%;
-}
-
 .dayNumber {
   display: flex;
   justify-content: center;

@@ -5,19 +5,16 @@ import React, { useContext, useState } from 'react';
 import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
 import { useDate } from '../../../context/dateContext';
-import { useTasks } from '../../../context/tasksContext';
 import DayGrid from './dayGrid';
 import Title from '../../shared/title';
 import {
   getDaysInMonth,
   getFirstDayOfMonth,
-  formatDate,
 } from './utils';
 import WeekDaysHeader from './weekDaysHeader';
 
 const Month: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();
-  const { tasksByDate } = useTasks();
   const currentYear = selectedDate.getFullYear();
   const currentMonth = selectedDate.getMonth();
   const todayDate = new Date();
@@ -86,8 +83,6 @@ const Month: React.FC = () => {
   const handleSelectDate = (date: Date) => {
     setSelectedDate(date);
   };
-
-  const getDateString = (day: number) => formatDate(new Date(currentYear, currentMonth, day));
 
   return (
     <div className={styles.container}>

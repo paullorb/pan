@@ -68,7 +68,6 @@ const Day: React.FC<DayProps> = ({
       onMouseLeave={() => onDayHover(null)}
     >
       <div className={styles.content}>
-      <div className={styles.dot}>•</div>
         <div className={`${styles.dayNumber} ${isCurrentDay() ? styles.currentDayNumber : ''}`}>
           {day}
         </div>
