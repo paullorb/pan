@@ -9,7 +9,6 @@
 .weekDaysHeader {
   display: none;
   transition: opacity 0.3s ease;
-  opacity: 0;
 }
 
 .container:hover .weekDaysHeader {

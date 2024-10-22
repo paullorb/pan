@@ -36,6 +36,7 @@
   flex-direction: column;
   padding: 0;
   margin: 0;
+  border: 3px solid yellow;
 }
 
 .dayNumber {
