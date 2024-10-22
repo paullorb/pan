@@ -48,6 +48,14 @@
   color: rgb(218, 141, 70);
 }
 
+.currentDayNumber {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.selectedDay {
+  border: 1px solid rgb(198, 198, 198);
+}
+
 @media screen and (max-width: 768px) {
   .day {
     font-size: 0.01rem;
