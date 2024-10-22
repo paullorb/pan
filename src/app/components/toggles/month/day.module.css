@@ -7,7 +7,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg);
   cursor: pointer;
   border-bottom: 1px solid #ddd; 
 }

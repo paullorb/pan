@@ -2,14 +2,12 @@
 .container {
   display: flex;
   justify-content: center;
-  background-color: transparent;
   width: 100%;
 }
 
 .dot {
   display: flex;
   color: #cccccc11; 
-  background-color: transparent;
   font-size: 1.1rem;
 }
 
