@@ -30,27 +30,29 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
     : `${hour}:00`;
 
   return (
-    <Item className={`${style.container} ${backgroundClass} ${currentHourClass}`}>
-      <label htmlFor={`activity-${hour}`} className={style.label}>
-        <div className={`${style.hour} ${backgroundClass} ${isCurrentHour ? style.boldHour : ''}`}>
+    <>
+      <label htmlFor={`activity-${hour}`} className={`${style.label}`}>
+        <div className={`${style.hour} ${isCurrentHour ? style.boldHour : ''}`}>
           {hourLabel}
         </div>
-        <div className={`${style.pan} ${backgroundClass}`}>
-          {loading ? (
-            <Skeleton />
-          ) : (
-            <input
-              type="text"
-              id={`activity-${hour}`}
-              className={`${style.input} ${backgroundClass}`}
-              placeholder={`🍞 at ${hour}:00`}
-              value={activityFull}
-              onChange={(e) => handleActivityChange(activityFullKey, e.target.value)}
-            />
-          )}
-        </div>
+        <Item className={`${style.container} ${backgroundClass} ${currentHourClass}`}>
+          <div className={`${style.pan} ${backgroundClass}`}>
+            {loading ? (
+              <Skeleton />
+            ) : (
+                <input
+                  type="text"
+                  id={`activity-${hour}`}
+                  className={`${style.input} ${backgroundClass}`}
+                  placeholder={`🍞 at ${hour}:00`}
+                  value={activityFull}
+                  onChange={(e) => handleActivityChange(activityFullKey, e.target.value)}
+                />
+            )}
+          </div>
+        </Item>
       </label>
-    </Item>
+    </>
   );
 };
 
