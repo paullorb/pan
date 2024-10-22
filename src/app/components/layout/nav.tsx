@@ -13,7 +13,7 @@ export default function Nav () {
       </div>
       <div className={style.rightUp}>
         <div className={style.titleC}>
-          <Link href="/" className={style.title}> 🍞Pansito del día </Link>
+          <Link href="/" className={style.title}>🍞 Pansito</Link>
         </div>
           <Hamburger />
         </div>
