@@ -38,24 +38,10 @@
   margin: 0;
 }
 
-.dot {
-  opacity: 0;
-  user-select: none;
-}
-
 .dayNumber {
   display: flex;
   justify-content: center;
   font-size: 1rem;
-}
-
-.currentDayNumber {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-}
-
-.selectedDay {
-  border: 1px solid rgb(198, 198, 198);
 }
 
 .currentDay {
