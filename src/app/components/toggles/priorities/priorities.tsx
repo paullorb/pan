@@ -22,21 +22,17 @@ export default function Priorities() {
     return null;
   }
 
-  const handleChange = (index: number, value: string) => {
-    updateItem('priority', index, value);
-  };
-
   return (
     <div className={style.container}>
       <Title title="Priorities" />
       <div className={style.priorities}>
-        {[0, 1, 2].map((index) => (
+        {[0, 1, 2].map((num) => (
           <Item
-            key={index}
-            text={priorities[index]?.text || ''}
+            key={num}
+            text={priorities[num]?.text || ''}
             inputMode={true}
-            onChange={(value) => handleChange(index, value)}
-            label={`${index + 1}`}
+            onChange={(value) => updateItem('priority', num, value)}
+            label={`${num + 1}`}
           />
         ))}
       </div>

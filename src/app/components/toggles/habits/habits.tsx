@@ -1,16 +1,17 @@
 // components/habits/habits.tsx
-
 "use client";
+
 import React, { useContext } from 'react';
 import style from './habits.module.css';
-import { useHabits } from '../../../context/habitsContext';
+import { useItems } from '../../../context/itemsContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 
 export default function Habits() {
-  const { habits, toggleHabit, addHabit, deleteHabit } = useHabits();
+  const { items, loading, toggleItem, addItem, deleteItem } = useItems();
+  const habits = items.habit;
 
   const togglesContext = useContext(TogglesContext);
   if (!togglesContext) {
@@ -34,16 +35,17 @@ export default function Habits() {
       />
       {habits.map((habit, index) => (
         <Item
-          key={`${habit.name}-${index}`}
-          text={habit.name}
+          key={`${habit.text}-${index}`}
+          text={habit.text}
           completed={habit.completed}
-          onToggle={() => toggleHabit(index)} 
-          onDelete={() => deleteHabit(index)}
+          onToggle={() => toggleItem('habit', index)}
+          onDelete={() => deleteItem('habit', index)}
+          loading={loading.habit}
         />
       ))}
       <AddItem
         placeholder="Add new habit"
-        onAdd={(name) => addHabit(name)}
+        onAdd={(text) => addItem('habit', text)}
         className={style.addItem}
       />
     </div>
