@@ -12,7 +12,6 @@
     "@apollo/client": "^3.11.8",
     "@apollo/experimental-nextjs-app-support": "^0.11.5",
     "@apollo/server": "^4.11.0",
-    "@as-integrations/next": "^3.1.0",
     "@types/mongoose": "^5.11.96",
     "apollo-datasource-mongodb": "^0.6.0",
     "bcryptjs": "^2.4.3",
@@ -20,7 +19,7 @@
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.6.2",
+    "mongoose": "^8.7.2",
     "next": "^15.0.1",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
@@ -28,12 +27,12 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
-    "eslint": "^8.57.1",
+    "eslint": "^9.13.0",
     "eslint-config-next": "^15.0.1",
     "typescript": "^5"
   }
