@@ -1,4 +1,3 @@
-// components/habits/habits.tsx
 "use client";
 
 import React, { useContext } from 'react';
@@ -10,7 +9,7 @@ import Title from '../../shared/title';
 import Item from '../../shared/item';
 
 export default function Habits() {
-  const { items, loading, toggleItem, addItem, deleteItem } = useItems();
+  const { items, loading, updateItem, addItem, deleteItem } = useItems();
   const habits = items.habit;
 
   const togglesContext = useContext(TogglesContext);
@@ -19,7 +18,7 @@ export default function Habits() {
   }
 
   const { togglesState } = togglesContext;
-  if (!togglesState.tasks) {
+  if (!togglesState.habits) { // Changed from tasks to habits
     return null;
   }
 
@@ -35,17 +34,17 @@ export default function Habits() {
       />
       {habits.map((habit, index) => (
         <Item
-          key={`${habit.text}-${index}`}
+          key={habit._id || index}
           text={habit.text}
           completed={habit.completed}
-          onToggle={() => toggleItem('habit', index)}
-          onDelete={() => deleteItem('habit', index)}
+          onToggle={() => updateItem('habit', index, habit.text, { completed: !habit.completed })}
+          onDelete={() => habit._id && deleteItem('habit', habit._id)}
           loading={loading.habit}
         />
       ))}
       <AddItem
         placeholder="Add new habit"
-        onAdd={(text) => addItem('habit', text)}
+        onAdd={(text) => addItem('habit', text, undefined, { regularity: 'daily' })}
         className={style.addItem}
       />
     </div>

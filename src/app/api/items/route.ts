@@ -1,21 +1,60 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/mongodb';
 import Item from '../../lib/models/Item';
-import jwt from 'jsonwebtoken';
+import { 
+  ItemDocument, 
+  PostRequestBody,
+  verifyAuth,
+  getDateRange,
+  formatDateForApi
+} from '../../lib/utils/itemsUtils';
 import { Types } from 'mongoose';
+
+// Type-specific handlers
+const handleHabitQuery = async (userId: Types.ObjectId, date: string) => {
+  const currentDate = new Date(date);
+  const dateString = currentDate.toISOString().split('T')[0];
+
+  const habits = await Item.find({
+    userId,
+    type: 'habit',
+    $or: [
+      { regularity: 'daily' },
+      { regularity: 'weekly', createdAt: { $lte: currentDate } },
+      { regularity: 'monthly', createdAt: { $lte: currentDate } },
+      { regularity: 'yearly', createdAt: { $lte: currentDate } }
+    ]
+  }).lean() as ItemDocument[];
+
+  const completions = await Item.find({
+    userId,
+    type: 'habit',
+    date: dateString,
+    completed: true
+  }).lean() as ItemDocument[];
+
+  return habits.map(habit => ({
+    ...habit,
+    completed: completions.some(completion => 
+      completion._id.toString() === habit._id.toString()
+    ),
+    date: dateString
+  }));
+};
+
+const handleRegularQuery = async (userId: Types.ObjectId, type: string, date: string) => {
+  const { startDate, endDate } = getDateRange(date);
+  return await Item.find({
+    userId,
+    type,
+    createdAt: { $gte: startDate, $lte: endDate }
+  }).sort({ order: 1, createdAt: 1 }).lean();
+};
 
 export async function GET(request: Request) {
   try {
     await connectDB();
-
-    // Auth check
-    const token = request.headers.get('authorization')?.split(' ')[1];
-    if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
-    const userId = new Types.ObjectId(decoded.userId);
+    const userId = await verifyAuth(request);
 
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
@@ -28,19 +67,9 @@ export async function GET(request: Request) {
       }, { status: 400 });
     }
 
-    // Get items for the day
-    const startDate = new Date(date);
-    startDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(date);
-    endDate.setHours(23, 59, 59, 999);
-
-    const items = await Item.find({
-      userId,
-      type,
-      createdAt: { $gte: startDate, $lte: endDate }
-    })
-    .sort({ order: 1 }) // Sort by order first
-    .lean();
+    const items = type === 'habit' 
+      ? await handleHabitQuery(userId, date)
+      : await handleRegularQuery(userId, type, date);
 
     return NextResponse.json({
       success: true,
@@ -48,6 +77,9 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('GET /api/items error:', error);
+    if ((error as Error).message === 'Unauthorized') {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
     return NextResponse.json({ 
       success: false, 
       error: 'Internal Server Error' 
@@ -55,17 +87,81 @@ export async function GET(request: Request) {
   }
 }
 
+// POST handlers
+async function handleHabitPost(
+  userId: Types.ObjectId, 
+  date: string, 
+  body: PostRequestBody
+) {
+  const dateString = new Date(date).toISOString().split('T')[0];
+  const { text, regularity, completed } = body;
+
+  const existingHabit = await Item.findOne({
+    userId,
+    type: 'habit',
+    text,
+    regularity
+  }).lean() as ItemDocument | null;
+
+  if (completed !== undefined && existingHabit) {
+    if (completed) {
+      return await Item.findOneAndUpdate(
+        { userId, type: 'habit', _id: existingHabit._id },
+        { $set: { completed: true, date: dateString } },
+        { upsert: true, new: true }
+      ).lean();
+    } else {
+      await Item.deleteOne({
+        userId,
+        type: 'habit',
+        _id: existingHabit._id,
+        date: dateString
+      });
+      return existingHabit;
+    }
+  }
+
+  const habitData = {
+    userId,
+    type: 'habit',
+    text,
+    regularity,
+    order: body.order || 0
+  };
+
+  if (existingHabit) {
+    return await Item.findByIdAndUpdate(
+      existingHabit._id, 
+      habitData,
+      { new: true }
+    ).lean();
+  }
+
+  return await Item.create(habitData);
+}
+
+async function handleRegularPost(
+  userId: Types.ObjectId, 
+  type: string, 
+  date: string, 
+  body: PostRequestBody
+) {
+  const createdAt = new Date(date);
+  createdAt.setHours(12, 0, 0, 0);
+
+  return await Item.create({
+    userId,
+    type,
+    text: body.text,
+    order: body.order || 0,
+    createdAt
+  });
+}
+
 export async function POST(request: Request) {
   try {
     await connectDB();
-
-    const token = request.headers.get('authorization')?.split(' ')[1];
-    if (!token) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
-    const userId = new Types.ObjectId(decoded.userId);
+    const userId = await verifyAuth(request);
 
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
@@ -78,50 +174,11 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
 
-    const { text, order } = await request.json() as { 
-      text: string;
-      order: number;
-    };
-
-    // For priorities, validate order is 0-2
-    if (type === 'priority' && (order < 0 || order > 2)) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Priority order must be 0, 1, or 2' 
-      }, { status: 400 });
-    }
-
-    const startDate = new Date(date);
-    startDate.setHours(0, 0, 0, 0);
-    const endDate = new Date(date);
-    endDate.setHours(23, 59, 59, 999);
-
-    // Find existing priority for this slot
-    const existingItem = await Item.findOne({
-      userId,
-      type,
-      order,
-      createdAt: { $gte: startDate, $lte: endDate }
-    });
-
-    let item;
-    if (existingItem) {
-      // Update existing item
-      item = await Item.findByIdAndUpdate(
-        existingItem._id,
-        { text },
-        { new: true }
-      );
-    } else {
-      // Create new item with the date
-      item = await Item.create({
-        userId,
-        type,
-        text,
-        order,
-        createdAt: new Date(date)
-      });
-    }
+    const body = await request.json() as PostRequestBody;
+    
+    const item = type === 'habit' 
+      ? await handleHabitPost(userId, date, body)
+      : await handleRegularPost(userId, type, date, body);
 
     return NextResponse.json({
       success: true,
@@ -129,39 +186,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('POST /api/items error:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Internal Server Error' 
-    }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: Request) {
-  try {
-    await connectDB();
-
-    const token = request.headers.get('authorization')?.split(' ')[1];
-    if (!token) {
+    if ((error as Error).message === 'Unauthorized') {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
-    const userId = new Types.ObjectId(decoded.userId);
-
-    const { id } = await request.json() as { id: string };
-
-    const result = await Item.deleteOne({
-      _id: new Types.ObjectId(id),
-      userId
-    });
-
-    return NextResponse.json({
-      success: true,
-      data: { deleted: result.deletedCount > 0 }
-    });
-
-  } catch (error) {
-    console.error('DELETE /api/items error:', error);
     return NextResponse.json({ 
       success: false, 
       error: 'Internal Server Error' 

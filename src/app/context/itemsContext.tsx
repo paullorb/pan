@@ -11,6 +11,8 @@ interface Item {
   text: string;
   type: ItemType;
   order?: number;
+  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  completed?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -18,9 +20,9 @@ interface Item {
 interface ItemsContextType {
   items: Record<ItemType, Item[]>;
   loading: Record<ItemType, boolean>;
-  updateItem: (type: ItemType, index: number, text: string) => Promise<void>;
+  updateItem: (type: ItemType, index: number, text: string, options?: { completed?: boolean; regularity?: string }) => Promise<void>;
   deleteItem: (type: ItemType, itemId: string) => Promise<void>;
-  addItem: (type: ItemType, text: string, order?: number) => Promise<void>;
+  addItem: (type: ItemType, text: string, order?: number, options?: { regularity?: string }) => Promise<void>;
 }
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
@@ -43,10 +45,9 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const { isAuthenticated, token, logout } = useAuth();
   const { selectedDate } = useDate();
 
-  // Helper to format date for API requests
   const formatDateForApi = (date: Date) => {
     const d = new Date(date);
-    d.setHours(12, 0, 0, 0); // Set to noon to avoid timezone issues
+    d.setHours(12, 0, 0, 0);
     return d.toISOString().split('T')[0];
   };
 
@@ -90,7 +91,7 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const addItem = async (type: ItemType, text: string, order?: number) => {
+  const addItem = async (type: ItemType, text: string, order?: number, options?: { regularity?: string }) => {
     if (!isAuthenticated || !token) return;
 
     try {
@@ -102,7 +103,8 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         },
         body: JSON.stringify({ 
           text,
-          ...(order !== undefined && { order })  // Only include order if provided
+          ...(order !== undefined && { order }),
+          ...(options?.regularity && { regularity: options.regularity })
         })
       });
 
@@ -118,10 +120,8 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const updateItem = async (type: ItemType, index: number, text: string) => {
+  const updateItem = async (type: ItemType, index: number, text: string, options?: { completed?: boolean; regularity?: string }) => {
     if (!isAuthenticated || !token) return;
-    
-    setLoading(prev => ({ ...prev, [type]: true }));
     
     try {
       const item = items[type][index];
@@ -135,7 +135,9 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         },
         body: JSON.stringify({ 
           text,
-          ...(order !== undefined && { order })
+          ...(order !== undefined && { order }),
+          ...(options?.completed !== undefined && { completed: options.completed }),
+          ...(options?.regularity && { regularity: options.regularity })
         })
       });
 
@@ -143,23 +145,13 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       if (data.success) {
         setItems(prev => ({
           ...prev,
-          [type]: prev[type].map((item, idx) => {
-            if (idx === index) {
-              // Preserve existing item properties and update with new data
-              return {
-                ...item,
-                ...data.data.item,
-                text
-              };
-            }
-            return item;
-          })
+          [type]: prev[type].map((i, idx) => 
+            idx === index ? { ...i, ...data.data.item } : i
+          )
         }));
       }
     } catch (error) {
       console.error(`Error updating ${type}:`, error);
-    } finally {
-      setLoading(prev => ({ ...prev, [type]: false }));
     }
   };
 
@@ -188,7 +180,6 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  // Fetch items when date changes or on mount
   useEffect(() => {
     if (isAuthenticated) {
       Object.keys(items).forEach((type) => {
