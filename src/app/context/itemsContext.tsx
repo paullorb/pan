@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
 
@@ -51,7 +51,7 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return d.toISOString().split('T')[0];
   };
 
-  const fetchItems = async (type: ItemType) => {
+  const fetchItems = useCallback(async (type: ItemType) => {
     if (!isAuthenticated || !token) return;
 
     setLoading(prev => ({ ...prev, [type]: true }));
@@ -89,7 +89,7 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     } finally {
       setLoading(prev => ({ ...prev, [type]: false }));
     }
-  };
+  }, [isAuthenticated, token, selectedDate, logout]);
 
   const addItem = async (type: ItemType, text: string, order?: number, options?: { regularity?: string }) => {
     if (!isAuthenticated || !token) return;
@@ -182,11 +182,9 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   useEffect(() => {
     if (isAuthenticated) {
-      Object.keys(items).forEach((type) => {
-        fetchItems(type as ItemType);
-      });
+      (Object.keys(items) as ItemType[]).forEach(fetchItems);
     }
-  }, [isAuthenticated, selectedDate]);
+  }, [isAuthenticated, fetchItems]);
 
   return (
     <ItemsContext.Provider value={{ 
