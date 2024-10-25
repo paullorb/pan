@@ -1,6 +1,3 @@
-// components/priorities/priorities.tsx
-"use client";
-
 import React, { useContext } from 'react';
 import style from './priorities.module.css';
 import { useItems } from '../../../context/itemsContext';
@@ -9,7 +6,7 @@ import Title from '../../shared/title';
 import Item from '../../shared/item';
 
 export default function Priorities() {
-  const { items, updateItem } = useItems();
+  const { items, updateItem, loading } = useItems();
   const priorities = items.priority;
 
   const togglesContext = useContext(TogglesContext);
@@ -22,17 +19,24 @@ export default function Priorities() {
     return null;
   }
 
+  // Always show 3 priority slots
+  const prioritySlots = Array(3).fill(null).map((_, index) => ({
+    text: priorities[index]?.text || '',
+    _id: priorities[index]?._id,
+    type: 'priority' as const
+  }));
+
   return (
     <div className={style.container}>
       <Title title="Priorities" />
       <div className={style.priorities}>
-        {[0, 1, 2].map((num) => (
+        {prioritySlots.map((priority, index) => (
           <Item
-            key={num}
-            text={priorities[num]?.text || ''}
+            key={`priority-${index}`}
+            text={priority.text}
             inputMode={true}
-            onChange={(value) => updateItem('priority', num, value)}
-            label={`${num + 1}`}
+            onChange={(value) => updateItem('priority', index, value)}
+            label={`${index + 1}`}
           />
         ))}
       </div>
