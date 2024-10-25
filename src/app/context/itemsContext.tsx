@@ -1,21 +1,10 @@
+// context/itemsContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
-
-export type ItemType = 'priority' | 'task' | 'habit' | 'hour';
-
-interface Item {
-  _id?: string;
-  text: string;
-  type: ItemType;
-  order?: number;
-  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
-  completed?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import { itemsService, Item, ItemType } from '../lib/services/itemsService';
 
 interface ItemsContextType {
   items: Record<ItemType, Item[]>;
@@ -27,7 +16,7 @@ interface ItemsContextType {
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
-export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<Record<ItemType, Item[]>>({
     priority: [],
     task: [],
@@ -45,46 +34,25 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const { isAuthenticated, token, logout } = useAuth();
   const { selectedDate } = useDate();
 
-  const formatDateForApi = (date: Date) => {
-    const d = new Date(date);
-    d.setHours(12, 0, 0, 0);
-    return d.toISOString().split('T')[0];
-  };
-
   const fetchItems = useCallback(async (type: ItemType) => {
     if (!isAuthenticated || !token) return;
 
     setLoading(prev => ({ ...prev, [type]: true }));
     try {
-      const response = await fetch(
-        `/api/items?date=${formatDateForApi(selectedDate)}&type=${type}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      if (response.status === 401) {
-        logout();
-        return;
-      }
-
-      const data = await response.json();
-      if (data.success) {
-        const sortedItems = (data.data.items || []).sort((a: Item, b: Item) => {
-          if (a.order !== undefined && b.order !== undefined) {
-            return a.order - b.order;
-          }
-          return 0;
-        });
-
-        setItems(prev => ({
-          ...prev,
-          [type]: sortedItems
-        }));
-      }
+      const fetchedItems = await itemsService.fetchItems({
+        token,
+        date: selectedDate,
+        type
+      });
+      
+      setItems(prev => ({
+        ...prev,
+        [type]: fetchedItems
+      }));
     } catch (error) {
+      if ((error as Error).message === 'Unauthorized') {
+        logout();
+      }
       console.error(`Error fetching ${type}:`, error);
     } finally {
       setLoading(prev => ({ ...prev, [type]: false }));
@@ -95,63 +63,21 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (!isAuthenticated || !token) return;
 
     try {
-      const response = await fetch(`/api/items?date=${formatDateForApi(selectedDate)}&type=${type}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ 
-          text,
-          ...(order !== undefined && { order }),
-          ...(options?.regularity && { regularity: options.regularity })
-        })
+      const newItem = await itemsService.addItem({
+        token,
+        date: selectedDate,
+        type,
+        text,
+        order,
+        regularity: options?.regularity
       });
 
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: [...prev[type], data.data.item]
-        }));
-      }
+      setItems(prev => ({
+        ...prev,
+        [type]: [...prev[type], newItem]
+      }));
     } catch (error) {
       console.error(`Error adding ${type}:`, error);
-    }
-  };
-
-  const updateItem = async (type: ItemType, index: number, text: string, options?: { completed?: boolean; regularity?: string }) => {
-    if (!isAuthenticated || !token) return;
-    
-    try {
-      const item = items[type][index];
-      const order = type === 'priority' ? index : undefined;
-
-      const response = await fetch(`/api/items?date=${formatDateForApi(selectedDate)}&type=${type}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ 
-          text,
-          ...(order !== undefined && { order }),
-          ...(options?.completed !== undefined && { completed: options.completed }),
-          ...(options?.regularity && { regularity: options.regularity })
-        })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: prev[type].map((i, idx) => 
-            idx === index ? { ...i, ...data.data.item } : i
-          )
-        }));
-      }
-    } catch (error) {
-      console.error(`Error updating ${type}:`, error);
     }
   };
 
@@ -159,24 +85,43 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (!isAuthenticated || !token) return;
 
     try {
-      const response = await fetch('/api/items', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ id: itemId })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: prev[type].filter(item => item._id !== itemId)
-        }));
-      }
+      await itemsService.deleteItem(token, itemId);
+      setItems(prev => ({
+        ...prev,
+        [type]: prev[type].filter(item => item._id !== itemId)
+      }));
     } catch (error) {
       console.error(`Error deleting ${type}:`, error);
+    }
+  };
+
+  const updateItem = async (
+    type: ItemType, 
+    index: number, 
+    text: string, 
+    options?: { completed?: boolean; regularity?: string }
+  ) => {
+    if (!isAuthenticated || !token) return;
+    
+    try {
+      const updatedItem = await itemsService.updateItem({
+        token,
+        date: selectedDate,
+        type,
+        text,
+        index,
+        completed: options?.completed,
+        regularity: options?.regularity
+      });
+  
+      setItems(prev => ({
+        ...prev,
+        [type]: prev[type].map((i, idx) => 
+          idx === index ? { ...i, ...updatedItem } : i
+        )
+      }));
+    } catch (error) {
+      console.error(`Error updating ${type}:`, error);
     }
   };
 
