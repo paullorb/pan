@@ -12,6 +12,7 @@
 .layoutToggles {
   display: flex;
   gap: var(--spacing-s);
+  flex: 1;
 }
 
 .toggleOptions {

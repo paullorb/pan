@@ -40,13 +40,13 @@ const Header = () => {
           onClick={() => handleToggleClick('main')}
           className={isInitialized && togglesState.main ? [style.toggle, style.active].join(' ') : style.toggle}
         >
-          Main
+          Main quests
         </button>
         <button
           onClick={() => handleToggleClick('aside')}
           className={isInitialized && togglesState.aside ? [style.toggle, style.active].join(' ') : style.toggle}
         >
-          Aside
+          Side quests
         </button>
       </div>
       <div className={style.toggleOptions}>
