@@ -1,4 +1,3 @@
-// components/layout/main.tsx
 "use client";
 
 import React, { useContext } from 'react';
@@ -14,6 +13,10 @@ const MainComponent: React.FC = () => {
   }
 
   const { togglesState } = context;
+
+  if (!togglesState.main) {
+    return null;
+  }
 
   return (
     <div className={style.container}>

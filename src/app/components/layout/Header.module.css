@@ -2,6 +2,13 @@
   width: 100%;
   border: 3px solid gray;
   padding: var(--spacing-m);
+  display: flex;
+  gap: var(--spacing-m);
+}
+
+.layoutToggles {
+  display: flex;
+  gap: var(--spacing-s);
 }
 
 .toggles {

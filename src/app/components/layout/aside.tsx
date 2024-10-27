@@ -1,5 +1,4 @@
-// /components/layout/aside.tsx
-"use client"; 
+"use client";
 
 import React, { useContext } from 'react';
 import { TogglesContext } from '../../context/togglesContext';
@@ -14,14 +13,19 @@ const Aside: React.FC = () => {
   const context = useContext(TogglesContext);
 
   if (!context) {
-    return null; 
+    return null;
   }
 
   const { togglesState } = context;
 
-  const isAsideVisible = togglesState.priorities || togglesState.tasks || togglesState.month || togglesState.habits || togglesState.tags;
+  const hasVisibleComponents = 
+    togglesState.priorities || 
+    togglesState.tasks || 
+    togglesState.month || 
+    togglesState.habits || 
+    togglesState.tags;
 
-  if (!isAsideVisible) {
+  if (!togglesState.aside || !hasVisibleComponents) {
     return null;
   }
 

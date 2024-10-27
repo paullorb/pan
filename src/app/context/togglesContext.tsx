@@ -1,63 +1,59 @@
-// /context/togglesContext.tsx
 "use client";
 
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
 
 export interface TogglesState {
+  // Component toggles
   hours: boolean;
   priorities: boolean;
   tasks: boolean;
   month: boolean;
   habits: boolean;
   tags: boolean;
+  // Layout toggles
+  main: boolean;
+  aside: boolean;
 }
 
-// Define the context type
 interface TogglesContextType {
   togglesState: TogglesState;
   setTogglesState: React.Dispatch<React.SetStateAction<TogglesState>>;
+  isInitialized: boolean;
 }
 
-// Create the context with default undefined value
 export const TogglesContext = createContext<TogglesContextType | undefined>(undefined);
 
 export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Initialize togglesState from localStorage or use defaults
-  const [togglesState, setTogglesState] = useState<TogglesState>(() => {
-    if (typeof window !== 'undefined') {
-      const storedToggles = localStorage.getItem('togglesState');
-      return storedToggles
-        ? JSON.parse(storedToggles)
-        : {
-            hours: false,
-            priorities: true,
-            tasks: true,
-            month: true,
-            habits: true,
-            tags: true,
-          };
-    } else {
-      // Default state if window is undefined (e.g., during server-side rendering)
-      return {
-        hours: false,
-        priorities: true,
-        tasks: true,
-        month: true,
-        habits: true,
-        tags: true,
-      };
-    }
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [togglesState, setTogglesState] = useState<TogglesState>({
+    // Component toggles
+    hours: false,
+    priorities: true,
+    tasks: true,
+    month: true,
+    habits: true,
+    tags: true,
+    // Layout toggles
+    main: true,
+    aside: true,
   });
 
-  // Save togglesState to localStorage whenever it changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    const storedToggles = localStorage.getItem('togglesState');
+    if (storedToggles) {
+      setTogglesState(JSON.parse(storedToggles));
+    }
+    setIsInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (isInitialized) {
       localStorage.setItem('togglesState', JSON.stringify(togglesState));
     }
-  }, [togglesState]);
+  }, [togglesState, isInitialized]);
 
   return (
-    <TogglesContext.Provider value={{ togglesState, setTogglesState }}>
+    <TogglesContext.Provider value={{ togglesState, setTogglesState, isInitialized }}>
       {children}
     </TogglesContext.Provider>
   );
