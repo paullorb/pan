@@ -9,10 +9,6 @@
   padding: 0 var(--spacing-xs);
 }
 
-.item *:hover {
-  text-decoration: underline;
-}
-
 .completed .text {
   text-decoration: line-through;
   color: gray;
