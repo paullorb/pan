@@ -2,7 +2,6 @@
 import React from 'react';
 import styles from './mobileMenu.module.css';
 import { useAuth } from '../../../context/authContext';
-import Toggles from '../hamburger/toggles';
 import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
 
@@ -16,7 +15,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose }) => {
   return (
     <div className={styles.container}>
       <div className={styles.menuItem} onClick={onClose}>
-        <Toggles />
       </div>
       <button
         className={styles.menuButton}
