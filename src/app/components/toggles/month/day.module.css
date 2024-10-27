@@ -1,5 +1,4 @@
 /* /components/toggles/month/day.module.css */
-
 .day {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -8,17 +7,17 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-bottom: 1px solid #ddd; 
+  border-bottom: 1px solid #ddd;
 }
 
 .day:nth-last-child(-n+7) {
-  border-bottom: none; 
+  border-bottom: none;
 }
 
 .day::before {
   content: "";
   display: block;
-  padding-bottom: 100%; 
+  padding-bottom: 100%;
 }
 
 .day > * {
@@ -43,18 +42,19 @@
   font-size: 1rem;
 }
 
-.currentDay {
-  background-color: var(--color);
-  color: rgb(218, 141, 70);
+/* Updated styles for day number */
+.selectedDayNumber {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgb(198, 198, 198);
 }
 
 .currentDayNumber {
+  color: var(--color);
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
-.selectedDay {
-  border: 1px solid rgb(198, 198, 198);
-}
+
 
 @media screen and (max-width: 768px) {
   .day {

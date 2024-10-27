@@ -60,15 +60,17 @@ const Day: React.FC<DayProps> = ({
 
   return (
     <div
-      className={`${styles.day} ${isCurrentDay() ? styles.currentDay : ''} ${
-        isSelectedDay() ? styles.selectedDay : ''
-      }`}
+      className={styles.day}
       onClick={handleDayClick}
       onMouseEnter={() => onDayHover(day)}
       onMouseLeave={() => onDayHover(null)}
     >
       <div className={styles.content}>
-        <div className={`${styles.dayNumber} ${isCurrentDay() ? styles.currentDayNumber : ''}`}>
+        <div 
+          className={`${styles.dayNumber} ${
+            isCurrentDay() ? styles.currentDayNumber : ''
+          } ${isSelectedDay() ? styles.selectedDayNumber : ''}`}
+        >
           {day}
         </div>
         <Dots
