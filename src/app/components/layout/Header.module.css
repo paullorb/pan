@@ -6,13 +6,15 @@
   border: 3px solid gray;
   padding: var(--spacing-s);
   display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-m);
 }
 
-.layoutToggles {
+.questGroup {
   display: flex;
   gap: var(--spacing-s);
-  flex: 1;
+  min-width: 100%;
+  justify-content: space-between;
 }
 
 .toggleOptions {
@@ -33,10 +35,6 @@
   background: var(--color);
   color: var(--bg);
 }
-
-/* .toggle:hover .count {
-  display: flex;
-} */
 
 .count {
   display: flex;

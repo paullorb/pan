@@ -29,7 +29,6 @@ const Header = () => {
     return togglesState.aside && togglesState[toggle];
   };
 
-  // Get count for each type
   const getCount = (toggle: string) => {
     switch(toggle) {
       case 'priorities':
@@ -50,7 +49,6 @@ const Header = () => {
     .filter(key => !['main', 'aside', 'hours', 'headerToggles'].includes(key))
     .sort() as Array<keyof TogglesState>;
 
-  // Helper to render toggle button
   const renderToggleButton = (toggle: keyof TogglesState, isMainToggle: boolean = false) => {
     const count = getCount(toggle);
     const isVisible = isInitialized && isToggleVisible(toggle);
@@ -72,23 +70,27 @@ const Header = () => {
     <header className={style.container}>
       {isInitialized && togglesState.headerToggles && (
         <div className={style.toggles}>
-          <div className={style.layoutToggles}>
+          <div className={style.questGroup}>
             <button
               onClick={() => handleToggleClick('main')}
               className={isInitialized && togglesState.main ? [style.toggle, style.active].join(' ') : style.toggle}
             >
               Main quests
             </button>
+            <div className={style.toggleOptions}>
+              {mainToggles.map((toggle) => renderToggleButton(toggle as keyof TogglesState, true))}
+            </div>
+          </div>
+          <div className={style.questGroup}>
             <button
               onClick={() => handleToggleClick('aside')}
               className={isInitialized && togglesState.aside ? [style.toggle, style.active].join(' ') : style.toggle}
             >
               Side quests
             </button>
-          </div>
-          <div className={style.toggleOptions}>
-            {mainToggles.map((toggle) => renderToggleButton(toggle as keyof TogglesState, true))}
-            {asideToggles.map((toggle) => renderToggleButton(toggle))}
+            <div className={style.toggleOptions}>
+              {asideToggles.map((toggle) => renderToggleButton(toggle))}
+            </div>
           </div>
         </div>
       )}
