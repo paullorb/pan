@@ -6,7 +6,6 @@ import AuthModal from '../auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../../context/authContext';
 import Status from '../status/status';
-import Toggles from '../toggles/toggles';
 import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
 import MobileMenu from '../mobileMenu/mobileMenu';
@@ -92,7 +91,6 @@ const Hamburger: React.FC = () => {
           <div className={`${styles.indicators} ${styles.desktopOnly}`}>
             <Status />
           </div>
-          <Toggles />
           <button className={styles.button} onClick={handlePrint}>
             🖨️
           </button>
