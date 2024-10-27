@@ -149,6 +149,29 @@ async function handleRegularPost(
   const createdAt = new Date(date);
   createdAt.setHours(12, 0, 0, 0);
 
+  // Special handling for priorities
+  if (type === 'priority' && body.order !== undefined) {
+    const { startDate, endDate } = getDateRange(date);
+    
+    // Check for existing priority with same order
+    const existingPriority = await Item.findOne({
+      userId,
+      type: 'priority',
+      order: body.order,
+      createdAt: { $gte: startDate, $lte: endDate }
+    }).lean();
+
+    if (existingPriority && !Array.isArray(existingPriority)) {
+      // Update existing priority
+      return await Item.findByIdAndUpdate(
+        existingPriority._id,
+        { text: body.text },
+        { new: true }
+      ).lean();
+    }
+  }
+
+  // For non-priorities or new priorities, create new item
   return await Item.create({
     userId,
     type,

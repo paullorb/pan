@@ -1,5 +1,3 @@
-// File: app/components/shared/Item.tsx
-
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
@@ -17,6 +15,7 @@ interface ItemProps {
   children?: React.ReactNode;
   loading?: boolean;
   bullet?: boolean;
+  disabled?: boolean; 
 }
 
 const Item: React.FC<ItemProps> = ({
@@ -31,6 +30,7 @@ const Item: React.FC<ItemProps> = ({
   children,
   loading = false,
   bullet = false,
+  disabled = false, 
 }) => {
   const renderTextItem = () => (
     <>
@@ -51,6 +51,7 @@ const Item: React.FC<ItemProps> = ({
         type="text"
         value={text}
         onChange={(e) => onChange && onChange(e.target.value)}
+        disabled={disabled} 
       />
     </>
   );

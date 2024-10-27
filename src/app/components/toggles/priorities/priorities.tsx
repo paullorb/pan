@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext } from 'react';
 import style from './priorities.module.css';
 import { useItems } from '../../../context/itemsContext';
@@ -19,12 +21,20 @@ export default function Priorities() {
     return null;
   }
 
-  // Always show 3 priority slots
-  const prioritySlots = Array(3).fill(null).map((_, index) => ({
-    text: priorities[index]?.text || '',
-    _id: priorities[index]?._id,
-    type: 'priority' as const
-  }));
+  // Always show 3 priority slots with proper order
+  const prioritySlots = Array(3).fill(null).map((_, index) => {
+    const existingPriority = priorities.find(p => p.order === index);
+    return {
+      text: existingPriority?.text || '',
+      _id: existingPriority?._id,
+      order: index,
+      type: 'priority' as const
+    };
+  });
+
+  const handlePriorityChange = async (index: number, value: string) => {
+    await updateItem('priority', index, value, { order: index });
+  };
 
   return (
     <div className={style.container}>
@@ -35,8 +45,9 @@ export default function Priorities() {
             key={`priority-${index}`}
             text={priority.text}
             inputMode={true}
-            onChange={(value) => updateItem('priority', index, value)}
+            onChange={(value) => handlePriorityChange(index, value)}
             label={`${index + 1}`}
+            disabled={loading.priority}
           />
         ))}
       </div>
