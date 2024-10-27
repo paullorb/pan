@@ -19,9 +19,18 @@ const Header = () => {
     }));
   };
 
-  // Filter out layout toggles for the component toggles list
-  const componentToggles = Object.keys(togglesState)
-    .filter(key => key !== 'main' && key !== 'aside')
+  // Function to check if a toggle is actually visible
+  const isToggleVisible = (toggle: keyof TogglesState) => {
+    if (toggle === 'hours') {
+      return togglesState.main && togglesState.hours;
+    }
+    return togglesState.aside && togglesState[toggle];
+  }
+
+  // Filter and sort toggles by section
+  const mainToggles = ['hours'];
+  const asideToggles = Object.keys(togglesState)
+    .filter(key => !['main', 'aside', 'hours'].includes(key))
     .sort() as Array<keyof TogglesState>;
 
   return (
@@ -41,11 +50,20 @@ const Header = () => {
         </button>
       </div>
       <div className={style.toggles}>
-        {componentToggles.map((toggle) => (
+        {mainToggles.map((toggle) => (
+          <button
+            key={toggle}
+            onClick={() => handleToggleClick(toggle as keyof TogglesState)}
+            className={isInitialized && isToggleVisible(toggle as keyof TogglesState) ? [style.toggle, style.active].join(' ') : style.toggle}
+          >
+            {toggle.charAt(0).toUpperCase() + toggle.slice(1)}
+          </button>
+        ))}
+        {asideToggles.map((toggle) => (
           <button
             key={toggle}
             onClick={() => handleToggleClick(toggle)}
-            className={isInitialized && togglesState[toggle] ? [style.toggle, style.active].join(' ') : style.toggle}
+            className={isInitialized && isToggleVisible(toggle) ? [style.toggle, style.active].join(' ') : style.toggle}
           >
             {toggle.charAt(0).toUpperCase() + toggle.slice(1)}
           </button>
