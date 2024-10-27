@@ -19,7 +19,7 @@ const Header = () => {
     }));
   };
 
-  const isToggleVisible = (toggle: keyof TogglesState) => {
+  const isToggleVisible = (toggle: keyof TogglesState): boolean => {
     if (toggle === 'hours') {
       return togglesState.main && togglesState[toggle];
     }
