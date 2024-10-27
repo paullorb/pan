@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './mobileMenu.module.css';
 import { useAuth } from '../../../context/authContext';
-import Toggles from '../toggles/toggles';
+import Toggles from '../hamburger/toggles';
 import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
 

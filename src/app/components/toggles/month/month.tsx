@@ -6,7 +6,7 @@ import styles from './month.module.css';
 import { TogglesContext } from '@/app/context/togglesContext';
 import { useDate } from '../../../context/dateContext';
 import DayGrid from './dayGrid';
-import Title from '../../shared/title';
+import Title from '../../shared/Title';
 import {
   getDaysInMonth,
   getFirstDayOfMonth,

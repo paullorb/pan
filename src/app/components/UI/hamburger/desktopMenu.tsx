@@ -1,7 +1,5 @@
 import { memo } from 'react';
-import { useAuth } from '../../../context/authContext';
 import Status from '../status/status';
-import Toggles from '../toggles/toggles';
 import UserDropdown from './userDropdown';
 import styles from './hamburger.module.css';
 
@@ -18,7 +16,6 @@ const DesktopMenu: React.FC<DesktopMenuProps> = memo(({ isAuthenticated, onAuthC
       <div className={`${styles.indicators} ${styles.desktopOnly}`}>
         <Status />
       </div>
-      <Toggles />
       <button className={styles.button} onClick={handlePrint} aria-label="Print">
         🖨️
       </button>

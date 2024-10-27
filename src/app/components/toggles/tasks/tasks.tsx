@@ -5,9 +5,9 @@ import React, { useContext } from 'react';
 import style from './tasks.module.css';
 import { useTasks } from '../../../context/tasksContext';
 import { TogglesContext } from '../../../context/togglesContext';
-import AddItem from '../../shared/addItem';
-import Title from '../../shared/title';
-import Item from '../../shared/item';
+import AddItem from '../../shared/AddItem';
+import Title from '../../shared/Title';
+import Item from '../../shared/Item';
 
 export default function Tasks() {
   const { tasks, addTask, toggleTaskCompletion, deleteTask } = useTasks();

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './item.module.css';
-import BaseItem from './baseItem';
+import BaseItem from './BaseItem';
 
 interface InputItemProps {
   text: string;

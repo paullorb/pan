@@ -18,7 +18,6 @@ const MobileMenu: React.FC<MobileMenuProps> = memo(({ onAuthClick }) => {
       {isOpen && (
         <div className={styles.mobileMenu}>
           <button onClick={onAuthClick}>Login/Signup</button>
-          {/* Add more mobile menu items here */}
         </div>
       )}
     </>

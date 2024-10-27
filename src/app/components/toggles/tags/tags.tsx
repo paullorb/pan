@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import { useTags } from '../../../context/tagsContext';
 import style from './tags.module.css';
-import Title from '../../shared/title';
-import AddItem from '../../shared/addItem';
-import Item from '../../shared/item';
+import Title from '../../shared/Title';
+import AddItem from '../../shared/AddItem';
+import Item from '../../shared/Item';
 
 const Tags: React.FC = () => {
   const { tags, addTag, deleteTag } = useTags();

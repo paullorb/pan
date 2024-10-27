@@ -1,4 +1,4 @@
-import Title from '../../shared/title'
+import Title from '../../shared/Title'
 import styles from './connections.module.scss'
 
 export default function Connections () {

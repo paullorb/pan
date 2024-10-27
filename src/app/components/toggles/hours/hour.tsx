@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHours } from '../../../context/hoursContext';
 import { useDate } from '../../../context/dateContext';
-import Item from '../../shared/item';
+import Item from '../../shared/Item';
 import style from './hour.module.css';
-import Skeleton from '../../shared/skeleton';
+import Skeleton from '../../shared/Skeleton';
 import { useCurrentHour } from '../../../context/currentHourContext';
 
 interface HourProps {
