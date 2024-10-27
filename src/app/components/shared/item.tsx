@@ -10,6 +10,7 @@ interface ItemProps {
   completed?: boolean;
   disabled?: boolean; 
   inputMode?: boolean;
+  id?: string;
   label?: string;
   loading?: boolean;
   text?: string;
@@ -25,6 +26,7 @@ const Item: React.FC<ItemProps> = ({
   disabled = false, 
   completed = false,
   inputMode = false,
+  id,
   label,
   loading = false,
   text,

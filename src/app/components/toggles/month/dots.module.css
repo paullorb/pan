@@ -7,7 +7,7 @@
 
 .dot {
   display: flex;
-  color: #cccccc11; 
+  color: transparent;
   font-size: 1.1rem;
 }
 

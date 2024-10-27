@@ -21,20 +21,13 @@ export default function Priorities() {
     return null;
   }
 
-  // Always show 3 priority slots with proper order
-  const prioritySlots = Array(3).fill(null).map((_, index) => {
-    const existingPriority = priorities.find(p => p.order === index);
-    return {
-      text: existingPriority?.text || '',
-      _id: existingPriority?._id,
-      order: index,
-      type: 'priority' as const
-    };
-  });
-
-  const handlePriorityChange = async (index: number, value: string) => {
-    await updateItem('priority', index, value, { order: index });
-  };
+  // Always show 3 priority slots
+  const prioritySlots = Array(3).fill(null).map((_, index) => ({
+    text: priorities[index]?.text || '',
+    _id: priorities[index]?._id,
+    type: 'priority' as const,
+    id: `priority-${index + 1}` 
+  }));
 
   return (
     <div className={style.container}>
@@ -42,12 +35,13 @@ export default function Priorities() {
       <div className={style.priorities}>
         {prioritySlots.map((priority, index) => (
           <Item
-            key={`priority-${index}`}
+            key={priority.id}
             text={priority.text}
             inputMode={true}
-            onChange={(value) => handlePriorityChange(index, value)}
+            onChange={(value) => updateItem('priority', index, value)}
             label={`${index + 1}`}
             disabled={loading.priority}
+            id={priority.id} 
           />
         ))}
       </div>
