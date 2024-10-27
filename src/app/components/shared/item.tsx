@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './item.module.css';
-import Skeleton from './Skeleton';
-import DelItem from './DelItem';
+import Skeleton from './skeleton';
+import DelItem from './delItem';
 
 interface ItemProps {
   bullet?: boolean;

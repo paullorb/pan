@@ -4,9 +4,9 @@ import React, { useContext } from 'react';
 import style from './habits.module.css';
 import { useItems } from '../../../context/itemsContext';
 import { TogglesContext } from '../../../context/togglesContext';
-import AddItem from '../../shared/AddItem';
-import Title from '../../shared/Title';
-import Item from '../../shared/Item';
+import AddItem from '../../shared/addItem';
+import Title from '../../shared/title';
+import Item from '../../shared/item';
 
 export default function Habits() {
   const { items, loading, updateItem, addItem, deleteItem } = useItems();

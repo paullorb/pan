@@ -7,7 +7,7 @@ import Hour from './hour';
 import style from './hours.module.css';
 import { TogglesContext } from '../../../context/togglesContext';
 import Controls from './controls';
-import Title from '../../shared/Title';
+import Title from '../../shared/title';
 import { CurrentHourProvider } from '../../../context/currentHourContext';
 
 const Hours: React.FC = () => {

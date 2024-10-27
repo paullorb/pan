@@ -2,10 +2,10 @@
 
 import './aesthetics/globals.css';
 import style from './aesthetics/page.module.css';
-import Aside from './components/layout/Aside';
-import Header from './components/layout/Header';
-import MainComponent from './components/layout/Main';
-import Nav from './components/layout/Nav';
+import Aside from './components/layout/aside';
+import Header from './components/layout/header';
+import MainComponent from './components/layout/main';
+import Nav from './components/layout/nav';
 
 export default function Home() {
   return (

@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useDate } from '../../../context/dateContext';
 import style from './date.module.css';
-import Title from '../../shared/Title';
+import Title from '../../shared/title';
 
 const DateComponent: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();

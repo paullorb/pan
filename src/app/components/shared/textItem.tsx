@@ -2,8 +2,8 @@
 
 import React from 'react';
 import styles from './item.module.css';
-import BaseItem from './BaseItem';
-import DelItem from './DelItem';
+import BaseItem from './baseItem';
+import DelItem from './delItem';
 
 interface TextItemProps {
   text: string;

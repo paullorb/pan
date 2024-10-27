@@ -1,7 +1,7 @@
 // page.tsx
 
 import style from './page.module.css';
-import Nav from '../components/layout/Nav';
+import Nav from '../components/layout/nav';
 import MainComponent from './components/main';
 
 export default function Home() {
