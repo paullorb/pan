@@ -3,7 +3,7 @@
 
 import React, { useContext, useState } from 'react';
 import styles from './month.module.css';
-import { TogglesContext } from '@/app/context/togglesContext';
+import { TogglesContext } from '../../../context/togglesContext';
 import { useDate } from '../../../context/dateContext';
 import DayGrid from './dayGrid';
 import Title from '../../shared/Title';
