@@ -43,9 +43,3 @@ export const getDateRange = (date: string) => {
   endDate.setHours(23, 59, 59, 999);
   return { startDate, endDate };
 };
-
-export const formatDateForApi = (date: Date) => {
-  const d = new Date(date);
-  d.setHours(12, 0, 0, 0); // Set to noon to avoid timezone issues
-  return d.toISOString().split('T')[0];
-};

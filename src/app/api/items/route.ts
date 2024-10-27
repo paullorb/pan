@@ -6,7 +6,6 @@ import {
   PostRequestBody,
   verifyAuth,
   getDateRange,
-  formatDateForApi
 } from '../../lib/utils/itemsUtils';
 import { Types } from 'mongoose';
 
