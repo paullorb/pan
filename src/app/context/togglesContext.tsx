@@ -13,6 +13,8 @@ export interface TogglesState {
   // Layout toggles
   main: boolean;
   aside: boolean;
+  // UI toggles
+  headerToggles: boolean;
 }
 
 interface TogglesContextType {
@@ -36,6 +38,8 @@ export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children })
     // Layout toggles
     main: true,
     aside: true,
+    // UI toggles
+    headerToggles: true,
   });
 
   useEffect(() => {

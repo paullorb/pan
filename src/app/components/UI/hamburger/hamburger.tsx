@@ -1,10 +1,11 @@
 // hamburger.tsx
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import AuthModal from '../auth/auth';
 import styles from './hamburger.module.css';
 import { useAuth } from '../../../context/authContext';
+import { TogglesContext } from '../../../context/togglesContext';
 import Status from '../status/status';
 import Language from '../language/language';
 import DarkMode from '../darkMode/darkMode';
@@ -12,13 +13,20 @@ import MobileMenu from '../mobileMenu/mobileMenu';
 
 const Hamburger: React.FC = () => {
   const { isAuthenticated, userEmail, logout } = useAuth();
+  const { togglesState, setTogglesState, isInitialized } = useContext(TogglesContext)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const toggleHeaderButtons = () => {
+    setTogglesState(prev => ({
+      ...prev,
+      headerToggles: !prev.headerToggles
+    }));
   };
 
   const toggleModal = () => {
@@ -93,6 +101,12 @@ const Hamburger: React.FC = () => {
           </div>
           <button className={styles.button} onClick={handlePrint}>
             🖨️
+          </button>
+          <button 
+            className={`${styles.button} ${togglesState.headerToggles ? styles.active : ''}`} 
+            onClick={toggleHeaderButtons}
+          >
+            🎛️
           </button>
 
           {isAuthenticated ? (

@@ -19,22 +19,22 @@ const Header = () => {
     }));
   };
 
-  // Function to check if a toggle is actually visible
   const isToggleVisible = (toggle: keyof TogglesState) => {
     if (toggle === 'hours') {
-      return togglesState.main && togglesState.hours;
+      return togglesState.main && togglesState[toggle];
     }
     return togglesState.aside && togglesState[toggle];
   }
 
-  // Filter and sort toggles by section
   const mainToggles = ['hours'];
   const asideToggles = Object.keys(togglesState)
-    .filter(key => !['main', 'aside', 'hours'].includes(key))
+    .filter(key => !['main', 'aside', 'hours', 'headerToggles'].includes(key))
     .sort() as Array<keyof TogglesState>;
 
   return (
     <header className={style.container}>
+      {isInitialized && togglesState.headerToggles && (
+        <div className={style.toggles}>
       <div className={style.layoutToggles}>
         <button
           onClick={() => handleToggleClick('main')}
@@ -49,7 +49,7 @@ const Header = () => {
           Aside
         </button>
       </div>
-      <div className={style.toggles}>
+      <div className={style.toggleOptions}>
         {mainToggles.map((toggle) => (
           <button
             key={toggle}
@@ -69,6 +69,8 @@ const Header = () => {
           </button>
         ))}
       </div>
+      </div>
+    )}
     </header>
   );
 };

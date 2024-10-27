@@ -1,5 +1,8 @@
 .container {
   width: 100%;
+}
+
+.toggles {
   border: 3px solid gray;
   padding: var(--spacing-m);
   display: flex;
@@ -11,7 +14,7 @@
   gap: var(--spacing-s);
 }
 
-.toggles {
+.toggleOptions {
   display: flex;
   gap: var(--spacing-s);
 }
