@@ -4,33 +4,33 @@ import Skeleton from './skeleton';
 import DelItem from './delItem';
 
 interface ItemProps {
-  text?: string;
-  completed?: boolean;
-  onToggle?: () => void;
-  onDelete?: () => void;
-  inputMode?: boolean;
-  onChange?: (value: string) => void;
-  label?: string;
-  className?: string;
-  children?: React.ReactNode;
-  loading?: boolean;
   bullet?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+  completed?: boolean;
   disabled?: boolean; 
+  inputMode?: boolean;
+  label?: string;
+  loading?: boolean;
+  text?: string;
+  onChange?: (value: string) => void;
+  onDelete?: () => void;
+  onToggle?: () => void;
 }
 
 const Item: React.FC<ItemProps> = ({
-  text,
-  completed = false,
-  onToggle,
-  onDelete,
-  inputMode = false,
-  onChange,
-  label,
+  bullet = false,
   className,
   children,
-  loading = false,
-  bullet = false,
   disabled = false, 
+  completed = false,
+  inputMode = false,
+  label,
+  loading = false,
+  text,
+  onChange,
+  onDelete,
+  onToggle,
 }) => {
   const renderTextItem = () => (
     <>
