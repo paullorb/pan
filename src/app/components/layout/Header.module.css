@@ -21,6 +21,7 @@
 }
 
 .toggle {
+  position: relative; 
   padding: var(--spacing-xs);
   border: 1px solid var(--color);
   background: none;
@@ -31,6 +32,25 @@
 .toggle.active {
   background: var(--color);
   color: var(--bg);
+}
+
+/* .toggle:hover .count {
+  display: flex;
+} */
+
+.count {
+  display: flex;
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 10px 2px;
+  background: var(--color);
+  color: var(--bg);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
 }
 
 @media print {
