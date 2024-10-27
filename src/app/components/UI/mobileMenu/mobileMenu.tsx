@@ -48,7 +48,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ onClose }) => {
         <button
           className={styles.menuButton}
           onClick={() => {
-            // Open auth modal
             onClose();
           }}
         >
