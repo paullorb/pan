@@ -4,7 +4,7 @@
 
 .toggles {
   border: 3px solid gray;
-  padding: var(--spacing-m);
+  padding: var(--spacing-s);
   display: flex;
   gap: var(--spacing-m);
 }
