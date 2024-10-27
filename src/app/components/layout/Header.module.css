@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  border: 3px solid green;
+}
+
+@media print {
+  .container {
+    display: none;
+  }
+}
