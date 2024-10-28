@@ -38,7 +38,7 @@ export default function Priorities() {
             key={priority.id}
             text={priority.text}
             inputMode={true}
-            onChange={(value) => updateItem('priority', index, value)}
+            onChange={(value) => updateItem('priority', index.toString(), value)}
             label={`${index + 1}`}
             disabled={loading.priority}
             id={priority.id} 

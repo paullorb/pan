@@ -37,7 +37,7 @@ export default function Habits() {
           key={habit._id || index}
           text={habit.text}
           completed={habit.completed}
-          onToggle={() => updateItem('habit', index, habit.text, { completed: !habit.completed })}
+          onToggle={() => habit._id && updateItem('habit', habit._id, habit.text, { completed: !habit.completed })}
           onDelete={() => habit._id && deleteItem('habit', habit._id)}
           loading={loading.habit}
         />

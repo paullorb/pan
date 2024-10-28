@@ -3,49 +3,22 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
-
-export type ItemType = 'priority' | 'task' | 'habit' | 'hour';
-
-interface Item {
-  _id?: string;
-  text: string;
-  type: ItemType;
-  order?: number;
-  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
-  date?: string;
-  completed?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-interface ItemsContextType {
-  items: Record<ItemType, Item[]>;
-  loading: Record<ItemType, boolean>;
-  updateItem: (type: ItemType, index: number, text: string, options?: { 
-    completed?: boolean; 
-    regularity?: string;
-    order?: number;
-  }) => Promise<void>;
-  deleteItem: (type: ItemType, itemId: string) => Promise<void>;
-  addItem: (type: ItemType, text: string, order?: number, options?: { regularity?: string }) => Promise<void>;
-}
+import { 
+  ItemType, 
+  Item, 
+  ItemsContextType,
+  ITEMS_INITIAL_STATE,
+  ITEMS_LOADING_INITIAL_STATE,
+  ITEM_CONFIG,
+  RegularityType
+} from '../lib/models/types';
+import { apiRequest, formatDate, handleError } from '../lib/utils/apiUtils';
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<Record<ItemType, Item[]>>({
-    priority: [],
-    task: [],
-    habit: [],
-    hour: []
-  });
-  
-  const [loading, setLoading] = useState<Record<ItemType, boolean>>({
-    priority: false,
-    task: false,
-    habit: false,
-    hour: false
-  });
+  const [items, setItems] = useState<Record<ItemType, Item[]>>(ITEMS_INITIAL_STATE);
+  const [loading, setLoading] = useState<Record<ItemType, boolean>>(ITEMS_LOADING_INITIAL_STATE);
 
   const { isAuthenticated, token, logout } = useAuth();
   const { selectedDate } = useDate();
@@ -55,125 +28,91 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setLoading(prev => ({ ...prev, [type]: true }));
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+      const data = await apiRequest<{ items: Item[] }>(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token
       );
-
-      if (response.status === 401) {
-        logout();
-        return;
-      }
-
-      const data = await response.json();
-      if (data.success) {
-        // Sort items by order if they exist
-        const sortedItems = data.data.items.sort((a: Item, b: Item) => 
-          ((a.order ?? 0) - (b.order ?? 0))
-        );
-
-        setItems(prev => ({
-          ...prev,
-          [type]: sortedItems
-        }));
-      }
+      setItems(prev => ({
+        ...prev,
+        [type]: data.items
+      }));
     } catch (error) {
-      console.error(`Error fetching ${type}:`, error);
+      if (error instanceof Error && error.message === 'Unauthorized') {
+        logout();
+      }
+      handleError(error, `fetching ${type}`);
     } finally {
       setLoading(prev => ({ ...prev, [type]: false }));
     }
   }, [isAuthenticated, token, selectedDate, logout]);
 
   const updateItem = async (
-    type: ItemType, 
-    index: number, 
-    text: string, 
-    options?: { 
-      completed?: boolean; 
-      regularity?: string;
+    type: ItemType,
+    id: string,
+    text: string,
+    options?: {
+      completed?: boolean;
+      regularity?: RegularityType;
       order?: number;
     }
   ) => {
     if (!isAuthenticated || !token) return;
-    
-    // Optimistically update the UI first
-    setItems(prev => ({
-      ...prev,
-      [type]: prev[type].map((item, idx) => 
-        idx === index ? { ...item, text } : item
-      )
-    }));
-  
+
+    if (type === 'priority' && text.trim() === '') {
+      await deleteItem(type, id);
+      return;
+    }
+
+    const config = ITEM_CONFIG[type];
+    const finalOrder = options?.order ?? config.defaultOrder;
+
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
+      await apiRequest(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             text,
-            order: options?.order,
+            order: finalOrder,
             completed: options?.completed,
             regularity: options?.regularity
           })
         }
       );
-  
-      const data = await response.json();
-      if (data.success) {
-        // Update with server response
-        setItems(prev => ({
-          ...prev,
-          [type]: prev[type].map((item, idx) => 
-            idx === index ? { ...item, ...data.data.item } : item
-          )
-        }));
-      }
-    } catch (error) {
-      console.error(`Error updating ${type}:`, error);
-      // Optionally revert the optimistic update on error
       await fetchItems(type);
+    } catch (error) {
+      handleError(error, `updating ${type}`);
     }
   };
 
-  const addItem = async (type: ItemType, text: string, order?: number, options?: { regularity?: string }) => {
+  const addItem = async (
+    type: ItemType,
+    text: string,
+    order?: number,
+    options?: { regularity?: RegularityType }
+  ) => {
     if (!isAuthenticated || !token) return;
 
+    const config = ITEM_CONFIG[type];
+    const finalOrder = order ?? config.defaultOrder;
+
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
+      await apiRequest(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             text,
-            order: type === 'priority' ? order : undefined,
+            order: finalOrder,
             regularity: options?.regularity
           })
         }
       );
-
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: [...prev[type], data.data.item].sort((a, b) => 
-            ((a.order ?? 0) - (b.order ?? 0))
-          )
-        }));
-      }
+      await fetchItems(type);
     } catch (error) {
-      console.error(`Error adding ${type}:`, error);
+      handleError(error, `adding ${type}`);
     }
   };
 
@@ -181,36 +120,31 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!isAuthenticated || !token) return;
 
     try {
-      const response = await fetch('/api/items', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ id: itemId })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: prev[type].filter(item => item._id !== itemId)
-        }));
-      }
+      await apiRequest(
+        '/api/items',
+        token,
+        {
+          method: 'DELETE',
+          body: JSON.stringify({ id: itemId })
+        }
+      );
+      await fetchItems(type);
     } catch (error) {
-      console.error(`Error deleting ${type}:`, error);
+      handleError(error, `deleting ${type}`);
     }
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      (Object.keys(items) as ItemType[]).forEach(fetchItems);
+      Object.keys(items).forEach(type => 
+        fetchItems(type as ItemType)
+      );
     }
   }, [isAuthenticated, fetchItems]);
 
   return (
-    <ItemsContext.Provider value={{ 
-      items, 
+    <ItemsContext.Provider value={{
+      items,
       loading,
       updateItem,
       deleteItem,
