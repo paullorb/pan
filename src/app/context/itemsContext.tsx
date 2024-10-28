@@ -12,6 +12,7 @@ import {
   ITEM_CONFIG,
   RegularityType
 } from '../lib/models/types';
+import { apiRequest, formatDate, handleError } from '../lib/utils/apiUtils';
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
@@ -27,29 +28,19 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setLoading(prev => ({ ...prev, [type]: true }));
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+      const data = await apiRequest<{ items: Item[] }>(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token
       );
-
-      if (response.status === 401) {
-        logout();
-        return;
-      }
-
-      const data = await response.json();
-      if (data.success) {
-        setItems(prev => ({
-          ...prev,
-          [type]: data.data.items
-        }));
-      }
+      setItems(prev => ({
+        ...prev,
+        [type]: data.items
+      }));
     } catch (error) {
-      console.error(`Error fetching ${type}:`, error);
+      if (error instanceof Error && error.message === 'Unauthorized') {
+        logout();
+      }
+      handleError(error, `fetching ${type}`);
     } finally {
       setLoading(prev => ({ ...prev, [type]: false }));
     }
@@ -67,7 +58,6 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   ) => {
     if (!isAuthenticated || !token) return;
 
-    // If text is empty and it's a priority, delete the item instead
     if (type === 'priority' && text.trim() === '') {
       await deleteItem(type, id);
       return;
@@ -77,14 +67,11 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const finalOrder = options?.order ?? config.defaultOrder;
 
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
+      await apiRequest(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
           body: JSON.stringify({
             text,
             order: finalOrder,
@@ -93,13 +80,9 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           })
         }
       );
-
-      const data = await response.json();
-      if (data.success) {
-        await fetchItems(type);
-      }
+      await fetchItems(type);
     } catch (error) {
-      console.error(`Error updating ${type}:`, error);
+      handleError(error, `updating ${type}`);
     }
   };
 
@@ -115,14 +98,11 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const finalOrder = order ?? config.defaultOrder;
 
     try {
-      const response = await fetch(
-        `/api/items?date=${selectedDate.toISOString().split('T')[0]}&type=${type}`,
+      await apiRequest(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
           body: JSON.stringify({
             text,
             order: finalOrder,
@@ -130,13 +110,9 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           })
         }
       );
-
-      const data = await response.json();
-      if (data.success) {
-        await fetchItems(type);
-      }
+      await fetchItems(type);
     } catch (error) {
-      console.error(`Error adding ${type}:`, error);
+      handleError(error, `adding ${type}`);
     }
   };
 
@@ -144,21 +120,17 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!isAuthenticated || !token) return;
 
     try {
-      const response = await fetch('/api/items', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ id: itemId })
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        await fetchItems(type);
-      }
+      await apiRequest(
+        '/api/items',
+        token,
+        {
+          method: 'DELETE',
+          body: JSON.stringify({ id: itemId })
+        }
+      );
+      await fetchItems(type);
     } catch (error) {
-      console.error(`Error deleting ${type}:`, error);
+      handleError(error, `deleting ${type}`);
     }
   };
 

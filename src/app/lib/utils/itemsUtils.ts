@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import Item from '../models/Item';
 import { IItem } from '../models/Item';  
 import { ItemType, RegularityType } from '../models/types';
+import { formatDate } from './apiUtils';
 
 export interface ItemDocument extends IItem {
   _id: Types.ObjectId;
@@ -24,16 +25,12 @@ export const verifyAuth = async (request: Request) => {
   return new Types.ObjectId(decoded.userId);
 };
 
-export const getDateString = (date: string) => {
-  return new Date(date).toISOString().split('T')[0];
-};
-
 export const queryItems = async (
   userId: Types.ObjectId,
   type: ItemType,
   date: string
 ) => {
-  const dateString = getDateString(date);
+  const dateString = formatDate(new Date(date));
   const currentDate = new Date(date);
   
   const baseQuery = {
@@ -75,7 +72,7 @@ export const saveItem = async (
   date: string,
   data: PostRequestBody
 ) => {
-  const dateString = getDateString(date);
+  const dateString = formatDate(new Date(date));
   
   const baseItem = {
     userId,
