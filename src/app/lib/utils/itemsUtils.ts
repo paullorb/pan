@@ -1,5 +1,3 @@
-//itemsUtils.ts
-
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import Item from '../models/Item';
@@ -13,7 +11,7 @@ export interface ItemDocument extends IItem {
 export interface PostRequestBody {
   text: string;
   order?: number;
-  regularity?: RegularityType
+  regularity?: RegularityType;
   completed?: boolean;
 }
 
@@ -49,25 +47,23 @@ export const queryItems = async (
       userId,
       type: 'habit',
       createdAt: { $lte: currentDate }
-    }).lean().exec() as ItemDocument[];
+    }).lean().exec();
 
     const completions = await Item.find({
       ...baseQuery,
       completed: true
-    }).lean().exec() as ItemDocument[];
+    }).lean().exec();
 
-    return habits.map(habit => ({
+    return (habits as ItemDocument[]).map(habit => ({
       ...habit,
       completed: completions.some(completion => 
-        completion._id.toString() === habit._id.toString()
+        (completion as ItemDocument)._id.toString() === habit._id.toString()
       ),
       date: dateString
     }));
   }
 
-  return await Item.find({
-    ...baseQuery
-  })
+  return await Item.find(baseQuery)
     .sort({ order: 1, createdAt: 1 })
     .lean()
     .exec() as ItemDocument[];
