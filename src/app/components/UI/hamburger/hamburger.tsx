@@ -81,6 +81,12 @@ const Hamburger: React.FC = () => {
     <div className={styles.container}>
       {isMobile ? (
         <>
+          <button 
+            className={`${styles.button} ${togglesState.headerToggles ? styles.active : ''}`} 
+            onClick={toggleHeaderButtons}
+          >
+            🎛️
+          </button>
           <button className={styles.hamburgerButton} onClick={toggleMobileMenu}>
             ☰
           </button>
