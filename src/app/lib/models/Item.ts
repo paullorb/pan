@@ -1,12 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { ITEM_TYPES, REGULARITY_TYPES, ItemType, RegularityType } from './types';
 
 export interface IItem extends Document {
   userId: mongoose.Types.ObjectId;
-  type: 'priority' | 'task' | 'habit' | 'hour';  
+  type: ItemType;
   text: string;
   date: string;  
   order?: number;
-  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  regularity?: RegularityType;
   completed?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -20,7 +21,7 @@ const ItemSchema: Schema = new Schema({
   },
   type: {
     type: String,
-    enum: ['priority', 'task', 'habit', 'hour'],
+    enum: ITEM_TYPES,
     required: true
   },
   text: { 
@@ -50,7 +51,7 @@ const ItemSchema: Schema = new Schema({
     type: String,
     default: 'daily',
     enum: {
-      values: ['daily', 'weekly', 'monthly', 'yearly'],
+      values: REGULARITY_TYPES,
       message: '{VALUE} is not a valid regularity'
     },
     required: function(this: IItem) {

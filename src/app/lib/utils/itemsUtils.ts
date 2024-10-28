@@ -1,31 +1,22 @@
-// lib/utils/itemsUtils.ts
+//itemsUtils.ts
+
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
+import Item from '../models/Item';
+import { IItem } from '../models/Item';  
+import { ItemType, RegularityType } from '../models/types';
 
-// Types
-export interface ItemDocument {
+export interface ItemDocument extends IItem {
   _id: Types.ObjectId;
-  userId: Types.ObjectId;
-  type: string;
-  text: string;
-  order: number;
-  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
-  date?: string;
-  completed?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface PostRequestBody {
   text: string;
   order?: number;
-  regularity?: 'daily' | 'weekly' | 'monthly' | 'yearly';
+  regularity?: RegularityType
   completed?: boolean;
 }
 
-export type ItemType = 'priority' | 'task' | 'habit' | 'hour';
-
-// Auth utility
 export const verifyAuth = async (request: Request) => {
   const token = request.headers.get('authorization')?.split(' ')[1];
   if (!token) {
@@ -35,11 +26,117 @@ export const verifyAuth = async (request: Request) => {
   return new Types.ObjectId(decoded.userId);
 };
 
-// Date utilities
-export const getDateRange = (date: string) => {
-  const startDate = new Date(date);
-  startDate.setHours(0, 0, 0, 0);
-  const endDate = new Date(date);
-  endDate.setHours(23, 59, 59, 999);
-  return { startDate, endDate };
+export const getDateString = (date: string) => {
+  return new Date(date).toISOString().split('T')[0];
+};
+
+export const queryItems = async (
+  userId: Types.ObjectId,
+  type: ItemType,
+  date: string
+) => {
+  const dateString = getDateString(date);
+  const currentDate = new Date(date);
+  
+  const baseQuery = {
+    userId,
+    type,
+    date: dateString
+  };
+
+  if (type === 'habit') {
+    const habits = await Item.find({
+      userId,
+      type: 'habit',
+      createdAt: { $lte: currentDate }
+    }).lean().exec() as ItemDocument[];
+
+    const completions = await Item.find({
+      ...baseQuery,
+      completed: true
+    }).lean().exec() as ItemDocument[];
+
+    return habits.map(habit => ({
+      ...habit,
+      completed: completions.some(completion => 
+        completion._id.toString() === habit._id.toString()
+      ),
+      date: dateString
+    }));
+  }
+
+  return await Item.find({
+    ...baseQuery
+  })
+    .sort({ order: 1, createdAt: 1 })
+    .lean()
+    .exec() as ItemDocument[];
+};
+
+export const saveItem = async (
+  userId: Types.ObjectId,
+  type: ItemType,
+  date: string,
+  data: PostRequestBody
+) => {
+  const dateString = getDateString(date);
+  
+  const baseItem = {
+    userId,
+    type,
+    date: dateString,
+    text: data.text,
+    order: data.order || 0
+  };
+
+  if (type === 'habit') {
+    const existingHabit = await Item.findOne({
+      userId,
+      type: 'habit',
+      text: data.text,
+      regularity: data.regularity
+    }).lean().exec() as ItemDocument | null;
+
+    if (data.completed !== undefined && existingHabit) {
+      if (data.completed) {
+        return await Item.findOneAndUpdate(
+          { _id: existingHabit._id },
+          { $set: { ...baseItem, completed: true } },
+          { upsert: true, new: true }
+        ).lean().exec() as ItemDocument;
+      }
+      await Item.deleteOne({
+        _id: existingHabit._id,
+        date: dateString
+      });
+      return existingHabit;
+    }
+
+    if (existingHabit) {
+      return await Item.findByIdAndUpdate(
+        existingHabit._id,
+        { ...baseItem, regularity: data.regularity },
+        { new: true }
+      ).lean().exec() as ItemDocument;
+    }
+  }
+
+  if (type === 'priority' && data.order) {
+    const existing = await Item.findOne({
+      userId,
+      type: 'priority',
+      date: dateString,
+      order: data.order
+    }).lean().exec() as ItemDocument | null;
+
+    if (existing) {
+      return await Item.findByIdAndUpdate(
+        existing._id,
+        baseItem,
+        { new: true }
+      ).lean().exec() as ItemDocument;
+    }
+  }
+
+  return await Item.create(baseItem) as ItemDocument;
 };
