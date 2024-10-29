@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../lib/mongodb';
 import { ItemType, ITEM_TYPES } from '../../lib/models/types';
+import Item from '../../lib/models/Item';
 import { 
   verifyAuth,
   queryItems,
@@ -85,6 +86,49 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error('POST /api/items error:', error);
+    if ((error as Error).message === 'Unauthorized') {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Internal Server Error' 
+    }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    await connectDB();
+    const userId = await verifyAuth(request);
+
+    const { searchParams } = new URL(request.url);
+    const itemId = searchParams.get('id');
+    
+    if (!itemId) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Item ID is required' 
+      }, { status: 400 });
+    }
+
+    const deletedItem = await Item.findOneAndDelete({
+      _id: itemId,
+      userId
+    });
+
+    if (!deletedItem) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Item not found' 
+      }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: { item: deletedItem }
+    });
+  } catch (error) {
+    console.error('DELETE /api/items error:', error);
     if ((error as Error).message === 'Unauthorized') {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }

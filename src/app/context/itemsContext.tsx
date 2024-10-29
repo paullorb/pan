@@ -118,19 +118,26 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteItem = async (type: ItemType, itemId: string) => {
     if (!isAuthenticated || !token) return;
-
+  
     try {
-      await apiRequest(
-        '/api/items',
-        token,
-        {
-          method: 'DELETE',
-          body: JSON.stringify({ id: itemId })
+      const response = await fetch(`/api/items?id=${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
-      await fetchItems(type);
+      });
+  
+      const data = await response.json();
+      if (data.success) {
+        setItems(prev => ({
+          ...prev,
+          [type]: prev[type].filter(item => item._id !== itemId)
+        }));
+      } else {
+        console.error('Failed to delete item:', data.error);
+      }
     } catch (error) {
-      handleError(error, `deleting ${type}`);
+      console.error(`Error deleting ${type}:`, error);
     }
   };
 

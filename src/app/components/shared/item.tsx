@@ -1,3 +1,5 @@
+// Item.tsx
+
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
