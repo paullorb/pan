@@ -1,7 +1,6 @@
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
-import Item from '../models/Item';
-import { IItem } from '../models/Item';  
+import Item, { IItem } from '../models/Item';
 import { ItemType, RegularityType } from '../models/types';
 import { formatDate } from './apiUtils';
 
@@ -44,17 +43,17 @@ export const queryItems = async (
       userId,
       type: 'habit',
       createdAt: { $lte: currentDate }
-    }).lean().exec();
+    }).lean().exec() as unknown as ItemDocument[];
 
     const completions = await Item.find({
       ...baseQuery,
       completed: true
-    }).lean().exec();
+    }).lean().exec() as unknown as ItemDocument[];
 
-    return (habits as ItemDocument[]).map(habit => ({
+    return habits.map(habit => ({
       ...habit,
       completed: completions.some(completion => 
-        (completion as ItemDocument)._id.toString() === habit._id.toString()
+        completion._id.toString() === habit._id.toString()
       ),
       date: dateString
     }));
@@ -63,7 +62,7 @@ export const queryItems = async (
   return await Item.find(baseQuery)
     .sort({ order: 1, createdAt: 1 })
     .lean()
-    .exec() as ItemDocument[];
+    .exec() as unknown as ItemDocument[];
 };
 
 export const saveItem = async (
@@ -88,7 +87,7 @@ export const saveItem = async (
       type: 'habit',
       text: data.text,
       regularity: data.regularity
-    }).lean().exec() as ItemDocument | null;
+    }).lean().exec() as unknown as ItemDocument | null;
 
     if (data.completed !== undefined && existingHabit) {
       if (data.completed) {
@@ -96,7 +95,7 @@ export const saveItem = async (
           { _id: existingHabit._id },
           { $set: { ...baseItem, completed: true } },
           { upsert: true, new: true }
-        ).lean().exec() as ItemDocument;
+        ).lean().exec() as unknown as ItemDocument;
       }
       await Item.deleteOne({
         _id: existingHabit._id,
@@ -110,7 +109,7 @@ export const saveItem = async (
         existingHabit._id,
         { ...baseItem, regularity: data.regularity },
         { new: true }
-      ).lean().exec() as ItemDocument;
+      ).lean().exec() as unknown as ItemDocument;
     }
   }
 
@@ -120,16 +119,16 @@ export const saveItem = async (
       type: 'priority',
       date: dateString,
       order: data.order
-    }).lean().exec() as ItemDocument | null;
+    }).lean().exec() as unknown as ItemDocument | null;
 
     if (existing) {
       return await Item.findByIdAndUpdate(
         existing._id,
         baseItem,
         { new: true }
-      ).lean().exec() as ItemDocument;
+      ).lean().exec() as unknown as ItemDocument;
     }
   }
 
-  return await Item.create(baseItem) as ItemDocument;
+  return await Item.create(baseItem) as unknown as ItemDocument;
 };
