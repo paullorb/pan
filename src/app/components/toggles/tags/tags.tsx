@@ -3,8 +3,17 @@ import { useTags } from '../../../context/tagsContext';
 import style from './tags.module.css';
 
 const Tags: React.FC = () => {
-  const { tags } = useTags();
-  
+  const { tags, addTag } = useTags();
+  const [newTagName, setNewTagName] = React.useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newTagName.trim()) {
+      addTag(newTagName.trim());
+      setNewTagName('');
+    }
+  };
+
   return (
     <div className={style.container}>
       <h2>Tags</h2>
@@ -13,6 +22,15 @@ const Tags: React.FC = () => {
           <li key={tag.id}>{tag.name}</li>
         ))}
       </ul>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={newTagName}
+          onChange={(e) => setNewTagName(e.target.value)}
+          placeholder="Add new tag"
+        />
+        <button type="submit">Add</button>
+      </form>
     </div>
   );
 };
