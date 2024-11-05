@@ -1,36 +1,39 @@
+// components/toggles/tags/Tags.tsx
+"use client";
+
 import React from 'react';
 import { useTags } from '../../../context/tagsContext';
 import style from './tags.module.css';
+import Title from '../../shared/title';
+import AddItem from '../../shared/addItem';
+import Item from '../../shared/item';
 
 const Tags: React.FC = () => {
   const { tags, addTag } = useTags();
-  const [newTagName, setNewTagName] = React.useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTagName.trim()) {
-      addTag(newTagName.trim());
-      setNewTagName('');
+  const handleAddTag = (text: string) => {
+    if (text.trim()) {
+      addTag(text.trim());
     }
   };
 
   return (
     <div className={style.container}>
-      <h2>Tags</h2>
-      <ul>
+      <Title title="Tags" />
+      <div className={style.tagList}>
         {tags.map((tag) => (
-          <li key={tag.id}>{tag.name}</li>
+          <Item
+            key={tag.id}
+            text={tag.name}
+            className={style.tagItem}
+          />
         ))}
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newTagName}
-          onChange={(e) => setNewTagName(e.target.value)}
-          placeholder="Add new tag"
-        />
-        <button type="submit">Add</button>
-      </form>
+      </div>
+      <AddItem
+        placeholder="Add new tag"
+        onAdd={handleAddTag}
+        className={style.addItem}
+      />
     </div>
   );
 };
