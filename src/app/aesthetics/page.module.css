@@ -6,13 +6,17 @@
   flex-direction: column; 
   justify-content: center;
   align-items: center; 
-  padding: 0 20%;
+  /* padding: 0 20%; */
   gap: var(--spacing-m);
+}
+
+.content {
+  margin-top: var(--spacing-xl);
 }
 
 .tables {
   display: flex;
-  position: relative;
+  /* position: relative; */
   width: 100%;
   gap: var(--spacing-xl);
 }
