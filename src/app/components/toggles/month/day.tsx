@@ -75,13 +75,13 @@ const Day: React.FC<DayProps> = ({
         </div>
         <div className={styles.indicators}>
           <Dots
-            hasUncompletedTasks={hasUncompletedTasks}
-            allTasksCompleted={allTasksCompleted}
+            hasUncompletedTasks={hasPriorityUncompleted}
+            allTasksCompleted={allPrioritiesCompleted}
             isTodo={false}
           />
           <Dots
-            hasUncompletedTasks={hasPriorityUncompleted}
-            allTasksCompleted={allPrioritiesCompleted}
+            hasUncompletedTasks={hasUncompletedTasks}
+            allTasksCompleted={allTasksCompleted}
             isTodo={false}
           />
         </div>
