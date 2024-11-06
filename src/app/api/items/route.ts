@@ -4,10 +4,10 @@ import { ItemType, ITEM_TYPES } from '../../lib/models/types';
 import Item from '../../lib/models/Item';
 import { 
   verifyAuth,
-  queryItems,
   saveItem,
   PostRequestBody,
 } from '../../lib/utils/itemsUtils';
+
 
 export async function GET(request: Request) {
   try {
@@ -15,26 +15,32 @@ export async function GET(request: Request) {
     const userId = await verifyAuth(request);
 
     const { searchParams } = new URL(request.url);
-    const date = searchParams.get('date');
-    const typeParam = searchParams.get('type');
+    const type = searchParams.get('type');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
 
-    if (!date || !typeParam) {
+    if (!type || !startDate || !endDate) {
       return NextResponse.json({ 
         success: false, 
-        error: 'Date and type are required' 
+        error: 'Type and date range are required' 
       }, { status: 400 });
     }
 
-    // Validate type parameter
-    if (!ITEM_TYPES.includes(typeParam as any)) {
+    if (!ITEM_TYPES.includes(type as ItemType)) {
       return NextResponse.json({ 
         success: false, 
         error: `Invalid item type. Must be one of: ${ITEM_TYPES.join(', ')}` 
       }, { status: 400 });
     }
 
-    const type = typeParam as ItemType;
-    const items = await queryItems(userId, type, date);
+    const items = await Item.find({
+      userId,
+      type,
+      date: {
+        $gte: startDate,
+        $lte: endDate
+      }
+    }).sort({ date: 1, order: 1 }).lean();
 
     return NextResponse.json({
       success: true,
@@ -51,6 +57,7 @@ export async function GET(request: Request) {
     }, { status: 500 });
   }
 }
+
 
 export async function POST(request: Request) {
   try {

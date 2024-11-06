@@ -18,6 +18,7 @@ const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<Record<ItemType, Item[]>>(ITEMS_INITIAL_STATE);
+  const [itemsByDate, setItemsByDate] = useState<Record<string, Item[]>>({});
   const [loading, setLoading] = useState<Record<ItemType, boolean>>(ITEMS_LOADING_INITIAL_STATE);
 
   const { isAuthenticated, token, logout } = useAuth();
@@ -28,13 +29,35 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setLoading(prev => ({ ...prev, [type]: true }));
     try {
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+
       const data = await apiRequest<{ items: Item[] }>(
-        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        `/api/items?startDate=${formatDate(firstDay)}&endDate=${formatDate(lastDay)}&type=${type}`,
         token
       );
+
+      // Group items by date
+      const byDate = data.items.reduce((acc: Record<string, Item[]>, item) => {
+        if (!acc[item.date]) {
+          acc[item.date] = [];
+        }
+        acc[item.date].push(item);
+        return acc;
+      }, {});
+
+      setItemsByDate(prev => ({
+        ...prev,
+        ...byDate
+      }));
+      
+      // Set current day's items
+      const currentDateString = formatDate(selectedDate);
       setItems(prev => ({
         ...prev,
-        [type]: data.items
+        [type]: data.items.filter(item => item.date === currentDateString)
       }));
     } catch (error) {
       if (error instanceof Error && error.message === 'Unauthorized') {
@@ -46,20 +69,39 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [isAuthenticated, token, selectedDate, logout]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      Object.keys(items).forEach(type => 
+        fetchItems(type as ItemType)
+      );
+    }
+  }, [isAuthenticated, fetchItems]);
+
   const toggleCompletion = async (type: ItemType, id: string) => {
     if (!isAuthenticated || !token) return;
-
+  
     const item = items[type].find(i => i._id === id);
     if (!item) return;
-
-    // Optimistically update UI
+  
+    // Optimistically update both items and itemsByDate
     setItems(prev => ({
       ...prev,
       [type]: prev[type].map(i => 
         i._id === id ? { ...i, completed: !i.completed } : i
       )
     }));
-
+  
+    // Update itemsByDate as well
+    setItemsByDate(prev => {
+      const newItemsByDate = { ...prev };
+      Object.keys(newItemsByDate).forEach(date => {
+        newItemsByDate[date] = newItemsByDate[date].map(i => 
+          i._id === id ? { ...i, completed: !i.completed } : i
+        );
+      });
+      return newItemsByDate;
+    });
+  
     try {
       await apiRequest(
         `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
@@ -74,10 +116,16 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       );
     } catch (error) {
-      // Revert on error
+      // Revert both updates on error
       setItems(prev => ({
         ...prev,
         [type]: items[type]
+      }));
+      setItemsByDate(prev => ({
+        ...prev,
+        [formatDate(selectedDate)]: prev[formatDate(selectedDate)].map(i => 
+          i._id === id ? { ...i, completed: item.completed } : i
+        )
       }));
       handleError(error, `toggling ${type}`);
     }
@@ -191,6 +239,7 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       items,
       loading,
       updateItem,
+      itemsByDate,
       deleteItem,
       addItem,
       toggleCompletion

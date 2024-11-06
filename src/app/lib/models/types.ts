@@ -80,6 +80,7 @@ export interface Item {
 export interface ItemsContextType {
   items: Record<ItemType, Item[]>;
   loading: Record<ItemType, boolean>;
+  itemsByDate: Record<string, Item[]>;
   updateItem: (type: ItemType, id: string, text: string, options?: { 
     completed?: boolean; 
     regularity?: RegularityType;

@@ -1,10 +1,11 @@
-// /components/toggles/month/day.tsx
+// components/toggles/month/day.tsx
 "use client";
 
 import React from 'react';
 import styles from './day.module.css';
 import Dots from './dots';
 import { useTasks } from '../../../context/tasksContext';
+import { useItems } from '../../../context/itemsContext';
 
 interface DayProps {
   day: number | null;
@@ -26,10 +27,26 @@ const Day: React.FC<DayProps> = ({
   onDayHover,
 }) => {
   const { tasksByDate } = useTasks();
+  const { itemsByDate } = useItems();
 
   if (day === null) {
     return <div className={styles.day} />;
   }
+
+  const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
+  const dayDate = new Date(currentYear, currentMonth, day);
+
+  // Get tasks status
+  const tasksForDay = tasksByDate[dateString] || [];
+  const hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
+  const allTasksCompleted = tasksForDay.length > 0 && tasksForDay.every((task) => task.completed);
+
+  // Get priorities status - directly check completion status
+  const prioritiesForDay = (itemsByDate[dateString] || [])
+    .filter(item => item.type === 'priority');
+    
+  const hasPriorityUncompleted = prioritiesForDay.length > 0 && prioritiesForDay.some(item => !item.completed);
+  const allPrioritiesCompleted = prioritiesForDay.length > 0 && prioritiesForDay.every(item => item.completed);
 
   const isCurrentDay = () =>
     day === todayDate.getDate() &&
@@ -41,27 +58,10 @@ const Day: React.FC<DayProps> = ({
     currentMonth === selectedDate.getMonth() &&
     currentYear === selectedDate.getFullYear();
 
-  const handleDayClick = () => {
-    const selectedFullDate = new Date(currentYear, currentMonth, day);
-    setSelectedDate(selectedFullDate);
-  };
-
-  const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
-  const tasksForDay = tasksByDate[dateString] || [];
-
-  const dayDate = new Date(currentYear, currentMonth, day);
-  dayDate.setHours(0, 0, 0, 0);
-
-  const isFutureDay = dayDate > todayDate;
-
-  const hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
-  const allTasksCompleted = tasksForDay.length > 0 && tasksForDay.every((task) => task.completed);
-  const isTodo = isFutureDay && tasksForDay.length > 0;
-
   return (
     <div
       className={styles.day}
-      onClick={handleDayClick}
+      onClick={() => setSelectedDate(new Date(currentYear, currentMonth, day))}
       onMouseEnter={() => onDayHover(day)}
       onMouseLeave={() => onDayHover(null)}
     >
@@ -73,11 +73,18 @@ const Day: React.FC<DayProps> = ({
         >
           {day}
         </div>
-        <Dots
-          hasUncompletedTasks={hasUncompletedTasks}
-          allTasksCompleted={allTasksCompleted}
-          isTodo={isTodo}
-        />
+        <div className={styles.indicators}>
+          <Dots
+            hasUncompletedTasks={hasUncompletedTasks}
+            allTasksCompleted={allTasksCompleted}
+            isTodo={false}
+          />
+          <Dots
+            hasUncompletedTasks={hasPriorityUncompleted}
+            allTasksCompleted={allPrioritiesCompleted}
+            isTodo={false}
+          />
+        </div>
       </div>
     </div>
   );
