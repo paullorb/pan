@@ -9,6 +9,20 @@
   padding: 0 var(--spacing-xs);
 }
 
+.label {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: var(--spacing-xs);
+  background-color: var(--bg-alt1);
+  color: var(--color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  user-select: none;
+}
+
 .completed .text {
   text-decoration: line-through;
   color: gray;
@@ -25,7 +39,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.2rem;
   margin-left: 10px;
   opacity: 0;
 }

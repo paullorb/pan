@@ -7,9 +7,11 @@ import { TogglesContext } from '../../../context/togglesContext';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 import AddItem from '../../shared/addItem';
+import { handleItemAdd, handleItemDelete, createOrderedSlots } from '../../../lib/utils/itemsOperations';
 
 export default function Priorities() {
-  const { items, addItem, loading, deleteItem } = useItems();
+  const itemsContext = useItems();
+  const { items, loading } = itemsContext;
   const priorities = items.priority;
 
   const togglesContext = useContext(TogglesContext);
@@ -22,27 +24,7 @@ export default function Priorities() {
     return null;
   }
 
-  // Always show 3 priority slots
-  const prioritySlots = Array(3).fill(null).map((_, index) => ({
-    text: priorities.find(p => p.order === index + 1)?.text || '',
-    _id: priorities.find(p => p.order === index + 1)?._id,
-    completed: priorities.find(p => p.order === index + 1)?.completed || false,
-    type: 'priority' as const,
-    order: index + 1,
-    id: `priority-${index + 1}`
-  }));
-
-  const handlePriorityAdd = async (text: string, order: number) => {
-    if (!text.trim()) return;
-    await addItem('priority', text, order);
-  };
-
-  const handlePriorityDelete = async (order: number) => {
-    const priority = priorities.find(p => p.order === order);
-    if (priority?._id) {
-      await deleteItem('priority', priority._id);
-    }
-  };
+  const prioritySlots = createOrderedSlots(priorities, 3, 'priority');
 
   return (
     <div className={style.container}>
@@ -56,14 +38,14 @@ export default function Priorities() {
               completed={priority.completed}
               label={`${priority.order}`}
               disabled={loading.priority}
-              onDelete={() => handlePriorityDelete(priority.order)}
+              onDelete={() => handleItemDelete(itemsContext, 'priority', priorities, priority.order)}
               id={priority.id}
             />
           ) : (
             <AddItem
               key={priority.id}
               placeholder={`Priority ${priority.order}`}
-              onAdd={(text) => handlePriorityAdd(text, priority.order)}
+              onAdd={(text) => handleItemAdd(itemsContext, 'priority', text, priority.order)}
               className={style.addItem}
             />
           )

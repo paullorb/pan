@@ -1,5 +1,4 @@
-// Item.tsx
-
+// components/shared/item.tsx
 import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
@@ -38,6 +37,7 @@ const Item: React.FC<ItemProps> = ({
 }) => {
   const renderTextItem = () => (
     <>
+      {label && <div className={styles.label}>{label}</div>}
       <span onClick={onToggle} className={styles.text}>
         {bullet && '• '}{text}
       </span>
@@ -49,7 +49,7 @@ const Item: React.FC<ItemProps> = ({
 
   const renderInputItem = () => (
     <>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && <div className={styles.label}>{label}</div>}
       <input
         className={styles.input}
         type="text"
