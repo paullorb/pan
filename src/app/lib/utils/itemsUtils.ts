@@ -78,7 +78,8 @@ export const saveItem = async (
     type,
     date: dateString,
     text: data.text,
-    order: data.order || 0
+    order: data.order || 0,
+    completed: data.completed || false
   };
 
   if (type === 'habit') {
