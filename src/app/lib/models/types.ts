@@ -89,4 +89,5 @@ export interface ItemsContextType {
   addItem: (type: ItemType, text: string, order?: number, options?: { 
     regularity?: RegularityType 
   }) => Promise<void>;
+  toggleCompletion: (type: ItemType, id: string) => Promise<void>;
 }

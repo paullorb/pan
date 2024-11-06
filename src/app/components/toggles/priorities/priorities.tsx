@@ -11,7 +11,7 @@ import { handleItemAdd, handleItemDelete, createOrderedSlots } from '../../../li
 
 export default function Priorities() {
   const itemsContext = useItems();
-  const { items, loading } = itemsContext;
+  const { items, loading, toggleCompletion } = itemsContext;
   const priorities = items.priority;
 
   const togglesContext = useContext(TogglesContext);
@@ -39,6 +39,7 @@ export default function Priorities() {
               label={`${priority.order}`}
               disabled={loading.priority}
               onDelete={() => handleItemDelete(itemsContext, 'priority', priorities, priority.order)}
+              onToggle={() => priority._id && toggleCompletion('priority', priority._id)}
               id={priority.id}
             />
           ) : (

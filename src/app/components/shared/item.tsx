@@ -9,7 +9,7 @@ interface ItemProps {
   children?: React.ReactNode;
   className?: string;
   completed?: boolean;
-  disabled?: boolean; 
+  disabled?: boolean;
   inputMode?: boolean;
   id?: string;
   label?: string;
@@ -24,7 +24,7 @@ const Item: React.FC<ItemProps> = ({
   bullet = false,
   className,
   children,
-  disabled = false, 
+  disabled = false,
   completed = false,
   inputMode = false,
   id,
@@ -35,15 +35,27 @@ const Item: React.FC<ItemProps> = ({
   onDelete,
   onToggle,
 }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onToggle) {
+      onToggle();
+    }
+  };
+
   const renderTextItem = () => (
     <>
       {label && <div className={styles.label}>{label}</div>}
-      <span onClick={onToggle} className={styles.text}>
+      <span 
+        onClick={handleClick}
+        className={`${styles.text} ${completed ? styles.completed : ''} ${onToggle ? styles.toggleable : ''}`}
+      >
         {bullet && '• '}{text}
       </span>
-      <div className={styles.deleteButton}>
-        {onDelete && <DelItem onDelete={onDelete} />}
-      </div>
+      {onDelete && (
+        <div className={styles.deleteButton}>
+          <DelItem onDelete={onDelete} />
+        </div>
+      )}
     </>
   );
 
@@ -54,8 +66,8 @@ const Item: React.FC<ItemProps> = ({
         className={styles.input}
         type="text"
         value={text}
-        onChange={(e) => onChange && onChange(e.target.value)}
-        disabled={disabled} 
+        onChange={(e) => onChange?.(e.target.value)}
+        disabled={disabled}
       />
     </>
   );
@@ -70,13 +82,7 @@ const Item: React.FC<ItemProps> = ({
 
   return (
     <div className={`${styles.item} ${completed ? styles.completed : ''} ${className || ''}`}>
-      {children ? (
-        children
-      ) : inputMode ? (
-        renderInputItem()
-      ) : (
-        renderTextItem()
-      )}
+      {children ? children : inputMode ? renderInputItem() : renderTextItem()}
     </div>
   );
 };

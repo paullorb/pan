@@ -46,6 +46,43 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [isAuthenticated, token, selectedDate, logout]);
 
+  const toggleCompletion = async (type: ItemType, id: string) => {
+    if (!isAuthenticated || !token) return;
+
+    const item = items[type].find(i => i._id === id);
+    if (!item) return;
+
+    // Optimistically update UI
+    setItems(prev => ({
+      ...prev,
+      [type]: prev[type].map(i => 
+        i._id === id ? { ...i, completed: !i.completed } : i
+      )
+    }));
+
+    try {
+      await apiRequest(
+        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        token,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            text: item.text,
+            completed: !item.completed,
+            order: item.order
+          })
+        }
+      );
+    } catch (error) {
+      // Revert on error
+      setItems(prev => ({
+        ...prev,
+        [type]: items[type]
+      }));
+      handleError(error, `toggling ${type}`);
+    }
+  };
+
   const updateItem = async (
     type: ItemType,
     id: string,
@@ -155,7 +192,8 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       loading,
       updateItem,
       deleteItem,
-      addItem
+      addItem,
+      toggleCompletion
     }}>
       {children}
     </ItemsContext.Provider>

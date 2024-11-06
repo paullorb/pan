@@ -23,6 +23,11 @@
   user-select: none;
 }
 
+.toggleable {
+  cursor: pointer;
+  user-select: none;
+}
+
 .completed .text {
   text-decoration: line-through;
   color: gray;
