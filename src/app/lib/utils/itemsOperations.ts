@@ -1,13 +1,13 @@
 // lib/utils/itemOperations.ts
 
-import { ItemType, Item } from '../models/types';
+import { ItemType, Item, RegularityType } from '../models/types';
 import { ItemsContextType } from '../models/types';
 
 export const handleItemAdd = async (
   itemsContext: ItemsContextType,
   type: ItemType,
   text: string,
-  order?: number
+  order: number
 ) => {
   if (!text.trim()) return;
   await itemsContext.addItem(type, text, order);
@@ -16,13 +16,10 @@ export const handleItemAdd = async (
 export const handleItemDelete = async (
   itemsContext: ItemsContextType,
   type: ItemType,
-  items: Array<any>,
-  order: number
+  itemId: string
 ) => {
-  const item = items.find(i => i.order === order);
-  if (item?._id) {
-    await itemsContext.deleteItem(type, item._id);
-  }
+  if (!itemId) return;
+  await itemsContext.deleteItem(type, itemId);
 };
 
 export const createOrderedSlots = (
