@@ -38,7 +38,7 @@ export default function Priorities() {
               completed={priority.completed}
               label={`${priority.order}`}
               disabled={loading.priority}
-              onDelete={() => handleItemDelete(itemsContext, 'priority', priorities, priority.order)}
+              onDelete={() => handleItemDelete(itemsContext, 'priority', priority._id)}
               onToggle={() => priority._id && toggleCompletion('priority', priority._id)}
               id={priority.id}
             />

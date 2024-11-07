@@ -1,6 +1,6 @@
 // lib/utils/itemOperations.ts
 
-import { ItemType, Item, RegularityType } from '../models/types';
+import { ItemType, Item } from '../models/types';
 import { ItemsContextType } from '../models/types';
 
 export const handleItemAdd = async (
@@ -16,7 +16,7 @@ export const handleItemAdd = async (
 export const handleItemDelete = async (
   itemsContext: ItemsContextType,
   type: ItemType,
-  itemId: string
+  itemId: string | undefined
 ) => {
   if (!itemId) return;
   await itemsContext.deleteItem(type, itemId);
