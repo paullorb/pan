@@ -16,7 +16,8 @@ export const useToggleComponent = (componentType: ItemType) => {
   }
 
   const { togglesState } = togglesContext;
-  const isEnabled = togglesState[componentType];
+  // Access the specific toggle state using bracket notation
+  const isEnabled = togglesState[componentType as keyof typeof togglesState] ?? true;
 
   return {
     items: componentItems,

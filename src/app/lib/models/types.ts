@@ -6,13 +6,6 @@ export const ITEM_TYPES = [
   'hour'] as const;
 export type ItemType = typeof ITEM_TYPES[number];
 
-export const REGULARITY_TYPES = [
-  'daily', 
-  'weekly', 
-  'monthly', 
-  'yearly'] as const;
-export type RegularityType = typeof REGULARITY_TYPES[number];
-
 // Single unified configuration object
 export const ITEM_CONFIG = {
   priority: {
@@ -71,7 +64,6 @@ export interface Item {
   type: ItemType;
   date: string;
   order?: number;
-  regularity?: RegularityType;
   completed?: boolean;
   createdAt: string;
   updatedAt: string;
@@ -82,13 +74,10 @@ export interface ItemsContextType {
   loading: Record<ItemType, boolean>;
   itemsByDate: Record<string, Item[]>;
   updateItem: (type: ItemType, id: string, text: string, options?: { 
-    completed?: boolean; 
-    regularity?: RegularityType;
+    completed?: boolean;
     order?: number;
   }) => Promise<void>;
   deleteItem: (type: ItemType, itemId: string) => Promise<void>;
-  addItem: (type: ItemType, text: string, order?: number, options?: { 
-    regularity?: RegularityType 
-  }) => Promise<void>;
+  addItem: (type: ItemType, text: string, order?: number) => Promise<void>;
   toggleCompletion: (type: ItemType, id: string) => Promise<void>;
 }

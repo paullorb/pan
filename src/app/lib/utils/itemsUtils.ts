@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import jwt from 'jsonwebtoken';
 import Item, { IItem } from '../models/Item';
-import { ItemType, RegularityType } from '../models/types';
+import { ItemType } from '../models/types';
 import { formatDate } from './apiUtils';
 
 export interface ItemDocument extends IItem {
@@ -11,7 +11,6 @@ export interface ItemDocument extends IItem {
 export interface PostRequestBody {
   text: string;
   order?: number;
-  regularity?: RegularityType;
   completed?: boolean;
 }
 
@@ -87,7 +86,6 @@ export const saveItem = async (
       userId,
       type: 'habit',
       text: data.text,
-      regularity: data.regularity
     }).lean().exec() as unknown as ItemDocument | null;
 
     if (data.completed !== undefined && existingHabit) {
@@ -108,7 +106,6 @@ export const saveItem = async (
     if (existingHabit) {
       return await Item.findByIdAndUpdate(
         existingHabit._id,
-        { ...baseItem, regularity: data.regularity },
         { new: true }
       ).lean().exec() as unknown as ItemDocument;
     }

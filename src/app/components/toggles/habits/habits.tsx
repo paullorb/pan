@@ -1,26 +1,23 @@
 "use client";
 
-import React, { useContext } from 'react';
+import React from 'react';
 import style from './habits.module.css';
-import { useItems } from '../../../context/itemsContext';
-import { TogglesContext } from '../../../context/togglesContext';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 import AddItem from '../../shared/addItem';
 import { handleItemAdd, handleItemDelete } from '../../../lib/utils/itemsOperations';
+import { useToggleComponent } from '../../../lib/hooks/useToggleComponent';
 
 export default function Habits() {
-  const itemsContext = useItems();
-  const { items, loading, toggleCompletion } = itemsContext;
-  const habits = items.habit;
+  const { 
+    items: habits, 
+    loading, 
+    toggleCompletion, 
+    isEnabled, 
+    itemsContext 
+  } = useToggleComponent('habit');
 
-  const togglesContext = useContext(TogglesContext);
-  if (!togglesContext) {
-    throw new Error("Habits must be used within a TogglesProvider");
-  }
-
-  const { togglesState } = togglesContext;
-  if (!togglesState.habits) {
+  if (!isEnabled) {
     return null;
   }
 
@@ -41,7 +38,7 @@ export default function Habits() {
           completed={habit.completed}
           onToggle={() => habit._id && toggleCompletion('habit', habit._id)}
           onDelete={() => handleItemDelete(itemsContext, 'habit', habit._id)}
-          loading={loading.habit}
+          loading={loading}
         />
       ))}
       <AddItem

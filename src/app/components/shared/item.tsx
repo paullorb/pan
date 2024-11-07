@@ -3,7 +3,6 @@ import React from 'react';
 import styles from './item.module.css';
 import Skeleton from './skeleton';
 import DelItem from './delItem';
-import { RegularityType } from '../../lib/models/types';
 
 interface ItemProps {
   bullet?: boolean;
@@ -16,10 +15,6 @@ interface ItemProps {
   label?: string;
   loading?: boolean;
   text?: string;
-  regularity?: {
-    value: RegularityType;
-    onChange: (value: RegularityType) => void;
-  };
   onChange?: (value: string) => void;
   onDelete?: () => void;
   onToggle?: () => void;
@@ -32,28 +27,13 @@ const Item: React.FC<ItemProps> = ({
   disabled = false, 
   completed = false,
   inputMode = false,
-  id,
   label,
   loading = false,
   text,
-  regularity,
   onChange,
   onDelete,
   onToggle,
 }) => {
-  const renderRegularitySelect = () => regularity && (
-    <select 
-      className={styles.regularitySelect}
-      value={regularity.value}
-      onChange={(e) => regularity.onChange(e.target.value as RegularityType)}
-      disabled={disabled}
-    >
-      <option value="daily">Daily</option>
-      <option value="weekly">Weekly</option>
-      <option value="monthly">Monthly</option>
-      <option value="yearly">Yearly</option>
-    </select>
-  );
 
   const renderTextItem = () => (
     <>
@@ -62,7 +42,6 @@ const Item: React.FC<ItemProps> = ({
         {bullet && '• '}{text}
       </span>
       <div className={styles.actions}>
-        {regularity && renderRegularitySelect()}
         {onDelete && <DelItem onDelete={onDelete} />}
       </div>
     </>
