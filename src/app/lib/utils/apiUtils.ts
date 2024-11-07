@@ -26,8 +26,9 @@ export const apiRequest = async <T>(
     }
 
     return data.data;
-  } catch (error) {
-    console.error('API request failed:', error);
+  } catch (err: unknown) {
+    const error = err instanceof Error ? err : new Error('Unknown error occurred');
+    console.error('API request failed:', error.message);
     throw error;
   }
 };
@@ -38,7 +39,7 @@ export const formatDate = (date: Date): string => {
 };
 
 // Simple error handler
-export const handleError = (error: unknown, action: string): void => {
-  const message = error instanceof Error ? error.message : 'An error occurred';
-  console.error(`Error ${action}:`, message);
+export const handleError = (err: unknown, action: string): void => {
+  const error = err instanceof Error ? err : new Error('Unknown error occurred');
+  console.error(`Error ${action}:`, error.message);
 };
