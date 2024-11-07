@@ -10,7 +10,6 @@ import {
   ITEMS_INITIAL_STATE,
   ITEMS_LOADING_INITIAL_STATE,
   ITEM_CONFIG,
-  RegularityType
 } from '../lib/models/types';
 import { apiRequest, formatDate, handleError } from '../lib/utils/apiUtils';
 
@@ -137,7 +136,6 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     text: string,
     options?: {
       completed?: boolean;
-      regularity?: RegularityType;
       order?: number;
     }
   ) => {
@@ -161,7 +159,6 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             text,
             order: finalOrder,
             completed: options?.completed,
-            regularity: options?.regularity
           })
         }
       );
@@ -175,7 +172,6 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     type: ItemType,
     text: string,
     order?: number,
-    options?: { regularity?: RegularityType }
   ) => {
     if (!isAuthenticated || !token) return;
 
@@ -191,7 +187,6 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           body: JSON.stringify({
             text,
             order: finalOrder,
-            regularity: options?.regularity
           })
         }
       );
