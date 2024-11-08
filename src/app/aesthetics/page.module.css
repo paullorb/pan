@@ -17,7 +17,6 @@
 
 .tables {
   display: flex;
-  position: relative;
   width: 100%;
   gap: var(--spacing-xl);
 }

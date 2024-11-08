@@ -3,7 +3,9 @@
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: var(--background);
+  background: var(--bg);
+  border: 3px solid aqua;
+  z-index: 1000000;
 }
 
 .menuItems {
@@ -36,12 +38,12 @@
 
 .email {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  color: var(--color);
 }
 
 .logoutButton {
   padding: 0.5rem 1rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--black);
   border-radius: 4px;
   background: none;
   cursor: pointer;
@@ -51,7 +53,7 @@
 }
 
 .logoutButton:hover {
-  background: var(--background-hover);
+  background: var(--bg);
   filter: blur(0);
 }
 
@@ -62,19 +64,22 @@
     top: 100%;
     right: 0;
     flex-direction: column;
-    background: var(--background);
-    border: 1px solid var(--border);
+    background: var(--bg);
+    border: 1px solid var(--black);
     border-radius: 4px;
     padding: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000000;
   }
 
   .menuItems.open {
     display: flex;
+    z-index: 1000000;
   }
 
   .userSection {
     flex-direction: column;
     align-items: flex-start;
+    z-index: 1000000;
   }
 }

@@ -7,7 +7,7 @@
   margin-bottom: var(--spacing-s);
   height: 100%;
   width: 100%;
-  position: relative; 
+  /* position: relative;  */
   transition: 0.3s ease-in-out;
   flex: 0;
 }
