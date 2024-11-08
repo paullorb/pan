@@ -13,7 +13,7 @@ import MobileMenu from '../mobileMenu/mobileMenu';
 
 const Hamburger: React.FC = () => {
   const { isAuthenticated, userEmail, logout } = useAuth();
-  const { togglesState, setTogglesState, isInitialized } = useContext(TogglesContext)!;
+  const { togglesState, setTogglesState } = useContext(TogglesContext)!;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
