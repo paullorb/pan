@@ -21,6 +21,7 @@
 .toggleOptions {
   display: flex;
   gap: var(--spacing-s);
+  flex-wrap: wrap;
 }
 
 .toggle {

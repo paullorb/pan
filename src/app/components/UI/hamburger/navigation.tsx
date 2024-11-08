@@ -36,16 +36,18 @@ export default function Navigation() {
 
   const MenuItems = () => (
     <div className={`${styles.menuItems} ${isMenuOpen ? styles.open : ''}`}>
+      <div className={styles.menuHeader}>
+      <span className={styles.email}>{userEmail}</span>
+      <div className={styles.menuMain}>
+      </div>
       {/* Desktop-only status indicators */}
       {!isMobile && <Status />}
 
       {/* Common buttons */}
       <button 
-        className={styles.actionButton} 
-        onClick={() => window.print()}
-        aria-label="Print"
-      >
-        🖨️
+      className={styles.actionButton} 
+      onClick={() => window.print()} 
+      aria-label="Print">🖨️
       </button>
 
       {/* Toggle buttons */}
@@ -56,8 +58,7 @@ export default function Navigation() {
             onClick={() => context.setTogglesState(prev => ({
               ...prev,
               headerToggles: !prev.headerToggles
-            }))}
-          >
+            }))}>
             🎛️
           </button>
         )}
@@ -66,24 +67,22 @@ export default function Navigation() {
       {/* User section */}
       {isAuthenticated ? (
         <div className={styles.userSection}>
-          <span className={styles.email}>{userEmail}</span>
-          <DarkMode />
           <Language />
+          <DarkMode />
           <button 
             className={styles.logoutButton}
-            onClick={logout}
-          >
-            Logout
+            onClick={logout}>
+            ✌️
           </button>
         </div>
       ) : (
         <button
           className={styles.actionButton}
-          onClick={() => setIsAuthModalOpen(true)}
-        >
+          onClick={() => setIsAuthModalOpen(true)}>
           🔑
         </button>
       )}
+      </div>
     </div>
   );
 
@@ -93,8 +92,7 @@ export default function Navigation() {
       <MenuItems />
       <AuthModal 
         isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
-      />
+        onClose={() => setIsAuthModalOpen(false)} />
     </nav>
   );
 }
