@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/authContext';
 import { TogglesContext } from '../../../context/togglesContext';
 import AuthModal from '../auth/auth';
-import Status from '../status/status';
 import DarkMode from '../darkMode/darkMode';
 import styles from './navigation.module.css';
 
@@ -39,10 +38,7 @@ export default function Navigation() {
       <span className={styles.email}>{userEmail}</span>
       <div className={styles.menuMain}>
       </div>
-      {/* Desktop-only status indicators */}
-      {!isMobile && <Status />}
 
-      {/* Toggle buttons */}
       <TogglesContext.Consumer>
         {(context) => context && (
           <button 
@@ -56,10 +52,9 @@ export default function Navigation() {
         )}
       </TogglesContext.Consumer>
 
-      {/* User section */}
       {isAuthenticated ? (
         <div className={styles.userSection}>
-          <DarkMode />
+          {/* <DarkMode /> */}
           <button 
             className={styles.logoutButton}
             onClick={logout}>
