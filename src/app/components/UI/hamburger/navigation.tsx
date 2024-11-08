@@ -42,13 +42,6 @@ export default function Navigation() {
       {/* Desktop-only status indicators */}
       {!isMobile && <Status />}
 
-      {/* Common buttons */}
-      <button 
-      className={styles.actionButton} 
-      onClick={() => window.print()} 
-      aria-label="Print">🖨️
-      </button>
-
       {/* Toggle buttons */}
       <TogglesContext.Consumer>
         {(context) => context && (
