@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import DateComponent from '../UI/date/date';
-import Hamburger from '../UI/hamburger/hamburger';
+import Navigation from '../UI/hamburger/navigation';
 import style from './nav.module.css';
 
 export default function Nav () {
@@ -15,7 +15,7 @@ export default function Nav () {
         <div className={style.titleC}>
           <Link href="/" className={style.title}>🍞 Pansito</Link>
         </div>
-          <Hamburger />
+          <Navigation />
         </div>
     </nav>
   )
