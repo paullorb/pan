@@ -7,7 +7,6 @@ import { TogglesContext } from '../../../context/togglesContext';
 import AuthModal from '../auth/auth';
 import Status from '../status/status';
 import DarkMode from '../darkMode/darkMode';
-import Language from '../language/language';
 import styles from './navigation.module.css';
 
 export default function Navigation() {
@@ -67,7 +66,6 @@ export default function Navigation() {
       {/* User section */}
       {isAuthenticated ? (
         <div className={styles.userSection}>
-          <Language />
           <DarkMode />
           <button 
             className={styles.logoutButton}
