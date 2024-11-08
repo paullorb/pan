@@ -29,9 +29,7 @@
 .title {
   display: flex;
   align-items: center;
-
   text-decoration: none;
-  padding-left: var(--spacing-m);
   font-size: 1.4rem;
   letter-spacing: -1px;
 }
