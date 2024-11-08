@@ -46,10 +46,13 @@
   background: none;
   cursor: pointer;
   transition: background 0.2s;
+  filter: blur(10px);
+  opacity: 0.5;
 }
 
 .logoutButton:hover {
   background: var(--background-hover);
+  filter: blur(0);
 }
 
 @media (max-width: 768px) {
