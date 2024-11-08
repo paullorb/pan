@@ -1,4 +1,4 @@
-// components/navigation/navigation.tsx
+// navigation.tsx
 "use client";
 
 import { useState, useEffect } from 'react';
