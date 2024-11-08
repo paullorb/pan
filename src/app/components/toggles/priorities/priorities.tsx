@@ -42,7 +42,7 @@ export default function Priorities() {
           ) : (
             <AddItem
               key={priority.id}
-              placeholder={`Priority ${priority.order}`}
+              placeholder={`${priority.order}. Priority`}
               onAdd={(text) => handleItemAdd(itemsContext, 'priority', text, priority.order)}
               className={style.addItem}
             />
