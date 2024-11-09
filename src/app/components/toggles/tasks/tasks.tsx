@@ -18,7 +18,7 @@ export default function Tasks() {
   }
   
   const { togglesState } = togglesContext;
-  if (!togglesState.tasks) {
+  if (!togglesState.task) {
     return null;
   }
 
