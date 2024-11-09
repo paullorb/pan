@@ -81,6 +81,7 @@ export const saveItem = async (
     completed: data.completed || false
   };
 
+  // Special handling for habits
   if (type === 'habit') {
     const existingHabit = await Item.findOne({
       userId,
@@ -111,10 +112,26 @@ export const saveItem = async (
     }
   }
 
-  if (type === 'priority' && data.order) {
+  // Modified priority handling
+  if (type === 'priority') {
+    // For completion toggle, just update the existing item
+    if (data.completed !== undefined) {
+      return await Item.findOneAndUpdate(
+        {
+          userId,
+          type,
+          date: dateString,
+          order: data.order
+        },
+        { $set: { completed: data.completed } },
+        { new: true }
+      ).lean().exec() as unknown as ItemDocument;
+    }
+
+    // For text updates/creation, handle existing items
     const existing = await Item.findOne({
       userId,
-      type: 'priority',
+      type,
       date: dateString,
       order: data.order
     }).lean().exec() as unknown as ItemDocument | null;
@@ -128,5 +145,6 @@ export const saveItem = async (
     }
   }
 
+  // Default behavior for other types or new items
   return await Item.create(baseItem) as unknown as ItemDocument;
 };

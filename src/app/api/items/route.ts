@@ -4,10 +4,8 @@ import { ItemType, ITEM_TYPES } from '../../lib/models/types';
 import Item from '../../lib/models/Item';
 import { 
   verifyAuth,
-  saveItem,
   PostRequestBody,
 } from '../../lib/utils/itemsUtils';
-
 
 export async function GET(request: Request) {
   try {
@@ -58,7 +56,6 @@ export async function GET(request: Request) {
   }
 }
 
-
 export async function POST(request: Request) {
   try {
     await connectDB();
@@ -66,30 +63,59 @@ export async function POST(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
-    const typeParam = searchParams.get('type');
+    const type = searchParams.get('type');
+    const id = searchParams.get('id');
     
-    if (!date || !typeParam) {
+    if (!date || !type) {
       return NextResponse.json({ 
         success: false, 
         error: 'Date and type are required' 
       }, { status: 400 });
     }
 
-    // Validate type parameter
-    if (!ITEM_TYPES.includes(typeParam as any)) {
-      return NextResponse.json({ 
-        success: false, 
-        error: `Invalid item type. Must be one of: ${ITEM_TYPES.join(', ')}` 
-      }, { status: 400 });
+    const body = await request.json() as PostRequestBody;
+
+    // If we have an ID, this is an update operation
+    if (id) {
+      const existingItem = await Item.findOne({ _id: id, userId });
+      if (!existingItem) {
+        return NextResponse.json({ 
+          success: false, 
+          error: 'Item not found' 
+        }, { status: 404 });
+      }
+
+      const updatedItem = await Item.findByIdAndUpdate(
+        id,
+        { 
+          $set: { 
+            completed: body.completed,
+            text: body.text || existingItem.text,
+            order: body.order || existingItem.order
+          } 
+        },
+        { new: true }
+      ).lean();
+
+      return NextResponse.json({
+        success: true,
+        data: { item: updatedItem }
+      });
     }
 
-    const type = typeParam as ItemType;
-    const body = await request.json() as PostRequestBody;
-    const item = await saveItem(userId, type, date, body);
+    // Otherwise create a new item
+    const newItem = await Item.create({
+      userId,
+      type,
+      date,
+      text: body.text,
+      order: body.order || 0,
+      completed: body.completed || false
+    });
 
     return NextResponse.json({
       success: true,
-      data: { item }
+      data: { item: newItem }
     });
   } catch (error) {
     console.error('POST /api/items error:', error);

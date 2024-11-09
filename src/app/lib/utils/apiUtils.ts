@@ -16,20 +16,25 @@ export const apiRequest = async <T>(
       }
     });
 
-    if (response.status === 401) {
-      throw new Error('Unauthorized');
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Unauthorized');
+      }
+      throw new Error(`Request failed with status ${response.status}`);
     }
 
     const data = await response.json();
+    
     if (!data.success) {
       throw new Error(data.error || 'Request failed');
     }
 
     return data.data;
-  } catch (err: unknown) {
-    const error = err instanceof Error ? err : new Error('Unknown error occurred');
-    console.error('API request failed:', error.message);
-    throw error;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+    throw new Error('Unknown error occurred');
   }
 };
 

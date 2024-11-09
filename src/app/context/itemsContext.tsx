@@ -68,21 +68,13 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [isAuthenticated, token, selectedDate, logout]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      Object.keys(items).forEach(type => 
-        fetchItems(type as ItemType)
-      );
-    }
-  }, [isAuthenticated, fetchItems]);
-
   const toggleCompletion = async (type: ItemType, id: string) => {
     if (!isAuthenticated || !token) return;
   
     const item = items[type].find(i => i._id === id);
     if (!item) return;
   
-    // Optimistically update both items and itemsByDate
+    // Optimistically update state
     setItems(prev => ({
       ...prev,
       [type]: prev[type].map(i => 
@@ -90,20 +82,19 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       )
     }));
   
-    // Update itemsByDate as well
     setItemsByDate(prev => {
-      const newItemsByDate = { ...prev };
-      Object.keys(newItemsByDate).forEach(date => {
-        newItemsByDate[date] = newItemsByDate[date].map(i => 
+      const dateString = formatDate(selectedDate);
+      return {
+        ...prev,
+        [dateString]: (prev[dateString] || []).map(i => 
           i._id === id ? { ...i, completed: !i.completed } : i
-        );
-      });
-      return newItemsByDate;
+        )
+      };
     });
   
     try {
       await apiRequest(
-        `/api/items?date=${formatDate(selectedDate)}&type=${type}`,
+        `/api/items?id=${id}&date=${formatDate(selectedDate)}&type=${type}`,
         token,
         {
           method: 'POST',
@@ -115,17 +106,20 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       );
     } catch (error) {
-      // Revert both updates on error
+      // Revert optimistic updates on error
       setItems(prev => ({
         ...prev,
         [type]: items[type]
       }));
+      
+      const dateString = formatDate(selectedDate);
       setItemsByDate(prev => ({
         ...prev,
-        [formatDate(selectedDate)]: prev[formatDate(selectedDate)].map(i => 
+        [dateString]: prev[dateString]?.map(i => 
           i._id === id ? { ...i, completed: item.completed } : i
-        )
+        ) || []
       }));
+      
       handleError(error, `toggling ${type}`);
     }
   };

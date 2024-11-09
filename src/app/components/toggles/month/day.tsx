@@ -1,4 +1,3 @@
-// components/toggles/month/day.tsx
 "use client";
 
 import React from 'react';
@@ -32,20 +31,21 @@ const Day: React.FC<DayProps> = ({
   }
 
   const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
-  const dayDate = new Date(currentYear, currentMonth, day);
 
-  // Get items for the day and separate by type
+  // Get items for the day
   const itemsForDay = itemsByDate[dateString] || [];
   
-  // Get tasks status
-  const tasksForDay = itemsForDay.filter(item => item.type === 'task');
-  const hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
-  const allTasksCompleted = tasksForDay.length > 0 && tasksForDay.every((task) => task.completed);
-
   // Get priorities status
   const prioritiesForDay = itemsForDay.filter(item => item.type === 'priority');
-  const hasPriorityUncompleted = prioritiesForDay.length > 0 && prioritiesForDay.some(item => !item.completed);
+  const hasPriorityUncompleted = prioritiesForDay.some(item => !item.completed);
   const allPrioritiesCompleted = prioritiesForDay.length > 0 && prioritiesForDay.every(item => item.completed);
+  const hasPriorities = prioritiesForDay.length > 0;
+
+  // Get tasks status
+  const tasksForDay = itemsForDay.filter(item => item.type === 'task');
+  const hasTasksUncompleted = tasksForDay.some(item => !item.completed);
+  const allTasksCompleted = tasksForDay.length > 0 && tasksForDay.every(item => item.completed);
+  const hasTasks = tasksForDay.length > 0;
 
   const isCurrentDay = () =>
     day === todayDate.getDate() &&
@@ -73,16 +73,21 @@ const Day: React.FC<DayProps> = ({
           {day}
         </div>
         <div className={styles.indicators}>
-          <Dots
-            hasUncompletedTasks={hasPriorityUncompleted}
-            allTasksCompleted={allPrioritiesCompleted}
-            isTodo={false}
-          />
-          <Dots
-            hasUncompletedTasks={hasUncompletedTasks}
-            allTasksCompleted={allTasksCompleted}
-            isTodo={false}
-          />
+          {/* Only show dots if there are items */}
+          {hasPriorities && (
+            <Dots
+              hasUncompletedTasks={hasPriorityUncompleted}
+              allTasksCompleted={allPrioritiesCompleted}
+              isTodo={false}
+            />
+          )}
+          {hasTasks && (
+            <Dots
+              hasUncompletedTasks={hasTasksUncompleted}
+              allTasksCompleted={allTasksCompleted}
+              isTodo={false}
+            />
+          )}
         </div>
       </div>
     </div>
