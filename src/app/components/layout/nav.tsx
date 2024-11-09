@@ -12,9 +12,7 @@ export default function Nav () {
         <DateComponent  />
       </div>
       <div className={style.rightUp}>
-        <div className={style.titleC}>
           <Link href="/" className={style.title}>🍞 Pansito</Link>
-        </div>
           <Navigation />
         </div>
     </nav>
