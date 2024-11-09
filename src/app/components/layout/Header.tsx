@@ -46,7 +46,7 @@ const Header = () => {
 
   const mainToggles = ['hours'];
   const asideToggles = Object.keys(togglesState)
-    .filter(key => !['main', 'aside', 'hours', 'headerToggles'].includes(key))
+    .filter(key => !['main', 'aside', 'hours', 'headerToggles', 'widePadding'].includes(key))
     .sort() as Array<keyof TogglesState>;
 
   const renderToggleButton = (toggle: keyof TogglesState, isMainToggle: boolean = false) => {
