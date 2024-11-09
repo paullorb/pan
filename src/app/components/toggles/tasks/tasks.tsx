@@ -1,44 +1,28 @@
 // components/tasks/tasks.tsx
 "use client";
 
-import React, { useContext } from 'react';
+import React from 'react';
 import style from './tasks.module.css';
-import { useItems } from '../../../context/itemsContext';
-import { TogglesContext } from '../../../context/togglesContext';
 import AddItem from '../../shared/addItem';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
+import { handleItemAdd, handleItemDelete } from '../../../lib/utils/itemOperations';
+import { useToggleComponent } from '../../../lib/hooks/useToggleComponent';
 
 export default function Tasks() {
-  const { items, loading, addItem, toggleCompletion, deleteItem } = useItems();
-  const tasks = items.task; // Get tasks from items.task array
+  const { 
+    items: task, 
+    toggleCompletion, 
+    isEnabled, 
+    itemsContext 
+  } = useToggleComponent('task');
 
-  const togglesContext = useContext(TogglesContext);
-  if (!togglesContext) {
-    throw new Error("Tasks must be used within a TogglesProvider");
-  }
-  
-  const { togglesState } = togglesContext;
-  if (!togglesState.tasks) {
+  if (isEnabled === false) { 
     return null;
   }
 
-  const completedTasksCount = tasks.filter((task) => task.completed).length;
-  const totalTasksCount = tasks.length;
-
-  const handleAddTask = async (text: string) => {
-    if (text.trim()) {
-      await addItem('task', text);
-    }
-  };
-
-  const handleToggleTask = async (id: string) => {
-    await toggleCompletion('task', id);
-  };
-
-  const handleDeleteTask = async (id: string) => {
-    await deleteItem('task', id);
-  };
+  const completedTasksCount = task.filter((task) => task.completed).length;
+  const totalTasksCount = task.length;
 
   return (
     <div className={style.container}>
@@ -47,20 +31,19 @@ export default function Tasks() {
         count={{ completed: completedTasksCount, total: totalTasksCount }}
         pagination={true}
       />
-      {tasks.map((task) => (
+      {task.map((task) => (
         <Item
           key={task._id}
           text={task.text}
           completed={task.completed}
-          onToggle={() => handleToggleTask(task._id)}
-          onDelete={() => handleDeleteTask(task._id)}
+          onToggle={() => toggleCompletion('task', task._id)}
+          onDelete={() => handleItemDelete(itemsContext, 'task', task._id)}
           bullet={true}
-          loading={loading.task}
         />
       ))}
       <AddItem
         placeholder="Add a new task"
-        onAdd={handleAddTask}
+        onAdd={(text) => handleItemAdd(itemsContext, 'task', text)}
         className={style.addItem}
       />
     </div>

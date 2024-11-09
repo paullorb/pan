@@ -5,7 +5,7 @@ import style from './habits.module.css';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 import AddItem from '../../shared/addItem';
-import { handleItemAdd, handleItemDelete } from '../../../lib/utils/itemsOperations';
+import { handleItemAdd, handleItemDelete } from '../../../lib/utils/itemOperations';
 import { useToggleComponent } from '../../../lib/hooks/useToggleComponent';
 
 export default function Habits() {
