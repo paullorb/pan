@@ -7,11 +7,9 @@ import { TogglesContext } from '../../../context/togglesContext';
 import { useDate } from '../../../context/dateContext';
 import DayGrid from './dayGrid';
 import Title from '../../shared/title';
-import {
-  getDaysInMonth,
-  getFirstDayOfMonth,
-} from './utils';
+import { getDaysInMonth, getFirstDayOfMonth } from './utils';
 import WeekDaysHeader from './weekDaysHeader';
+import { CALENDAR_CONSTANTS } from 'app/lib/constants/calendar';
 
 const Month: React.FC = () => {
   const { selectedDate, setSelectedDate } = useDate();
@@ -27,11 +25,8 @@ const Month: React.FC = () => {
   if (!togglesContext) {
     throw new Error("Month must be used within a TogglesProvider");
   }
-
-  const { togglesState } = togglesContext;
-  if (!togglesState.month) {
-    return null;
-  }
+  const isWorkWeek = togglesContext.togglesState.workWeek;
+  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -57,18 +52,22 @@ const Month: React.FC = () => {
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
   for (let i = 1; i <= daysInMonth; i++) {
-    days.push(i);
-  }
-
-  const totalDays = days.length;
-  const fillerDays = (7 - (totalDays % 7)) % 7;
-  if (fillerDays > 0) {
-    for (let i = 0; i < fillerDays; i++) {
+    const date = new Date(currentYear, currentMonth, i);
+    const dayOfWeek = date.getDay();
+    
+    if (isWorkWeek && (dayOfWeek === 0 || dayOfWeek === 6)) {
       days.push(null);
+    } else {
+      days.push(i);
     }
   }
 
-  // Adjusted function to fix the off-by-one error
+  // Add null cells to complete the last row
+  const remainingCells = daysPerWeek - (days.length % daysPerWeek);
+  if (remainingCells !== daysPerWeek) {
+    days.push(...Array(remainingCells).fill(null));
+  }
+
   const handleDayHover = (day: number | null) => {
     if (day !== null) {
       const hoveredDate = new Date(currentYear, currentMonth, day);
