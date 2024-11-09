@@ -1,10 +1,12 @@
 // components/toggles/month/day.tsx
 "use client";
 
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './day.module.css';
 import Dots from './dots';
 import { useItems } from '../../../context/itemsContext';
+import { CALENDAR_CONSTANTS } from 'app/lib/constants/calendar';
+import { TogglesContext } from 'app/context/togglesContext';
 
 interface DayProps {
   day: number | null;
@@ -25,13 +27,17 @@ const Day: React.FC<DayProps> = ({
   setSelectedDate,
   onDayHover,
 }) => {
+
   const { itemsByDate } = useItems();
+  const togglesContext = useContext(TogglesContext);
+  const isWorkWeek = togglesContext?.togglesState.workWeek;
+  
+  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
+  const dayStyle = {
+    flex: `1 1 ${100 / daysPerWeek}%`
+  };
 
-  if (day === null) {
-    return <div className={styles.day} />;
-  }
-
-  const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
+  const dateString = day !== null ? new Date(currentYear, currentMonth, day).toISOString().split('T')[0] : '';
 
   // Get items for the day and separate by type
   const itemsForDay = itemsByDate[dateString] || [];
@@ -59,7 +65,8 @@ const Day: React.FC<DayProps> = ({
   return (
     <div
       className={styles.day}
-      onClick={() => setSelectedDate(new Date(currentYear, currentMonth, day))}
+      style={dayStyle}
+      onClick={() => day !== null && setSelectedDate(new Date(currentYear, currentMonth, day))}
       onMouseEnter={() => onDayHover(day)}
       onMouseLeave={() => onDayHover(null)}
     >

@@ -1,8 +1,10 @@
 // /components/toggles/month/WeekDaysHeader.tsx
 "use client";
 
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './weekDaysHeader.module.css';
+import { CALENDAR_CONSTANTS } from 'app/lib/constants/calendar';
+import { TogglesContext } from 'app/context/togglesContext';
 
 interface WeekDaysHeaderProps {
   className?: string;
@@ -10,7 +12,14 @@ interface WeekDaysHeaderProps {
 }
 
 const WeekDaysHeader: React.FC<WeekDaysHeaderProps> = ({ className, hoveredDayIndex }) => {
-  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S']; // Monday to Sunday
+
+const togglesContext = useContext(TogglesContext);
+  const isWorkWeek = togglesContext?.togglesState.workWeek;
+  
+  const fullWeek = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const weekDays = isWorkWeek ? fullWeek.slice(0, CALENDAR_CONSTANTS.WORK_WEEK) : fullWeek;
+
+
   return (
     <div className={`${styles.container} ${className || ''}`}>
       {weekDays.map((day, index) => (
