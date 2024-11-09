@@ -1,6 +1,6 @@
 // components/tasks/tasks.tsx
-
 "use client";
+
 import React, { useContext } from 'react';
 import style from './tasks.module.css';
 import { useItems } from '../../../context/itemsContext';
