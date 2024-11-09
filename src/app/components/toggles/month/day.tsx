@@ -4,7 +4,6 @@
 import React from 'react';
 import styles from './day.module.css';
 import Dots from './dots';
-import { useTasks } from '../../../context/tasksContext';
 import { useItems } from '../../../context/itemsContext';
 
 interface DayProps {
@@ -26,7 +25,6 @@ const Day: React.FC<DayProps> = ({
   setSelectedDate,
   onDayHover,
 }) => {
-  const { tasksByDate } = useTasks();
   const { itemsByDate } = useItems();
 
   if (day === null) {
@@ -35,15 +33,16 @@ const Day: React.FC<DayProps> = ({
 
   const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
 
+  // Get items for the day and separate by type
+  const itemsForDay = itemsByDate[dateString] || [];
+  
   // Get tasks status
-  const tasksForDay = tasksByDate[dateString] || [];
+  const tasksForDay = itemsForDay.filter(item => item.type === 'task');
   const hasUncompletedTasks = tasksForDay.some((task) => !task.completed);
   const allTasksCompleted = tasksForDay.length > 0 && tasksForDay.every((task) => task.completed);
 
-  // Get priorities status - directly check completion status
-  const prioritiesForDay = (itemsByDate[dateString] || [])
-    .filter(item => item.type === 'priority');
-    
+  // Get priorities status
+  const prioritiesForDay = itemsForDay.filter(item => item.type === 'priority');
   const hasPriorityUncompleted = prioritiesForDay.length > 0 && prioritiesForDay.some(item => !item.completed);
   const allPrioritiesCompleted = prioritiesForDay.length > 0 && prioritiesForDay.every(item => item.completed);
 

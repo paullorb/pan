@@ -7,7 +7,7 @@ export const handleItemAdd = async (
   itemsContext: ItemsContextType,
   type: ItemType,
   text: string,
-  order: number
+  order?: number
 ) => {
   if (!text.trim()) return;
   await itemsContext.addItem(type, text, order);
@@ -16,7 +16,7 @@ export const handleItemAdd = async (
 export const handleItemDelete = async (
   itemsContext: ItemsContextType,
   type: ItemType,
-  itemId: string | undefined
+  itemId: string
 ) => {
   if (!itemId) return;
   await itemsContext.deleteItem(type, itemId);

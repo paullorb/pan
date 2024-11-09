@@ -5,7 +5,7 @@ import style from './priorities.module.css';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
 import AddItem from '../../shared/addItem';
-import { handleItemAdd, handleItemDelete, createOrderedSlots } from '../../../lib/utils/itemsOperations';
+import { handleItemAdd, handleItemDelete, createOrderedSlots } from '../../../lib/utils/itemOperations';
 import { useToggleComponent } from '../../../lib/hooks/useToggleComponent';
 
 export default function Priorities() {
@@ -35,8 +35,8 @@ export default function Priorities() {
               completed={priority.completed}
               label={`${priority.order}`}
               disabled={loading}
-              onDelete={() => handleItemDelete(itemsContext, 'priority', priority._id)}
               onToggle={() => priority._id && toggleCompletion('priority', priority._id)}
+              onDelete={() => priority._id && handleItemDelete(itemsContext, 'priority', priority._id)}
               id={priority.id}
             />
           ) : (
