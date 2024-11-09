@@ -34,7 +34,6 @@ const Day: React.FC<DayProps> = ({
   }
 
   const dateString = new Date(currentYear, currentMonth, day).toISOString().split('T')[0];
-  const dayDate = new Date(currentYear, currentMonth, day);
 
   // Get tasks status
   const tasksForDay = tasksByDate[dateString] || [];
