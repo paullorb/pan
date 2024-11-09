@@ -1,21 +1,8 @@
+// context/togglesContext.tsx
 "use client";
 
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
-
-export interface TogglesState {
-  // Component toggles
-  hours: boolean;
-  priorities: boolean;
-  tasks: boolean;
-  month: boolean;
-  habits: boolean;
-  tags: boolean;
-  // Layout toggles
-  main: boolean;
-  aside: boolean;
-  // UI toggles
-  headerToggles: boolean;
-}
+import { TogglesState, DEFAULT_TOGGLE_STATE } from '../lib/models/types';
 
 interface TogglesContextType {
   togglesState: TogglesState;
@@ -27,20 +14,7 @@ export const TogglesContext = createContext<TogglesContextType | undefined>(unde
 
 export const TogglesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [togglesState, setTogglesState] = useState<TogglesState>({
-    // Component toggles
-    hours: false,
-    priorities: true,
-    tasks: true,
-    month: true,
-    habits: true,
-    tags: true,
-    // Layout toggles
-    main: true,
-    aside: true,
-    // UI toggles
-    headerToggles: true,
-  });
+  const [togglesState, setTogglesState] = useState<TogglesState>(DEFAULT_TOGGLE_STATE);
 
   useEffect(() => {
     const storedToggles = localStorage.getItem('togglesState');

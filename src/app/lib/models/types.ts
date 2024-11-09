@@ -1,12 +1,54 @@
 // lib/models/types.ts
+
+// Core type definitions
 export const ITEM_TYPES = [
   'priority', 
   'task', 
   'habit', 
-  'hour'] as const;
+  'hour'
+] as const;
+
 export type ItemType = typeof ITEM_TYPES[number];
 
-// Single unified configuration object
+// UI Component definitions
+export const COMPONENT_TYPES = [
+  ...ITEM_TYPES,
+  'month',
+  'tags'
+] as const;
+
+export type ComponentType = typeof COMPONENT_TYPES[number];
+
+// Layout sections
+export const LAYOUT_TYPES = [
+  'main',
+  'aside',
+  'headerToggles'
+] as const;
+
+export type LayoutType = typeof LAYOUT_TYPES[number];
+
+// Generate toggle state type dynamically
+export type TogglesState = {
+  [K in ComponentType | LayoutType]: boolean;
+};
+
+// Default toggle states
+export const DEFAULT_TOGGLE_STATE: TogglesState = {
+  // Component toggles
+  priority: true,
+  task: true,
+  habit: true,
+  hour: false,
+  month: true,
+  tags: true,
+  // Layout toggles
+  main: true,
+  aside: true,
+  headerToggles: true,
+};
+
+// Item configuration
 export const ITEM_CONFIG = {
   priority: {
     maxOrder: 3,
@@ -43,21 +85,16 @@ export const ITEM_CONFIG = {
   }
 } as const;
 
-export const ITEMS_INITIAL_STATE: Record<ItemType, Item[]> = {
-  priority: [],
-  task: [],
-  habit: [],
-  hour: []
-} as const;
+// Initial states derived from config
+export const ITEMS_INITIAL_STATE: Record<ItemType, Item[]> = Object.fromEntries(
+  ITEM_TYPES.map(type => [type, [] as Item[]])
+) as Record<ItemType, Item[]>;
 
-export const ITEMS_LOADING_INITIAL_STATE = {
-  priority: false,
-  task: false,
-  habit: false,
-  hour: false
-} as const;
+export const ITEMS_LOADING_INITIAL_STATE = Object.fromEntries(
+  ITEM_TYPES.map(type => [type, false])
+) as Record<ItemType, boolean>;
 
-// Frontend interfaces
+// Interface definitions
 export interface Item {
   _id: string;
   text: string;

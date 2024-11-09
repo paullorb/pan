@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useContext } from "react";
-import { TogglesContext, TogglesState } from "../../context/togglesContext";
+import { TogglesContext } from "../../context/togglesContext";
+import { TogglesState } from "../../lib/models/types";
 import { useItems } from "../../context/itemsContext";
 import style from "./Header.module.css";
 
@@ -23,7 +24,7 @@ const Header = () => {
   };
 
   const isToggleVisible = (toggle: keyof TogglesState): boolean => {
-    if (toggle === 'hours') {
+    if (toggle === 'hour') {
       return togglesState.main && togglesState[toggle];
     }
     return togglesState.aside && togglesState[toggle];
