@@ -25,8 +25,15 @@ const Month: React.FC = () => {
   if (!togglesContext) {
     throw new Error("Month must be used within a TogglesProvider");
   }
-  const isWorkWeek = togglesContext.togglesState.workWeek;
-  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
+  const { togglesState, setTogglesState } = togglesContext;
+  const isWorkWeek = togglesState.workWeek;
+
+  const handleWorkWeekToggle = () => {
+    setTogglesState(prev => ({
+      ...prev,
+      workWeek: !prev.workWeek
+    }));
+  };
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -62,10 +69,10 @@ const Month: React.FC = () => {
     }
   }
 
-  // Add null cells to complete the last row
+  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
   const remainingCells = daysPerWeek - (days.length % daysPerWeek);
   if (remainingCells !== daysPerWeek) {
-    days.push(...Array(remainingCells).fill(null));
+  days.push(...Array(remainingCells).fill(null));
   }
 
   const handleDayHover = (day: number | null) => {
@@ -90,6 +97,9 @@ const Month: React.FC = () => {
         pagination={true}
         onPrevious={decrementMonth}
         onNext={incrementMonth}
+        showWorkWeekToggle={true}  
+        isWorkWeek={isWorkWeek}
+        onWorkWeekToggle={handleWorkWeekToggle}
         className={styles.title}
       />
       <WeekDaysHeader className={styles.weekDaysHeader} hoveredDayIndex={hoveredDayIndex} />

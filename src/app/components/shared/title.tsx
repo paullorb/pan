@@ -15,6 +15,9 @@ interface TitleProps {
   onNext?: () => void;
   onClick?: () => void;
   className?: string;
+  showWorkWeekToggle?: boolean;
+  onWorkWeekToggle?: () => void;
+  isWorkWeek?: boolean;
 }
 
 const Title: React.FC<TitleProps> = ({
@@ -25,6 +28,9 @@ const Title: React.FC<TitleProps> = ({
   onNext,
   onClick,
   className,
+  showWorkWeekToggle,
+  onWorkWeekToggle,
+  isWorkWeek,
 }) => {
   return (
     <div className={`${styles.container} ${className || ''}`} onClick={onClick}>
@@ -42,6 +48,18 @@ const Title: React.FC<TitleProps> = ({
           </button>
         )}
         <h3 className={styles.title}>{title}</h3>
+        {showWorkWeekToggle && onWorkWeekToggle && (
+          <button
+            aria-label={isWorkWeek ? "Show full week" : "Show work week"}
+            className={styles.paginationButton}
+            onClick={(e) => {
+              e.stopPropagation();
+              onWorkWeekToggle();
+            }}
+          >
+            {isWorkWeek ? '7d' : '5d'}
+          </button>
+        )}
         {pagination && onNext && (
           <button
             aria-label="Next"
