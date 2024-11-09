@@ -19,10 +19,10 @@ const Aside: React.FC = () => {
   const { togglesState } = context;
 
   const hasVisibleComponents = 
-    togglesState.priorities || 
-    togglesState.tasks || 
+    togglesState.priority || 
+    togglesState.task || 
     togglesState.month || 
-    togglesState.habits || 
+    togglesState.habit || 
     togglesState.tags;
 
   if (!togglesState.aside || !hasVisibleComponents) {
@@ -32,9 +32,9 @@ const Aside: React.FC = () => {
   return (
     <aside className={style.container}>
       {togglesState.month && <Month />}
-      {togglesState.priorities && <Priority />}
-      {togglesState.tasks && <Tasks />}
-      {togglesState.habits && <Habits />}
+      {togglesState.priority && <Priority />}
+      {togglesState.task && <Tasks />}
+      {togglesState.habit && <Habits />}
       {togglesState.tags && <Tags />}
     </aside>
   );

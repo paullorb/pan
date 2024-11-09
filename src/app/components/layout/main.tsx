@@ -20,7 +20,7 @@ const MainComponent: React.FC = () => {
 
   return (
     <div className={style.container}>
-      {togglesState.hours && <Hours />}
+      {togglesState.hour && <Hours />}
     </div>
   );
 };
