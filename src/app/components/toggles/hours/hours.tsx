@@ -35,7 +35,7 @@ const Hours: React.FC = () => {
 
   const { togglesState } = togglesContext;
 
-  if (!togglesState.hour) {
+  if (!togglesState.hours) {
     return null;
   }
 

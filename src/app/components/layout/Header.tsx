@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   const isToggleVisible = (toggle: keyof TogglesState): boolean => {
-    if (toggle === 'hour') {
+    if (toggle === 'hours') {
       return togglesState.main && togglesState[toggle];
     }
     return togglesState.aside && togglesState[toggle];
