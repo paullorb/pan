@@ -1,23 +1,23 @@
 // lib/models/types.ts
 
-// Core item types
+// [Keep all existing imports]
+
+// [Keep all existing type definitions and interfaces as they are]
 export const ITEM_TYPES = [
   'priority', 
   'task', 
   'habit', 
   'hour'
 ] as const;
-
 export type ItemType = typeof ITEM_TYPES[number];
 
-// Toggle state interface - keeping original structure
 export interface TogglesState {
   // Component toggles
-  hours: boolean;      // matches with 'hour' ItemType
-  priorities: boolean; // matches with 'priority' ItemType
-  tasks: boolean;      // matches with 'task' ItemType
+  hours: boolean;
+  priorities: boolean;
+  tasks: boolean;
   month: boolean;
-  habits: boolean;     // matches with 'habit' ItemType
+  habits: boolean;
   tags: boolean;
   // Layout toggles
   main: boolean;
@@ -26,7 +26,6 @@ export interface TogglesState {
   headerToggles: boolean;
 }
 
-// Default toggle states - keeping original values
 export const DEFAULT_TOGGLE_STATE: TogglesState = {
   // Component toggles
   hours: false,
@@ -42,7 +41,6 @@ export const DEFAULT_TOGGLE_STATE: TogglesState = {
   headerToggles: true,
 };
 
-// Item configuration
 export const ITEM_CONFIG = {
   priority: {
     maxOrder: 3,
@@ -79,7 +77,6 @@ export const ITEM_CONFIG = {
   }
 } as const;
 
-// Initial states
 export const ITEMS_INITIAL_STATE: Record<ItemType, Item[]> = {
   priority: [],
   task: [],
@@ -94,7 +91,6 @@ export const ITEMS_LOADING_INITIAL_STATE = {
   hour: false
 } as const;
 
-// Interface definitions
 export interface Item {
   _id: string;
   text: string;
@@ -117,4 +113,22 @@ export interface ItemsContextType {
   deleteItem: (type: ItemType, itemId: string) => Promise<void>;
   addItem: (type: ItemType, text: string, order?: number) => Promise<void>;
   toggleCompletion: (type: ItemType, id: string) => Promise<void>;
+}
+
+// Add these new interfaces for API requests/responses
+export interface ItemApiRequest {
+  text?: string;
+  date?: string;
+  order?: number;
+  completed?: boolean;
+  type?: ItemType;
+}
+
+export interface ItemApiResponse {
+  success: boolean;
+  data?: {
+    item: Item;
+    items?: Item[];
+  };
+  error?: string;
 }
