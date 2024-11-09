@@ -12,6 +12,7 @@ import { useToggleComponent } from '../../../lib/hooks/useToggleComponent';
 export default function Tasks() {
   const { 
     items: task, 
+    loading,
     toggleCompletion, 
     isEnabled, 
     itemsContext 
@@ -39,6 +40,8 @@ export default function Tasks() {
           onToggle={() => toggleCompletion('task', task._id)}
           onDelete={() => handleItemDelete(itemsContext, 'task', task._id)}
           bullet={true}
+          disabled={loading}
+          id={task._id}
         />
       ))}
       <AddItem
