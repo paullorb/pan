@@ -1,4 +1,4 @@
-// /components/layout/nav.tsx
+// nav.tsx
 
 import Link from 'next/link';
 import DateComponent from '../UI/date/date';
