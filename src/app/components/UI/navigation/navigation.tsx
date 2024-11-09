@@ -54,7 +54,7 @@ export default function Navigation() {
 
       {isAuthenticated ? (
         <div className={styles.userSection}>
-          {/* <DarkMode /> */}
+          <DarkMode />
           <button 
             className={styles.logoutButton}
             onClick={logout}>
@@ -73,12 +73,12 @@ export default function Navigation() {
   );
 
   return (
-    <nav className={styles.navigation}>
+    <div className={styles.navigation}>
       {isMobile && <MenuButton />}
       <MenuItems />
       <AuthModal 
         isOpen={isAuthModalOpen} 
         onClose={() => setIsAuthModalOpen(false)} />
-    </nav>
+    </div>
   );
 }
