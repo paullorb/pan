@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import DateComponent from '../UI/date/date';
-import Navigation from '../UI/hamburger/navigation';
+import Navigation from '../UI/navigation/navigation';
 import style from './nav.module.css';
 
 export default function Nav () {
