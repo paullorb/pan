@@ -24,8 +24,7 @@ export interface TogglesState {
   aside: boolean;
   // UI toggles
   headerToggles: boolean;
-  // Calendar toggles
-  workWeek: boolean;
+  // workWeek: boolean;
 }
 
 export const DEFAULT_TOGGLE_STATE: TogglesState = {
@@ -41,8 +40,7 @@ export const DEFAULT_TOGGLE_STATE: TogglesState = {
   aside: true,
   // UI toggles
   headerToggles: true,
-  // Calendar toggles
-  workWeek: false
+  // workWeek: false
 };
 
 export const ITEM_CONFIG = {
