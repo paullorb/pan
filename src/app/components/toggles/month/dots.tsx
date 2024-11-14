@@ -13,7 +13,7 @@ export default function Dots({ hasUncompletedTasks, allTasksCompleted, isTodo }:
   if (isTodo) {
     dotClass += ` ${style.todo}`;
   } else if (allTasksCompleted) {
-    dotClass += ` ${style.completed}`; // Changed order - check completed first
+    dotClass += ` ${style.completed}`; 
   } else if (hasUncompletedTasks) {
     dotClass += ` ${style.uncompleted}`;
   }
@@ -21,6 +21,7 @@ export default function Dots({ hasUncompletedTasks, allTasksCompleted, isTodo }:
   return (
     <div className={style.container}>
       <div className={dotClass}>•</div>
+      {/* <div className={style.test}></div> */}
     </div>
   );
 }

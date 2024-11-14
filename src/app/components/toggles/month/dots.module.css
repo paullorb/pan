@@ -7,8 +7,11 @@
 
 .dot {
   display: flex;
-  color: transparent;
   font-size: 1.1rem;
+  /* width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  color: black; */
 }
 
 .uncompleted {
