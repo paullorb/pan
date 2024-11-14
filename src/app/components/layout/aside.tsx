@@ -33,8 +33,8 @@ const Aside: React.FC = () => {
     <aside className={style.container}>
       {togglesState.month && <Month />}
       {togglesState.priorities && <Priority />}
-      {togglesState.tasks && <Tasks />}
-      {togglesState.habits && <Habits />}
+      {/* {togglesState.tasks && <Tasks />} */}
+      {/* {togglesState.habits && <Habits />} */}
       {togglesState.tags && <Tags />}
     </aside>
   );
