@@ -1,9 +1,6 @@
 import React from 'react';
-import { useHours } from '../../../context/hoursContext';
-import { useDate } from '../../../context/dateContext';
 import Item from '../../shared/item';
 import style from './hour.module.css';
-import Skeleton from '../../shared/skeleton';
 import { useCurrentHour } from '../../../context/currentHourContext';
 
 interface HourProps {
@@ -11,13 +8,7 @@ interface HourProps {
 }
 
 const Hour: React.FC<HourProps> = ({ hour }) => {
-  const { activities, handleActivityChange, loading } = useHours();
-  const { selectedDate } = useDate();
   const { currentHour, currentMinutes } = useCurrentHour();
-
-  const dayKey = selectedDate.toDateString();
-  const activityFullKey = `${dayKey}_${hour}:00`;
-  const activityFull = activities[activityFullKey] || '';
 
   const isCurrentHour = currentHour === hour;
 
@@ -36,18 +27,13 @@ const Hour: React.FC<HourProps> = ({ hour }) => {
         </div>
         <Item className={`${style.item} ${backgroundClass} ${currentHourClass}`}>
           <div className={`${style.pan} ${backgroundClass}`}>
-            {loading ? (
-              <Skeleton />
-            ) : (
+            
                 <input
                   type="text"
                   id={`activity-${hour}`}
                   className={`${style.input} ${backgroundClass}`}
                   placeholder={`🍞 at ${hour}:00`}
-                  value={activityFull}
-                  onChange={(e) => handleActivityChange(activityFullKey, e.target.value)}
                 />
-            )}
           </div>
         </Item>
       </label>

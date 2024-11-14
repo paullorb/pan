@@ -2,18 +2,13 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from 'react';
-import { useHours } from '../../../context/hoursContext';
 import Hour from './hour';
 import style from './hours.module.css';
 import { TogglesContext } from '../../../context/togglesContext';
-import Controls from './controls';
 import Title from '../../shared/title';
 import { CurrentHourProvider } from '../../../context/currentHourContext';
 
 const Hours: React.FC = () => {
-  const { from, until } = useHours();
-  const validFrom = Math.max(0, Math.min(23, from));
-  const validUntil = Math.max(validFrom, Math.min(23, until));
 
   const togglesContext = useContext(TogglesContext);
 
@@ -43,12 +38,9 @@ const Hours: React.FC = () => {
     <CurrentHourProvider>
       <div className={style.container}>
           <Title title="Hours" />
-        <div className={style.modal}>
-          <Controls />
-        </div>
         <div className={style.hourly}>
-          {Array.from({ length: validUntil - validFrom + 1 }, (_, i) => (
-            <Hour key={validFrom + i} hour={validFrom + i} />
+          {Array.from({ length: 23 - 5 + 1 }, (_, i) => (
+            <Hour key={5 + i} hour={5 + i} />
           ))}
         </div>
       </div>

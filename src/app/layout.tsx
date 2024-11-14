@@ -2,7 +2,6 @@
 
 import './aesthetics/globals.css'
 import { ThemeProvider } from './context/themeContext';
-import { HoursProvider } from './context/hoursContext';
 import { AuthProvider } from './context/authContext';
 import { DateProvider } from './context/dateContext';
 import { TogglesProvider } from './context/togglesContext';
@@ -25,9 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <DateProvider>
                 <ItemsProvider>
                   <CurrentHourProvider>
-                    <HoursProvider>
                           {children}
-                    </HoursProvider>
                   </CurrentHourProvider>
                 </ItemsProvider>
                 </DateProvider>
