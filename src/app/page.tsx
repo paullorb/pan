@@ -15,7 +15,7 @@ export default function Home() {
         <Header />
         <div className={style.tables}>
           <Aside />
-          <MainComponent />
+          {/* <MainComponent /> */}
         </div>
       </div>
   </div>
