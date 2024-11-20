@@ -16,7 +16,7 @@ export default function Priorities() {
     itemsContext 
   } = useToggleComponent('priority');
 
-  const prioritySlots = createOrderedSlots(priorities, 5, 'priority');
+  const prioritySlots = createOrderedSlots(priorities, 10, 'priority');
 
   return (
     <div className={style.container}>
