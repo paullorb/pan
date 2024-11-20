@@ -44,14 +44,14 @@ const Month: React.FC = () => {
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
   for (let i = 1; i <= daysInMonth; i++) {
-    const date = new Date(currentYear, currentMonth, i);
-    const dayOfWeek = date.getDay();
-    
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      days.push(null);
-    } else {
+    // Skip weekends
+    // const date = new Date(currentYear, currentMonth, i);
+    // const dayOfWeek = date.getDay();
+    // if (dayOfWeek === 0 || dayOfWeek === 6) {
+    //   days.push(null);
+    // } else {
       days.push(i);
-    }
+    // }
   }
 
   const daysPerWeek =  CALENDAR_CONSTANTS.FULL_WEEK;
