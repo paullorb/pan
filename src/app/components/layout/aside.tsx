@@ -35,7 +35,7 @@ const Aside: React.FC = () => {
       {togglesState.priorities && <Priority />}
       {/* {togglesState.tasks && <Tasks />} */}
       {/* {togglesState.habits && <Habits />} */}
-      {togglesState.tags && <Tags />}
+      {/* {togglesState.tags && <Tags />} */}
     </aside>
   );
 };
