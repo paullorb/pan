@@ -3,7 +3,6 @@
 
 import React, { useContext, useState } from 'react';
 import styles from './month.module.css';
-import { TogglesContext } from '../../../context/togglesContext';
 import { useDate } from '../../../context/dateContext';
 import DayGrid from './dayGrid';
 import Title from '../../shared/title';
@@ -20,20 +19,6 @@ const Month: React.FC = () => {
   const thisYear = todayDate.getFullYear();
 
   const [hoveredDayIndex, setHoveredDayIndex] = useState<number | null>(null);
-
-  const togglesContext = useContext(TogglesContext);
-  if (!togglesContext) {
-    throw new Error("Month must be used within a TogglesProvider");
-  }
-  const { togglesState, setTogglesState } = togglesContext;
-  const isWorkWeek = togglesState.workWeek;
-
-  const handleWorkWeekToggle = () => {
-    setTogglesState(prev => ({
-      ...prev,
-      workWeek: !prev.workWeek
-    }));
-  };
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -62,14 +47,14 @@ const Month: React.FC = () => {
     const date = new Date(currentYear, currentMonth, i);
     const dayOfWeek = date.getDay();
     
-    if (isWorkWeek && (dayOfWeek === 0 || dayOfWeek === 6)) {
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
       days.push(null);
     } else {
       days.push(i);
     }
   }
 
-  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
+  const daysPerWeek =  CALENDAR_CONSTANTS.FULL_WEEK;
   const remainingCells = daysPerWeek - (days.length % daysPerWeek);
   if (remainingCells !== daysPerWeek) {
   days.push(...Array(remainingCells).fill(null));
@@ -97,9 +82,6 @@ const Month: React.FC = () => {
         pagination={true}
         onPrevious={decrementMonth}
         onNext={incrementMonth}
-        showWorkWeekToggle={true}  
-        isWorkWeek={isWorkWeek}
-        onWorkWeekToggle={handleWorkWeekToggle}
         className={styles.title}
       />
       <WeekDaysHeader className={styles.weekDaysHeader} hoveredDayIndex={hoveredDayIndex} />

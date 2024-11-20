@@ -13,13 +13,8 @@ export default function Priorities() {
     items: priorities, 
     loading, 
     toggleCompletion, 
-    isEnabled, 
     itemsContext 
   } = useToggleComponent('priority');
-
-  if (isEnabled === false) { 
-    return null;
-  }
 
   const prioritySlots = createOrderedSlots(priorities, 5, 'priority');
 
