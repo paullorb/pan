@@ -6,7 +6,6 @@ import { AuthProvider } from './context/authContext';
 import { DateProvider } from './context/dateContext';
 import { TogglesProvider } from './context/togglesContext';
 import { CurrentHourProvider } from './context/currentHourContext';
-import { TagsProvider } from './context/tagsContext';
 import { ItemsProvider } from './context/itemsContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -20,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <ThemeProvider>
               <TogglesProvider>
-            <TagsProvider>
                 <DateProvider>
                 <ItemsProvider>
                   <CurrentHourProvider>
@@ -28,7 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </CurrentHourProvider>
                 </ItemsProvider>
                 </DateProvider>
-            </TagsProvider>
               </TogglesProvider>
           </ThemeProvider>
         </AuthProvider>
