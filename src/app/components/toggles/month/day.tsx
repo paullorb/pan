@@ -29,10 +29,8 @@ const Day: React.FC<DayProps> = ({
 }) => {
 
   const { itemsByDate } = useItems();
-  const togglesContext = useContext(TogglesContext);
-  const isWorkWeek = togglesContext?.togglesState.workWeek;
   
-  const daysPerWeek = isWorkWeek ? CALENDAR_CONSTANTS.WORK_WEEK : CALENDAR_CONSTANTS.FULL_WEEK;
+  const daysPerWeek = CALENDAR_CONSTANTS.FULL_WEEK;
   const dayStyle = {
     flex: `1 1 ${100 / daysPerWeek}%`
   };
