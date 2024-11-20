@@ -7,7 +7,6 @@ import Priority from '../toggles/priorities/priorities';
 import Tasks from '../toggles/tasks/tasks';
 import style from './aside.module.css';
 import Habits from '../toggles/habits/habits';
-import Tags from '../toggles/tags/tags';
 
 const Aside: React.FC = () => {
   const context = useContext(TogglesContext);
@@ -22,8 +21,7 @@ const Aside: React.FC = () => {
     togglesState.priorities || 
     togglesState.tasks || 
     togglesState.month || 
-    togglesState.habits || 
-    togglesState.tags;
+    togglesState.habits;
 
   if (!togglesState.aside || !hasVisibleComponents) {
     return null;
@@ -35,7 +33,6 @@ const Aside: React.FC = () => {
       {togglesState.priorities && <Priority />}
       {/* {togglesState.tasks && <Tasks />} */}
       {/* {togglesState.habits && <Habits />} */}
-      {/* {togglesState.tags && <Tags />} */}
     </aside>
   );
 };
