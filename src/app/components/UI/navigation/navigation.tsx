@@ -39,7 +39,7 @@ export default function Navigation() {
       <div className={styles.menuMain}>
       </div>
 
-      <TogglesContext.Consumer>
+      {/* <TogglesContext.Consumer>
         {(context) => context && (
           <button 
             className={`${styles.actionButton} ${context.togglesState.headerToggles ? styles.active : ''}`}
@@ -50,7 +50,7 @@ export default function Navigation() {
             🎛️
           </button>
         )}
-      </TogglesContext.Consumer>
+      </TogglesContext.Consumer> */}
 
       {isAuthenticated ? (
         <div className={styles.userSection}>
