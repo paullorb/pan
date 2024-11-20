@@ -1,12 +1,12 @@
-// /components/toggles/month/Month.tsx
+// components/toggles/month/Month.tsx
 "use client";
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './month.module.css';
 import { useDate } from '../../../context/dateContext';
 import DayGrid from './dayGrid';
 import Title from '../../shared/title';
-import { getDaysInMonth, getFirstDayOfMonth } from './utils';
+import { generateMonthDays, fillRemainingDays } from './utils';
 import WeekDaysHeader from './weekDaysHeader';
 import { CALENDAR_CONSTANTS } from 'app/lib/constants/calendar';
 
@@ -20,11 +20,6 @@ const Month: React.FC = () => {
 
   const [hoveredDayIndex, setHoveredDayIndex] = useState<number | null>(null);
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
   const incrementMonth = () => {
     const newDate = new Date(selectedDate);
     newDate.setMonth(currentMonth + 1);
@@ -37,34 +32,13 @@ const Month: React.FC = () => {
     setSelectedDate(newDate);
   };
 
-  const startingDayOfWeek = getFirstDayOfMonth(currentYear, currentMonth) === 0
-    ? 7
-    : getFirstDayOfMonth(currentYear, currentMonth);
-  const days: (number | null)[] = Array(startingDayOfWeek - 1).fill(null);
-  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-
-  for (let i = 1; i <= daysInMonth; i++) {
-    // Skip weekends
-    // const date = new Date(currentYear, currentMonth, i);
-    // const dayOfWeek = date.getDay();
-    // if (dayOfWeek === 0 || dayOfWeek === 6) {
-    //   days.push(null);
-    // } else {
-      days.push(i);
-    // }
-  }
-
-  const daysPerWeek =  CALENDAR_CONSTANTS.FULL_WEEK;
-  const remainingCells = daysPerWeek - (days.length % daysPerWeek);
-  if (remainingCells !== daysPerWeek) {
-  days.push(...Array(remainingCells).fill(null));
-  }
+  let days = generateMonthDays(currentYear, currentMonth);
+  days = fillRemainingDays(days, CALENDAR_CONSTANTS.FULL_WEEK);
 
   const handleDayHover = (day: number | null) => {
     if (day !== null) {
       const hoveredDate = new Date(currentYear, currentMonth, day);
-      // Ensure Monday is 0, and Sunday is 6
-      const dayIndex = (hoveredDate.getDay() + 6) % 7; // Shift days so Monday is 0
+      const dayIndex = (hoveredDate.getDay() + 6) % 7;
       setHoveredDayIndex(dayIndex);
     } else {
       setHoveredDayIndex(null);
@@ -78,7 +52,7 @@ const Month: React.FC = () => {
   return (
     <div className={styles.container}>
       <Title
-        title={`${monthNames[currentMonth]} ${currentYear !== thisYear ? currentYear : ''}`}
+        title={`${CALENDAR_CONSTANTS.MONTH_NAMES[currentMonth]} ${currentYear !== thisYear ? currentYear : ''}`}
         pagination={true}
         onPrevious={decrementMonth}
         onNext={incrementMonth}

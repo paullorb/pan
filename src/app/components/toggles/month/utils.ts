@@ -42,3 +42,38 @@ export const isToday = (date: Date): boolean => {
 export const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];
 };
+
+/**
+ * Generates an array of day numbers for a given month, with null values for padding.
+ * @param currentYear The year to generate days for.
+ * @param currentMonth The month to generate days for.
+ * @returns Array of day numbers with null padding for the start of the month.
+ */
+export const generateMonthDays = (currentYear: number, currentMonth: number): (number | null)[] => {
+  const startingDayOfWeek = getFirstDayOfMonth(currentYear, currentMonth) === 0
+    ? 7
+    : getFirstDayOfMonth(currentYear, currentMonth);
+    
+  const days: (number | null)[] = Array(startingDayOfWeek - 1).fill(null);
+  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(i);
+  }
+  
+  return days;
+};
+
+/**
+ * Fills remaining days in the calendar grid with null values.
+ * @param days Array of day numbers and null values.
+ * @param daysPerWeek Number of days in a week.
+ * @returns Completed array with null padding at the end.
+ */
+export const fillRemainingDays = (days: (number | null)[], daysPerWeek: number): (number | null)[] => {
+  const remainingCells = daysPerWeek - (days.length % daysPerWeek);
+  if (remainingCells !== daysPerWeek) {
+    return [...days, ...Array(remainingCells).fill(null)];
+  }
+  return days;
+};
