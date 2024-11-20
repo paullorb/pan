@@ -21,7 +21,7 @@ export default function Priorities() {
     return null;
   }
 
-  const prioritySlots = createOrderedSlots(priorities, 3, 'priority');
+  const prioritySlots = createOrderedSlots(priorities, 5, 'priority');
 
   return (
     <div className={style.container}>
