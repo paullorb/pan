@@ -20,7 +20,7 @@ export default function Dots({ hasUncompletedTasks, allTasksCompleted, isTodo }:
 
   return (
     <div className={style.container}>
-      <div className={dotClass}>•</div>
+      <div className={dotClass}></div>
     </div>
   );
 }
