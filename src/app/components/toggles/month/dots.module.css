@@ -6,22 +6,24 @@
 }
 
 .dot {
-  display: flex;
-  color: transparent;
-  font-size: 1.1rem;
+  display: block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
 }
 
 .uncompleted {
-  color: red;
+  background-color: red;
 }
 
 .completed {
-  color: green;
+  background-color: green;
 }
 
 .todo {
-  color: gray;
+  background-color: gray;
 }
+
 @media screen and (max-width: 768px) {
   .dot {
     font-size: 1rem;
