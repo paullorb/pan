@@ -12,7 +12,7 @@ export default function Home() {
     <div className={style.container}>
       <Nav />
       <div className={style.content}>
-        <Header />
+        {/* <Header /> */}
         <div className={style.tables}>
           <Aside />
           {/* <MainComponent /> */}
