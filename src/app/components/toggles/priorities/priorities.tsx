@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import style from './priorities.module.css';
 import Title from '../../shared/title';
 import Item from '../../shared/item';
@@ -16,13 +16,26 @@ export default function Priorities() {
     itemsContext 
   } = useToggleComponent('priority');
 
+  const [visibleCount, setVisibleCount] = useState(3); // Initial visible slots
   const prioritySlots = createOrderedSlots(priorities, 10, 'priority');
+
+  // Function to check if all visible slots are filled
+  const areAllVisibleSlotsFilled = prioritySlots
+    .slice(0, visibleCount)
+    .every((priority) => priority.text);
+
+  // Automatically expand visibleCount if all current slots are filled
+  useEffect(() => {
+    if (areAllVisibleSlotsFilled && visibleCount < prioritySlots.length) {
+      setVisibleCount(visibleCount + 1);
+    }
+  }, [areAllVisibleSlotsFilled, visibleCount, prioritySlots]);
 
   return (
     <div className={style.container}>
       <Title title="Priorities" />
       <div className={style.priorities}>
-        {prioritySlots.map((priority) => (
+        {prioritySlots.slice(0, visibleCount).map((priority) => (
           priority.text ? (
             <Item
               key={priority.id}
