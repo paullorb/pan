@@ -75,6 +75,7 @@ const DateComponent: React.FC = () => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+    <div className={style.titleC}>
       <Title
         title={isHovered ? getDayDifference(selectedDate) : formatWeekday(selectedDate)}
         pagination={true}
@@ -82,7 +83,7 @@ const DateComponent: React.FC = () => {
         onNext={goToNextDay}
         onClick={resetToToday}
         className={style.weekday}
-      />
+      /></div>
       <div className={style.dateC}>
           <h3 className={style.date}>{formatDate(selectedDate)}</h3>
       </div>
