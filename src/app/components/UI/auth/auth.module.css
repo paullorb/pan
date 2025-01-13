@@ -10,7 +10,6 @@
   justify-content: center;
   align-items: flex-start;
   padding-top: 10%;
-  z-index: 10000;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -24,8 +23,6 @@
   padding: 20px;
   border-radius: 5px;
   width: 400px;
-  transform: translateY(0);
-  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .modalFadeOut {
@@ -40,7 +37,6 @@
 
 .tabButton {
   flex: 1;
-  background: none;
   border: none;
   font-size: 18px;
   padding: 10px;
