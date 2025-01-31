@@ -29,7 +29,6 @@ export default function Tasks() {
     <div className={style.container}>
       <Title
         title="Tasks"
-        count={{ completed: completedTasksCount, total: totalTasksCount }}
         pagination={true}
       />
       {task.map((task) => (
