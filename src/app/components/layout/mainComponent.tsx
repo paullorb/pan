@@ -1,11 +1,9 @@
-"use client";
-
 import React from 'react';
 import Month from '../toggles/month/month';
 import Priority from '../toggles/priorities/priorities';
 import style from './mainComponent.module.css';
 
-const Main: React.FC = () => {
+export default function MainComponent() {
 
   return (
     <main className={style.container}>
@@ -14,5 +12,3 @@ const Main: React.FC = () => {
     </main>
   );
 };
-
-export default Main;

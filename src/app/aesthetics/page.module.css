@@ -8,12 +8,6 @@
   gap: var(--spacing-m);
 }
 
-@media print {
-  .container {
-    padding: var(--spacing-s);
-  }
-}
-
 @media screen and (max-width: 768px) {
   .container {
     padding: var(--spacing-xs);
