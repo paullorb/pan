@@ -1,4 +1,3 @@
-// Refactored date.tsx
 "use client";
 
 import React from 'react';
@@ -67,17 +66,14 @@ export default function DateComponent() {
   };
 
   return (
-    <div
-      className={style.container}
-    >
-    <div className={style.titleC}>
+    <div className={`${style.weekday} ${style.container}`} >
+    <div className={`${style.titleC}`}>
       <Title
         title={formatWeekday(selectedDate)}
         pagination={true}
         onPrevious={goToPreviousDay}
         onNext={goToNextDay}
         onClick={resetToToday}
-        className={style.weekday}
       />
       <div className={style.dateRef}>{getDayDifference(selectedDate)}</div>
       </div>

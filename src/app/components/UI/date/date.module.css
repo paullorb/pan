@@ -1,8 +1,6 @@
 .container {
   display: flex;
   user-select: none;
-  align-items: center;
-  justify-content: center;
 }
 
 .titleC {
@@ -13,17 +11,12 @@
 }
 
 .dateRef {
-  display: none;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
-.titleC:hover .dateRef {
-  display: block;
-  opacity: 1;
-}
-
-.weekday {
-  cursor: pointer;
+.weekday *{
+  background: var(--color);
+  color: var(--bg);
 }
 
 .dateC {

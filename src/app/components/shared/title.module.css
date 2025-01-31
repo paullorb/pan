@@ -1,48 +1,28 @@
-/* /components/shared/title.module.css */
 .container {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: var(--title);
-  margin-bottom: var(--spacing-s);
-  height: 100%;
-  width: 100%;
-  /* position: relative;  */
-  transition: 0.3s ease-in-out;
-  flex: 0;
-}
-
-.first {
-  display: flex;
-  align-items: center;
-  background-color: inherit;
+  background-color: var(--bg);
   border-radius: var(--border-r);
   flex: 1;
   gap: var(--spacing-xs); 
   padding: 0 var(--spacing-xs)
 }
 
-.second {
+.first {
+  display: flex;
+  align-items: center;
   background-color: inherit;
-  padding-right: var(--spacing-m);
+
 }
 
 .paginationButton {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  opacity: 0.2;
   cursor: pointer;
-  background: none;
   border: none;
-  color: var(--bg);
-  font-size: 0.9rem;
-}
-
-.paginationButton:hover {
-  text-shadow: white 0 0 5px;
-}
-
-.container:hover .paginationButton {
-  opacity: 1;
+  background: none;
+  color: var(--color);
+  font-size: 0.8rem;
+  text-shadow: var(--color) 0 0 1px;
 }
 
 .title {
@@ -50,24 +30,7 @@
   letter-spacing: -1px;
   padding: var(--spacing-xs) 0;
   background-color: transparent;
-  color: var(--bg);
+  color: var(--color);
   margin: 0;
   font-size: 1.5em;
-}
-
-.count {
-  background-color: transparent;
-  color: var(--bg);
-}
-
-@media print {
-  .title {
-    color: var(--hover-color);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .paginationButton {
-    opacity: 0.1;
-  }
 }
