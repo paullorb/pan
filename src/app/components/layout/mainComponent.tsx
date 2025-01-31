@@ -3,9 +3,9 @@
 import React from 'react';
 import Month from '../toggles/month/month';
 import Priority from '../toggles/priorities/priorities';
-import style from './aside.module.css';
+import style from './mainComponent.module.css';
 
-const Aside: React.FC = () => {
+const Main: React.FC = () => {
 
   return (
     <aside className={style.container}>
@@ -15,4 +15,4 @@ const Aside: React.FC = () => {
   );
 };
 
-export default Aside;
+export default Main;
