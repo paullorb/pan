@@ -3,6 +3,20 @@
   user-select: none;
 }
 
+.titleC {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dateRef {
+  opacity: 0.4;
+}
+
+.titleC:hover .dateRef {
+  opacity: 1;
+}
+
 .weekday {
   cursor: pointer;
 }
