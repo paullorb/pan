@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useCallback, useEffect } fr
 import { useAuth } from './authContext';
 import { useDate } from './dateContext';
 import { 
-  ItemType, 
+  ItemType, ITEM_TYPES, 
   Item, 
   ItemsContextType,
   ITEMS_INITIAL_STATE,
@@ -70,8 +70,8 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     if (isAuthenticated) {
-      Object.keys(items).forEach(type => 
-        fetchItems(type as ItemType)
+      ITEM_TYPES.forEach(type => 
+        fetchItems(type)
       );
     }
   }, [isAuthenticated, fetchItems]);
@@ -223,8 +223,8 @@ export const ItemsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     if (isAuthenticated) {
-      Object.keys(items).forEach(type => 
-        fetchItems(type as ItemType)
+      ITEM_TYPES.forEach(type => 
+        fetchItems(type)
       );
     }
   }, [isAuthenticated, fetchItems]);
