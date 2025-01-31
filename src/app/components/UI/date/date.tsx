@@ -1,14 +1,13 @@
 // Refactored date.tsx
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useDate } from '../../../context/dateContext';
 import style from './date.module.css';
 import Title from '../../shared/title';
 
-const DateComponent: React.FC = () => {
+export default function DateComponent() {
   const { selectedDate, setSelectedDate } = useDate();
-  const [isHovered, setIsHovered] = useState(false);
 
   // Function to format the selected date
   const formatDate = (date: Date): string => {
@@ -72,8 +71,6 @@ const DateComponent: React.FC = () => {
   return (
     <div
       className={style.container}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
     <div className={style.titleC}>
       <Title
@@ -92,5 +89,3 @@ const DateComponent: React.FC = () => {
     </div>
   );
 };
-
-export default DateComponent;
