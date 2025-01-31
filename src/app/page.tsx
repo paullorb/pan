@@ -1,9 +1,9 @@
 // page.tsx
 
-import './aesthetics/globals.css';
-import style from './aesthetics/page.module.css';
 import MainComponent from './components/layout/mainComponent';
 import Nav from './components/layout/nav';
+import './aesthetics/globals.css';
+import style from './aesthetics/page.module.css';
 
 export default function Home() {
   return (
