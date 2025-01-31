@@ -28,7 +28,6 @@ export default function Habits() {
     <div className={style.container}>
       <Title
         title="Habits"
-        count={{ completed: completedHabitsCount, total: totalHabitsCount }}
         pagination={true}
       />
       {habits.map((habit) => (
