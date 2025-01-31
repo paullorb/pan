@@ -9,9 +9,7 @@ export default function Home() {
   return (
     <div className={style.container}>
       <Nav />
-      <div className={style.content}>
-          <MainComponent />
-      </div>
+      <MainComponent />
   </div>
   );
 }

@@ -2,23 +2,10 @@
 
 .container {
   display: flex;
-  position: relative;
   flex-direction: column; 
   justify-content: center;
   align-items: center; 
-  padding: 0 20%;
   gap: var(--spacing-m);
-}
-
-.content {
-  width: 100%;
-  margin-top: var(--spacing-xxl);
-}
-
-.tables {
-  display: flex;
-  width: 100%;
-  gap: var(--spacing-xl);
 }
 
 @media print {
@@ -30,9 +17,5 @@
 @media screen and (max-width: 768px) {
   .container {
     padding: var(--spacing-xs);
-  }
-  .tables {
-    flex-wrap: wrap;
-    gap: var(--spacing-s);
   }
 }

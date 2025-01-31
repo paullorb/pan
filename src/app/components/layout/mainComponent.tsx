@@ -8,10 +8,10 @@ import style from './mainComponent.module.css';
 const Main: React.FC = () => {
 
   return (
-    <aside className={style.container}>
+    <main className={style.container}>
       <Month />
       <Priority />
-    </aside>
+    </main>
   );
 };
 

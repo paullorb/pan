@@ -3,6 +3,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex: 1 1 45%;
   gap: var(--spacing-m);
+  width: 60%;
+  margin-top: var(--spacing-xxl);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
 }
