@@ -9,7 +9,6 @@ import Title from '../../shared/title';
 export default function DateComponent() {
   const { selectedDate, setSelectedDate } = useDate();
 
-  // Function to format the selected date
   const formatDate = (date: Date): string => {
     return date.toLocaleDateString('de-DE', {
       day: '2-digit',
@@ -22,12 +21,11 @@ export default function DateComponent() {
     return date.toLocaleDateString('en-EN', { weekday: 'long' });
   };
 
-  // Function to calculate the difference in days between selectedDate and today
   const getDayDifference = (date: Date): string => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
+    today.setHours(0, 0, 0, 0); 
     const selected = new Date(date);
-    selected.setHours(0, 0, 0, 0); // Reset time
+    selected.setHours(0, 0, 0, 0);
 
     const diffTime = selected.getTime() - today.getTime();
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));

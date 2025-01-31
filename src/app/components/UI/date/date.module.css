@@ -1,19 +1,24 @@
 .container {
   display: flex;
   user-select: none;
+  align-items: center;
+  justify-content: center;
 }
 
 .titleC {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .dateRef {
+  display: none;
   opacity: 0.4;
 }
 
 .titleC:hover .dateRef {
+  display: block;
   opacity: 1;
 }
 
