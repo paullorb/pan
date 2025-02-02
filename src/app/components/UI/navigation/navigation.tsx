@@ -33,11 +33,7 @@ export default function Navigation() {
 
   const MenuItems = () => (
     <div className={`${styles.menuItems} ${isMenuOpen ? styles.open : ''}`}>
-      <div className={styles.menuHeader}>
       <span className={styles.email}>{userEmail}</span>
-      <div className={styles.menuMain}>
-      </div>
-
       {isAuthenticated ? (
         <div className={styles.userSection}>
           <DarkMode />
@@ -54,7 +50,6 @@ export default function Navigation() {
           🔑
         </button>
       )}
-      </div>
     </div>
   );
 

@@ -44,6 +44,12 @@ html[data-theme='dark'] {
   --hover-color: #8f8f8f; /* Dark hover color */
 }
 
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 @page {
   size: A4;
 }
