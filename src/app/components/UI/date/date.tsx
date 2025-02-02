@@ -67,15 +67,15 @@ export default function DateComponent() {
 
   return (
     <div className={`${style.weekday} ${style.container}`} >
-    <div className={`${style.titleC}`}>
-      <Title
-        title={formatWeekday(selectedDate)}
-        pagination={true}
-        onPrevious={goToPreviousDay}
-        onNext={goToNextDay}
-        onClick={resetToToday}
-      />
-      <div className={style.dateRef}>{getDayDifference(selectedDate)}</div>
+      <div className={`${style.titleC}`}>
+        <Title
+          title={formatWeekday(selectedDate)}
+          pagination={true}
+          onPrevious={goToPreviousDay}
+          onNext={goToNextDay}
+          onClick={resetToToday}
+        />
+        <div className={style.dateRef}>{getDayDifference(selectedDate)}</div>
       </div>
       <div className={style.dateC}>
           <h3 className={style.date}>{formatDate(selectedDate)}</h3>
