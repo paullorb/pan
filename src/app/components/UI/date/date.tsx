@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { useDate } from '../../../context/dateContext';
 import style from './date.module.css';
 import Title from '../../shared/title';
