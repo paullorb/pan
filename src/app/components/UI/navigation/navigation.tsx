@@ -45,7 +45,6 @@ export default function Navigation() {
         </div>
       ) : (
         <button
-          className={styles.actionButton}
           onClick={() => setIsAuthModalOpen(true)}>
           🔑
         </button>

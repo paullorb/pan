@@ -29,29 +29,25 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Close modal with animation when authenticated
   useEffect(() => {
     if (isAuthenticated && isOpen) {
       setIsClosing(true);
     }
   }, [isAuthenticated, isOpen]);
 
-  // After animation ends, close the modal
   useEffect(() => {
     if (isClosing) {
       const timer = setTimeout(() => {
         setIsClosing(false);
         onClose();
-      }, 300); // Duration matches CSS transition
+      }, 300); 
 
       return () => clearTimeout(timer);
     }
   }, [isClosing, onClose]);
 
   if (!isOpen && !isClosing) return null;
-
-  // Adjust modal rendering based on isLoading if necessary
-  if (isLoading) return null; // Or a loading indicator
+  if (isLoading) return null; 
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +60,6 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       }
       await signup(email, password);
     }
-    // No need to call onClose() here
   };
 
   const handleBackdropClick = (event: React.MouseEvent) => {
@@ -79,7 +74,6 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       onClick={handleBackdropClick}
     >
       <div className={`${styles.modal} ${isClosing ? styles.modalFadeOut : ''}`}>
-        {/* Login / Signup Tabs */}
         <div className={styles.tabContainer}>
           <button
             className={`${styles.tabButton} ${isLoginMode ? styles.activeTab : ''}`}
