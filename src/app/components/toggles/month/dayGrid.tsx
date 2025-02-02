@@ -25,7 +25,7 @@ const DayGrid: React.FC<DayGridProps> = ({
   onDayHover,
 }) => {
   return (
-    <div className={styles.grid}>
+    <div className={styles.container}>
       {days.map((day, index) => (
         <Day
           key={index}

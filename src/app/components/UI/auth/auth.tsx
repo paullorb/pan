@@ -73,7 +73,7 @@ const AuthModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       className={`${styles.backdrop} ${isClosing ? styles.fadeOut : ''}`}
       onClick={handleBackdropClick}
     >
-      <div className={`${styles.modal} ${isClosing ? styles.modalFadeOut : ''}`}>
+      <div className={styles.modal}>
         <div className={styles.tabContainer}>
           <button
             className={`${styles.tabButton} ${isLoginMode ? styles.activeTab : ''}`}

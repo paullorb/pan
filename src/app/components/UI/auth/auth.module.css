@@ -17,20 +17,17 @@
 }
 
 .modal {
+  z-index: 100;
   background: var(--bg);
   padding: 20px;
   border-radius: 5px;
   width: 400px;
 }
 
-.modalFadeOut {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-
 .tabContainer {
   display: flex;
   margin-bottom: 20px;
+    z-index: 100;
 }
 
 .tabButton {
