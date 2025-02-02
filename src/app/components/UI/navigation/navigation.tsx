@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/authContext';
-import { TogglesContext } from '../../../context/togglesContext';
 import AuthModal from '../auth/auth';
 import DarkMode from '../darkMode/darkMode';
 import styles from './navigation.module.css';
@@ -38,19 +37,6 @@ export default function Navigation() {
       <span className={styles.email}>{userEmail}</span>
       <div className={styles.menuMain}>
       </div>
-
-      {/* <TogglesContext.Consumer>
-        {(context) => context && (
-          <button 
-            className={`${styles.actionButton} ${context.togglesState.headerToggles ? styles.active : ''}`}
-            onClick={() => context.setTogglesState(prev => ({
-              ...prev,
-              headerToggles: !prev.headerToggles
-            }))}>
-            🎛️
-          </button>
-        )}
-      </TogglesContext.Consumer> */}
 
       {isAuthenticated ? (
         <div className={styles.userSection}>
