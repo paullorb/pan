@@ -1,14 +1,14 @@
 "use client";
 import React from 'react';
 import styles from './calendar.module.css';
-import { useCalendar } from 'app/components/UI/cal/calendarContext';
+import { useCalendar } from './calendarContext';
+import { WEEKDAY_NAMES_FULL } from './utils';
 
 const WeekdayDisplay: React.FC = () => {
   const { selectedDate } = useCalendar();
-  const weekdayNamesFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const weekday = weekdayNamesFull[selectedDate.getDay()];
+  const weekday = WEEKDAY_NAMES_FULL[selectedDate.getDay()];
   return (
-    <div className={styles.calendar}>
+    <div className={styles.weekdayDisplay}>
       <p>{weekday}</p>
     </div>
   );

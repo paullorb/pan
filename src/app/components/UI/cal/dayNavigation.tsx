@@ -1,8 +1,9 @@
 "use client";
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './calendar.module.css';
-import { formatDate } from './utils';
-import { useCalendar } from 'app/components/UI/cal/calendarContext';
+import { formatDate, DAY_THRESHOLD } from './utils';
+import { useCalendar } from './calendarContext';
+import { useSwipeNavigation } from './useSwipeNavigation';
 
 const DayNavigation: React.FC = () => {
   const {
@@ -14,53 +15,17 @@ const DayNavigation: React.FC = () => {
     handleNextDay
   } = useCalendar();
 
-  const dayThreshold = 50;
-  const dayTouchStartRef = useRef<number | null>(null);
-
   const handleReset = () => {
     setSelectedDate(new Date());
   };
 
-  const onWheel = (e: React.WheelEvent) => {
-    const newAccum = dayScrollAccum + e.deltaX;
-    if (newAccum > dayThreshold) {
-      handleNextDay();
-      setDayScrollAccum(newAccum - dayThreshold);
-    } else if (newAccum < -dayThreshold) {
-      handlePrevDay();
-      setDayScrollAccum(newAccum + dayThreshold);
-    } else {
-      setDayScrollAccum(newAccum);
-    }
-  };
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    dayTouchStartRef.current = e.touches[0].clientX;
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (dayTouchStartRef.current !== null) {
-      const delta = dayTouchStartRef.current - e.touches[0].clientX;
-      const newAccum = dayScrollAccum + delta;
-      if (newAccum > dayThreshold) {
-        handleNextDay();
-        setDayScrollAccum(newAccum - dayThreshold);
-        dayTouchStartRef.current = e.touches[0].clientX;
-      } else if (newAccum < -dayThreshold) {
-        handlePrevDay();
-        setDayScrollAccum(newAccum + dayThreshold);
-        dayTouchStartRef.current = e.touches[0].clientX;
-      } else {
-        setDayScrollAccum(newAccum);
-        dayTouchStartRef.current = e.touches[0].clientX;
-      }
-    }
-  };
-
-  const onTouchEnd = () => {
-    dayTouchStartRef.current = null;
-    setDayScrollAccum(0);
-  };
+  const { onWheel, onTouchStart, onTouchMove, onTouchEnd } = useSwipeNavigation(
+    DAY_THRESHOLD,
+    dayScrollAccum,
+    setDayScrollAccum,
+    handlePrevDay,
+    handleNextDay
+  );
 
   return (
     <div className={styles.dayNavigation}>

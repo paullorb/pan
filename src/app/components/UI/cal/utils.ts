@@ -15,6 +15,11 @@ export const getMonthName = (monthIndex: number): string => {
   return months[monthIndex];
 };
 
+export const DAY_THRESHOLD = 50;
+export const MONTH_THRESHOLD = 50;
+
+export const WEEKDAY_NAMES_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 export type Cell = {
   date: Date;
   inCurrentMonth: boolean;

@@ -1,54 +1,20 @@
 "use client";
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from './calendar.module.css';
-import { getMonthName } from './utils';
-import { useCalendar } from 'app/components/UI/cal/calendarContext';
+import { getMonthName, MONTH_THRESHOLD } from './utils';
+import { useCalendar } from './calendarContext';
+import { useSwipeNavigation } from './useSwipeNavigation';
 
 const MonthNavigation: React.FC = () => {
   const { selectedDate, monthScrollAccum, setMonthScrollAccum, handlePrevMonth, handleNextMonth } = useCalendar();
-  const monthThreshold = 50;
-  const monthTouchStartRef = useRef<number | null>(null);
 
-  const onWheel = (e: React.WheelEvent) => {
-    const newAccum = monthScrollAccum + e.deltaX;
-    if (newAccum > monthThreshold) {
-      handleNextMonth();
-      setMonthScrollAccum(newAccum - monthThreshold);
-    } else if (newAccum < -monthThreshold) {
-      handlePrevMonth();
-      setMonthScrollAccum(newAccum + monthThreshold);
-    } else {
-      setMonthScrollAccum(newAccum);
-    }
-  };
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    monthTouchStartRef.current = e.touches[0].clientX;
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (monthTouchStartRef.current !== null) {
-      const delta = monthTouchStartRef.current - e.touches[0].clientX;
-      const newAccum = monthScrollAccum + delta;
-      if (newAccum > monthThreshold) {
-        handleNextMonth();
-        setMonthScrollAccum(newAccum - monthThreshold);
-        monthTouchStartRef.current = e.touches[0].clientX;
-      } else if (newAccum < -monthThreshold) {
-        handlePrevMonth();
-        setMonthScrollAccum(newAccum + monthThreshold);
-        monthTouchStartRef.current = e.touches[0].clientX;
-      } else {
-        setMonthScrollAccum(newAccum);
-        monthTouchStartRef.current = e.touches[0].clientX;
-      }
-    }
-  };
-
-  const onTouchEnd = () => {
-    monthTouchStartRef.current = null;
-    setMonthScrollAccum(0);
-  };
+  const { onWheel, onTouchStart, onTouchMove, onTouchEnd } = useSwipeNavigation(
+    MONTH_THRESHOLD,
+    monthScrollAccum,
+    setMonthScrollAccum,
+    handlePrevMonth,
+    handleNextMonth
+  );
 
   return (
     <div className={styles.monthNavigation}>
