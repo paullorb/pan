@@ -1,45 +1,83 @@
-// dayNavigation.tsx
-
 "use client";
-
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './calendar.module.css';
+import { formatDate } from './utils';
+import { useCalendar } from 'app/components/UI/cal/calendarContext';
 
-interface DayNavigationProps {
-  formattedDate: string;
-  onPrev: () => void;
-  onNext: () => void;
-  onReset: () => void;
-  onWheel: (e: React.WheelEvent) => void;
-  onTouchStart: (e: React.TouchEvent) => void;
-  onTouchMove: (e: React.TouchEvent) => void;
-  onTouchEnd: () => void;
-}
+const DayNavigation: React.FC = () => {
+  const {
+    selectedDate,
+    setSelectedDate,
+    dayScrollAccum,
+    setDayScrollAccum,
+    handlePrevDay,
+    handleNextDay
+  } = useCalendar();
 
-const DayNavigation: React.FC<DayNavigationProps> = ({
-  formattedDate,
-  onPrev,
-  onNext,
-  onReset,
-  onWheel,
-  onTouchStart,
-  onTouchMove,
-  onTouchEnd,
-}) => (
-  <div className={styles.dayNavigation}>
-    <button onClick={onPrev}>‹</button>
-    <p
-      className={styles.formattedDate}
-      onClick={onReset}
-      onWheel={onWheel}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-    >
-      {formattedDate}
-    </p>
-    <button onClick={onNext}>›</button>
-  </div>
-);
+  const dayThreshold = 50;
+  const dayTouchStartRef = useRef<number | null>(null);
+
+  const handleReset = () => {
+    setSelectedDate(new Date());
+  };
+
+  const onWheel = (e: React.WheelEvent) => {
+    const newAccum = dayScrollAccum + e.deltaX;
+    if (newAccum > dayThreshold) {
+      handleNextDay();
+      setDayScrollAccum(newAccum - dayThreshold);
+    } else if (newAccum < -dayThreshold) {
+      handlePrevDay();
+      setDayScrollAccum(newAccum + dayThreshold);
+    } else {
+      setDayScrollAccum(newAccum);
+    }
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    dayTouchStartRef.current = e.touches[0].clientX;
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (dayTouchStartRef.current !== null) {
+      const delta = dayTouchStartRef.current - e.touches[0].clientX;
+      const newAccum = dayScrollAccum + delta;
+      if (newAccum > dayThreshold) {
+        handleNextDay();
+        setDayScrollAccum(newAccum - dayThreshold);
+        dayTouchStartRef.current = e.touches[0].clientX;
+      } else if (newAccum < -dayThreshold) {
+        handlePrevDay();
+        setDayScrollAccum(newAccum + dayThreshold);
+        dayTouchStartRef.current = e.touches[0].clientX;
+      } else {
+        setDayScrollAccum(newAccum);
+        dayTouchStartRef.current = e.touches[0].clientX;
+      }
+    }
+  };
+
+  const onTouchEnd = () => {
+    dayTouchStartRef.current = null;
+    setDayScrollAccum(0);
+  };
+
+  return (
+    <div className={styles.dayNavigation}>
+      <button onClick={handlePrevDay}>‹</button>
+      <p
+        className={styles.formattedDate}
+        onClick={handleReset}
+        onWheel={onWheel}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        {formatDate(selectedDate)}
+      </p>
+      <button onClick={handleNextDay}>›</button>
+    </div>
+  );
+};
 
 export default DayNavigation;
