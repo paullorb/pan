@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import styles from './calendar.module.css';
-import { getCalendarWeeks, Cell } from './utils';
+import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
 import { useCalendar } from 'app/components/UI/cal/calendarContext';
 
 const CalendarTable: React.FC = () => {
@@ -9,13 +9,15 @@ const CalendarTable: React.FC = () => {
   const weeks = getCalendarWeeks(selectedDate);
   const today = new Date();
 
+  const headerNames = WEEKDAY_NAMES_FULL.slice(1).concat(WEEKDAY_NAMES_FULL.slice(0, 1));
+
   return (
     <table className={styles.table}>
       <thead>
         <tr>
-          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName, index) => (
+          {headerNames.map((dayName, index) => (
             <th key={index} className={styles.th}>
-              {dayName}
+              {dayName.slice(0, WEEKDAY_HEADER_LENGTH)}
             </th>
           ))}
         </tr>

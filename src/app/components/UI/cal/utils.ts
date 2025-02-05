@@ -20,6 +20,8 @@ export const MONTH_THRESHOLD = 50;
 
 export const WEEKDAY_NAMES_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+export const WEEKDAY_HEADER_LENGTH = 3;
+
 export type Cell = {
   date: Date;
   inCurrentMonth: boolean;
