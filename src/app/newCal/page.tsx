@@ -8,10 +8,7 @@ import CalendarTable from "app/components/UI/cal/calendarTable";
 export default function NewCal () {
   return (
     <div className={styles.container}>
-      <nav className={styles.nav}>
-        <WeekdayDisplay weekday="Sun" />
-        {/* <DayNavigation formattedDate="2021-01-01" onPrev={() => {}} onNext={() => {}} onReset={() => {}} onWheel={(e) => {}} onTouchStart={(e) => {}} onTouchMove={(e) => {}} onTouchEnd={() => {}} /> */}
-        </nav>
+      <Calendar />
 
     </div>
   )
