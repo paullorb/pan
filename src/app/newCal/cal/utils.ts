@@ -1,3 +1,5 @@
+// utils.ts
+
 export const formatDate = (date: Date): string => {
   const day = date.getDate();
   const month = date.getMonth() + 1;

@@ -1,8 +1,10 @@
+// calendarTable.tsx
+
 "use client";
 import React from 'react';
 import styles from './calendar.module.css';
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
-import { useCalendar } from 'app/components/UI/cal/calendarContext';
+import { useCalendar } from './calendarContext';
 
 const CalendarTable: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCalendar();
