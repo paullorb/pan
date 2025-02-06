@@ -4,47 +4,67 @@ import { useCalendar } from "../cal/calendarContext";
 import styles from "./item.module.css";
 import { getDateKey } from "./utils";
 
-const Item: React.FC = () => {
+const ItemManager: React.FC = () => {
   const [items, setItems] = useState<{ [date: string]: string[] }>({});
+  const [contexts, setContexts] = useState<string[]>(["General", "Work", "Personal"]);
   const [input, setInput] = useState("");
+  const [mode, setMode] = useState<"item" | "context">("item");
 
   const { selectedDate } = useCalendar();
   const keyDate = getDateKey(selectedDate);
 
-  const handleAddItem = () => {
+  const handleAddEntry = () => {
     if (input.trim() === "") return;
-    setItems((prevItems) => {
-      const prevList = prevItems[keyDate] || [];
-      return { ...prevItems, [keyDate]: [...prevList, input.trim()] };
-    });
+    if (mode === "item") {
+      setItems((prev) => {
+        const prevList = prev[keyDate] || [];
+        return { ...prev, [keyDate]: [...prevList, input.trim()] };
+      });
+    } else {
+      setContexts((prev) => [...prev, input.trim()]);
+    }
     setInput("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleAddItem();
-    }
+    if (e.key === "Enter") handleAddEntry();
   };
-
-  const itemList = items[keyDate] || [];
 
   return (
     <div className={styles.container}>
-      {itemList.length > 0 ? (
+      <div className={styles.modeToggle}>
+        <button onClick={() => setMode("item")} className={mode === "item" ? styles.active : ""}>
+          Item
+        </button>
+        <button onClick={() => setMode("context")} className={mode === "context" ? styles.active : ""}>
+          Context
+        </button>
+      </div>
+      {mode === "item" ? (
+        items[keyDate] && items[keyDate].length > 0 ? (
+          <ul>
+            {items[keyDate].map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No items for this day yet.</p>
+        )
+      ) : contexts.length > 0 ? (
         <ul>
-          {itemList.map((item, index) => (
-            <li key={index}>{item}</li>
+          {contexts.map((context, index) => (
+            <li key={index}>{context}</li>
           ))}
         </ul>
       ) : (
-        <p></p>
+        <p>No contexts available.</p>
       )}
       <div>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="new item"
+          placeholder={mode === "item" ? "new item" : "new context"}
           onKeyDown={handleKeyDown}
           autoFocus
         />
@@ -53,4 +73,4 @@ const Item: React.FC = () => {
   );
 };
 
-export default Item;
+export default ItemManager;

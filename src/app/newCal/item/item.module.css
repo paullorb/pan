@@ -1,6 +1,14 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+.modeToggle {
+  margin-bottom: 10px;
+}
+.modeToggle button {
+  margin-right: 5px;
+}
+.active {
+  font-weight: bold;
 }
