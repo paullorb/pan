@@ -19,9 +19,7 @@ export const getMonthName = (monthIndex: number): string => {
 
 export const DAY_THRESHOLD = 50;
 export const MONTH_THRESHOLD = 50;
-
 export const WEEKDAY_NAMES_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
 export const WEEKDAY_HEADER_LENGTH = 3;
 
 export type Cell = {
@@ -34,7 +32,6 @@ export const getCalendarWeeks = (date: Date): Cell[][] => {
   const month = date.getMonth();
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  // Adjust so that Monday is the first day of the week
   const startDay = (firstDayOfMonth.getDay() + 6) % 7;
 
   const cells: Cell[] = [];
