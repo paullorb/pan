@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { CalendarProvider } from './cal/calendarContext';
+import { ItemsProvider } from './item/itemContext';
 
 export default function CalendarLayout({
   children,
@@ -9,9 +10,9 @@ export default function CalendarLayout({
 }) {
   return (
     <CalendarProvider>
-      <section>
+      <ItemsProvider>
         {children}
-      </section>
+      </ItemsProvider>
     </CalendarProvider>
   );
 }

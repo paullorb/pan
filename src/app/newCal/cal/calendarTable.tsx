@@ -1,13 +1,14 @@
-// calendarTable.tsx
-
 "use client";
 import React from 'react';
 import styles from './calendar.module.css';
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
 import { useCalendar } from './calendarContext';
+import { getDateKey } from '../item/utils';
+import { useItems } from '../item/itemContext';
 
 const CalendarTable: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCalendar();
+  const { items } = useItems();
   const weeks = getCalendarWeeks(selectedDate);
   const today = new Date();
 
@@ -39,6 +40,12 @@ const CalendarTable: React.FC = () => {
                 cellYear === today.getFullYear() &&
                 cellMonth === today.getMonth() &&
                 cellDay === today.getDate();
+
+              const dateKey = getDateKey(cell.date);
+              const previews = items[dateKey]
+                ? items[dateKey].slice(0, 5).map((item) => item.split(" ")[0])
+                : [];
+
               return (
                 <td
                   key={j}
@@ -47,9 +54,18 @@ const CalendarTable: React.FC = () => {
                   } ${!cell.inCurrentMonth ? styles.outside : ''}`}
                   onClick={() => setSelectedDate(cell.date)}
                 >
-                  {cellDay}
+                  <div>{cellDay}</div>
+                  {previews.length > 0 && (
+                    <div className={styles.itemPreviews}>
+                      {previews.map((preview, index) => (
+                        <div key={index} className={styles.itemPreview}>
+                          {preview}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </td>
-              );
+              );  
             })}
           </tr>
         ))}
