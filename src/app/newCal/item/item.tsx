@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useCalendar } from "../cal/calendarContext";
 import { useItems } from "./itemContext";
 import styles from "./item.module.css";
@@ -10,6 +10,14 @@ const Item: React.FC = () => {
   const { selectedDate } = useCalendar();
   const { addItem, items } = useItems();
   const keyDate = getDateKey(selectedDate);
+  
+  // Create a ref for the input element
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Whenever the selected date changes, focus the input field
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [selectedDate]);
 
   const handleAddItem = () => {
     if (input.trim() === "") return;
@@ -36,11 +44,13 @@ const Item: React.FC = () => {
       )}
       <div>
         <input
+          ref={inputRef}  // Attach the ref here
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="new item"
           onKeyDown={handleKeyDown}
+          autoFocus  // Optional: still have autoFocus on initial mount
         />
       </div>
     </div>
