@@ -1,25 +1,42 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+export interface Item {
+  text: string;
+  context: string | null;
+}
+
 interface ItemsContextType {
-  items: { [date: string]: string[] };
-  addItem: (date: string, item: string) => void;
+  items: { [date: string]: Item[] };
+  addItem: (date: string, text: string) => void;
+  updateItemContext: (date: string, index: number, context: string | null) => void;
 }
 
 const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
 
 export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<{ [date: string]: string[] }>({});
+  const [items, setItems] = useState<{ [date: string]: Item[] }>({});
 
-  const addItem = (date: string, item: string) => {
+  const addItem = (date: string, text: string) => {
     setItems((prev) => {
       const prevList = prev[date] || [];
-      return { ...prev, [date]: [...prevList, item] };
+      return { ...prev, [date]: [...prevList, { text, context: null }] };
+    });
+  };
+
+  const updateItemContext = (date: string, index: number, context: string | null) => {
+    setItems((prev) => {
+      const prevList = prev[date] || [];
+      const newList = [...prevList];
+      if (newList[index]) {
+        newList[index] = { ...newList[index], context };
+      }
+      return { ...prev, [date]: newList };
     });
   };
 
   return (
-    <ItemsContext.Provider value={{ items, addItem }}>
+    <ItemsContext.Provider value={{ items, addItem, updateItemContext }}>
       {children}
     </ItemsContext.Provider>
   );
