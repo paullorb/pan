@@ -2,6 +2,7 @@
 import React from 'react';
 import { CalendarProvider } from './cal/calendarContext';
 import { ItemsProvider } from './item/itemContext';
+import { ContextProvider } from './context/contextContext';
 
 export default function CalendarLayout({
   children,
@@ -10,9 +11,11 @@ export default function CalendarLayout({
 }) {
   return (
     <CalendarProvider>
-      <ItemsProvider>
-        {children}
-      </ItemsProvider>
+      <ContextProvider>
+        <ItemsProvider>
+          {children}
+        </ItemsProvider>
+      </ContextProvider>
     </CalendarProvider>
   );
 }

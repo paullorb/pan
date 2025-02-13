@@ -10,7 +10,6 @@ interface ContextContextType {
 const ContextContext = createContext<ContextContextType | undefined>(undefined);
 
 export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Define your available contexts. Feel free to update this array as needed.
   const contexts = ["personal", "work", "social"];
   const [selectedContext, setSelectedContext] = useState<string | null>(null);
 
