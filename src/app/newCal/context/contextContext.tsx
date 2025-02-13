@@ -1,19 +1,18 @@
 "use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
-
-export type ContextType = "personal" | "work" | "social";
+import { defaultContexts, ContextConfig } from "./utils";
 
 interface ContextContextType {
-  selectedContext: ContextType | null;
-  setSelectedContext: (context: ContextType | null) => void;
-  contexts: ContextType[];
+  selectedContext: ContextConfig | null;
+  setSelectedContext: (context: ContextConfig | null) => void;
+  contexts: ContextConfig[];
 }
 
 const ContextContext = createContext<ContextContextType | undefined>(undefined);
 
 export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const contexts: ContextType[] = ["personal", "work", "social"];
-  const [selectedContext, setSelectedContext] = useState<ContextType | null>(null);
+  const [contexts, setContexts] = useState<ContextConfig[]>(defaultContexts);
+  const [selectedContext, setSelectedContext] = useState<ContextConfig | null>(null);
   return (
     <ContextContext.Provider value={{ selectedContext, setSelectedContext, contexts }}>
       {children}

@@ -1,7 +1,13 @@
-export type ContextType = "personal" | "work" | "social";
-export const contexts: ContextType[] = ["personal", "work", "social"];
-export const contextColors: Record<ContextType, { text: string; background: string }> = {
-  personal: { text: "#8e44ad", background: "#dcd6f7" },
-  work: { text: "#16a085", background: "#d1f2eb" },
-  social: { text: "#e67e22", background: "#f9e79f" }
-};
+"use client";
+export interface ContextConfig {
+  id: string;
+  name: string;
+  textColor: string;
+  backgroundColor: string;
+}
+
+export const defaultContexts: ContextConfig[] = [
+  { id: "personal", name: "personal", textColor: "#8e44ad", backgroundColor: "#dcd6f7" },
+  { id: "work", name: "work", textColor: "#16a085", backgroundColor: "#d1f2eb" },
+  { id: "social", name: "social", textColor: "#e67e22", backgroundColor: "#f9e79f" }
+];

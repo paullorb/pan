@@ -6,13 +6,13 @@ import styles from "./item.module.css";
 import { getDateKey } from "./utils";
 import EntryContext from "../context/entryContext";
 import { useContextContext } from "../context/contextContext";
-import { ContextType } from "../context/utils";
+import { ContextConfig } from "../context/utils";
 
 const Item: React.FC = () => {
   const [input, setInput] = useState("");
   const { selectedDate } = useCalendar();
   const { addItem, items, updateItemContext } = useItems();
-  const { selectedContext } = useContextContext();
+  const { selectedContext, contexts } = useContextContext();
   const keyDate = getDateKey(selectedDate);
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -28,25 +28,30 @@ const Item: React.FC = () => {
   };
   const allItems = items[keyDate] || [];
   const filteredItems = selectedContext
-    ? allItems.filter(item => item.context === selectedContext)
+    ? allItems.filter(item => item.context === selectedContext.id)
     : allItems;
   return (
     <div className={styles.container}>
       {filteredItems.length > 0 ? (
         <ul className={styles.list}>
-          {filteredItems.map((item, index) => (
-            <li key={index} className={styles.item}>
-              <div className={styles.itemContent}>
-                <span className={styles.itemText}>{item.text}</span>
-                <EntryContext
-                  entryContext={item.context as (ContextType | null)}
-                  onContextChange={(newContext) =>
-                    updateItemContext(keyDate, index, newContext)
-                  }
-                />
-              </div>
-            </li>
-          ))}
+          {filteredItems.map((item, index) => {
+            const entryConfig: ContextConfig | null = item.context
+              ? contexts.find((c: ContextConfig) => c.id === item.context) || null
+              : null;
+            return (
+              <li key={index} className={styles.item}>
+                <div className={styles.itemContent}>
+                  <span className={styles.itemText}>{item.text}</span>
+                  <EntryContext
+                    entryContext={entryConfig}
+                    onContextChange={(newContext) =>
+                      updateItemContext(keyDate, index, newContext ? newContext.id : null)
+                    }
+                  />
+                </div>
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p>No items yet.</p>

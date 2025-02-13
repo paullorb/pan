@@ -2,31 +2,39 @@
 import React from "react";
 import styles from "./context.module.css";
 import { useContextContext } from "./contextContext";
-import { contextColors, contexts, ContextType } from "./utils";
+import { ContextConfig } from "./utils";
 import { useItems } from "../item/itemContext";
 
 const Context: React.FC = () => {
-  const { selectedContext, setSelectedContext, contexts: headerContexts } = useContextContext();
+  const { selectedContext, setSelectedContext, contexts } = useContextContext();
   const { items } = useItems();
-  const contextCount: Record<ContextType, number> = { personal: 0, work: 0, social: 0 };
+  const contextCount: Record<string, number> = {};
+  contexts.forEach((ctx: ContextConfig) => {
+    contextCount[ctx.id] = 0;
+  });
   Object.values(items).forEach(dayItems => {
     dayItems.forEach(item => {
-      if (item.context && item.context in contextCount) {
-        contextCount[item.context as ContextType]++;
+      if (item.context && contextCount.hasOwnProperty(item.context)) {
+        contextCount[item.context]++;
       }
     });
   });
-  const handleClick = (ctx: ContextType) => {
-    setSelectedContext(ctx === selectedContext ? null : ctx);
+  const handleClick = (ctx: ContextConfig) => {
+    setSelectedContext(selectedContext && selectedContext.id === ctx.id ? null : ctx);
   };
   return (
     <div className={styles.container}>
-      {headerContexts.map((ctx) => {
-        const isSelected = selectedContext === ctx;
-        const style = isSelected ? { color: contextColors[ctx].text, backgroundColor: contextColors[ctx].background } : {};
+      {contexts.map((ctx: ContextConfig) => {
+        const isSelected = selectedContext && selectedContext.id === ctx.id;
+        const style = isSelected ? { color: ctx.textColor, backgroundColor: ctx.backgroundColor } : {};
         return (
-          <span key={ctx} className={styles.contextBadge} onClick={() => handleClick(ctx)} style={style}>
-            {ctx} ({contextCount[ctx]})
+          <span
+            key={ctx.id}
+            className={styles.contextBadge}
+            onClick={() => handleClick(ctx)}
+            style={style}
+          >
+            {ctx.name} ({contextCount[ctx.id]})
           </span>
         );
       })}
