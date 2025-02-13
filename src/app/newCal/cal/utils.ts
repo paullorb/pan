@@ -1,4 +1,4 @@
-// utils.ts
+// cal/utils.ts
 
 export const formatDate = (date: Date): string => {
   const day = date.getDate();
