@@ -1,4 +1,3 @@
-"use client";
 export interface ContextConfig {
   id: string;
   name: string;
