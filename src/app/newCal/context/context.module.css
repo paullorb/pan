@@ -1,5 +1,6 @@
-.contextContainer {
-  display: inline-flex;
+.container {
+  display: flex;
+  justify-content: center;
   gap: 0.5rem;
   margin-left: 1rem;
   align-items: center;

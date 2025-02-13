@@ -1,20 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./context.module.css";
-
-const contexts = ["personal", "work", "social"];
+import { useContextContext } from "./contextContext";
 
 const Context: React.FC = () => {
-  const [selectedContext, setSelectedContext] = useState<string | null>(null);
+  const { selectedContext, setSelectedContext, contexts } = useContextContext();
 
   const handleClick = (ctx: string) => {
-    setSelectedContext(ctx);
+    setSelectedContext(ctx === selectedContext ? null : ctx);
   };
 
   const displayedContexts = selectedContext ? [selectedContext] : contexts;
 
   return (
-    <div className={styles.contextContainer}>
+    <div className={styles.container}>
       {displayedContexts.map((ctx) => (
         <span key={ctx} className={styles.contextBadge} onClick={() => handleClick(ctx)}>
           {ctx}
