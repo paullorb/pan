@@ -7,16 +7,9 @@
 }
 
 .contextBadge {
-  background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 0.2rem 0.4rem;
   font-size: 0.8rem;
-  color: #333;
   cursor: pointer;
-}
-
-.selected {
-  color: green;
-  background-color: greenyellow;
 }

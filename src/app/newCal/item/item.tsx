@@ -1,17 +1,17 @@
-//item.tsx
-
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useCalendar } from "../cal/calendarContext";
 import { useItems } from "./itemContext";
 import styles from "./item.module.css";
 import { getDateKey } from "./utils";
-import Context from "../context/context";
+import EntryContext from "../context/entryContext";
+import { useContextContext } from "../context/contextContext";
 
 const Item: React.FC = () => {
   const [input, setInput] = useState("");
   const { selectedDate } = useCalendar();
-  const { addItem, items } = useItems();
+  const { addItem, items, updateItemContext } = useItems();
+  const { selectedContext } = useContextContext();
   const keyDate = getDateKey(selectedDate);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -29,24 +29,33 @@ const Item: React.FC = () => {
     if (e.key === "Enter") handleAddItem();
   };
 
-  const itemList = items[keyDate] || [];
+  const allItems = items[keyDate] || [];
+  const filteredItems = selectedContext
+    ? allItems.filter(item => item.context === selectedContext)
+    : allItems;
 
   return (
     <div className={styles.container}>
-      {itemList.length > 0 ? (
-        <ul>
-          {itemList.map((item, index) => (
+      {filteredItems.length > 0 ? (
+        <ul className={styles.list}>
+          {filteredItems.map((item, index) => (
             <li key={index} className={styles.item}>
-              <span className={styles.itemText}>{item.text}</span>
-              <Context />
+              <div className={styles.itemContent}>
+                <EntryContext
+                  entryContext={item.context}
+                  onContextChange={(newContext) =>
+                    updateItemContext(keyDate, index, newContext)
+                  }
+                />
+                <span className={styles.itemText}>{item.text}</span>
+              </div>
             </li>
-
           ))}
         </ul>
       ) : (
         <p>No items yet.</p>
       )}
-      <div>
+      <div className={styles.inputContainer}>
         <input
           ref={inputRef}
           type="text"
@@ -55,6 +64,7 @@ const Item: React.FC = () => {
           placeholder="new item"
           onKeyDown={handleKeyDown}
           autoFocus
+          className={styles.input}
         />
       </div>
     </div>

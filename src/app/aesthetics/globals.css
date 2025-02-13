@@ -6,7 +6,7 @@
   transition: background-color 0.9s, color 0.1s, all 1s;
   margin: 0;
   padding: 0;
-  /* list-style: none; */
+  list-style: none;
 }
 :root {
   --black: black;

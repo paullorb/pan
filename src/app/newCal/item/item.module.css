@@ -3,12 +3,9 @@
   flex-direction: column;
   align-items: center;
 }
-.modeToggle {
-  margin-bottom: 10px;
-}
-.modeToggle button {
-  margin-right: 5px;
-}
-.active {
-  font-weight: bold;
+
+.itemContent{
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
 }
