@@ -12,7 +12,6 @@ const ContextContext = createContext<ContextContextType | undefined>(undefined);
 export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const contexts = ["personal", "work", "social"];
   const [selectedContext, setSelectedContext] = useState<string | null>(null);
-
   return (
     <ContextContext.Provider value={{ selectedContext, setSelectedContext, contexts }}>
       {children}

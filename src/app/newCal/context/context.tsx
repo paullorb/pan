@@ -1,5 +1,3 @@
-// context.tsx
-
 "use client";
 import React from "react";
 import styles from "./context.module.css";
@@ -12,12 +10,14 @@ const Context: React.FC = () => {
     setSelectedContext(ctx === selectedContext ? null : ctx);
   };
 
-  const displayedContexts = selectedContext ? [selectedContext] : contexts;
-
   return (
     <div className={styles.container}>
-      {displayedContexts.map((ctx) => (
-        <span key={ctx} className={styles.contextBadge} onClick={() => handleClick(ctx)}>
+      {contexts.map((ctx) => (
+        <span
+          key={ctx}
+          className={`${styles.contextBadge} ${selectedContext === ctx ? styles.selected : ""}`}
+          onClick={() => handleClick(ctx)}
+        >
           {ctx}
         </span>
       ))}
