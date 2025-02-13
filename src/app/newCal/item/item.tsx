@@ -6,6 +6,7 @@ import styles from "./item.module.css";
 import { getDateKey } from "./utils";
 import EntryContext from "../context/entryContext";
 import { useContextContext } from "../context/contextContext";
+import { ContextType } from "../context/utils";
 
 const Item: React.FC = () => {
   const [input, setInput] = useState("");
@@ -14,26 +15,21 @@ const Item: React.FC = () => {
   const { selectedContext } = useContextContext();
   const keyDate = getDateKey(selectedDate);
   const inputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     inputRef.current?.focus();
   }, [selectedDate]);
-
   const handleAddItem = () => {
     if (input.trim() === "") return;
     addItem(keyDate, input.trim());
     setInput("");
   };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleAddItem();
   };
-
   const allItems = items[keyDate] || [];
   const filteredItems = selectedContext
     ? allItems.filter(item => item.context === selectedContext)
     : allItems;
-
   return (
     <div className={styles.container}>
       {filteredItems.length > 0 ? (
@@ -41,13 +37,13 @@ const Item: React.FC = () => {
           {filteredItems.map((item, index) => (
             <li key={index} className={styles.item}>
               <div className={styles.itemContent}>
+                <span className={styles.itemText}>{item.text}</span>
                 <EntryContext
-                  entryContext={item.context}
+                  entryContext={item.context as (ContextType | null)}
                   onContextChange={(newContext) =>
                     updateItemContext(keyDate, index, newContext)
                   }
                 />
-                <span className={styles.itemText}>{item.text}</span>
               </div>
             </li>
           ))}
