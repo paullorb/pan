@@ -8,10 +8,10 @@ import Item from './item/item';
 export default function NewCal() {
   return (
       <div>
-        <nav>
+        <header>
           <WeekdayDisplay />
           <DayNavigation />
-        </nav>
+        </header>
         <main>
           <MonthNavigation />
           <CalendarTable />
