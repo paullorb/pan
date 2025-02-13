@@ -1,3 +1,5 @@
+//item.tsx
+
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useCalendar } from "../cal/calendarContext";
@@ -35,9 +37,10 @@ const Item: React.FC = () => {
         <ul>
           {itemList.map((item, index) => (
             <li key={index} className={styles.item}>
-              <span className={styles.itemText}>{item.toString()}</span>
+              <span className={styles.itemText}>{item.text}</span>
               <Context />
             </li>
+
           ))}
         </ul>
       ) : (

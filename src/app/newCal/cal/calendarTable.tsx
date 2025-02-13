@@ -45,8 +45,9 @@ const CalendarTable: React.FC = () => {
 
               const dateKey = getDateKey(cell.date);
               const previews = items[dateKey]
-                ? items[dateKey].slice(0, 5).map((item) => String(item).split(" ")[0])
+                ? items[dateKey].slice(0, 5).map((item) => item.text.split(" ")[0])
                 : [];
+
 
               return (
                 <td
