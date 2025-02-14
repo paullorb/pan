@@ -7,7 +7,6 @@ import { getDateKey } from "./utils";
 import EntryContext from "../context/entryContext";
 import { useContextContext } from "../context/contextContext";
 import { ContextConfig } from "../context/utils";
-import WorkoutDetails from "./contexts/workoutDetails";
 
 const Item: React.FC = () => {
   const [input, setInput] = useState("");
@@ -49,14 +48,6 @@ const Item: React.FC = () => {
                       updateItemContext(keyDate, index, newContext ? newContext.id : null)
                     }
                   />
-                  {item.context === "work" && (
-                    <WorkoutDetails
-                      date={keyDate}
-                      index={index}
-                      initialIntensity={item.workoutDetails?.intensityOrWeight || ""}
-                      initialReps={item.workoutDetails?.repsAndSeries || ""}
-                    />
-                  )}
                 </div>
               </li>
             );
