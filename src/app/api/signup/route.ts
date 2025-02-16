@@ -8,7 +8,6 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    // Validate input
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -16,9 +15,8 @@ export async function POST(request: Request) {
       );
     }
 
-    await connectDB(); // Connect to the database
+    await connectDB(); 
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
@@ -27,10 +25,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
     const newUser = new User({
       email,
       password: hashedPassword,
@@ -38,7 +34,6 @@ export async function POST(request: Request) {
 
     await newUser.save();
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET as string,
