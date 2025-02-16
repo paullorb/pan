@@ -16,15 +16,13 @@ export default function Priorities() {
     itemsContext 
   } = useToggleComponent('priority');
 
-  const [visibleCount, setVisibleCount] = useState(3); // Initial visible slots
+  const [visibleCount, setVisibleCount] = useState(3);
   const prioritySlots = createOrderedSlots(priorities, 10, 'priority');
 
-  // Function to check if all visible slots are filled
   const areAllVisibleSlotsFilled = prioritySlots
     .slice(0, visibleCount)
     .every((priority) => priority.text);
 
-  // Automatically expand visibleCount if all current slots are filled
   useEffect(() => {
     if (areAllVisibleSlotsFilled && visibleCount < prioritySlots.length) {
       setVisibleCount(visibleCount + 1);

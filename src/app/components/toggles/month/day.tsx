@@ -1,12 +1,11 @@
 // components/toggles/month/day.tsx
 "use client";
 
-import React, { useContext } from 'react';
+import React from 'react';
 import styles from './day.module.css';
 import Dots from './dots';
 import { useItems } from '../../../context/itemsContext';
 import { CALENDAR_CONSTANTS } from 'app/lib/constants/calendar';
-import { TogglesContext } from 'app/context/togglesContext';
 
 interface DayProps {
   day: number | null;
