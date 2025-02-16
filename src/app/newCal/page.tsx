@@ -12,9 +12,9 @@ export default function NewCal() {
         <header>
           <WeekdayDisplay />
           <DayNavigation />
+          <MonthNavigation />
         </header>
         <main>
-          <MonthNavigation />
           <Context />
           <CalendarTable />
           <Item />
