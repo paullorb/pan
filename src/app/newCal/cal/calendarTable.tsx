@@ -1,18 +1,29 @@
-"use client";
-import React from 'react';
+'use client';
+import React, { useEffect } from 'react';
 import styles from './calendar.module.css';
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
 import { useCalendar } from './calendarContext';
 import { getDateKey } from '../item/utils';
 import { useItems } from '../item/itemContext';
 import { defaultContexts } from '../context/utils';
+import { useAuth } from '../nav/authContext';
 
 const CalendarTable: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCalendar();
-  const { items } = useItems();
+  const { items, fetchMonthEntries } = useItems();
+  const { user } = useAuth();
   const weeks = getCalendarWeeks(selectedDate);
   const today = new Date();
   const headerNames = WEEKDAY_NAMES_FULL.slice(1).concat(WEEKDAY_NAMES_FULL.slice(0, 1));
+
+  useEffect(() => {
+    if (user) {
+      const month = selectedDate.getMonth();
+      const year = selectedDate.getFullYear();
+      fetchMonthEntries(month, year);
+    }
+  }, [selectedDate, user, fetchMonthEntries]);
+
   return (
     <table className={styles.table}>
       <thead>
@@ -57,9 +68,7 @@ const CalendarTable: React.FC = () => {
                         let style = {};
                         if (item.context) {
                           const config = defaultContexts.find(cfg => cfg.id === item.context);
-                          if (config) {
-                            style = { color: config.textColor };
-                          }
+                          if (config) style = { color: config.textColor };
                         }
                         return (
                           <div key={index} className={styles.itemPreview} style={style}>

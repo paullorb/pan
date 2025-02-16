@@ -10,8 +10,7 @@ export default function Nav() {
   const [modalType, setModalType] = useState<ModalType>('login')
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
-
-  const { email, login, signup } = useAuth()
+  const { user, login, signup, logout } = useAuth()
 
   const openModal = (type: ModalType) => {
     setModalType(type)
@@ -45,8 +44,11 @@ export default function Nav() {
   return (
     <>
       <nav className={styles.container}>
-        {email ? (
-          <span>Logged in as: {email}</span>
+        {user ? (
+          <>
+            <span>Logged in as: {user.email}</span>
+            <button onClick={logout}>Logout</button>
+          </>
         ) : (
           <>
             <button onClick={() => openModal('login')}>Login</button>

@@ -1,35 +1,37 @@
-"use client";
-import React, { useState, useRef, useEffect } from "react";
-import { useCalendar } from "../cal/calendarContext";
-import { useItems } from "./itemContext";
-import styles from "./item.module.css";
-import { getDateKey } from "./utils";
-import EntryContext from "../context/entryContext";
-import { useContextContext } from "../context/contextContext";
-import { ContextConfig } from "../context/utils";
+'use client'
+import React, { useState, useRef, useEffect } from "react"
+import { useCalendar } from "../cal/calendarContext"
+import { useItems } from "./itemContext"
+import styles from "./item.module.css"
+import { getDateKey } from "./utils"
+import EntryContext from "../context/entryContext"
+import { useContextContext } from "../context/contextContext"
+import { ContextConfig } from "../context/utils"
+import { useAuth } from "../nav/authContext";
 
 const Item: React.FC = () => {
-  const [input, setInput] = useState("");
-  const { selectedDate } = useCalendar();
-  const { addItem, items, updateItemContext } = useItems();
-  const { selectedContext, contexts } = useContextContext();
-  const keyDate = getDateKey(selectedDate);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState("")
+  const { selectedDate } = useCalendar()
+  const { addItem, items, updateItemContext } = useItems()
+  const { selectedContext, contexts } = useContextContext()
+  const { user } = useAuth()
+  const keyDate = getDateKey(selectedDate)
+  const inputRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
-    inputRef.current?.focus();
-  }, [selectedDate]);
+    inputRef.current?.focus()
+  }, [selectedDate])
   const handleAddItem = () => {
-    if (input.trim() === "") return;
-    addItem(keyDate, input.trim());
-    setInput("");
-  };
+    if (input.trim() === "") return
+    addItem(keyDate, input.trim())
+    setInput("")
+  }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") handleAddItem();
-  };
-  const allItems = items[keyDate] || [];
+    if (e.key === "Enter") handleAddItem()
+  }
+  const allItems = (items[keyDate] || []).filter(item => item.userId === user?.id)
   const filteredItems = selectedContext
     ? allItems.filter(item => item.context === selectedContext.id)
-    : allItems;
+    : allItems
   return (
     <div className={styles.container}>
       {filteredItems.length > 0 ? (
@@ -37,7 +39,7 @@ const Item: React.FC = () => {
           {filteredItems.map((item, index) => {
             const entryConfig: ContextConfig | null = item.context
               ? contexts.find((c: ContextConfig) => c.id === item.context) || null
-              : null;
+              : null
             return (
               <li key={index} className={styles.item}>
                 <div className={styles.itemContent}>
@@ -50,7 +52,7 @@ const Item: React.FC = () => {
                   />
                 </div>
               </li>
-            );
+            )
           })}
         </ul>
       ) : (
@@ -69,7 +71,7 @@ const Item: React.FC = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Item;
+export default Item
