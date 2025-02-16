@@ -8,17 +8,17 @@ import Context from './context/context';
 
 export default function NewCal() {
   return (
-      <div>
-        <header>
-          <WeekdayDisplay />
-          <DayNavigation />
-        </header>
-        <main>
-          <MonthNavigation />
-          <Context />
-          <CalendarTable />
-          <Item />
-        </main>
-      </div>
+    <div>
+      <header>
+        <WeekdayDisplay />
+        <DayNavigation />
+      </header>
+      <main>
+        <MonthNavigation />
+        <Context />
+        <CalendarTable />
+        <Item />
+      </main>
+    </div>
   );
 }
