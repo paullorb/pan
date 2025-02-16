@@ -15,28 +15,48 @@ const Item: React.FC = () => {
   const { selectedContext, contexts } = useContextContext();
   const keyDate = getDateKey(selectedDate);
   const inputRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [selectedDate]);
-  const handleAddItem = () => {
+
+  const handleAddItem = async () => {
     if (input.trim() === "") return;
-    addItem(keyDate, input.trim());
-    setInput("");
+    const newEntry = {
+      date: keyDate,
+      text: input.trim(),
+      context: selectedContext ? selectedContext.id : null,
+    };
+    try {
+      const res = await fetch("/api/entry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newEntry),
+      });
+      if (!res.ok) throw new Error("Failed to save entry");
+      addItem(keyDate, input.trim());
+      setInput("");
+    } catch (error) {
+      console.error("Error saving entry:", error);
+    }
   };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleAddItem();
   };
+
   const allItems = items[keyDate] || [];
   const filteredItems = selectedContext
     ? allItems.filter(item => item.context === selectedContext.id)
     : allItems;
+
   return (
     <div className={styles.container}>
       {filteredItems.length > 0 ? (
         <ul className={styles.list}>
           {filteredItems.map((item, index) => {
             const entryConfig: ContextConfig | null = item.context
-              ? contexts.find((c: ContextConfig) => c.id === item.context) || null
+              ? contexts.find(c => c.id === item.context) || null
               : null;
             return (
               <li key={index} className={styles.item}>
