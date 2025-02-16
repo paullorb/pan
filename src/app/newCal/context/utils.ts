@@ -1,5 +1,3 @@
-// cal/utils.ts
-
 export interface ContextConfig {
   id: string;
   name: string;

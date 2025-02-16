@@ -11,7 +11,7 @@ interface ContextContextType {
 const ContextContext = createContext<ContextContextType | undefined>(undefined);
 
 export const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const contexts: ContextConfig[] = defaultContexts;
+  const contexts = defaultContexts;
   const [selectedContext, setSelectedContext] = useState<ContextConfig | null>(null);
   return (
     <ContextContext.Provider value={{ selectedContext, setSelectedContext, contexts }}>

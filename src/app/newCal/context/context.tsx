@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./context.module.css";
 import { useContextContext } from "./contextContext";
 import { ContextConfig } from "./utils";
@@ -8,25 +8,30 @@ import { useItems } from "../item/itemContext";
 const Context: React.FC = () => {
   const { selectedContext, setSelectedContext, contexts } = useContextContext();
   const { items } = useItems();
-  const contextCount: Record<string, number> = {};
-  contexts.forEach((ctx: ContextConfig) => {
-    contextCount[ctx.id] = 0;
-  });
-  Object.values(items).forEach(dayItems => {
-    dayItems.forEach(item => {
-      if (item.context && contextCount.hasOwnProperty(item.context)) {
-        contextCount[item.context]++;
-      }
+  const contextCount = useMemo(() => {
+    const count: Record<string, number> = {};
+    contexts.forEach(ctx => {
+      count[ctx.id] = 0;
     });
-  });
+    Object.values(items).forEach(dayItems => {
+      dayItems.forEach(item => {
+        if (item.context && count.hasOwnProperty(item.context)) {
+          count[item.context]++;
+        }
+      });
+    });
+    return count;
+  }, [items, contexts]);
   const handleClick = (ctx: ContextConfig) => {
     setSelectedContext(selectedContext && selectedContext.id === ctx.id ? null : ctx);
   };
   return (
     <div className={styles.container}>
-      {contexts.map((ctx: ContextConfig) => {
+      {contexts.map(ctx => {
         const isSelected = selectedContext && selectedContext.id === ctx.id;
-        const style = isSelected ? { color: ctx.textColor, backgroundColor: ctx.backgroundColor } : {};
+        const style = isSelected
+          ? { color: ctx.textColor, backgroundColor: ctx.backgroundColor }
+          : {};
         return (
           <span
             key={ctx.id}

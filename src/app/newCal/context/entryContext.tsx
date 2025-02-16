@@ -11,32 +11,27 @@ interface EntryContextProps {
 
 const EntryContext: React.FC<EntryContextProps> = ({ entryContext, onContextChange }) => {
   const { contexts } = useContextContext();
-  const [expanded, setExpanded] = useState<boolean>(entryContext === null);
+  const [showAll, setShowAll] = useState<boolean>(entryContext === null);
   useEffect(() => {
-    if (entryContext === null) {
-      setExpanded(true);
-    } else {
-      setExpanded(false);
-    }
+    setShowAll(entryContext === null);
   }, [entryContext]);
   const handleClick = (ctx: ContextConfig) => {
     if (entryContext && entryContext.id === ctx.id) {
       onContextChange(null);
-      setExpanded(true);
+      setShowAll(true);
       return;
     }
-    if (expanded) {
+    if (showAll) {
       onContextChange(ctx);
-      setExpanded(false);
+      setShowAll(false);
     } else {
-      setExpanded(true);
+      setShowAll(true);
     }
   };
-  const displayAll = expanded || entryContext === null;
-  const displayedContexts = displayAll ? contexts : [entryContext!];
+  const displayedContexts = showAll ? contexts : [entryContext!];
   return (
     <div className={styles.container}>
-      {displayedContexts.map((ctx: ContextConfig) => {
+      {displayedContexts.map(ctx => {
         const style = { color: ctx.textColor, backgroundColor: ctx.backgroundColor };
         return (
           <span
