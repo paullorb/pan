@@ -1,3 +1,5 @@
+// route.ts
+
 import { NextResponse, NextRequest } from 'next/server'
 import connectDB from '../../lib/mongodb'
 import Entry from '../../lib/models/Entry'

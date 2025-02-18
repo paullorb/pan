@@ -1,5 +1,4 @@
-'use client'
-import React, { createContext, useContext, useState, ReactNode } from "react"
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react"
 import { useAuth } from "../nav/authContext"
 
 export interface Item {
@@ -35,17 +34,17 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           "Content-Type": "application/json",
           "Authorization": `Bearer ${user.token}`
         },
-        body: JSON.stringify(newEntry),
+        body: JSON.stringify(newEntry)
       })
       if (!res.ok) throw new Error("Failed to save entry")
-      setItems((prev) => {
+      setItems(prev => {
         const prevList = prev[date] || []
         return { 
           ...prev, 
           [date]: [
             ...prevList, 
             { text, context: null, userId: user.id, date }
-          ] 
+          ]
         }
       })
     } catch (error) {
@@ -56,7 +55,7 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }
 
   const updateItemContext = (date: string, index: number, context: string | null) => {
-    setItems((prev) => {
+    setItems(prev => {
       const prevList = prev[date] || []
       const newList = [...prevList]
       if (newList[index]) newList[index] = { ...newList[index], context }
@@ -64,7 +63,7 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     })
   }
 
-  const fetchMonthEntries = async (month: number, year: number) => {
+  const fetchMonthEntries = useCallback(async (month: number, year: number) => {
     if (!user) return
     try {
       const startDate = new Date(year, month, 1)
@@ -73,15 +72,12 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const endStr = endDate.toISOString().split('T')[0]
       const res = await fetch(`/api/entry?startDate=${startStr}&endDate=${endStr}`, {
         method: 'GET',
-        headers: {
-          "Authorization": `Bearer ${user.token}`
-        }
+        headers: { "Authorization": `Bearer ${user.token}` }
       })
       if (!res.ok) throw new Error('Failed to fetch entries')
       const data: Item[] = await res.json()
-      // Group entries by date. Assume each entry.date is a string in YYYY-MM-DD format.
       const grouped: { [date: string]: Item[] } = {}
-      data.forEach((entry) => {
+      data.forEach(entry => {
         const key = entry.date
         if (!grouped[key]) grouped[key] = []
         grouped[key].push(entry)
@@ -90,7 +86,13 @@ export const ItemsProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     } catch (error) {
       console.error("Error fetching month entries:", error)
     }
-  }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) {
+      setItems({})
+    }
+  }, [user])
 
   return (
     <ItemsContext.Provider value={{ items, addItem, updateItemContext, fetchMonthEntries }}>
