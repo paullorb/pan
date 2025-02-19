@@ -22,7 +22,7 @@ const CalendarTable: React.FC = () => {
       const year = selectedDate.getFullYear();
       fetchMonthEntries(month, year);
     }
-  }, [selectedDate, user, fetchMonthEntries]);
+  }, [user, fetchMonthEntries]);
 
   return (
     <table className={styles.table}>
@@ -55,9 +55,7 @@ const CalendarTable: React.FC = () => {
               return (
                 <td
                   key={j}
-                  className={`${styles.td} ${isSelected ? styles.selected : ''} ${
-                    isToday && cell.inCurrentMonth ? styles.today : ''
-                  } ${!cell.inCurrentMonth ? styles.outside : ''}`}
+                  className={`${styles.td} ${isSelected ? styles.selected : ''} ${isToday && cell.inCurrentMonth ? styles.today : ''} ${!cell.inCurrentMonth ? styles.outside : ''}`}
                   onClick={() => setSelectedDate(cell.date)}
                 >
                   <div>{cellDay}</div>

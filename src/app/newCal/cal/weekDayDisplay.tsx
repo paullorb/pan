@@ -11,7 +11,7 @@ const WeekdayDisplay: React.FC = () => {
   const weekday = WEEKDAY_NAMES_FULL[selectedDate.getDay()];
   return (
     <div className={styles.weekdayDisplay}>
-      <p>{weekday}</p>
+      <p>{weekday}, </p>
     </div>
   );
 };

@@ -1,52 +1,9 @@
-.calendar {
-  text-align: center;
-  padding: 20px;
-}
-
-.weekdayDisplay {
-  display: flex;
-  justify-content: center;
-}
-
-.navigationContainer {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.dayNavigation,
-.monthNavigation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.dayNavigation button,
-.monthNavigation button {
-  padding: 5px 10px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.formattedDate,
-.monthName {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-.formattedDate {
-  cursor: pointer;
-}
-
 .table {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
   border-collapse: collapse;
   table-layout:fixed;
-
 }
 
 .th,
