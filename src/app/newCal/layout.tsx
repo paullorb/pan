@@ -1,8 +1,7 @@
 "use client";
 import React from 'react';
 import { CalendarProvider } from './cal/calendarContext';
-import { ItemsProvider } from './item/entryContext';
-import { ContextProvider } from './context/contextContext';
+import { EntryProvider } from './item/entryContext';
 import { AuthProvider } from './nav/authContext';
 
 export default function CalendarLayout({
@@ -13,11 +12,9 @@ export default function CalendarLayout({
   return (
     <AuthProvider>
       <CalendarProvider>
-        <ContextProvider>
-          <ItemsProvider>
+          <EntryProvider>
             {children}
-          </ItemsProvider>
-        </ContextProvider>
+          </EntryProvider>
       </CalendarProvider>
     </AuthProvider>
   );

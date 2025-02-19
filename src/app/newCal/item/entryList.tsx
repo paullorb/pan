@@ -1,25 +1,26 @@
-import React from "react"
-import styles from "./entry.module.css"
+'use client';
+import React from "react";
+import styles from "./entry.module.css";
 
 interface EntryItem {
-  text: string
+  text: string;
 }
 
 interface EntryListProps {
-  items: EntryItem[]
+  entries: EntryItem[];
 }
 
-const EntryList: React.FC<EntryListProps> = ({ items }) => {
-  if (items.length === 0) return <p>No items yet.</p>
+const EntryList: React.FC<EntryListProps> = ({ entries }) => {
+  if (entries.length === 0) return <p>No entries yet.</p>;
   return (
     <ul className={styles.list}>
-      {items.map((item, index) => (
+      {entries.map((entry, index) => (
         <li key={index} className={styles.item}>
-          <span className={styles.itemText}>{item.text}</span>
+          <span className={styles.entryText}>{entry.text}</span>
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default EntryList
+export default EntryList;

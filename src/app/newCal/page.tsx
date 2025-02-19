@@ -4,7 +4,6 @@ import DayNavigation from './cal/dayNavigation';
 import MonthNavigation from './cal/monthNavigation';
 import CalendarTable from './cal/calendarTable';
 import Entry from './item/entry';
-import Context from './context/context';
 import Nav from './nav/nav';
 import styles from './page.module.css';
 
@@ -18,7 +17,6 @@ export default function NewCal() {
           <MonthNavigation />
         </header>
         <main>
-          <Context />
           <CalendarTable />
           <Entry />
         </main>

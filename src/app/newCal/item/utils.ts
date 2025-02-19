@@ -1,9 +1,4 @@
-// item/utils.ts
 export const getDateKey = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const monthStr = month < 10 ? `0${month}` : `${month}`;
-  const dayStr = day < 10 ? `0${day}` : `${day}`;
-  return `${year}-${monthStr}-${dayStr}`;
+  // Returns date in the format YYYY-MM-DD
+  return date.toLocaleDateString("en-CA");
 };
