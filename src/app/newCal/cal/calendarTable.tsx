@@ -4,7 +4,7 @@ import styles from './calendar.module.css';
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
 import { useCalendar } from './calendarContext';
 import { getDateKey } from '../item/utils';
-import { useItems } from '../item/itemContext';
+import { useItems } from '../item/entryContext';
 import { defaultContexts } from '../context/utils';
 import { useAuth } from '../nav/authContext';
 

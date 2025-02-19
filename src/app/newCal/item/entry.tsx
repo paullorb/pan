@@ -1,15 +1,15 @@
 'use client'
 import React, { useState, useRef, useEffect } from "react"
 import { useCalendar } from "../cal/calendarContext"
-import { useItems } from "./itemContext"
+import { useItems } from "./entryContext"
 import styles from "./item.module.css"
 import { getDateKey } from "./utils"
-import EntryContext from "../context/entryContext"
+import ContextEntry from "../context/contextEntry"
 import { useContextContext } from "../context/contextContext"
 import { ContextConfig } from "../context/utils"
 import { useAuth } from "../nav/authContext";
 
-const Item: React.FC = () => {
+const Entry: React.FC = () => {
   const [input, setInput] = useState("")
   const { selectedDate } = useCalendar()
   const { addItem, items, updateItemContext } = useItems()
@@ -44,7 +44,7 @@ const Item: React.FC = () => {
               <li key={index} className={styles.item}>
                 <div className={styles.itemContent}>
                   <span className={styles.itemText}>{item.text}</span>
-                  <EntryContext
+                  <ContextEntry
                     entryContext={entryConfig}
                     onContextChange={(newContext) =>
                       updateItemContext(keyDate, index, newContext ? newContext.id : null)
@@ -74,4 +74,4 @@ const Item: React.FC = () => {
   )
 }
 
-export default Item
+export default Entry

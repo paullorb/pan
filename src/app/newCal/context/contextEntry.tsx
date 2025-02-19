@@ -9,7 +9,7 @@ interface EntryContextProps {
   onContextChange: (context: ContextConfig | null) => void;
 }
 
-const EntryContext: React.FC<EntryContextProps> = ({ entryContext, onContextChange }) => {
+const ContextEntry: React.FC<EntryContextProps> = ({ entryContext, onContextChange }) => {
   const { contexts } = useContextContext();
   const [showAll, setShowAll] = useState<boolean>(entryContext === null);
   useEffect(() => {
@@ -48,4 +48,4 @@ const EntryContext: React.FC<EntryContextProps> = ({ entryContext, onContextChan
   );
 };
 
-export default EntryContext;
+export default ContextEntry;

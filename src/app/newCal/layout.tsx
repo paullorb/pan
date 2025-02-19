@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { CalendarProvider } from './cal/calendarContext';
-import { ItemsProvider } from './item/itemContext';
+import { ItemsProvider } from './item/entryContext';
 import { ContextProvider } from './context/contextContext';
 import { AuthProvider } from './nav/authContext';
 

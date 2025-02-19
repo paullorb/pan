@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import styles from "./context.module.css";
 import { useContextContext } from "./contextContext";
 import { ContextConfig } from "./utils";
-import { useItems } from "../item/itemContext";
+import { useItems } from "../item/entryContext";
 
 const Context: React.FC = () => {
   const { selectedContext, setSelectedContext, contexts } = useContextContext();
