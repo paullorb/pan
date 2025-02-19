@@ -31,19 +31,21 @@ const ContextEntry: React.FC<EntryContextProps> = ({ entryContext, onContextChan
   const displayedContexts = showAll ? contexts : [entryContext!];
   return (
     <div className={styles.container}>
-      {displayedContexts.map(ctx => {
-        const style = { color: ctx.textColor, backgroundColor: ctx.backgroundColor };
-        return (
-          <span
-            key={ctx.id}
-            className={styles.contextBadge}
-            onClick={() => handleClick(ctx)}
-            style={style}
-          >
-            {ctx.name}
-          </span>
-        );
-      })}
+      {displayedContexts
+        .filter(ctx => ctx !== null)
+        .map(ctx => {
+          const style = { color: ctx.textColor, backgroundColor: ctx.backgroundColor };
+          return (
+            <span
+              key={ctx.id}
+              className={styles.contextBadge}
+              onClick={() => handleClick(ctx)}
+              style={style}
+            >
+              {ctx.name}
+            </span>
+          );
+        })}
     </div>
   );
 };
