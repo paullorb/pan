@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from "react";
 import { useAuth } from "../nav/authContext";
-import { getDateKey } from "../item/utils"; 
+import { getDateKey } from "../item/utils"; // getDateKey returns "YYYY-MM-DD"
 
 export interface Entry {
   text: string;
@@ -51,9 +51,10 @@ export const EntryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const data: Entry[] = await res.json();
         const grouped: { [date: string]: Entry[] } = {};
         data.forEach((entry) => {
-          const key = entry.date;
+          // Normalize the entry date using getDateKey.
+          const key = getDateKey(new Date(entry.date));
           if (!grouped[key]) grouped[key] = [];
-          grouped[key].push(entry);
+          grouped[key].push({ ...entry, date: key });
         });
         setEntries(grouped);
       } catch (error) {
@@ -79,7 +80,12 @@ export const EntryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         );
         if (!res.ok) throw new Error("Failed to fetch day entries");
         const data: Entry[] = await res.json();
-        setEntries((prev) => ({ ...prev, [formattedDate]: data }));
+        // Normalize the date in each entry.
+        const normalizedEntries = data.map((entry) => ({
+          ...entry,
+          date: formattedDate,
+        }));
+        setEntries((prev) => ({ ...prev, [formattedDate]: normalizedEntries }));
       } catch (error) {
         console.error("Error fetching day entries:", error);
       }

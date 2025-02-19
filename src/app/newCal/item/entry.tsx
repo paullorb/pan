@@ -20,15 +20,11 @@ const Entry: React.FC = () => {
     inputRef.current?.focus();
   }, [selectedDate]);
 
-  // Fetch entries for the selected date when keyDate changes.
   useEffect(() => {
     if (user) {
       fetchDayEntries(keyDate);
     }
   }, [keyDate, user, fetchDayEntries]);
-
-  // Test: log the entries for the selected date.
-  console.log("Entry component - selected date key:", keyDate, "Entries:", entries[keyDate]);
 
   const handleAddEntry = () => {
     if (input.trim() === "") return;
@@ -40,15 +36,17 @@ const Entry: React.FC = () => {
     if (e.key === "Enter") handleAddEntry();
   };
 
-  // Filter entries by the logged-in user.
-  const selectedEntries = (entries[keyDate] || []).filter(
-    (entry) => entry.userId === user?.id
-  );
+  const selectedEntries = entries[keyDate] || [];
 
   return (
     <div className={styles.container}>
       <EntryList entries={selectedEntries} />
-      <EntryInput input={input} onChange={setInput} onKeyDown={handleKeyDown} inputRef={inputRef} />
+      <EntryInput
+        input={input}
+        onChange={setInput}
+        onKeyDown={handleKeyDown}
+        inputRef={inputRef}
+      />
     </div>
   );
 };

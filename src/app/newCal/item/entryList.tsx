@@ -11,6 +11,7 @@ interface EntryListProps {
 }
 
 const EntryList: React.FC<EntryListProps> = ({ entries }) => {
+
   if (entries.length === 0) return <p>No entries yet.</p>;
   return (
     <ul className={styles.list}>
