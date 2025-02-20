@@ -1,8 +1,0 @@
-.container {
-  display: flex;
-  padding: 0.5% 20%;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  border-bottom: 1px solid rgb(216, 216, 216);
-}
