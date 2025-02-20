@@ -1,15 +1,26 @@
-// page.tsx
-
-import MainComponent from './components/layout/mainComponent';
-import Nav from './components/layout/nav';
+import React from 'react';
+import Weekday from './cal/weekDay';
+import DayNavigation from './cal/dayNavigation';
+import MonthNavigation from './cal/monthNavigation';
+import CalendarTable from './cal/calendarTable';
+import Entry from './entry/entry';
+import Nav from './nav/nav';
+import styles from './aesthetics/page.module.css';
 import './aesthetics/globals.css';
-import style from './aesthetics/page.module.css';
 
-export default function Home() {
+export default function NewCal() {
   return (
-    <div className={style.container}>
-      <Nav />
-      <MainComponent />
-  </div>
+      <div>
+        <Nav />
+        <header className={styles.header}>
+          <Weekday />
+          <DayNavigation />
+          <MonthNavigation />
+        </header>
+        <main>
+          <CalendarTable />
+          <Entry />
+        </main>
+      </div>
   );
 }

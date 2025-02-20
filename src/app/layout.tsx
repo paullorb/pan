@@ -1,12 +1,9 @@
 // app/layout.tsx
 
 import './aesthetics/globals.css'
-import { ThemeProvider } from './context/themeContext';
-import { AuthProvider } from './context/authContext';
-import { DateProvider } from './context/dateContext';
-import { TogglesProvider } from './context/togglesContext';
-import { CurrentHourProvider } from './context/currentHourContext';
-import { ItemsProvider } from './context/itemsContext';
+import { CalendarProvider } from './cal/calendarContext';
+import { EntryProvider } from './entry/entryContext';
+import { AuthProvider } from './nav/authContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,17 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <AuthProvider>
-          <ThemeProvider>
-              <TogglesProvider>
-                <DateProvider>
-                <ItemsProvider>
-                  <CurrentHourProvider>
-                          {children}
-                  </CurrentHourProvider>
-                </ItemsProvider>
-                </DateProvider>
-              </TogglesProvider>
-          </ThemeProvider>
+          <CalendarProvider>
+              <EntryProvider>
+                {children}
+              </EntryProvider>
+          </CalendarProvider>
         </AuthProvider>
       </body>
     </html>
