@@ -8,7 +8,7 @@ import React, {
   ReactNode,
 } from "react";
 import { useAuth } from "../nav/authContext";
-import { getDateKey } from "../item/utils"; // getDateKey returns "YYYY-MM-DD"
+import { getDateKey } from "./utils"; // getDateKey returns "YYYY-MM-DD"
 
 export interface Entry {
   text: string;

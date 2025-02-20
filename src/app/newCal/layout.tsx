@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { CalendarProvider } from './cal/calendarContext';
-import { EntryProvider } from './item/entryContext';
+import { EntryProvider } from './entry/entryContext';
 import { AuthProvider } from './nav/authContext';
 
 export default function CalendarLayout({

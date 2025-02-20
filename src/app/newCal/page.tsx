@@ -3,7 +3,7 @@ import Weekday from './cal/weekDay';
 import DayNavigation from './cal/dayNavigation';
 import MonthNavigation from './cal/monthNavigation';
 import CalendarTable from './cal/calendarTable';
-import Entry from './item/entry';
+import Entry from './entry/entry';
 import Nav from './nav/nav';
 import styles from './page.module.css';
 

@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import styles from './calendar.module.css';
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils';
 import { useCalendar } from './calendarContext';
-import { getDateKey } from '../item/utils';
-import { useEntry } from '../item/entryContext';
+import { getDateKey } from '../entry/utils';
+import { useEntry } from '../entry/entryContext';
 import { useAuth } from '../nav/authContext';
 
 const CalendarTable: React.FC = () => {
