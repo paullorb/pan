@@ -1,22 +1,28 @@
-'use client';
+// entryList.tsx
 import React from "react";
 import styles from "./entry.module.css";
-
-interface EntryItem {
-  text: string;
-}
+import { useEntry, Entry } from "./entryContext";
 
 interface EntryListProps {
-  entries: EntryItem[];
+  entries: Entry[];
 }
 
 const EntryList: React.FC<EntryListProps> = ({ entries }) => {
-
+  const { toggleEntryDone } = useEntry();
   if (entries.length === 0) return <p>No entries yet.</p>;
+
+  const sortedEntries = entries
+    .map((entry, index) => ({ ...entry, originalIndex: index }))
+    .sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
+
   return (
     <ul className={styles.list}>
-      {entries.map((entry, index) => (
-        <li key={index} className={styles.item}>
+      {sortedEntries.map((entry, sortedIndex) => (
+        <li
+          key={sortedIndex}
+          className={`${styles.item} ${entry.done ? styles.done : ""}`}
+          onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
+        >
           <span className={styles.entryText}>{entry.text}</span>
         </li>
       ))}

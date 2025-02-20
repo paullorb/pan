@@ -21,7 +21,7 @@ const CalendarTable: React.FC = () => {
       const year = selectedDate.getFullYear();
       fetchMonthEntries(month, year);
     }
-  }, [user, fetchMonthEntries]);
+  }, [user, fetchMonthEntries, selectedDate]);
 
   return (
     <table className={styles.table}>
@@ -50,7 +50,9 @@ const CalendarTable: React.FC = () => {
                 cellMonth === today.getMonth() &&
                 cellDay === today.getDate();
               const dateKey = getDateKey(cell.date);
-              const previews = entries[dateKey] ? entries[dateKey].slice(0, 5) : [];
+              const previews = entries[dateKey]
+                ? entries[dateKey].filter(entry => !entry.done).slice(0, 5)
+                : [];
               return (
                 <td
                   key={j}
@@ -62,9 +64,8 @@ const CalendarTable: React.FC = () => {
                     <div className={styles.itemPreviews}>
                       {previews.map((entry, index) => {
                         const previewText = entry.text.split(" ")[0];
-                        let style = {};
                         return (
-                          <div key={index} className={styles.itemPreview} style={style}>
+                          <div key={index} className={styles.itemPreview}>
                             {previewText}
                           </div>
                         );
