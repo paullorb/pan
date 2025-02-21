@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  border: 1px solid black;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs);
+}
+
+.button {
+  cursor: pointer;
+}
+
+.button:hover {
+  text-decoration: underline;
+}

@@ -7,6 +7,7 @@ import { getDateKey } from "./utils";
 import { useAuth } from "../nav/authContext";
 import EntryList from "./entryList";
 import EntryInput from "./entryInput";
+import Filter from "app/filter/filter";
 
 const Entry: React.FC = () => {
   const [input, setInput] = useState("");
@@ -40,6 +41,7 @@ const Entry: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <Filter />
       <EntryInput
         input={input}
         onChange={setInput}
