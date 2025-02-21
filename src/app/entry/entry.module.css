@@ -33,3 +33,10 @@
 .item:hover {
   background-color: var(--hover-color);
 }
+
+.input {
+  padding: var(--spacing-xs);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}

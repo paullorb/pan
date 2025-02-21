@@ -65,12 +65,14 @@ const Entry: React.FC = () => {
   };
 
   const selectedEntries = entries[keyDate] || [];
+  const totalCount = selectedEntries.length;
+  const openCount = selectedEntries.filter(entry => !entry.done).length;
   const filteredEntries =
     filter === "open" ? selectedEntries.filter(entry => !entry.done) : selectedEntries;
 
   return (
     <div className={styles.container}>
-      <Filter filter={filter} onFilterChange={setFilter} />
+      <Filter filter={filter} onFilterChange={setFilter} totalCount={totalCount} openCount={openCount} />
       <EntryInput input={input} onChange={setInput} onKeyDown={handleKeyDown} inputRef={inputRef} />
       <EntryList entries={filteredEntries} />
     </div>
