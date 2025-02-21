@@ -11,6 +11,7 @@ import Filter from "app/filter/filter";
 
 const Entry: React.FC = () => {
   const [input, setInput] = useState("");
+  const [filter, setFilter] = useState<string | null>(null);
   const { selectedDate } = useCalendar();
   const { addEntry, entries, fetchDayEntries } = useEntry();
   const { user } = useAuth();
@@ -21,10 +22,36 @@ const Entry: React.FC = () => {
     inputRef.current?.focus();
   }, [selectedDate]);
 
+  // On mount, fetch the user's saved filter preference.
   useEffect(() => {
     if (user) {
-      fetchDayEntries(keyDate);
+      fetch("/api/filter", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setFilter(data.filter);
+        })
+        .catch((err) => console.error("Error fetching filter preference:", err));
     }
+  }, [user]);
+
+  // When filter changes, update the user's preference on the backend.
+  useEffect(() => {
+    if (user) {
+      fetch("/api/filter", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ filter }),
+      }).catch((err) => console.error("Error updating filter preference:", err));
+    }
+  }, [filter, user]);
+
+  useEffect(() => {
+    if (user) fetchDayEntries(keyDate);
   }, [keyDate, user, fetchDayEntries]);
 
   const handleAddEntry = () => {
@@ -38,17 +65,14 @@ const Entry: React.FC = () => {
   };
 
   const selectedEntries = entries[keyDate] || [];
+  const filteredEntries =
+    filter === "open" ? selectedEntries.filter(entry => !entry.done) : selectedEntries;
 
   return (
     <div className={styles.container}>
-      <Filter />
-      <EntryInput
-        input={input}
-        onChange={setInput}
-        onKeyDown={handleKeyDown}
-        inputRef={inputRef}
-      />
-      <EntryList entries={selectedEntries} />
+      <Filter filter={filter} onFilterChange={setFilter} />
+      <EntryInput input={input} onChange={setInput} onKeyDown={handleKeyDown} inputRef={inputRef} />
+      <EntryList entries={filteredEntries} />
     </div>
   );
 };

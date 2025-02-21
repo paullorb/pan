@@ -7,8 +7,14 @@
 
 .button {
   cursor: pointer;
+  text-decoration: none;
+  transition: 0.001s;
 }
 
 .button:hover {
   text-decoration: underline;
+}
+
+.active, .default {
+  font-weight: bold;
 }
