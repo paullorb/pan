@@ -9,3 +9,9 @@
   display: flex;
   justify-content: center;
 }
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}

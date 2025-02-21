@@ -10,6 +10,7 @@
 }
 :root {
   --black: black;
+  --hover-color: #c0c0c069;
   --white-b: solid white;
   --black-b: solid black;
   --bg-active: rgba(0, 0, 0, 0.2);

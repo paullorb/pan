@@ -17,7 +17,7 @@ export default function NewCal() {
           <DayNavigation />
           <MonthNavigation />
         </header>
-        <main>
+        <main className={styles.main}>
           <CalendarTable />
           <Entry />
         </main>

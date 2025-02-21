@@ -40,13 +40,13 @@ const Entry: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <EntryList entries={selectedEntries} />
       <EntryInput
         input={input}
         onChange={setInput}
         onKeyDown={handleKeyDown}
         inputRef={inputRef}
       />
+      <EntryList entries={selectedEntries} />
     </div>
   );
 };

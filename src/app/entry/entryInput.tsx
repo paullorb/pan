@@ -11,7 +11,7 @@ interface EntryInputProps {
 
 const EntryInput: React.FC<EntryInputProps> = ({ input, onChange, onKeyDown, inputRef }) => {
   return (
-    <div className={styles.inputContainer}>
+    <div className={styles.input}>
       <input
         ref={inputRef}
         type="text"
