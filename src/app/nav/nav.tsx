@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import styles from './nav.module.css'
 import { useAuth } from './authContext'
+import AuthModal from './authModal'
 
 type ModalType = 'login' | 'signup'
 
@@ -57,32 +58,16 @@ export default function Nav() {
         )}
       </nav>
       {isModalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalContent}>
-            <button onClick={closeModal}>Close</button>
-            <h2>{modalType === 'login' ? 'Login' : 'Signup'}</h2>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="email"
-                placeholder="Email"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-              />
-              <button type="submit">
-                {modalType === 'login' ? 'Login' : 'Signup'}
-              </button>
-            </form>
-            <button onClick={toggleModalType}>
-              {modalType === 'login' ? 'Switch to Signup' : 'Switch to Login'}
-            </button>
-          </div>
-        </div>
+        <AuthModal
+          modalType={modalType}
+          emailInput={emailInput}
+          passwordInput={passwordInput}
+          setEmailInput={setEmailInput}
+          setPasswordInput={setPasswordInput}
+          closeModal={closeModal}
+          toggleModalType={toggleModalType}
+          handleSubmit={handleSubmit}
+        />
       )}
     </>
   )
