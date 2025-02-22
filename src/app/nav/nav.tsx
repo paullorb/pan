@@ -1,8 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './nav.module.css'
 import { useAuth } from './authContext'
 import AuthModal from './authModal'
+import EntryInput from 'app/entry/entryInput'
+import { useCalendar } from 'app/cal/calendarContext'
+import { useEntry } from 'app/entry/entryContext'
+import { getDateKey } from 'app/entry/utils'
 
 type ModalType = 'login' | 'signup'
 
@@ -13,6 +17,28 @@ export default function Nav() {
   const [passwordInput, setPasswordInput] = useState('')
   const { user, login, signup, logout } = useAuth()
 
+  // Entry input state and related functions
+  const [input, setInput] = useState("")
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { selectedDate } = useCalendar()
+  const { addEntry } = useEntry()
+  const keyDate = getDateKey(selectedDate)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [selectedDate])
+
+  const handleAddEntry = () => {
+    if (input.trim() === "") return
+    addEntry(keyDate, input.trim())
+    setInput("")
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleAddEntry()
+  }
+
+  // Auth modal functions
   const openModal = (type: ModalType) => {
     setModalType(type)
     setIsModalOpen(true)
@@ -46,10 +72,22 @@ export default function Nav() {
     <>
       <nav className={styles.container}>
         {user ? (
-          <>
-            <span>Logged in as: {user.email}</span>
-            <button onClick={logout}>Logout</button>
-          </>
+          <div className={styles.nav}>
+            <div className={styles.side}>
+              <span>Logged in as: {user.email}</span>
+              <button onClick={logout}>Logout</button>
+            </div>
+            <div className={styles.main}>
+              <EntryInput
+                input={input}
+                onChange={setInput}
+                onKeyDown={handleKeyDown}
+                inputRef={inputRef}
+              />
+            </div>
+            <div className={styles.side}>
+            </div>
+          </div>
         ) : (
           <>
             <button onClick={() => openModal('login')}>Login</button>
