@@ -59,19 +59,18 @@ const CalendarTable: React.FC = () => {
                   className={`${styles.td} ${isSelected ? styles.selected : ''} ${isToday && cell.inCurrentMonth ? styles.today : ''} ${!cell.inCurrentMonth ? styles.outside : ''}`}
                   onClick={() => setSelectedDate(cell.date)}
                 >
-                  <div>{cellDay}</div>
-                  {previews.length > 0 && (
-                    <div className={styles.itemPreviews}>
-                      {previews.map((entry, index) => {
-                        const previewText = entry.text.split(" ")[0];
-                        return (
+                  <div className={styles.cellWrapper}>
+                    <div>{cellDay}</div>
+                    {previews.length > 0 && (
+                      <div className={styles.itemPreviews}>
+                        {previews.map((entry, index) => (
                           <div key={index} className={styles.itemPreview}>
-                            {previewText}
+                            {entry.text.split(" ")[0]}
                           </div>
-                        );
-                      })}
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </td>
               );
             })}
