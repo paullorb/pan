@@ -74,8 +74,8 @@ export default function Nav() {
         {user ? (
           <div className={styles.nav}>
             <div className={styles.side}>
-              <span>Logged in as: {user.email}</span>
-              <button onClick={logout}>Logout</button>
+              <span className={styles.email}>{user.email}</span>
+              <button className={styles.logout} onClick={logout}>Logout</button>
             </div>
             <div className={styles.main}>
               <EntryInput

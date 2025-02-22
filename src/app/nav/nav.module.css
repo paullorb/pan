@@ -1,13 +1,13 @@
-.container {
-  padding: 10px;
-}
-
 .nav, .side, .main {
   display: flex;
 }
 
 .side {
+  display: flex;
+  align-items: center;
   width: 20%;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs);
 }
 
 .main {
@@ -35,4 +35,8 @@
   border-radius: 4px;
   min-width: 300px;
   z-index: 1001;
+}
+
+.logout {
+  opacity: 0.5;
 }

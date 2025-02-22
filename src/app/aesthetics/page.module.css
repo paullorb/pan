@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 0 20%;
 }
 
 .header {
   display: flex;
   justify-content: center;
+  padding: 0 20%;
 }
 
 .main {
@@ -15,10 +15,11 @@
   flex-direction: column;
   flex: 1;
   gap: var(--spacing-m);
+  padding: 0 20%;
 }
 
 @media only screen and (max-width: 600px) {
-  .container {
+  .main, .header {
     padding: 0;
   }
 }
