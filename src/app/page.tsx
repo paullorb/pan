@@ -10,7 +10,7 @@ import './aesthetics/globals.css';
 
 export default function NewCal() {
   return (
-      <div>
+      <div className={styles.container}>
         <Nav />
         <header className={styles.header}>
           <Weekday />
@@ -18,8 +18,8 @@ export default function NewCal() {
           <MonthNavigation />
         </header>
         <main className={styles.main}>
-          <CalendarTable />
-          <Entry />
+            <CalendarTable />
+            <Entry />
         </main>
       </div>
   );

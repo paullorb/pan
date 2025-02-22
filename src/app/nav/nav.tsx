@@ -85,8 +85,7 @@ export default function Nav() {
                 inputRef={inputRef}
               />
             </div>
-            <div className={styles.side}>
-            </div>
+            <div className={styles.side}></div>
           </div>
         ) : (
           <>
