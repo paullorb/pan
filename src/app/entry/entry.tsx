@@ -22,22 +22,21 @@ const Entry: React.FC = () => {
     inputRef.current?.focus();
   }, [selectedDate]);
 
-  // On mount, fetch the user's saved filter preference.
   useEffect(() => {
     if (user) {
       fetch("/api/filter", {
         headers: { Authorization: `Bearer ${user.token}` },
       })
         .then((res) => res.json())
-        .then((data) => {
-          setFilter(data.filter);
-        })
-        .catch((err) => console.error("Error fetching filter preference:", err));
+        .then((data) => setFilter(data.filter))
+        .catch((err) =>
+          console.error("Error fetching filter preference:", err)
+        );
     }
   }, [user]);
 
-  // When filter changes, update the user's preference on the backend.
-  useEffect(() => {
+  const handleFilterChange = (value: string | null) => {
+    setFilter(value);
     if (user) {
       fetch("/api/filter", {
         method: "PATCH",
@@ -45,10 +44,12 @@ const Entry: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify({ filter }),
-      }).catch((err) => console.error("Error updating filter preference:", err));
+        body: JSON.stringify({ filter: value }),
+      }).catch((err) =>
+        console.error("Error updating filter preference:", err)
+      );
     }
-  }, [filter, user]);
+  };
 
   useEffect(() => {
     if (user) fetchDayEntries(keyDate);
@@ -66,14 +67,26 @@ const Entry: React.FC = () => {
 
   const selectedEntries = entries[keyDate] || [];
   const totalCount = selectedEntries.length;
-  const openCount = selectedEntries.filter(entry => !entry.done).length;
+  const openCount = selectedEntries.filter((entry) => !entry.done).length;
   const filteredEntries =
-    filter === "open" ? selectedEntries.filter(entry => !entry.done) : selectedEntries;
+    filter === "open"
+      ? selectedEntries.filter((entry) => !entry.done)
+      : selectedEntries;
 
   return (
     <div className={styles.container}>
-      <Filter filter={filter} onFilterChange={setFilter} totalCount={totalCount} openCount={openCount} />
-      <EntryInput input={input} onChange={setInput} onKeyDown={handleKeyDown} inputRef={inputRef} />
+      <Filter
+        filter={filter}
+        onFilterChange={handleFilterChange}
+        totalCount={totalCount}
+        openCount={openCount}
+      />
+      <EntryInput
+        input={input}
+        onChange={setInput}
+        onKeyDown={handleKeyDown}
+        inputRef={inputRef}
+      />
       <EntryList entries={filteredEntries} />
     </div>
   );
