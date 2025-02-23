@@ -46,7 +46,6 @@
   border-radius: var(--spacing-s);
   cursor: pointer;
   font-size: 0.9rem;
-  /* You may add further styling as needed */
 }
 
 .input {
