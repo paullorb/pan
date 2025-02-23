@@ -8,6 +8,11 @@
   display: flex;
   justify-content: center;
   padding: 0 20%;
+  justify-content: space-between;
+}
+
+.calNavigation {
+  display: flex;
 }
 
 .main {

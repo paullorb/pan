@@ -13,9 +13,14 @@ export default function NewCal() {
       <div className={styles.container}>
         <Nav />
         <header className={styles.header}>
-          <Weekday />
-          <DayNavigation />
-          <MonthNavigation />
+          <div className={styles.calNavigation}>
+            <Weekday />
+            <DayNavigation />
+            <MonthNavigation />
+          </div>
+          <div className={styles.categories}>
+            <h2>Categories</h2>
+          </div>
         </header>
         <main className={styles.main}>
             <CalendarTable />
