@@ -61,7 +61,6 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
                       : {}
                   }
                   onClick={() => {
-                    // Unselect the category: send PATCH with null and show full list
                     updateEntryCategory(entry.date, entry._id || entry.originalIndex, null);
                     setOpenCategories((prev) => ({ ...prev, [key]: true }));
                   }}
