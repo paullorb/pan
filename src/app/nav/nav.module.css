@@ -3,7 +3,6 @@
 }
 
 .side {
-  display: flex;
   align-items: center;
   width: 20%;
   gap: var(--spacing-xs);
@@ -39,4 +38,10 @@
 
 .logout {
   opacity: 0.5;
+}
+
+@media screen and (max-width: 768px) {
+  .email, .side {
+    display: none;
+  }
 }
