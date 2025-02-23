@@ -3,7 +3,6 @@ import { Schema, model, models } from 'mongoose'
 const EntrySchema = new Schema({
   date: { type: String, required: true },
   text: { type: String, required: true },
-  context: { type: String, default: null },
   done : { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 })
