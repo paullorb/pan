@@ -26,8 +26,8 @@ export default function AuthModal({
   handleSubmit,
 }: AuthModalProps) {
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
+    <div className={styles.container}>
+      <div className={styles.modal}>
         <button onClick={closeModal}>Close</button>
         <h2>{modalType === 'login' ? 'Login' : 'Signup'}</h2>
         <form onSubmit={handleSubmit}>
@@ -36,6 +36,7 @@ export default function AuthModal({
             placeholder="Email"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
+            required
           />
           <input
             type="password"

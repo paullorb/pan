@@ -1,4 +1,4 @@
-.modalOverlay {
+.container {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +12,7 @@
   z-index: 1000;
 }
 
-.modalContent {
+.modal {
   background: #fff;
   padding: 20px;
   border-radius: 4px;
