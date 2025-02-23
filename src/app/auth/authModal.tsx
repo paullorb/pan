@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import styles from './nav.module.css'
+import styles from './auth.module.css'
 
 type ModalType = 'login' | 'signup'
 

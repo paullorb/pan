@@ -14,32 +14,6 @@
   justify-content: center;
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modalContent {
-  background: #fff;
-  padding: 20px;
-  border-radius: 4px;
-  min-width: 300px;
-  z-index: 1001;
-}
-
-.logout {
-  opacity: 0.5;
-}
-
 @media screen and (max-width: 768px) {
   .email, .side {
     display: none;
