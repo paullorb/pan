@@ -1,4 +1,3 @@
-// route.ts
 import { NextResponse, NextRequest } from 'next/server'
 import connectDB from '../../lib/mongodb'
 import Entry from '../../lib/models/Entry'
@@ -67,14 +66,20 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
   }
   const userId = decoded.userId
-  const { id, done } = await request.json()
-  if (!id || typeof done !== 'boolean') {
+  const { id, done, category } = await request.json()
+  if (!id) {
+    return NextResponse.json({ error: 'Missing required field: id' }, { status: 400 })
+  }
+  if (typeof done !== 'boolean' && !(typeof category === 'string' || category === null)) {
     return NextResponse.json({ error: 'Missing or invalid required fields' }, { status: 400 })
   }
   await connectDB()
+  const updateFields: Record<string, any> = {}
+  if (typeof done === 'boolean') updateFields.done = done
+  if (typeof category === 'string' || category === null) updateFields.category = category
   const updatedEntry = await Entry.findOneAndUpdate(
     { _id: id, userId },
-    { done },
+    updateFields,
     { new: true }
   )
   if (!updatedEntry) {

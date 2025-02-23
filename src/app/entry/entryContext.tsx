@@ -1,4 +1,3 @@
-// entryContext.tsx
 'use client';
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { useAuth } from "../auth/authContext";
@@ -8,7 +7,7 @@ export interface Entry {
   _id?: string;
   text: string;
   done: boolean;
-  context: string | null;
+  category: string | null;
   userId: string;
   date: string;
 }
@@ -16,7 +15,7 @@ export interface Entry {
 interface EntryContextType {
   entries: { [date: string]: Entry[] };
   addEntry: (date: string, text: string) => Promise<void>;
-  updateEntryContext: (date: string, index: number, context: string | null) => void;
+  updateEntryCategory: (date: string, identifier: string | number, category: string | null) => Promise<void>;
   fetchMonthEntries: (month: number, year: number) => Promise<void>;
   fetchDayEntries: (date: string) => Promise<void>;
   toggleEntryDone: (date: string, index: number) => Promise<void>;
@@ -77,7 +76,7 @@ export const EntryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      const newEntry = { date, text, context: null, done: false };
+      const newEntry = { date, text, category: null, done: false };
       const res = await fetch("/api/entry", {
         method: "POST",
         headers: {
@@ -95,13 +94,42 @@ export const EntryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const updateEntryContext = (date: string, index: number, context: string | null) => {
+  const updateEntryCategory = async (
+    date: string,
+    identifier: string | number,
+    newCategory: string | null
+  ) => {
+    // Capture the current entry before updating state
+    const currentEntry = (entries[date] || []).find((entry, idx) =>
+      entry._id ? entry._id === identifier : idx === identifier
+    );
+    // Optimistically update local state
     setEntries((prev) => {
       const prevList = prev[date] || [];
-      const newList = [...prevList];
-      if (newList[index]) newList[index] = { ...newList[index], context };
-      return { ...prev, [date]: newList };
+      return {
+        ...prev,
+        [date]: prevList.map((entry, idx) => {
+          if (entry._id ? entry._id === identifier : idx === identifier) {
+            return { ...entry, category: newCategory };
+          }
+          return entry;
+        }),
+      };
     });
+    if (!user || !currentEntry || !currentEntry._id) return;
+    try {
+      const res = await fetch("/api/entry", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ id: currentEntry._id, category: newCategory }),
+      });
+      if (!res.ok) throw new Error("Failed to update entry category");
+    } catch (error) {
+      console.error("Error updating entry category:", error);
+    }
   };
 
   const toggleEntryDone = async (date: string, index: number) => {
@@ -140,7 +168,7 @@ export const EntryProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       value={{
         entries,
         addEntry,
-        updateEntryContext,
+        updateEntryCategory,
         fetchMonthEntries,
         fetchDayEntries,
         toggleEntryDone,

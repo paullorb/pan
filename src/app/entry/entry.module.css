@@ -4,7 +4,7 @@
   gap: var(--spacing-s);
 }
 
-.itemContent{
+.itemContent {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -22,6 +22,9 @@
 }
 
 .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: var(--spacing-xs);
   border-radius: var(--spacing-s);
   border: 3px solid black;
@@ -31,6 +34,19 @@
 
 .item:hover {
   background-color: var(--hover-color);
+}
+
+.categoryContainer {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.categoryButton {
+  padding: var(--spacing-xs);
+  border-radius: var(--spacing-s);
+  cursor: pointer;
+  font-size: 0.9rem;
+  /* You may add further styling as needed */
 }
 
 .input {
