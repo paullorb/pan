@@ -12,7 +12,7 @@
 
 .calNavigation {
   display: flex;
-  gap: 1rem;
+  gap: var(--spacing-xs);
   align-items: center;
 }
 
