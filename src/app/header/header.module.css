@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  padding: 0 20%;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calNavigation {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.categories {
+  display: flex;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    padding: 0;
+  }
+}

@@ -2,6 +2,7 @@
 
 import './aesthetics/globals.css'
 import { CalendarProvider } from './cal/calendarContext';
+import { CategoryProvider } from './category/categoryContext';
 import { EntryProvider } from './entry/entryContext';
 import { AuthProvider } from './nav/authContext';
 
@@ -15,9 +16,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <AuthProvider>
           <CalendarProvider>
+            <CategoryProvider>
               <EntryProvider>
                 {children}
               </EntryProvider>
+            </CategoryProvider>
           </CalendarProvider>
         </AuthProvider>
       </body>

@@ -1,24 +1,19 @@
 'use client';
-import React from "react";
-import { useCategory } from "./categoryContext";
-import styles from "./Category.module.css";
+import React from 'react';
+import styles from './category.module.css';
 
-const Category: React.FC = () => {
-  const categories = useCategory();
+interface CategoryProps {
+  isShown: boolean;
+  onToggle: () => void;
+}
+
+const Category: React.FC<CategoryProps> = ({ isShown, onToggle }) => {
   return (
-    <div className={styles.container}>
-      {categories.map((category) => (
-        <div
-          key={category.name}
-          className={styles.item}
-          style={{
-            backgroundColor: category.backgroundColor,
-            borderColor: category.borderColor,
-          }}
-        >
-          {category.name}
-        </div>
-      ))}
+    <div className={styles.category}>
+      <button className={styles.toggleButton} onClick={onToggle}>
+        {isShown ? '🐕' : '🐈'}
+      </button>
+      <button className={styles.settingsButton}>⚙️</button>
     </div>
   );
 };

@@ -4,13 +4,12 @@ import React, { createContext, useContext } from "react";
 export interface Category {
   name: string;
   backgroundColor: string;
-  borderColor: string;
 }
 
 const defaultCategories: Category[] = [
-  { name: "Gym", backgroundColor: "#D4EDDA", borderColor: "#A3D9A5" },
-  { name: "Personal", backgroundColor: "#D1ECF1", borderColor: "#A8D8DF" },
-  { name: "Work", backgroundColor: "#FFF3CD", borderColor: "#FFEC99" },
+  { name: "Gym", backgroundColor: "#D4EDDA" },
+  { name: "Personal", backgroundColor: "#D1ECF1" },
+  { name: "Work", backgroundColor: "#FFF3CD" },
 ];
 
 const CategoryContext = createContext<Category[]>(defaultCategories);
