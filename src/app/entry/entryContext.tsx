@@ -1,7 +1,7 @@
 // entryContext.tsx
 'use client';
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
-import { useAuth } from "../nav/authContext";
+import { useAuth } from "../auth/authContext";
 import { getDateKey } from "./utils";
 
 export interface Entry {

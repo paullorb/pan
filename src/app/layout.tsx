@@ -4,7 +4,7 @@ import './aesthetics/globals.css'
 import { CalendarProvider } from './cal/calendarContext';
 import { CategoryProvider } from './category/categoryContext';
 import { EntryProvider } from './entry/entryContext';
-import { AuthProvider } from './nav/authContext';
+import { AuthProvider } from './auth/authContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

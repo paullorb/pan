@@ -4,7 +4,7 @@ import { useCalendar } from "../cal/calendarContext"
 import { useEntry } from "./entryContext"
 import styles from "./entry.module.css"
 import { getDateKey } from "./utils"
-import { useAuth } from "../nav/authContext"
+import { useAuth } from "../auth/authContext"
 import EntryList from "./entryList"
 import Filter from "app/filter/filter"
 

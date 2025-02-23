@@ -5,7 +5,7 @@ import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } fro
 import { useCalendar } from './calendarContext';
 import { getDateKey } from '../entry/utils';
 import { useEntry } from '../entry/entryContext';
-import { useAuth } from '../nav/authContext';
+import { useAuth } from '../auth/authContext';
 
 const CalendarTable: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCalendar();
