@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  gap: 1rem;
+}
+
+.item {
+  padding: 0.5rem 1rem;
+  border: 1px solid;
+  border-radius: 4px;
+}

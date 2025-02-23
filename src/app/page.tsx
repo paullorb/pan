@@ -7,6 +7,7 @@ import Entry from './entry/entry';
 import Nav from './nav/nav';
 import styles from './aesthetics/page.module.css';
 import './aesthetics/globals.css';
+import Category from './category/category';
 
 export default function NewCal() {
   return (
@@ -19,7 +20,7 @@ export default function NewCal() {
             <MonthNavigation />
           </div>
           <div className={styles.categories}>
-            <h2>Categories</h2>
+            <Category />
           </div>
         </header>
         <main className={styles.main}>
