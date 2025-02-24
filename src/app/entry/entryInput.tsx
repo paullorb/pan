@@ -19,7 +19,6 @@ const EntryInput: React.FC<EntryInputProps> = ({ input, onChange, onKeyDown, inp
         onChange={(e) => onChange(e.target.value)}
         placeholder="new entry"
         onKeyDown={onKeyDown}
-        autoFocus
         className={styles.input}
       />
     </div>
