@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import { useCategory } from './categoryContext';
 import styles from './category.module.css';
+import { useCategory } from './categoryContext';
 import { darkenColor } from './utils';
 
 const Categories: React.FC = () => {

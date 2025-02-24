@@ -5,10 +5,10 @@ import MonthNavigation from '../cal/monthNavigation';
 import YearNavigation from '../cal/yearNavigation';
 import Category from '../category/category';
 import styles from './header.module.css';
-import Categories from 'app/category/categories';
+import Categories from '../category/categories';
 
 const Header: React.FC = () => {
-  const [showCategories, setShowCategories] = useState(true);
+  const [showCategories, setShowCategories] = useState(false);
   return (
     <header className={styles.header}>
       <div className={styles.top}>
@@ -17,10 +17,7 @@ const Header: React.FC = () => {
           <MonthNavigation />
           <YearNavigation />
         </div>
-        <Category
-          isShown={showCategories}
-          onToggle={() => setShowCategories(prev => !prev)}
-        />
+        <Category isShown={showCategories} onToggle={() => setShowCategories(prev => !prev)} />
       </div>
       {showCategories && (
         <div className={styles.bottom}>
