@@ -5,6 +5,10 @@
   table-layout: fixed;
 }
 
+.tr {
+  user-select: none;
+}
+
 .th,
 .td {
   border: 1px solid #ddd;
