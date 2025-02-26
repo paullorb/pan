@@ -24,10 +24,6 @@ export default function Nav() {
   const { addEntry } = useEntry()
   const keyDate = getDateKey(selectedDate)
 
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [selectedDate])
-
   const handleAddEntry = () => {
     if (input.trim() === "") return
     addEntry(keyDate, input.trim())
