@@ -69,5 +69,47 @@ export const workouts: Workout[] = [
         minorMuscle: "Legs"
       }
     ]
+  },
+  {
+    id: 2,
+    title: "Upper Body",
+    exercises: [
+      {
+        id: 1,
+        title: "Lat Pulldown",
+        image: "/lat_pulldown.png",
+        series: "3 series",
+        repetitions: "10 reps",
+        majorMuscle: "Back",
+        minorMuscle: "Lats"
+      },
+      {
+        id: 2,
+        title: "Seated Row",
+        image: "/seated_row.png",
+        series: "3 series",
+        repetitions: "10 reps",
+        majorMuscle: "Back",
+        minorMuscle: "Middle Back"
+      },
+      {
+        id: 3,
+        title: "Chest Press",
+        image: "/chest_press.png",
+        series: "4 series",
+        repetitions: "8 reps",
+        majorMuscle: "Chest",
+        minorMuscle: "Triceps"
+      },
+      {
+        id: 4,
+        title: "Shoulder Press",
+        image: "/shoulder_press.png",
+        series: "3 series",
+        repetitions: "10 reps",
+        majorMuscle: "Shoulders",
+        minorMuscle: "Triceps"
+      }
+    ]
   }
 ];
