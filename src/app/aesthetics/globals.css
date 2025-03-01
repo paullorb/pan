@@ -26,26 +26,6 @@
   --spacing-xxl: 5rem;
 }
 
-html[data-theme='light'] {
-  --bg: white; /* Light background */
-  --title: black;
-  --bg-alt1: #f0f0f0; /* Lighter background */
-  --bg-alt2: #e0e0e0; /* Lightest background */
-  --border: black; /* Black border in light mode */
-  --color: black; /* Black text in light mode */
-  --hover-color: #c0c0c069; /* Light hover color */
-}
-
-html[data-theme='dark'] {
-  --bg: rgb(0, 0, 0); /* Dark background */
-  --title: white;
-  --bg-alt1: #333; /* Darker background */
-  --bg-alt2: #222; /* Darkest background */
-  --border: #ccc; /* Lighter border in dark mode */
-  --color: #fff; /* White text in dark mode */
-  --hover-color: #8f8f8f; /* Dark hover color */
-}
-
 button {
   background: none;
   border: none;

@@ -1,0 +1,29 @@
+.timelineContainer {
+  position: relative;
+  margin-bottom: var(--spacing-s);
+}
+
+.timelineItems {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.timelineItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text {
+  font-size: 1rem;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-top: 4px;
+}

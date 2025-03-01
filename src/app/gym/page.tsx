@@ -1,13 +1,11 @@
-import WorkoutScroll from "./workoutScroll";
-import { workouts } from "./workoutData";
+import WorkoutSelection from "./workoutSelection";
 import styles from "./page.module.css";
 
-export default function GymPage() {
-  const workout = workouts[0];
+export default function HomePage() {
   return (
     <div className={styles.container}>
-      <h1>{workout.title} Workout</h1>
-      <WorkoutScroll exercises={workout.exercises} />
+      <h1>Select Your Workout</h1>
+      <WorkoutSelection />
     </div>
   );
 }
