@@ -58,13 +58,16 @@ export default function WorkoutSelection() {
   };
 
   return (
-    <>
-      <Timeline />
       <form className={styles.selectionContainer} onSubmit={handleSubmit}>
         <section className={styles.section}>
           <div className={styles.headerRow}>
             <div className={styles.headingWithToggle}>
-              <h2>Splits</h2>
+              <label
+                className={styles.clickableHeading}
+                onClick={() => setSelectedSplit(null)}
+              >
+                Splits
+              </label>
               {selectedSplit && (
                 <span
                   className={styles.selectedOption}
@@ -100,7 +103,12 @@ export default function WorkoutSelection() {
         <section className={styles.section}>
           <div className={styles.headerRow}>
             <div className={styles.headingWithToggle}>
-              <h2>Muscle Groups</h2>
+              <label
+                className={styles.clickableHeading}
+                onClick={() => setSelectedMuscleGroups([])}
+              >
+                Muscle Groups
+              </label>
               {selectedMuscleGroups.length > 0 && (
                 <span
                   className={styles.selectedOption}
@@ -134,7 +142,12 @@ export default function WorkoutSelection() {
         <section className={styles.section}>
           <div className={styles.headerRow}>
             <div className={styles.headingWithToggle}>
-              <h2>Weights</h2>
+              <label
+                className={styles.clickableHeading}
+                onClick={() => setSelectedWeight("")}
+              >
+                Weights
+              </label>
               {selectedWeight && (
                 <span
                   className={styles.selectedOption}
@@ -163,7 +176,12 @@ export default function WorkoutSelection() {
         <section className={styles.section}>
           <div className={styles.headerRow}>
             <div className={styles.headingWithToggle}>
-              <h2>Days</h2>
+              <label
+                className={styles.clickableHeading}
+                onClick={() => setDays(null)}
+              >
+                Days
+              </label>
               {days && (
                 <span
                   className={styles.selectedOption}
@@ -199,6 +217,5 @@ export default function WorkoutSelection() {
           </button>
         </section>
       </form>
-    </>
   );
 }
