@@ -1,12 +1,8 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import styles from './nav.module.css'
 import { useAuth } from '../auth/authContext'
 import AuthModal from '../auth/authModal'
-import EntryInput from 'app/entry/entryInput'
-import { useCalendar } from 'app/cal/calendarContext'
-import { useEntry } from 'app/entry/entryContext'
-import { getDateKey } from 'app/entry/utils'
 
 type ModalType = 'login' | 'signup'
 
@@ -17,24 +13,6 @@ export default function Nav() {
   const [passwordInput, setPasswordInput] = useState('')
   const { user, login, signup, logout } = useAuth()
 
-  // Entry input state and related functions
-  const [input, setInput] = useState("")
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { selectedDate } = useCalendar()
-  const { addEntry } = useEntry()
-  const keyDate = getDateKey(selectedDate)
-
-  const handleAddEntry = () => {
-    if (input.trim() === "") return
-    addEntry(keyDate, input.trim())
-    setInput("")
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") handleAddEntry()
-  }
-
-  // Auth modal functions
   const openModal = (type: ModalType) => {
     setModalType(type)
     setIsModalOpen(true)
@@ -73,15 +51,6 @@ export default function Nav() {
               <span className={styles.email}>{user.email}</span>
               <button className={styles.logout} onClick={logout}>Logout</button>
             </div>
-            <div className={styles.main}>
-              <EntryInput
-                input={input}
-                onChange={setInput}
-                onKeyDown={handleKeyDown}
-                inputRef={inputRef}
-              />
-            </div>
-            <div className={styles.side}></div>
           </div>
         ) : (
           <>
