@@ -13,9 +13,3 @@
   flex: 1;
   justify-content: center;
 }
-
-@media screen and (max-width: 768px) {
-  .email, .side {
-    display: none;
-  }
-}
