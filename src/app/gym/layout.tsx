@@ -1,4 +1,4 @@
-import { ExerciseProvider } from "./exerciseContext"
+import { ExerciseProvider } from "./[exerciseId]/exerciseContext"
 
 export default function GymLayout({
   children,

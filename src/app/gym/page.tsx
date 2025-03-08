@@ -1,6 +1,6 @@
-import Nav from 'app/nav/nav'
-import Card from './card'
-import styles from './page.module.css'
+import Nav from "app/nav/nav"
+import Card from "./[exerciseId]/card"
+import styles from "./page.module.css"
 
 export default function Page() {
   return (

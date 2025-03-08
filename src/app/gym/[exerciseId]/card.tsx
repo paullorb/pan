@@ -1,9 +1,9 @@
 "use client"
-
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 import styles from "./card.module.css"
 import exercises from "./exercises"
-import { useAuth } from "../auth/authContext"
+import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 
 type ExerciseSet = {
@@ -24,10 +24,14 @@ const defaultSets: ExerciseSet[] = [
 ]
 
 const Card = () => {
+  const params = useParams()
+  const exerciseIdParam = Array.isArray(params.exerciseId)
+    ? params.exerciseId[0]
+    : params.exerciseId || exercises[0].name
   const { user } = useAuth()
   const { fetchWorkouts, completeWorkout } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState(exercises[0].name)
+  const [selectedExercise, setSelectedExercise] = useState<string>(exerciseIdParam)
   const [sets, setSets] = useState<ExerciseSet[]>(defaultSets)
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
@@ -36,9 +40,7 @@ const Card = () => {
     setDropdownOpen(false)
   }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.currentTarget.blur()
-    }
+    if (e.key === "Enter") e.currentTarget.blur()
   }
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
     const newSets = [...sets]

@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode, useCallback } from "react"
-import { useAuth } from "../auth/authContext"
+import { useAuth } from "../../auth/authContext"
 
 export type WorkoutPayload = {
   exerciseId: string
