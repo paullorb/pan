@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import styles from './nav.module.css'
 import { useAuth } from '../auth/authContext'
 import AuthModal from '../auth/authModal'

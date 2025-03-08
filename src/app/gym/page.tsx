@@ -1,11 +1,12 @@
-import WorkoutSelection from "./workoutSelection";
-import styles from "./page.module.css";
+import Nav from 'app/nav/nav'
+import Card from './card'
+import styles from './page.module.css'
 
-export default function HomePage() {
+export default function Page() {
   return (
     <div className={styles.container}>
-      <h1>Select Your Workout</h1>
-      <WorkoutSelection />
+      <Nav />
+      <Card />
     </div>
-  );
+  )
 }

@@ -1,0 +1,75 @@
+.card {
+  border: 1px solid #ccc;
+  padding: 16px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+}
+.dropdown li {
+  padding: 4px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.type {
+  padding: 4px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.image {
+  width: 100%;
+  height: auto;
+  margin: 16px 0;
+}
+.setContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+  gap: 8px;
+}
+.repsInput,
+.weightsInput {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 4px;
+  width: 60px;
+}
+.unit {
+  font-size: 24px;
+  font-weight: bold;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.addButton,
+.deleteButton {
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.completeContainer {
+  margin-top: 16px;
+  text-align: center;
+}
+.completeButton {
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
