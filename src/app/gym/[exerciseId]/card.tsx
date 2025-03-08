@@ -1,3 +1,4 @@
+// app/gym/[exerciseId]/card.tsx
 "use client"
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
@@ -11,28 +12,17 @@ type ExerciseSet = {
   weight: string
 }
 
-const typeStyleMap: Record<string, { backgroundColor: string; color: string }> = {
-  weight: { backgroundColor: "blue", color: "white" },
-  cardio: { backgroundColor: "green", color: "white" },
-  stretch: { backgroundColor: "purple", color: "white" }
-}
-
-const defaultSets: ExerciseSet[] = [
-  { reps: "10", weight: "10" },
-  { reps: "15", weight: "10" },
-  { reps: "20", weight: "10" }
-]
+const slugify = (name: string) => name.toLowerCase().trim().replace(/\s+/g, '-')
 
 const Card = () => {
-  const params = useParams()
-  const exerciseIdParam = Array.isArray(params.exerciseId)
-    ? params.exerciseId[0]
-    : params.exerciseId || exercises[0].name
+  const { exerciseId } = useParams()
+  const initialExercise =
+    exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
   const { user } = useAuth()
   const { fetchWorkouts, completeWorkout } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState<string>(exerciseIdParam)
-  const [sets, setSets] = useState<ExerciseSet[]>(defaultSets)
+  const [selectedExercise, setSelectedExercise] = useState<string>(initialExercise)
+  const [sets, setSets] = useState([{ reps: "10", weight: "10" }, { reps: "15", weight: "10" }, { reps: "20", weight: "10" }])
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
   const selectExercise = (exercise: string) => {
@@ -84,9 +74,7 @@ const Card = () => {
         <ul className={styles.dropdown}>
           {exercises.map((ex, i) => (
             <li key={i} onClick={() => selectExercise(ex.name)}>
-              <span className={styles.type} style={typeStyleMap[ex.type]}>
-                {ex.type}
-              </span>
+              <span className={styles.type}>{ex.type}</span>
               <span>{ex.name}</span>
             </li>
           ))}
