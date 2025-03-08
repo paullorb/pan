@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./card.module.css"
 import exercises from "./exercises"
 import { useAuth } from "../auth/authContext"
+import { useExercise } from "./exerciseContext"
 
 type ExerciseSet = {
   reps: string
@@ -13,7 +14,7 @@ type ExerciseSet = {
 const typeStyleMap: Record<string, { backgroundColor: string; color: string }> = {
   weight: { backgroundColor: "blue", color: "white" },
   cardio: { backgroundColor: "green", color: "white" },
-  stretch: { backgroundColor: "purple", color: "white" },
+  stretch: { backgroundColor: "purple", color: "white" }
 }
 
 const defaultSets: ExerciseSet[] = [
@@ -24,6 +25,7 @@ const defaultSets: ExerciseSet[] = [
 
 const Card = () => {
   const { user } = useAuth()
+  const { fetchWorkouts, completeWorkout } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(exercises[0].name)
   const [sets, setSets] = useState<ExerciseSet[]>(defaultSets)
@@ -51,19 +53,24 @@ const Card = () => {
     if (sets.length > 1) setSets(sets.slice(0, sets.length - 1))
   }
   const completeExercise = () => {
-    if (!user) {
-      console.error("User not logged in")
-      return
-    }
+    if (!user) return
+    const exercise = exercises.find((ex) => ex.name === selectedExercise)
+    if (!exercise) return
     const payload = {
-      exercise: selectedExercise,
-      sets,
-      date: new Date().toISOString(),
-      done: true,
-      userId: user.id
+      exerciseId: selectedExercise,
+      type: exercise.type,
+      details: { sets },
+      date: new Date().toISOString()
     }
-    console.log(payload)
+    completeWorkout(payload)
   }
+
+  useEffect(() => {
+    const now = new Date()
+    const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString()
+    const endDate = now.toISOString()
+    fetchWorkouts(startDate, endDate)
+  }, [selectedExercise, fetchWorkouts])
 
   return (
     <div className={styles.card}>
