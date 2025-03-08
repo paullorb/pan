@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from 'react'
-import styles from './card.module.css'
-import exercises from './exercises'
+import { useState } from "react"
+import styles from "./card.module.css"
+import exercises from "./exercises"
+import { useAuth } from "../auth/authContext"
 
 type ExerciseSet = {
   reps: string
@@ -10,9 +11,9 @@ type ExerciseSet = {
 }
 
 const typeStyleMap: Record<string, { backgroundColor: string; color: string }> = {
-  weight: { backgroundColor: 'blue', color: 'white' },
-  cardio: { backgroundColor: 'green', color: 'white' },
-  stretch: { backgroundColor: 'purple', color: 'white' },
+  weight: { backgroundColor: "blue", color: "white" },
+  cardio: { backgroundColor: "green", color: "white" },
+  stretch: { backgroundColor: "purple", color: "white" },
 }
 
 const defaultSets: ExerciseSet[] = [
@@ -22,6 +23,7 @@ const defaultSets: ExerciseSet[] = [
 ]
 
 const Card = () => {
+  const { user } = useAuth()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(exercises[0].name)
   const [sets, setSets] = useState<ExerciseSet[]>(defaultSets)
@@ -49,13 +51,16 @@ const Card = () => {
     if (sets.length > 1) setSets(sets.slice(0, sets.length - 1))
   }
   const completeExercise = () => {
-    const userId = "loggedInUserId" // Replace with actual logged in user id
+    if (!user) {
+      console.error("User not logged in")
+      return
+    }
     const payload = {
       exercise: selectedExercise,
       sets,
       date: new Date().toISOString(),
       done: true,
-      userId
+      userId: user.id
     }
     console.log(payload)
   }
@@ -64,7 +69,7 @@ const Card = () => {
     <div className={styles.card}>
       <div className={styles.header}>
         <span>{selectedExercise}</span>
-        <button onClick={toggleDropdown}>{dropdownOpen ? '▲' : '▼'}</button>
+        <button onClick={toggleDropdown}>{dropdownOpen ? "▲" : "▼"}</button>
       </div>
       {dropdownOpen && (
         <ul className={styles.dropdown}>
@@ -100,8 +105,12 @@ const Card = () => {
         </div>
       ))}
       <div className={styles.buttonContainer}>
-        <button onClick={deleteSet} className={styles.deleteButton}>Delete Last Set</button>
-        <button onClick={addSet} className={styles.addButton}>Add New Set</button>
+        <button onClick={deleteSet} className={styles.deleteButton}>
+          Delete Last Set
+        </button>
+        <button onClick={addSet} className={styles.addButton}>
+          Add New Set
+        </button>
       </div>
       <div className={styles.completeContainer}>
         <button onClick={completeExercise} className={styles.completeButton}>

@@ -16,35 +16,6 @@ const Entry: React.FC = () => {
   const keyDate = useMemo(() => getDateKey(selectedDate), [selectedDate])
 
   useEffect(() => {
-    if (user) {
-      fetch("/api/filter", {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => setFilter(data.filter))
-        .catch((err) =>
-          console.error("Error fetching filter preference:", err)
-        )
-    }
-  }, [user])
-
-  const handleFilterChange = (value: string | null) => {
-    setFilter(value)
-    if (user) {
-      fetch("/api/filter", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ filter: value }),
-      }).catch((err) =>
-        console.error("Error updating filter preference:", err)
-      )
-    }
-  }
-
-  useEffect(() => {
     if (user) fetchDayEntries(keyDate)
   }, [keyDate, user, fetchDayEntries])
 
@@ -60,7 +31,6 @@ const Entry: React.FC = () => {
     <div className={styles.container}>
       <Filter
         filter={filter}
-        onFilterChange={handleFilterChange}
         totalCount={totalCount}
         openCount={openCount}
       />

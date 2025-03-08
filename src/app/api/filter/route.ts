@@ -22,20 +22,11 @@ export async function GET(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return NextResponse.json({ filter: user.filterPreference || null }, { status: 200 });
 }
 
 export async function PATCH(request: Request) {
   const user = await authenticate(request);
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  const { filter } = await request.json();
-  try {
-    user.filterPreference = filter;
-    await user.save();
-    return NextResponse.json({ filter: user.filterPreference || null }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: "Error updating filter preference" }, { status: 500 });
   }
 }
