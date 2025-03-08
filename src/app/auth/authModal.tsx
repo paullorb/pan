@@ -36,6 +36,7 @@ export default function AuthModal({
             placeholder="Email"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
+            autoComplete="email"
             required
           />
           <input
@@ -43,6 +44,7 @@ export default function AuthModal({
             placeholder="Password"
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
+            autoComplete={modalType === 'login' ? "current-password" : "new-password"}
           />
           <button type="submit">
             {modalType === 'login' ? 'Login' : 'Signup'}
