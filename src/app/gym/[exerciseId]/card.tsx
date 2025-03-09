@@ -10,17 +10,22 @@ import Details from "./details"
 import List from "./list"
 import Status from "./status"
 
+function daysBetween(a: Date, b: Date) {
+  const diff = b.getTime() - a.getTime()
+  return Math.floor(diff / (1000 * 60 * 60 * 24))
+}
+
 const Card = () => {
   const { exerciseId } = useParams()
   const initialExercise =
     exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
+
   const { user } = useAuth()
   const { createExercise } = useExercise()
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(initialExercise)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
-
   const [exerciseDetails, setExerciseDetails] = useState({
     sets: [
       { reps: "10", weight: "10" },
@@ -85,13 +90,17 @@ const Card = () => {
 
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
 
+  let statusText = ""
+  if (lastDoneDate) {
+    const diff = daysBetween(new Date(lastDoneDate), new Date())
+    statusText = diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
+  }
+
   useEffect(() => {
     if (!user) return
     const fetchExisting = async () => {
       const res = await fetch(`/api/exercises?exerciseId=${slugify(selectedExercise)}`, {
-        headers: {
-          "Authorization": `Bearer ${user.token}`
-        }
+        headers: { "Authorization": `Bearer ${user.token}` }
       })
       if (res.ok) {
         const data = await res.json()
@@ -118,18 +127,18 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <List
-        exercises={exercises}
-        selectedExercise={selectedExercise}
-        dropdownOpen={dropdownOpen}
-        toggleDropdown={toggleDropdown}
-        onSelectExercise={onSelectExercise}
-      />
-      <Status
-        exerciseName={selectedExercise}
-        imageSrc={`/${selectedExercise}.png`}
-        lastDoneDate={lastDoneDate}
-      />
+      <div className={styles.exerciseHeader}>
+        <span className={styles.exerciseName}>
+          {selectedExercise} {statusText}
+        </span>
+        <List
+          exercises={exercises}
+          dropdownOpen={dropdownOpen}
+          toggleDropdown={toggleDropdown}
+          onSelectExercise={onSelectExercise}
+        />
+      </div>
+      <Status imageSrc={`/${selectedExercise}.png`} />
       <Details
         exerciseType={exerciseType}
         exerciseDetails={exerciseDetails}

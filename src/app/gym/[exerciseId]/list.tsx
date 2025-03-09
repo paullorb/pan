@@ -8,7 +8,6 @@ type ExerciseItem = {
 
 type ListProps = {
   exercises: ExerciseItem[]
-  selectedExercise: string
   dropdownOpen: boolean
   toggleDropdown: () => void
   onSelectExercise: (exercise: string) => void
@@ -16,17 +15,15 @@ type ListProps = {
 
 const List = ({
   exercises,
-  selectedExercise,
   dropdownOpen,
   toggleDropdown,
   onSelectExercise
 }: ListProps) => {
   return (
-    <div>
-      <div className={styles.header}>
-        <span>{selectedExercise}</span>
-        <button onClick={toggleDropdown}>{dropdownOpen ? "▲" : "▼"}</button>
-      </div>
+    <div className={styles.listContainer}>
+      <button onClick={toggleDropdown}>
+        {dropdownOpen ? "▲" : "▼"}
+      </button>
       {dropdownOpen && (
         <ul className={styles.dropdown}>
           {exercises.map((ex, i) => (

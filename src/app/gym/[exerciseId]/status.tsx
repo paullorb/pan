@@ -1,37 +1,31 @@
+// status.tsx
 "use client"
-
-import { daysBetween } from "./utils"
 import styles from "./status.module.css"
 
 type StatusProps = {
-  exerciseName: string
   imageSrc?: string
   lastDoneDate?: string
 }
 
-export default function Status({ exerciseName, imageSrc, lastDoneDate }: StatusProps) {
-  const containerStyle = { width: "250px", height: "250px", backgroundColor: "#eee" }
-
-  let statusText = ""
-  if (lastDoneDate) {
-    const diff = daysBetween(new Date(lastDoneDate), new Date())
-    statusText = diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
+export default function Status({ imageSrc, lastDoneDate }: StatusProps) {
+  const containerStyle = {
+    width: "250px",
+    height: "250px",
+    backgroundColor: "#eee"
   }
 
   return (
     <div className={styles.statusContainer}>
       <div style={containerStyle}>
-        {imageSrc ? (
+        {imageSrc && (
           <img
             src={imageSrc}
-            alt={exerciseName}
+            alt=""
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
-        ) : null}
+        )}
       </div>
-      <div className={styles.statusText}>
-        {exerciseName} {statusText}
-      </div>
+      {/* If you wanted, you could still show something about lastDoneDate here */}
     </div>
   )
 }
