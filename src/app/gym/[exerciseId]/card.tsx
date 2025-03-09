@@ -7,6 +7,7 @@ import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
 import Details from "./details"
+import List from "./list"
 
 const Card = () => {
   const { exerciseId } = useParams()
@@ -14,6 +15,7 @@ const Card = () => {
     exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
   const { user } = useAuth()
   const { createExercise } = useExercise()
+
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(initialExercise)
   const [exerciseDetails, setExerciseDetails] = useState({
@@ -28,13 +30,11 @@ const Card = () => {
   })
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
-  const selectExercise = (exercise: string) => {
+  const onSelectExercise = (exercise: string) => {
     setSelectedExercise(exercise)
     setDropdownOpen(false)
   }
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") e.currentTarget.blur()
-  }
+
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
     const newSets = [...exerciseDetails.sets]
     newSets[index] = { ...newSets[index], [field]: value }
@@ -57,6 +57,9 @@ const Card = () => {
   }
   const updateDetailField = (field: "time" | "intensity" | "reps", value: string) => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
+  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") e.currentTarget.blur()
   }
 
   const completeExercise = () => {
@@ -87,7 +90,6 @@ const Card = () => {
         if (data.exercise) {
           setExerciseDetails(data.exercise.details)
         } else {
-          // If no existing record, reset or keep the default
           setExerciseDetails({
             sets: [
               { reps: "10", weight: "10" },
@@ -106,20 +108,13 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.header}>
-        <span>{selectedExercise}</span>
-        <button onClick={toggleDropdown}>{dropdownOpen ? "▲" : "▼"}</button>
-      </div>
-      {dropdownOpen && (
-        <ul className={styles.dropdown}>
-          {exercises.map((ex, i) => (
-            <li key={i} onClick={() => selectExercise(ex.name)}>
-              <span className={styles.type}>{ex.type}</span>
-              <span>{ex.name}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <List
+        exercises={exercises}
+        selectedExercise={selectedExercise}
+        dropdownOpen={dropdownOpen}
+        toggleDropdown={toggleDropdown}
+        onSelectExercise={onSelectExercise}
+      />
       <img src={`/${selectedExercise}.png`} alt={selectedExercise} className={styles.image} />
       <Details
         exerciseType={exerciseType}
