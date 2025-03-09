@@ -5,8 +5,8 @@ import styles from "./card.module.css"
 import exercises from "./exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
-
-const slugify = (name: string) => name.toLowerCase().trim().replace(/\s+/g, '-')
+import { slugify } from "./utils"
+import Details from "./details"
 
 const Card = () => {
   const { exerciseId } = useParams()
@@ -15,8 +15,12 @@ const Card = () => {
   const { user } = useAuth()
   const { createExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState<string>(initialExercise)
-  const [sets, setSets] = useState([{ reps: "10", weight: "10" }, { reps: "15", weight: "10" }, { reps: "20", weight: "10" }])
+  const [selectedExercise, setSelectedExercise] = useState(initialExercise)
+  const [sets, setSets] = useState([
+    { reps: "10", weight: "10" },
+    { reps: "15", weight: "10" },
+    { reps: "20", weight: "10" }
+  ])
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
   const selectExercise = (exercise: string) => {
@@ -40,7 +44,7 @@ const Card = () => {
   }
   const completeExercise = () => {
     if (!user) return
-    const exercise = exercises.find((ex) => ex.name === selectedExercise)
+    const exercise = exercises.find(ex => ex.name === selectedExercise)
     if (!exercise) return
     const payload = {
       exerciseId: slugify(selectedExercise),
@@ -50,6 +54,8 @@ const Card = () => {
     }
     createExercise(payload)
   }
+
+  const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
 
   return (
     <div className={styles.card}>
@@ -68,34 +74,14 @@ const Card = () => {
         </ul>
       )}
       <img src={`/${selectedExercise}.png`} alt={selectedExercise} className={styles.image} />
-      {sets.map((set, index) => (
-        <div key={index} className={styles.setContainer}>
-          <input
-            type="text"
-            value={set.reps}
-            onChange={(e) => updateSet(index, "reps", e.target.value)}
-            onKeyDown={handleKeyDown}
-            className={styles.repsInput}
-          />
-          <span className={styles.unit}>x</span>
-          <input
-            type="text"
-            value={set.weight}
-            onChange={(e) => updateSet(index, "weight", e.target.value)}
-            onKeyDown={handleKeyDown}
-            className={styles.weightsInput}
-          />
-          <span className={styles.unit}>kg</span>
-        </div>
-      ))}
-      <div className={styles.buttonContainer}>
-        <button onClick={deleteSet} className={styles.deleteButton}>
-          Delete Last Set
-        </button>
-        <button onClick={addSet} className={styles.addButton}>
-          Add New Set
-        </button>
-      </div>
+      <Details
+        exerciseType={exerciseType}
+        sets={sets}
+        updateSet={updateSet}
+        addSet={addSet}
+        deleteSet={deleteSet}
+        handleKeyDown={handleKeyDown}
+      />
       <div className={styles.completeContainer}>
         <button onClick={completeExercise} className={styles.completeButton}>
           Complete Exercise
