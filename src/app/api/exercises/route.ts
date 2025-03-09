@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import connectDB from '../../lib/mongodb'
-import Exercise from '../../lib/models/Exercise'
+import Exercise from '../../lib/models/exercise'
 import jwt from 'jsonwebtoken'
 
 export async function POST(request: NextRequest) {
@@ -20,14 +20,34 @@ export async function POST(request: NextRequest) {
   if (!exerciseId || !type) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
+
   await connectDB()
-  const newExercise = new Exercise({
+  const exerciseDate = date ? new Date(date) : new Date()
+  const dayStart = new Date(exerciseDate.getFullYear(), exerciseDate.getMonth(), exerciseDate.getDate())
+  const dayEnd = new Date(dayStart)
+  dayEnd.setDate(dayEnd.getDate() + 1)
+
+  let existing = await Exercise.findOne({
     userId,
     exerciseId,
-    type,
-    date: date ? new Date(date) : new Date(),
-    details
+    date: { $gte: dayStart, $lt: dayEnd }
   })
-  await newExercise.save()
-  return NextResponse.json({ message: 'Exercise saved successfully' }, { status: 201 })
+
+  if (existing) {
+    existing.type = type
+    existing.details = details
+    existing.date = exerciseDate
+    await existing.save()
+    return NextResponse.json({ message: 'Exercise updated' }, { status: 200 })
+  } else {
+    const newExercise = new Exercise({
+      userId,
+      exerciseId,
+      type,
+      date: exerciseDate,
+      details
+    })
+    await newExercise.save()
+    return NextResponse.json({ message: 'Exercise created' }, { status: 201 })
+  }
 }
