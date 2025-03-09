@@ -127,16 +127,18 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.header}>
-        <span className={styles.exerciseName}>
-          {selectedExercise} {statusText}
-        </span>
-        <List
-          exercises={exercises}
-          dropdownOpen={dropdownOpen}
-          toggleDropdown={toggleDropdown}
-          onSelectExercise={onSelectExercise}
-        />
+      <div className={styles.exerciseHeader}>
+        <div className={styles.exerciseName} onClick={toggleDropdown}>
+          {selectedExercise} {statusText} {dropdownOpen ? "▲" : "▼"}
+        </div>
+        {dropdownOpen && (
+          <div className={styles.dropdownWrapper}>
+            <List
+              exercises={exercises}
+              onSelectExercise={onSelectExercise}
+            />
+          </div>
+        )}
       </div>
       <Status imageSrc={`/${selectedExercise}.png`} />
       <Details

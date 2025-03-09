@@ -1,75 +1,50 @@
 .card {
-  border: 1px solid #ccc;
-  padding: 16px;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropdown {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  border: 1px solid #ccc;
-  max-height: 150px;
-  overflow-y: auto;
-}
-.dropdown li {
-  padding: 4px;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.type {
-  padding: 4px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-.image {
   width: 100%;
-  height: auto;
-  margin: 16px 0;
+  max-width: 600px;
+  margin: auto;
 }
-.setContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 8px 0;
-  gap: 8px;
+
+.exerciseHeader {
+  position: relative; /* so the dropdown can be absolutely positioned */
+  width: 100%;
+  margin-bottom: 1rem;
 }
-.repsInput,
-.weightsInput {
-  font-size: 24px;
+
+.exerciseName {
+  cursor: pointer;
   font-weight: bold;
-  text-align: center;
+  display: inline-block;
+}
+
+/* Dropdown wrapper stretches full width below the exerciseName */
+.dropdownWrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 999; /* so it appears on top of other elements */
+}
+
+.dropdown {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
   border: 1px solid #ccc;
-  padding: 4px;
-  width: 60px;
 }
-.unit {
-  font-size: 24px;
-  font-weight: bold;
-}
-.buttonContainer {
+
+.dropdown li {
   display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
-}
-.addButton,
-.deleteButton {
-  padding: 8px 12px;
-  font-size: 16px;
+  gap: 1rem;
+  padding: 0.5rem;
   cursor: pointer;
 }
-.completeContainer {
-  margin-top: 16px;
-  text-align: center;
+
+.dropdown li:hover {
+  background: #f0f0f0;
 }
-.completeButton {
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
+
+.type {
+  font-weight: bold;
 }
