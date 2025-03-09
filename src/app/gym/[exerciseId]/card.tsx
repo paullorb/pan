@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import styles from "./card.module.css"
 import exercises from "./exercises"
@@ -16,7 +16,6 @@ const Card = () => {
   const { createExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(initialExercise)
-
   const [exerciseDetails, setExerciseDetails] = useState({
     sets: [
       { reps: "10", weight: "10" },
@@ -59,6 +58,7 @@ const Card = () => {
   const updateDetailField = (field: "time" | "intensity" | "reps", value: string) => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
   }
+
   const completeExercise = () => {
     if (!user) return
     const exercise = exercises.find(ex => ex.name === selectedExercise)
@@ -73,6 +73,36 @@ const Card = () => {
   }
 
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
+
+  useEffect(() => {
+    if (!user) return
+    const fetchExisting = async () => {
+      const res = await fetch(`/api/exercises?exerciseId=${slugify(selectedExercise)}`, {
+        headers: {
+          "Authorization": `Bearer ${user.token}`
+        }
+      })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.exercise) {
+          setExerciseDetails(data.exercise.details)
+        } else {
+          // If no existing record, reset or keep the default
+          setExerciseDetails({
+            sets: [
+              { reps: "10", weight: "10" },
+              { reps: "15", weight: "10" },
+              { reps: "20", weight: "10" }
+            ],
+            time: "30",
+            intensity: "5",
+            reps: "8"
+          })
+        }
+      }
+    }
+    fetchExisting()
+  }, [user, selectedExercise])
 
   return (
     <div className={styles.card}>
