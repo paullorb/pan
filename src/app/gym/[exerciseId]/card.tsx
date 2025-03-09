@@ -8,6 +8,7 @@ import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
 import Details from "./details"
 import List from "./list"
+import Status from "./status"
 
 const Card = () => {
   const { exerciseId } = useParams()
@@ -18,6 +19,8 @@ const Card = () => {
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(initialExercise)
+  const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
+
   const [exerciseDetails, setExerciseDetails] = useState({
     sets: [
       { reps: "10", weight: "10" },
@@ -30,6 +33,7 @@ const Card = () => {
   })
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
+
   const onSelectExercise = (exercise: string) => {
     setSelectedExercise(exercise)
     setDropdownOpen(false)
@@ -40,6 +44,7 @@ const Card = () => {
     newSets[index] = { ...newSets[index], [field]: value }
     setExerciseDetails({ ...exerciseDetails, sets: newSets })
   }
+
   const addSet = () => {
     const lastSet = exerciseDetails.sets[exerciseDetails.sets.length - 1]
     setExerciseDetails({
@@ -47,6 +52,7 @@ const Card = () => {
       sets: [...exerciseDetails.sets, { reps: lastSet.reps, weight: lastSet.weight }]
     })
   }
+
   const deleteSet = () => {
     if (exerciseDetails.sets.length > 1) {
       setExerciseDetails({
@@ -55,9 +61,11 @@ const Card = () => {
       })
     }
   }
+
   const updateDetailField = (field: "time" | "intensity" | "reps", value: string) => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
   }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") e.currentTarget.blur()
   }
@@ -89,6 +97,7 @@ const Card = () => {
         const data = await res.json()
         if (data.exercise) {
           setExerciseDetails(data.exercise.details)
+          setLastDoneDate(data.exercise.date)
         } else {
           setExerciseDetails({
             sets: [
@@ -100,6 +109,7 @@ const Card = () => {
             intensity: "5",
             reps: "8"
           })
+          setLastDoneDate(undefined)
         }
       }
     }
@@ -115,7 +125,11 @@ const Card = () => {
         toggleDropdown={toggleDropdown}
         onSelectExercise={onSelectExercise}
       />
-      <img src={`/${selectedExercise}.png`} alt={selectedExercise} className={styles.image} />
+      <Status
+        exerciseName={selectedExercise}
+        imageSrc={`/${selectedExercise}.png`}
+        lastDoneDate={lastDoneDate}
+      />
       <Details
         exerciseType={exerciseType}
         exerciseDetails={exerciseDetails}
