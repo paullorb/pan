@@ -1,0 +1,10 @@
+.statusContainer {
+  width: 100%;
+}
+
+.responsiveImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

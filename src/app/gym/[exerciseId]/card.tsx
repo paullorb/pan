@@ -127,7 +127,7 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <div className={styles.exerciseHeader}>
+      <div className={styles.header}>
         <span className={styles.exerciseName}>
           {selectedExercise} {statusText}
         </span>
