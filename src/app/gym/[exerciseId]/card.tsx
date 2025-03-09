@@ -7,11 +7,6 @@ import exercises from "./exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 
-type ExerciseSet = {
-  reps: string
-  weight: string
-}
-
 const slugify = (name: string) => name.toLowerCase().trim().replace(/\s+/g, '-')
 
 const Card = () => {
