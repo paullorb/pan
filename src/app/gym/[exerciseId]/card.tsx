@@ -1,6 +1,5 @@
-// app/gym/[exerciseId]/card.tsx
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useParams } from "next/navigation"
 import styles from "./card.module.css"
 import exercises from "./exercises"
@@ -14,7 +13,7 @@ const Card = () => {
   const initialExercise =
     exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
   const { user } = useAuth()
-  const { fetchWorkouts, completeWorkout } = useExercise()
+  const { createExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState<string>(initialExercise)
   const [sets, setSets] = useState([{ reps: "10", weight: "10" }, { reps: "15", weight: "10" }, { reps: "20", weight: "10" }])
@@ -44,20 +43,13 @@ const Card = () => {
     const exercise = exercises.find((ex) => ex.name === selectedExercise)
     if (!exercise) return
     const payload = {
-      exerciseId: selectedExercise,
+      exerciseId: slugify(selectedExercise),
       type: exercise.type,
       details: { sets },
       date: new Date().toISOString()
     }
-    completeWorkout(payload)
+    createExercise(payload)
   }
-
-  useEffect(() => {
-    const now = new Date()
-    const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString()
-    const endDate = now.toISOString()
-    fetchWorkouts(startDate, endDate)
-  }, [selectedExercise, fetchWorkouts])
 
   return (
     <div className={styles.card}>
