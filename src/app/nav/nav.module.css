@@ -1,15 +1,46 @@
-.nav, .side, .main {
+.container {
   display: flex;
-}
-
-.side {
+  justify-content: space-between;
   align-items: center;
-  width: 20%;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs);
 }
 
-.main {
-  flex: 1;
-  justify-content: center;
+.nav {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.links {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.links a:visited {
+  color: inherit;
+}
+
+.side, .authButtons {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.active {
+  font-weight: bold;
+  border-bottom: 2px solid currentColor;
+}
+
+.loggedIn {
+  cursor: pointer;
+}
+
+.emailWindow {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: var(--spacing-xs);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
 }

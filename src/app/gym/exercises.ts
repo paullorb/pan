@@ -17,7 +17,19 @@ const exercises = [
   { name: 'assault bike', mainMuscle: 'legs', type: 'cardio' },
   { name: 'exercise bike', mainMuscle: 'legs', type: 'cardio' },
   { name: 'elliptical', mainMuscle: 'legs', type: 'cardio' },
-  { name: 'sun salutation', mainMuscle: 'full body', type: 'stretch' }
+  { name: 'sun salutation', mainMuscle: 'full body', type: 'stretch' },
+  { name: 'lat pulldown', mainMuscle: 'back', type: 'weight' },
+  { name: 'pullup', mainMuscle: 'back', type: 'weight' },
+  { name: 'bench press', mainMuscle: 'chest', type: 'weight' },
+  { name: 'pushup', mainMuscle: 'chest', type: 'weight' },
+  { name: 'plank', mainMuscle: 'core', type: 'weight' },
+  { name: 'side plank', mainMuscle: 'core', type: 'weight' },
+  { name: 'crunch', mainMuscle: 'core', type: 'weight' },
+  { name: 'situp', mainMuscle: 'core', type: 'weight' },
+  { name: 'leg curl', mainMuscle: 'legs', type: 'weight' },
+  { name: 'seated mid row', mainMuscle: 'back', type: 'weight' },
+  { name: 'treadmill', mainMuscle: 'legs', type: 'cardio' },
+  { name: 'rowing machine', mainMuscle: 'legs', type: 'cardio' },
 ]
 
 export default exercises

@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './nav.module.css'
 import { useAuth } from '../auth/authContext'
 import AuthModal from '../auth/authModal'
@@ -11,7 +13,9 @@ export default function Nav() {
   const [modalType, setModalType] = useState<ModalType>('login')
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
+  const [showEmail, setShowEmail] = useState(false)
   const { user, login, signup, logout } = useAuth()
+  const pathname = usePathname()
 
   const openModal = (type: ModalType) => {
     setModalType(type)
@@ -45,20 +49,29 @@ export default function Nav() {
   return (
     <>
       <nav className={styles.container}>
-        {user ? (
-          <div className={styles.nav}>
+        <div className={styles.nav}>
+          <div className={styles.links}>
+            <Link href="/" className={pathname === '/' ? styles.active : ''}>Pansito</Link>
+            <Link href="/gym" className={pathname === '/gym' ? styles.active : ''}>Gym</Link>
+          </div>
+          {user ? (
             <div className={styles.side}>
-              <span className={styles.email}>{user.email}</span>
+              <span onClick={() => setShowEmail(!showEmail)} className={styles.loggedIn}>logged in</span>
               <button className={styles.logout} onClick={logout}>Logout</button>
             </div>
-          </div>
-        ) : (
-          <>
-            <button onClick={() => openModal('login')}>Login</button>
-            <button onClick={() => openModal('signup')}>Signup</button>
-          </>
-        )}
+          ) : (
+            <div className={styles.authButtons}>
+              <button onClick={() => openModal('login')}>Login</button>
+              <button onClick={() => openModal('signup')}>Signup</button>
+            </div>
+          )}
+        </div>
       </nav>
+      {showEmail && user && (
+        <div className={styles.emailWindow} onClick={() => setShowEmail(false)}>
+          {user.email}
+        </div>
+      )}
       {isModalOpen && (
         <AuthModal
           modalType={modalType}
