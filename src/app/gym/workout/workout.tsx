@@ -57,10 +57,20 @@ export default function Workout() {
     console.log(workout)
   }
 
+  const orderMap: Record<string, number> = {
+    cardio: 1,
+    weight: 2,
+    stretch: 3
+  }
+
+  const sortedModalities = [...modalities].sort(
+    (a, b) => orderMap[a.name] - orderMap[b.name]
+  )
+
   return (
     <>
       <form className={styles.container}>
-        {modalities.map(m => (
+        {sortedModalities.map(m => (
           <div key={m.name} className={styles.row}>
             <div className={`${styles.cell} ${styles.modalityCell}`}>
               {m.name}
@@ -82,7 +92,11 @@ export default function Workout() {
         ))}
       </form>
       <div className={styles.submitWrapper}>
-        <button type="button" onClick={handleClick} className={styles.submitButton}>
+        <button
+          type="button"
+          onClick={handleClick}
+          className={styles.submitButton}
+        >
           Submit
         </button>
       </div>

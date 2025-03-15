@@ -3,7 +3,7 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: separate;
-  border-spacing: 0 1rem;
+  border-spacing: 0 var(--spacing-s);
   padding: 0.1rem;
 }
 
@@ -16,11 +16,11 @@
 }
 
 .modalityCell {
-  width: 33%;
+  width: 20%;
 }
 
 .exerciseCell {
-  width: 67%;
+  width: 80%;
 }
 
 .exerciseList {
@@ -32,7 +32,7 @@
 .exerciseItem {
   padding: 2rem 1rem;
   border: 1px solid black;
-  flex: 1 1 33%;
+  flex: 1 1 50%;
 }
 
 .submitWrapper {
