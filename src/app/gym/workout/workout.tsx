@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import exercises, { modalities } from "../exercises"
+import Modifier from "./modifier"
 import styles from "./workout.module.css"
 
 export default function Workout() {
@@ -27,6 +28,27 @@ export default function Workout() {
     setWorkout(newWorkout)
   }, [])
 
+  function getRandomExercise(modality: string) {
+    const filtered = exercises.filter((e) => e.type === modality)
+    return filtered[Math.floor(Math.random() * filtered.length)]?.name || ""
+  }
+
+  function addExercise(modality: string) {
+    const exercise = getRandomExercise(modality)
+    setWorkout((prev) => ({
+      ...prev,
+      [modality]: [...(prev[modality] || []), exercise]
+    }))
+  }
+
+  function removeExercise(modality: string) {
+    setWorkout((prev) => {
+      const updated = [...(prev[modality] || [])]
+      if (updated.length > 1) updated.pop()
+      return { ...prev, [modality]: updated }
+    })
+  }
+
   function handleClick() {
     console.log(workout)
   }
@@ -38,11 +60,17 @@ export default function Workout() {
           <div key={m.name} className={styles.row}>
             <div className={`${styles.cell} ${styles.modalityCell}`}>
               {m.name}
+              <Modifier
+                onAdd={() => addExercise(m.name)}
+                onRemove={() => removeExercise(m.name)}
+              />
             </div>
             <div className={`${styles.cell} ${styles.exerciseCell}`}>
               <div className={styles.exerciseList}>
                 {workout[m.name]?.map((item, i) => (
-                  <div key={i} className={styles.exerciseItem}>{item}</div>
+                  <div key={i} className={styles.exerciseItem}>
+                    {item}
+                  </div>
                 ))}
               </div>
             </div>
@@ -50,7 +78,9 @@ export default function Workout() {
         ))}
       </form>
       <div className={styles.submitWrapper}>
-        <button type="button" onClick={handleClick} className={styles.submitButton}>Submit</button>
+        <button type="button" onClick={handleClick} className={styles.submitButton}>
+          Submit
+        </button>
       </div>
     </>
   )
