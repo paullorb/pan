@@ -18,7 +18,6 @@ async function authenticate(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  // Authenticate user
   const auth = await authenticate(request)
   if ('error' in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status })
@@ -50,7 +49,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  // Authenticate user
   const auth = await authenticate(request)
   if ('error' in auth) {
     return NextResponse.json({ error: auth.error }, { status: auth.status })
