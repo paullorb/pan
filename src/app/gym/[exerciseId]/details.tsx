@@ -1,5 +1,5 @@
 "use client"
-import styles from "./card.module.css"
+import styles from "./details.module.css"
 
 type SetType = { reps: string; weight: string }
 type DetailsType = {
@@ -19,7 +19,7 @@ type Props = {
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }
 
-const Details = ({
+export default function Details({
   exerciseType,
   exerciseDetails,
   updateSet,
@@ -27,7 +27,7 @@ const Details = ({
   deleteSet,
   updateDetailField,
   handleKeyDown
-}: Props) => {
+}: Props) {
   const { sets, time, intensity, reps } = exerciseDetails
 
   return (
@@ -103,5 +103,3 @@ const Details = ({
     </form>
   )
 }
-
-export default Details

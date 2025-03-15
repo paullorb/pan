@@ -1,29 +1,18 @@
 "use client"
 import { useWorkout } from "../workout/workoutContext"
+import styles from "./progressLine.module.css"
 
 export default function ProgressLine({ currentExercise }: { currentExercise: string }) {
   const { exercises } = useWorkout()
   return (
-    <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
+    <div className={styles.container}>
       {exercises.map((exercise) => (
-        <div
-          key={exercise}
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
+        <div key={exercise} className={styles.item}>
+          <div className={styles.label}>{exercise}</div>
           <div
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              backgroundColor: exercise === currentExercise ? "blue" : "gray"
-            }}
+            className={styles.dot}
+            style={{ backgroundColor: exercise === currentExercise ? "#0070f3" : "#ccc" }}
           />
-          <span style={{ fontSize: "0.8rem", marginTop: 4 }}>{exercise}</span>
         </div>
       ))}
     </div>

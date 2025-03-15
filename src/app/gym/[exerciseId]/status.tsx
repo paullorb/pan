@@ -10,11 +10,7 @@ export default function Status({ imageSrc, lastDoneDate }: StatusProps) {
   return (
     <div className={styles.statusContainer}>
       {imageSrc && (
-        <img
-          src={imageSrc}
-          alt=""
-          className={styles.responsiveImage}
-        />
+        <img src={imageSrc} alt="" className={styles.responsiveImage} />
       )}
     </div>
   )

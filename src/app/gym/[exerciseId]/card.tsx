@@ -19,22 +19,17 @@ function daysBetween(a: Date, b: Date) {
 
 const Card = () => {
   const { exerciseId } = useParams()
-  const currentExercise =
+  const defaultExercise =
     exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
 
   const { user } = useAuth()
   const { createExercise } = useExercise()
   const { exercises: workoutExercises, setExercises } = useWorkout()
 
+  // Initialize workout exercises if not already set
   useEffect(() => {
-    // In a real app, you’d likely load the workout exercises from workout.tsx.
-    // Here we combine exercises from all modalities in order.
     if (!workoutExercises.length) {
-      const orderMap: Record<string, number> = {
-        cardio: 1,
-        weight: 2,
-        stretch: 3
-      }
+      const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
       const sortedModalities = [...new Set(exercises.map(ex => ex.type))].sort(
         (a, b) => orderMap[a] - orderMap[b]
       )
@@ -49,7 +44,7 @@ const Card = () => {
   }, [workoutExercises, setExercises])
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState(currentExercise)
+  const [selectedExercise, setSelectedExercise] = useState(defaultExercise)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
   const [exerciseDetails, setExerciseDetails] = useState({
     sets: [
@@ -62,7 +57,7 @@ const Card = () => {
     reps: "8"
   })
 
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
+  const toggleDropdown = () => setDropdownOpen(prev => !prev)
   const onSelectExercise = (exercise: string) => {
     setSelectedExercise(exercise)
     setDropdownOpen(false)
