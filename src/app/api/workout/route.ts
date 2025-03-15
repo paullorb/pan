@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import connectDB from '../../lib/mongodb'
-import Workout from '../../lib/models/Workout'
+import Workout from '../../lib/models/workout'
 import jwt from 'jsonwebtoken'
 
 async function authenticate(request: NextRequest) {
