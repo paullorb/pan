@@ -1,12 +1,13 @@
 "use client"
-
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import exercises, { modalities } from "../exercises"
 import Modifier from "./modifier"
 import styles from "./workout.module.css"
 
 export default function Workout() {
   const [workout, setWorkout] = useState<Record<string, string[]>>({})
+  const router = useRouter()
 
   function getRandomCount(m: string) {
     if (m === "cardio") return 1
@@ -53,19 +54,22 @@ export default function Workout() {
     })
   }
 
-  function handleClick() {
-    console.log(workout)
-  }
-
   const orderMap: Record<string, number> = {
     cardio: 1,
     weight: 2,
     stretch: 3
   }
-
   const sortedModalities = [...modalities].sort(
     (a, b) => orderMap[a.name] - orderMap[b.name]
   )
+
+  function handleClick() {
+    const firstModality = sortedModalities[0].name
+    const firstExercise = workout[firstModality]?.[0]
+    if (firstExercise) {
+      router.push(`/gym/${firstExercise}`)
+    }
+  }
 
   return (
     <>
