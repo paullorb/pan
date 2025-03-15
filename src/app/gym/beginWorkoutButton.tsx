@@ -10,7 +10,6 @@ export default function BeginWorkoutButton() {
   const handleClick = () => {
     const randomExercise = exercises[Math.floor(Math.random() * exercises.length)]
     const slug = slugify(randomExercise.name)
-    console.log("Redirecting to:", slug) // Verify the slug in your browser console
     router.push(`/gym/${slug}`)
   }
   return <button onClick={handleClick}>Begin Workout</button>
