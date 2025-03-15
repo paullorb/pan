@@ -1,38 +1,46 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import exercises, { modalities } from "../exercises"
 import Modifier from "./modifier"
 import styles from "./workout.module.css"
 
 export default function Workout() {
   const [workout, setWorkout] = useState<Record<string, string[]>>({})
-  const router = useRouter()
-
-  function getRandomCount(m: string) {
-    if (m === "cardio") return 1
-    if (m === "weight") return Math.floor(Math.random() * 2) + 4
-    if (m === "stretch") return Math.floor(Math.random() * 2) + 5
-    return 1
-  }
 
   useEffect(() => {
-    const newWorkout: Record<string, string[]> = {}
-    modalities.forEach(m => {
-      const count = getRandomCount(m.name)
-      const filtered = exercises.filter(e => e.type === m.name)
-      newWorkout[m.name] = filtered
-        .sort(() => 0.5 - Math.random())
-        .slice(0, count)
-        .map(e => e.name)
-    })
-    setWorkout(newWorkout)
+    async function loadWorkout() {
+      const today = new Date().toISOString().split("T")[0]
+      let savedWorkout: Record<string, string[]> = {}
+      try {
+        const res = await fetch(`/api/workout?date=${today}`)
+        if (res.ok) {
+          const data = await res.json()
+          savedWorkout = data.workout || {}
+        }
+      } catch (error) {
+        console.error("Error fetching saved workout:", error)
+      }
+      // Define fixed counts for each modality
+      const newWorkout: Record<string, string[]> = {}
+      modalities.forEach(m => {
+        const required =
+          m.name === "cardio" ? 1 : m.name === "weight" ? 4 : m.name === "stretch" ? 5 : 1
+        const saved = savedWorkout[m.name] || []
+        const available = exercises.filter(e => e.type === m.name && !saved.includes(e.name))
+        const randomCount = Math.max(required - saved.length, 0)
+        const randomExercises = available
+          .sort(() => 0.5 - Math.random())
+          .slice(0, randomCount)
+          .map(e => e.name)
+        newWorkout[m.name] = [...saved, ...randomExercises]
+      })
+      setWorkout(newWorkout)
+    }
+    loadWorkout()
   }, [])
 
   function getUniqueRandomExercise(modality: string, existing: string[]) {
-    const possible = exercises.filter(
-      e => e.type === modality && !existing.includes(e.name)
-    )
+    const possible = exercises.filter(e => e.type === modality && !existing.includes(e.name))
     if (!possible.length) return ""
     return possible[Math.floor(Math.random() * possible.length)].name
   }
@@ -54,22 +62,14 @@ export default function Workout() {
     })
   }
 
-  const orderMap: Record<string, number> = {
-    cardio: 1,
-    weight: 2,
-    stretch: 3
+  function handleClick() {
+    console.log(workout)
   }
+
+  const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
   const sortedModalities = [...modalities].sort(
     (a, b) => orderMap[a.name] - orderMap[b.name]
   )
-
-  function handleClick() {
-    const firstModality = sortedModalities[0].name
-    const firstExercise = workout[firstModality]?.[0]
-    if (firstExercise) {
-      router.push(`/gym/${firstExercise}`)
-    }
-  }
 
   return (
     <>

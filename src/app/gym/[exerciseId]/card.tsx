@@ -24,9 +24,9 @@ const Card = () => {
 
   const { user } = useAuth()
   const { createExercise } = useExercise()
-  const { exercises: workoutExercises, setExercises } = useWorkout()
+  const { exercises: workoutExercises, setExercises, currentIndex, setCurrentIndex } =
+    useWorkout()
 
-  // Initialize workout exercises if not already set
   useEffect(() => {
     if (!workoutExercises.length) {
       const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
@@ -99,6 +99,11 @@ const Card = () => {
       date: new Date().toISOString()
     }
     createExercise(payload)
+    // Mark the current exercise as completed
+    const exerciseIndex = workoutExercises.indexOf(selectedExercise)
+    if (exerciseIndex !== -1) {
+      setCurrentIndex(exerciseIndex + 1)
+    }
   }
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
   let statusText = ""
@@ -138,7 +143,7 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <ProgressLine currentExercise={selectedExercise} />
+      <ProgressLine />
       <div className={styles.exerciseHeader}>
         <div className={styles.exerciseName} onClick={toggleDropdown}>
           {selectedExercise} {statusText} {dropdownOpen ? "▲" : "▼"}
