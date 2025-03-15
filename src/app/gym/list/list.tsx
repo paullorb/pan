@@ -1,5 +1,5 @@
 "use client"
-import styles from "./card.module.css"
+import styles from "./list.module.css"
 
 type ExerciseItem = {
   name: string

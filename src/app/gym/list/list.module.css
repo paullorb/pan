@@ -1,0 +1,23 @@
+.dropdown {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.dropdown li {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.type {
+  font-weight: bold;
+}

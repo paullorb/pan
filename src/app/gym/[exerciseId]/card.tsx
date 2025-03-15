@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import styles from "./card.module.css"
-import exercises from "./exercises"
+import exercises from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
 import Details from "./details"
-import List from "./list"
+import List from "../list/list"
 import Status from "./status"
 
 function daysBetween(a: Date, b: Date) {

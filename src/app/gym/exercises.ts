@@ -21,3 +21,11 @@ const exercises = [
 ]
 
 export default exercises
+
+const modalities = [
+  { name: 'weight' },
+  { name: 'cardio' },
+  { name: 'stretch' }
+]
+
+export { modalities }

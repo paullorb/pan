@@ -1,0 +1,50 @@
+.container {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 var(--spacing-s); 
+}
+
+.row {
+  display: table-row;
+}
+
+.cell {
+  display: table-cell;
+}
+
+.modalityCell {
+  width: 33%;
+}
+
+.exerciseCell {
+  width: 67%;
+}
+
+.exerciseList {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.exerciseItem {
+  padding: 1rem;
+  border: 1px solid black;
+  flex: 1 1 33%;
+}
+
+.submitWrapper {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.submitButton {
+  border: 1px solid black;
+  padding: 1rem 2rem;
+  border-radius: 3%;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bold;
+  width: 30%;
+}
