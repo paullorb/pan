@@ -9,6 +9,8 @@ import { slugify } from "./utils"
 import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
+import ProgressLine from "./progressLine"
+import { useWorkout } from "../workout/workoutContext"
 
 function daysBetween(a: Date, b: Date) {
   const diff = b.getTime() - a.getTime()
@@ -17,14 +19,37 @@ function daysBetween(a: Date, b: Date) {
 
 const Card = () => {
   const { exerciseId } = useParams()
-  const initialExercise =
+  const currentExercise =
     exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
 
   const { user } = useAuth()
   const { createExercise } = useExercise()
+  const { exercises: workoutExercises, setExercises } = useWorkout()
+
+  useEffect(() => {
+    // In a real app, you’d likely load the workout exercises from workout.tsx.
+    // Here we combine exercises from all modalities in order.
+    if (!workoutExercises.length) {
+      const orderMap: Record<string, number> = {
+        cardio: 1,
+        weight: 2,
+        stretch: 3
+      }
+      const sortedModalities = [...new Set(exercises.map(ex => ex.type))].sort(
+        (a, b) => orderMap[a] - orderMap[b]
+      )
+      const orderedExercises: string[] = []
+      sortedModalities.forEach(modality => {
+        exercises
+          .filter(ex => ex.type === modality)
+          .forEach(ex => orderedExercises.push(ex.name))
+      })
+      setExercises(orderedExercises)
+    }
+  }, [workoutExercises, setExercises])
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState(initialExercise)
+  const [selectedExercise, setSelectedExercise] = useState(currentExercise)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
   const [exerciseDetails, setExerciseDetails] = useState({
     sets: [
@@ -38,18 +63,15 @@ const Card = () => {
   })
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen)
-
   const onSelectExercise = (exercise: string) => {
     setSelectedExercise(exercise)
     setDropdownOpen(false)
   }
-
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
     const newSets = [...exerciseDetails.sets]
     newSets[index] = { ...newSets[index], [field]: value }
     setExerciseDetails({ ...exerciseDetails, sets: newSets })
   }
-
   const addSet = () => {
     const lastSet = exerciseDetails.sets[exerciseDetails.sets.length - 1]
     setExerciseDetails({
@@ -57,7 +79,6 @@ const Card = () => {
       sets: [...exerciseDetails.sets, { reps: lastSet.reps, weight: lastSet.weight }]
     })
   }
-
   const deleteSet = () => {
     if (exerciseDetails.sets.length > 1) {
       setExerciseDetails({
@@ -66,15 +87,12 @@ const Card = () => {
       })
     }
   }
-
   const updateDetailField = (field: "time" | "intensity" | "reps", value: string) => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
   }
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") e.currentTarget.blur()
   }
-
   const completeExercise = () => {
     if (!user) return
     const exercise = exercises.find(ex => ex.name === selectedExercise)
@@ -87,9 +105,7 @@ const Card = () => {
     }
     createExercise(payload)
   }
-
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
-
   let statusText = ""
   if (lastDoneDate) {
     const diff = daysBetween(new Date(lastDoneDate), new Date())
@@ -127,16 +143,14 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
+      <ProgressLine currentExercise={selectedExercise} />
       <div className={styles.exerciseHeader}>
         <div className={styles.exerciseName} onClick={toggleDropdown}>
           {selectedExercise} {statusText} {dropdownOpen ? "▲" : "▼"}
         </div>
         {dropdownOpen && (
           <div className={styles.dropdownWrapper}>
-            <List
-              exercises={exercises}
-              onSelectExercise={onSelectExercise}
-            />
+            <List exercises={exercises} onSelectExercise={onSelectExercise} />
           </div>
         )}
       </div>

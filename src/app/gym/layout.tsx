@@ -1,4 +1,5 @@
 import { ExerciseProvider } from "./[exerciseId]/exerciseContext"
+import { WorkoutProvider } from "./workout/workoutContext"
 
 export default function GymLayout({
   children,
@@ -6,9 +7,12 @@ export default function GymLayout({
   children: React.ReactNode
 }) {
   return (
-  <section>
-    <ExerciseProvider>
-      {children}
-    </ExerciseProvider>
-  </section>)
+  <>
+    <WorkoutProvider>
+      <ExerciseProvider>
+        {children}
+      </ExerciseProvider>
+    </WorkoutProvider>
+  </>
+)
 }
