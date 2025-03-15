@@ -1,18 +1,8 @@
-import mongoose, { Document, Model } from "mongoose"
+import { Schema, model, models } from 'mongoose'
 
-export interface IWorkout extends Document {
-  userId: string
-  date: string
-  workout: {
-    cardio: string[]
-    weight: string[]
-    stretch: string[]
-  }
-}
-
-const WorkoutSchema = new mongoose.Schema<IWorkout>({
-  userId: { type: String, required: true },
-  date: { type: String, required: true },
+const WorkoutSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  date: { type: Date, required: true },
   workout: {
     cardio: { type: [String], default: [] },
     weight: { type: [String], default: [] },
@@ -20,5 +10,5 @@ const WorkoutSchema = new mongoose.Schema<IWorkout>({
   }
 })
 
-export default (mongoose.models.Workout as Model<IWorkout>) ||
-  mongoose.model<IWorkout>("Workout", WorkoutSchema)
+const Workout = models.Workout || model('Workout', WorkoutSchema)
+export default Workout

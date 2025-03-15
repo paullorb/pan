@@ -12,7 +12,11 @@ export default function Workout() {
       const today = new Date().toISOString().split("T")[0]
       let savedWorkout: Record<string, string[]> = {}
       try {
-        const res = await fetch(`/api/workout?date=${today}`)
+        const res = await fetch(`/api/workout?date=${today}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+          }
+        })
         if (res.ok) {
           const data = await res.json()
           savedWorkout = data.workout || {}
@@ -20,7 +24,6 @@ export default function Workout() {
       } catch (error) {
         console.error("Error fetching saved workout:", error)
       }
-      // Define fixed counts for each modality
       const newWorkout: Record<string, string[]> = {}
       modalities.forEach(m => {
         const required =
@@ -62,8 +65,28 @@ export default function Workout() {
     })
   }
 
-  function handleClick() {
-    console.log(workout)
+  async function handleClick() {
+    console.log("Submitting workout:", workout)
+    const today = new Date().toISOString().split("T")[0]
+    const payload = { date: today, workout }
+    try {
+      const res = await fetch("/api/workout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+        },
+        body: JSON.stringify(payload)
+      })
+      const data = await res.json()
+      if (res.ok) {
+        console.log("Workout saved successfully!", data.message)
+      } else {
+        console.error("Error saving workout", data)
+      }
+    } catch (error) {
+      console.error("Error saving workout:", error)
+    }
   }
 
   const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
@@ -96,11 +119,7 @@ export default function Workout() {
         ))}
       </form>
       <div className={styles.submitWrapper}>
-        <button
-          type="button"
-          onClick={handleClick}
-          className={styles.submitButton}
-        >
+        <button type="button" onClick={handleClick} className={styles.submitButton}>
           Submit
         </button>
       </div>
