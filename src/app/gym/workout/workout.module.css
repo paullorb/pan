@@ -4,6 +4,7 @@
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0 1rem;
+  padding: 0.1rem;
 }
 
 .row {
@@ -45,5 +46,11 @@
   background: transparent;
   cursor: pointer;
   font-weight: bold;
-  width: 100%;
+  width: 30%;
+}
+
+.modifier {
+  margin: 0 0.2rem;
+  font-size: 1.5rem;
+  opacity: 0.5;
 }

@@ -17,32 +17,36 @@ export default function Workout() {
 
   useEffect(() => {
     const newWorkout: Record<string, string[]> = {}
-    modalities.forEach((m) => {
+    modalities.forEach(m => {
       const count = getRandomCount(m.name)
-      const filtered = exercises.filter((e) => e.type === m.name)
+      const filtered = exercises.filter(e => e.type === m.name)
       newWorkout[m.name] = filtered
         .sort(() => 0.5 - Math.random())
         .slice(0, count)
-        .map((e) => e.name)
+        .map(e => e.name)
     })
     setWorkout(newWorkout)
   }, [])
 
-  function getRandomExercise(modality: string) {
-    const filtered = exercises.filter((e) => e.type === modality)
-    return filtered[Math.floor(Math.random() * filtered.length)]?.name || ""
+  function getUniqueRandomExercise(modality: string, existing: string[]) {
+    const possible = exercises.filter(
+      e => e.type === modality && !existing.includes(e.name)
+    )
+    if (!possible.length) return ""
+    return possible[Math.floor(Math.random() * possible.length)].name
   }
 
   function addExercise(modality: string) {
-    const exercise = getRandomExercise(modality)
-    setWorkout((prev) => ({
-      ...prev,
-      [modality]: [...(prev[modality] || []), exercise]
-    }))
+    setWorkout(prev => {
+      const currentList = prev[modality] || []
+      const newExercise = getUniqueRandomExercise(modality, currentList)
+      if (!newExercise) return prev
+      return { ...prev, [modality]: [...currentList, newExercise] }
+    })
   }
 
   function removeExercise(modality: string) {
-    setWorkout((prev) => {
+    setWorkout(prev => {
       const updated = [...(prev[modality] || [])]
       if (updated.length > 1) updated.pop()
       return { ...prev, [modality]: updated }
@@ -56,7 +60,7 @@ export default function Workout() {
   return (
     <>
       <form className={styles.container}>
-        {modalities.map((m) => (
+        {modalities.map(m => (
           <div key={m.name} className={styles.row}>
             <div className={`${styles.cell} ${styles.modalityCell}`}>
               {m.name}
