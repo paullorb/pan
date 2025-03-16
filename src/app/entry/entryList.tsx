@@ -23,8 +23,13 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
         const key = entry._id || entry.originalIndex.toString();
         const selectedCategory = entry.category;
         const selectedCat = categories.find((cat: Category) => cat.name === selectedCategory);
+        const borderColor = selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black";
         return (
-          <li key={key} className={`${styles.item} ${entry.done ? styles.done : ""}`}>
+          <li
+            key={key}
+            className={`${styles.item} ${entry.done ? styles.done : ""}`}
+            style={{ border: `3px solid ${borderColor}` }}
+          >
             <span
               className={styles.entryText}
               onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
