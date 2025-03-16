@@ -20,4 +20,6 @@
 
 .type {
   font-weight: bold;
+  opacity: 0.6;
+  letter-spacing: -1px;
 }
