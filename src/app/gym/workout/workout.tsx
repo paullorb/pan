@@ -81,41 +81,21 @@ export default function Workout() {
     }
   }, [workout])
 
-  useEffect(() => {
-    if (Object.keys(exerciseStatuses).length === 0) return
-    const uncompletedHierarchy: Record<string, string[]> = {}
-    modalityOrder.forEach(mod => {
-      uncompletedHierarchy[mod] = (workout[mod] ?? []).filter(
-        exercise => !exerciseStatuses[exercise]
-      )
-    })
-    console.log("Uncompleted exercises hierarchy:", uncompletedHierarchy)
-  }, [workout, exerciseStatuses])
-
-  function getUniqueRandomExercise(modality: string, existing: string[]) {
-    const possible = exercises.filter(e => e.type === modality && !existing.includes(e.name))
-    if (!possible.length) return ""
-    return possible[Math.floor(Math.random() * possible.length)].name
-  }
-
-  function addExercise(modality: string) {
+  const addExercise = (modality: string) => {
     setWorkout(prev => {
       const currentList = prev[modality] ?? []
-      const newExercise = getUniqueRandomExercise(modality, currentList)
-      if (!newExercise) return prev
-      const updated = { ...prev, [modality]: [...currentList, newExercise] }
-      console.log("After adding:", updated)
-      return updated
+      const possible = exercises.filter(e => e.type === modality && !currentList.includes(e.name))
+      if (!possible.length) return prev
+      const newExercise = possible[Math.floor(Math.random() * possible.length)].name
+      return { ...prev, [modality]: [...currentList, newExercise] }
     })
   }
 
-  function removeExercise(modality: string) {
+  const removeExercise = (modality: string) => {
     setWorkout(prev => {
-      const updatedList = [...(prev[modality] ?? [])]
-      if (updatedList.length > 1) updatedList.pop()
-      const updated = { ...prev, [modality]: updatedList }
-      console.log("After removing:", updated)
-      return updated
+      const currentList = prev[modality] ?? []
+      if (currentList.length <= 1) return prev
+      return { ...prev, [modality]: currentList.slice(0, currentList.length - 1) }
     })
   }
 
@@ -153,10 +133,7 @@ export default function Workout() {
           <div key={m.name} className={styles.row}>
             <div className={`${styles.cell} ${styles.modalityCell}`}>
               {m.name}
-              <Modifier
-                onAdd={() => addExercise(m.name)}
-                onRemove={() => removeExercise(m.name)}
-              />
+              <Modifier onAdd={() => addExercise(m.name)} onRemove={() => removeExercise(m.name)} />
             </div>
             <div className={`${styles.cell} ${styles.exerciseCell}`}>
               <div className={styles.exerciseList}>
