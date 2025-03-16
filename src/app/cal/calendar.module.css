@@ -40,12 +40,11 @@
 }
 
 .dayNumber {
+  letter-spacing: -0.8px;
   font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0.2rem;
-  transition: 0s;
   height: 24px;
 }
 
