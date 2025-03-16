@@ -8,3 +8,14 @@
   height: auto;
   object-fit: contain;
 }
+
+.placeholder {
+  width: 100%;
+  background-color: #ccc;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 1rem;
+}
