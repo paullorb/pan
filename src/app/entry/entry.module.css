@@ -27,7 +27,6 @@
   justify-content: space-between;
   padding: var(--spacing-xs);
   border-radius: var(--spacing-s);
-  border: 3px solid black;
   cursor: pointer;
   transition: background-color 0.1s;
 }
@@ -53,6 +52,17 @@
   border-top: none;
   border-left: none;
   border-right: none;
+}
+
+.categoryFloating {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  padding: 2px 5px;
+  font-size: 0.6rem;
+  background-color: white;
+  cursor: pointer;
+  border-radius: var(--spacing-xs);
 }
 
 @media screen and (max-width: 768px) {
