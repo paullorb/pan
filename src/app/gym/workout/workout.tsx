@@ -6,7 +6,6 @@ import Modifier from "./modifier"
 import styles from "./workout.module.css"
 import { getDateKey } from "./utils"
 
-// Use a fixed order for routing: first cardio, then weight, then stretch.
 const modalityOrder = ["cardio", "weight", "stretch"]
 
 export default function Workout() {
@@ -14,10 +13,7 @@ export default function Workout() {
   const [exerciseStatuses, setExerciseStatuses] = useState<Record<string, boolean>>({})
   const router = useRouter()
 
-  // Sort modalities for display (if needed) using modalityOrder.
-  const sortedModalities = modalityOrder.map(name => {
-    return { name }
-  })
+  const sortedModalities = modalityOrder.map(name => ({ name }))
 
   useEffect(() => {
     async function loadWorkout() {
@@ -37,10 +33,8 @@ export default function Workout() {
         console.error("Error fetching saved workout:", error)
       }
       const newWorkout: Record<string, string[]> = {}
-      // Use the fixed modality order for building the workout
       modalityOrder.forEach(mod => {
-        const required =
-          mod === "cardio" ? 1 : mod === "weight" ? 4 : mod === "stretch" ? 5 : 1
+        const required = mod === "cardio" ? 1 : mod === "weight" ? 4 : mod === "stretch" ? 5 : 1
         const saved = savedWorkout[mod] || []
         const available = exercises.filter(e => e.type === mod && !saved.includes(e.name))
         const randomCount = Math.max(required - saved.length, 0)
@@ -87,7 +81,6 @@ export default function Workout() {
     }
   }, [workout])
 
-  // Log the uncompleted exercise hierarchy once statuses are populated.
   useEffect(() => {
     if (Object.keys(exerciseStatuses).length === 0) return
     const uncompletedHierarchy: Record<string, string[]> = {}
@@ -138,28 +131,14 @@ export default function Workout() {
         },
         body: JSON.stringify(payload)
       })
-      const data = await res.json()
       if (res.ok) {
-        // IMPORTANT: Log the current workout state as seen in the UI.
-        console.log("Current workout state (display order):", workout)
-        const statuses = await fetchStatuses()
-        let firstUncompleted: string | undefined
-        // Loop through the fixed modality order.
-        for (const mod of modalityOrder) {
-          const exercisesInModality = workout[mod] ?? []
-          for (const exerciseName of exercisesInModality) {
-            if (!statuses[exerciseName]) {
-              firstUncompleted = exerciseName
-              break
-            }
-          }
-          if (firstUncompleted) break
-        }
-        console.log("Navigating to first uncompleted exercise:", firstUncompleted)
-        if (firstUncompleted) {
-          router.push(`/gym/${encodeURIComponent(firstUncompleted)}`)
+        const cardioExercises = workout["cardio"] || []
+        const cardioExercise = cardioExercises[0]
+        if (cardioExercise) {
+          router.push(`/gym/${encodeURIComponent(cardioExercise)}`)
         }
       } else {
+        const data = await res.json()
         console.error("Error saving workout", data)
       }
     } catch (error) {
