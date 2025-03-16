@@ -46,13 +46,16 @@ export default function Nav() {
     }
   }
 
+  const isGym = pathname === '/gym'
+  const navTarget = isGym ? '/' : '/gym'
+  const navLabel = isGym ? 'Gym' : 'Pansito'
+
   return (
     <>
       <nav className={styles.container}>
         <div className={styles.nav}>
           <div className={styles.links}>
-            <Link href="/" className={pathname === '/' ? styles.active : ''}>Pansito</Link>
-            <Link href="/gym" className={pathname === '/gym' ? styles.active : ''}>Gym</Link>
+            <Link href={navTarget}>{navLabel}</Link>
           </div>
           {user ? (
             <div className={styles.side}>
