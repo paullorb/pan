@@ -1,4 +1,4 @@
-import { ExerciseProvider } from "./[exerciseId]/exerciseContext"
+import { ExerciseProvider } from "./exercise/exerciseContext"
 import { WorkoutProvider } from "./workout/workoutContext"
 
 export default function GymLayout({

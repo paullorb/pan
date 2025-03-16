@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import exercises, { modalities } from "../exercises"
+import exercises from "../exercises"
 import Modifier from "./modifier"
 import styles from "./workout.module.css"
 import { getDateKey } from "./utils"
@@ -10,7 +10,6 @@ const modalityOrder = ["cardio", "weight", "stretch"]
 
 export default function Workout() {
   const [workout, setWorkout] = useState<Record<string, string[]>>({})
-  const [exerciseStatuses, setExerciseStatuses] = useState<Record<string, boolean>>({})
   const router = useRouter()
 
   const sortedModalities = modalityOrder.map(name => ({ name }))
@@ -21,9 +20,7 @@ export default function Workout() {
       let savedWorkout: Record<string, string[]> = {}
       try {
         const res = await fetch(`/api/workout?date=${today}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-          }
+          headers: { Authorization: `Bearer ${localStorage.getItem("token") || ""}` }
         })
         if (res.ok) {
           const data = await res.json()
@@ -48,38 +45,6 @@ export default function Workout() {
     }
     loadWorkout()
   }, [])
-
-  async function fetchStatuses() {
-    const statuses: Record<string, boolean> = {}
-    for (const mod in workout) {
-      for (const exerciseName of workout[mod] ?? []) {
-        try {
-          const res = await fetch(`/api/exercises?exerciseId=${encodeURIComponent(exerciseName)}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token") || ""}`
-            }
-          })
-          if (res.ok) {
-            const { exercise } = await res.json()
-            statuses[exerciseName] = !!exercise
-          } else {
-            statuses[exerciseName] = false
-          }
-        } catch (error) {
-          console.error(`Error checking status for ${exerciseName}:`, error)
-          statuses[exerciseName] = false
-        }
-      }
-    }
-    setExerciseStatuses(statuses)
-    return statuses
-  }
-
-  useEffect(() => {
-    if (Object.keys(workout).length) {
-      fetchStatuses()
-    }
-  }, [workout])
 
   const addExercise = (modality: string) => {
     setWorkout(prev => {
@@ -112,11 +77,7 @@ export default function Workout() {
         body: JSON.stringify(payload)
       })
       if (res.ok) {
-        const cardioExercises = workout["cardio"] || []
-        const cardioExercise = cardioExercises[0]
-        if (cardioExercise) {
-          router.push(`/gym/${encodeURIComponent(cardioExercise)}`)
-        }
+        router.push("/gym/exercise")
       } else {
         const data = await res.json()
         console.error("Error saving workout", data)
@@ -138,13 +99,7 @@ export default function Workout() {
             <div className={`${styles.cell} ${styles.exerciseCell}`}>
               <div className={styles.exerciseList}>
                 {(workout[m.name] ?? []).map((item, i) => (
-                  <div
-                    key={i}
-                    className={styles.exerciseItem}
-                    style={{
-                      backgroundColor: exerciseStatuses[item] ? "lightgreen" : "inherit"
-                    }}
-                  >
+                  <div key={i} className={styles.exerciseItem}>
                     {item}
                   </div>
                 ))}

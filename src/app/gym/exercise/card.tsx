@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
 import styles from "./card.module.css"
 import exercises, { modalities } from "../exercises"
 import { useAuth } from "../../auth/authContext"
@@ -26,12 +25,8 @@ function daysBetween(a: Date, b: Date) {
 }
 
 const Card = () => {
-  const { exerciseId: rawExerciseId } = useParams()
-  const exerciseId = Array.isArray(rawExerciseId) ? rawExerciseId[0] : (rawExerciseId || "")
-  const decodedId = decodeURIComponent(exerciseId)
-  const defaultExerciseObj = exercises.find(ex => ex.name === decodedId) || exercises[0]
-  const modality = modalities.find(m => m.name === defaultExerciseObj.type)
-  const defaultDetails = (modality?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
+  const defaultExerciseObj = exercises[0]
+  const defaultDetails = (modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
