@@ -1,0 +1,27 @@
+.detailsForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+
+.setContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.setContainer input {
+  width: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: var(--spacing-xs);
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.unit {
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
