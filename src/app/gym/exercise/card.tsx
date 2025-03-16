@@ -10,6 +10,7 @@ import List from "../list/list"
 import Status from "./status"
 import ProgressLine from "./progressLine"
 import { useWorkout } from "../workout/workoutContext"
+import BestPractice from "./bestPractice"
 
 type SetType = { reps: string; weight: string }
 type DetailsType = {
@@ -151,6 +152,7 @@ const Card = () => {
         updateDetailField={updateDetailField}
         handleKeyDown={handleKeyDown}
       />
+      <BestPractice selectedExercise={selectedExercise} />
       <div className={styles.completeContainer}>
         <button onClick={completeExercise} className={styles.completeButton}>
           Complete Exercise

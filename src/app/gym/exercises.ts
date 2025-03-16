@@ -1,5 +1,5 @@
 const exercises = [
-  { name: 'deadlift', mainMuscle: 'legs', type: 'weight' },
+  { name: 'deadlift', mainMuscle: 'legs', type: 'weight', bestPractice: 'Keep your back straight and lift with your legs' },
   { name: 'leg extension', mainMuscle: 'legs', type: 'weight' },
   { name: 'inclined leg press', mainMuscle: 'legs', type: 'weight' },
   { name: 'seated calf raise', mainMuscle: 'legs', type: 'weight' },
