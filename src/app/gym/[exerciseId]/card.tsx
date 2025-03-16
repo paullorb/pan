@@ -90,11 +90,13 @@ const Card = () => {
     if (!user) return
     const exercise = exercises.find(ex => ex.name === selectedExercise)
     if (!exercise) return
+    const now = new Date().toISOString()
+    setLastDoneDate(now)
     const payload = {
       exerciseId: slugify(selectedExercise),
       type: exercise.type,
       details: exerciseDetails,
-      date: new Date().toISOString()
+      date: now
     }
     createExercise(payload)
     const exerciseIndex = workoutExercises.indexOf(selectedExercise)
