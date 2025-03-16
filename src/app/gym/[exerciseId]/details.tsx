@@ -2,7 +2,7 @@
 import styles from "./details.module.css"
 
 type SetType = { reps: string; weight: string }
-type DetailsType = {
+export type DetailsType = {
   sets: SetType[]
   time: string
   intensity: string
@@ -30,76 +30,63 @@ export default function Details({
 }: Props) {
   const { sets, time, intensity, reps } = exerciseDetails
 
-  return (
-    <form onSubmit={(e) => e.preventDefault()} className={styles.detailsForm}>
-      {exerciseType === "weight" && (
-        <>
-          {sets.map((set, index) => (
-            <div key={index} className={styles.setContainer}>
-              <input
-                type="text"
-                value={set.reps}
-                onChange={(e) => updateSet(index, "reps", e.target.value)}
-                onKeyDown={handleKeyDown}
-                className={styles.repsInput}
-              />
-              <span className={styles.unit}>x</span>
-              <input
-                type="text"
-                value={set.weight}
-                onChange={(e) => updateSet(index, "weight", e.target.value)}
-                onKeyDown={handleKeyDown}
-                className={styles.weightsInput}
-              />
-              <span className={styles.unit}>kg</span>
-            </div>
-          ))}
-          <div className={styles.buttonContainer}>
-            <button onClick={deleteSet} className={styles.deleteButton}>
-              Delete Last Set
-            </button>
-            <button onClick={addSet} className={styles.addButton}>
-              Add New Set
-            </button>
+  if (exerciseType === "weight") {
+    return (
+      <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
+        {sets.map((set, index) => (
+          <div key={index} className={styles.setContainer}>
+            <input
+              type="text"
+              value={set.reps}
+              onChange={e => updateSet(index, "reps", e.target.value)}
+              onKeyDown={handleKeyDown}
+              className={styles.repsInput}
+            />
+            <span className={styles.unit}>x</span>
+            <input
+              type="text"
+              value={set.weight}
+              onChange={e => updateSet(index, "weight", e.target.value)}
+              onKeyDown={handleKeyDown}
+              className={styles.weightsInput}
+            />
+            <span className={styles.unit}>kg</span>
           </div>
-        </>
-      )}
-      {exerciseType === "cardio" && (
-        <div className={styles.inputContainer}>
-          <label>Time (min):</label>
-          <input
-            type="text"
-            value={time}
-            onChange={(e) => updateDetailField("time", e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <label>Intensity:</label>
-          <input
-            type="text"
-            value={intensity}
-            onChange={(e) => updateDetailField("intensity", e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+        ))}
+        <div className={styles.buttonContainer}>
+          <button onClick={deleteSet} className={styles.deleteButton}>
+            Delete Last Set
+          </button>
+          <button onClick={addSet} className={styles.addButton}>
+            Add New Set
+          </button>
         </div>
-      )}
-      {exerciseType === "stretch" && (
-        <div className={styles.inputContainer}>
-          <label>Time (sec):</label>
-          <input
-            type="text"
-            value={time}
-            onChange={(e) => updateDetailField("time", e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          <label>Reps:</label>
-          <input
-            type="text"
-            value={reps}
-            onChange={(e) => updateDetailField("reps", e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-      )}
+      </form>
+    )
+  }
+
+  // Combined layout for cardio and stretch modalities
+  const isCardio = exerciseType === "cardio"
+  return (
+    <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
+      <div className={styles.inputContainer}>
+        <label>{isCardio ? "Time (min):" : "Time (sec):"}</label>
+        <input
+          type="text"
+          value={time}
+          onChange={e => updateDetailField("time", e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <label>{isCardio ? "Intensity:" : "Reps:"}</label>
+        <input
+          type="text"
+          value={isCardio ? intensity : reps}
+          onChange={e =>
+            updateDetailField(isCardio ? "intensity" : "reps", e.target.value)
+          }
+          onKeyDown={handleKeyDown}
+        />
+      </div>
     </form>
   )
 }

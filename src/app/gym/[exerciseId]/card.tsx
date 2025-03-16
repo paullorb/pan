@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import styles from "./card.module.css"
-import exercises from "../exercises"
+import exercises, { modalities } from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
@@ -12,6 +12,15 @@ import Status from "./status"
 import ProgressLine from "./progressLine"
 import { useWorkout } from "../workout/workoutContext"
 
+// Local type for exercise details (copied from details.tsx)
+type SetType = { reps: string; weight: string }
+type DetailsType = {
+  sets: SetType[]
+  time: string
+  intensity: string
+  reps: string
+}
+
 function daysBetween(a: Date, b: Date) {
   const diff = b.getTime() - a.getTime()
   return Math.floor(diff / (1000 * 60 * 60 * 24))
@@ -19,47 +28,35 @@ function daysBetween(a: Date, b: Date) {
 
 const Card = () => {
   const { exerciseId } = useParams()
-  const defaultExercise =
-    exercises.find(ex => slugify(ex.name) === exerciseId)?.name || exercises[0].name
-
+  const defaultExerciseObj = exercises.find(ex => slugify(ex.name) === exerciseId) || exercises[0]
+  const modality = modalities.find(m => m.name === defaultExerciseObj.type)
+  const defaultDetails = modality?.defaultDetails as DetailsType || { sets: [], time: "", intensity: "", reps: "" }
+  const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
+  const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
   const { createExercise } = useExercise()
-  const { exercises: workoutExercises, setExercises, setCurrentIndex } =
-    useWorkout()
+  const { exercises: workoutExercises, setExercises, setCurrentIndex } = useWorkout()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     if (!workoutExercises.length) {
       const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
-      const sortedModalities = [...new Set(exercises.map(ex => ex.type))].sort(
-        (a, b) => orderMap[a] - orderMap[b]
-      )
+      const sortedModalities = [...new Set(exercises.map(ex => ex.type))].sort((a, b) => orderMap[a] - orderMap[b])
       const orderedExercises: string[] = []
-      sortedModalities.forEach(modality => {
-        exercises
-          .filter(ex => ex.type === modality)
-          .forEach(ex => orderedExercises.push(ex.name))
+      sortedModalities.forEach(mod => {
+        exercises.filter(ex => ex.type === mod).forEach(ex => orderedExercises.push(ex.name))
       })
       setExercises(orderedExercises)
     }
   }, [workoutExercises, setExercises])
 
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState(defaultExercise)
-  const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
-  const [exerciseDetails, setExerciseDetails] = useState({
-    sets: [
-      { reps: "10", weight: "10" },
-      { reps: "15", weight: "10" },
-      { reps: "20", weight: "10" }
-    ],
-    time: "30",
-    intensity: "5",
-    reps: "8"
-  })
-
   const toggleDropdown = () => setDropdownOpen(prev => !prev)
-  const onSelectExercise = (exercise: string) => {
-    setSelectedExercise(exercise)
+  const onSelectExercise = (exerciseName: string) => {
+    setSelectedExercise(exerciseName)
+    const newExercise = exercises.find(ex => ex.name === exerciseName)
+    const mod = modalities.find(m => m.name === newExercise?.type)
+    setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
     setDropdownOpen(false)
   }
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
@@ -99,7 +96,6 @@ const Card = () => {
       date: new Date().toISOString()
     }
     createExercise(payload)
-    // Mark the current exercise as completed
     const exerciseIndex = workoutExercises.indexOf(selectedExercise)
     if (exerciseIndex !== -1) {
       setCurrentIndex(exerciseIndex + 1)
@@ -116,7 +112,7 @@ const Card = () => {
     if (!user) return
     const fetchExisting = async () => {
       const res = await fetch(`/api/exercises?exerciseId=${slugify(selectedExercise)}`, {
-        headers: { "Authorization": `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${user.token}` }
       })
       if (res.ok) {
         const data = await res.json()
@@ -124,22 +120,15 @@ const Card = () => {
           setExerciseDetails(data.exercise.details)
           setLastDoneDate(data.exercise.date)
         } else {
-          setExerciseDetails({
-            sets: [
-              { reps: "10", weight: "10" },
-              { reps: "15", weight: "10" },
-              { reps: "20", weight: "10" }
-            ],
-            time: "30",
-            intensity: "5",
-            reps: "8"
-          })
+          const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj
+          const mod = modalities.find(m => m.name === currentExercise.type)
+          setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
           setLastDoneDate(undefined)
         }
       }
     }
     fetchExisting()
-  }, [user, selectedExercise])
+  }, [user, selectedExercise, defaultExerciseObj, defaultDetails])
 
   return (
     <div className={styles.card}>

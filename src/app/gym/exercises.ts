@@ -32,15 +32,43 @@ const exercises = [
   { name: 'rowing machine', mainMuscle: 'legs', type: 'cardio' },
   { name: 'seated chess press', mainMuscle: 'chest', type: 'weight' },
   { name: 'seated low row', mainMuscle: 'back', type: 'weight' },
-  { name: 'tricep pull down', mainMuscle: 'arms', type: 'weight' },
+  { name: 'tricep pull down', mainMuscle: 'arms', type: 'weight' }
 ]
 
 export default exercises
 
 const modalities = [
-  { name: 'weight' },
-  { name: 'cardio' },
-  { name: 'stretch' }
+  { 
+    name: 'weight',
+    defaultDetails: {
+      sets: [
+        { reps: '10', weight: '10' },
+        { reps: '15', weight: '10' },
+        { reps: '20', weight: '10' }
+      ],
+      time: '',
+      intensity: '',
+      reps: ''
+    }
+  },
+  { 
+    name: 'cardio',
+    defaultDetails: {
+      sets: [],
+      time: '30',
+      intensity: '5',
+      reps: ''
+    }
+  },
+  { 
+    name: 'stretch',
+    defaultDetails: {
+      sets: [],
+      time: '30',
+      intensity: '',
+      reps: '8'
+    }
+  }
 ]
 
 export { modalities }
