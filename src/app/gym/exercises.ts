@@ -32,7 +32,20 @@ const exercises = [
   { name: 'rowing machine', mainMuscle: 'legs', type: 'cardio' },
   { name: 'seated chess press', mainMuscle: 'chest', type: 'weight' },
   { name: 'seated low row', mainMuscle: 'back', type: 'weight' },
-  { name: 'tricep pull down', mainMuscle: 'arms', type: 'weight' }
+  { name: 'tricep pull down', mainMuscle: 'arms', type: 'weight' },
+  { name: 'shoulder stretch', mainMuscle: 'shoulders', type: 'stretch' },
+  { name: 'quad stretch', mainMuscle: 'legs', type: 'stretch' },
+  { name: 'hamstring stretch', mainMuscle: 'legs', type: 'stretch' },
+  { name: 'tricep stretch', mainMuscle: 'arms', type: 'stretch' },
+  { name: 'seated lower back rotational stretch', mainMuscle: 'back', type: 'stretch' },
+  { name: 'seated neck stretch', mainMuscle: 'neck', type: 'stretch' },
+  { name: 'cat stretch', mainMuscle: 'back', type: 'stretch' },
+  { name: 'childs pose', mainMuscle: 'back', type: 'stretch' },
+  { name: 'cobra stretch', mainMuscle: 'back', type: 'stretch' },
+  { name: 'knee to chest', mainMuscle: 'back', type: 'stretch' },
+  { name: 'wrist extensor stretch', mainMuscle: 'arms', type: 'stretch' },
+  { name: 'chest opener', mainMuscle: 'chest', type: 'stretch' },
+  { name: 'wrist flexor stretch', mainMuscle: 'arms', type: 'stretch' },
 ]
 
 export default exercises
