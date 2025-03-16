@@ -43,9 +43,9 @@
 
 .categoryButton {
   padding: var(--spacing-xs);
-  border-radius: var(--spacing-s);
+  border-radius: var(--spacing-xs);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .input {
