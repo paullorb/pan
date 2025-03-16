@@ -12,7 +12,6 @@ import Status from "./status"
 import ProgressLine from "./progressLine"
 import { useWorkout } from "../workout/workoutContext"
 
-// Local type for exercise details (copied from details.tsx)
 type SetType = { reps: string; weight: string }
 type DetailsType = {
   sets: SetType[]
@@ -27,10 +26,12 @@ function daysBetween(a: Date, b: Date) {
 }
 
 const Card = () => {
-  const { exerciseId } = useParams()
-  const defaultExerciseObj = exercises.find(ex => slugify(ex.name) === exerciseId) || exercises[0]
+  const { exerciseId: rawExerciseId } = useParams()
+  const exerciseId = Array.isArray(rawExerciseId) ? rawExerciseId[0] : (rawExerciseId || "")
+  const decodedId = decodeURIComponent(exerciseId)
+  const defaultExerciseObj = exercises.find(ex => ex.name === decodedId) || exercises[0]
   const modality = modalities.find(m => m.name === defaultExerciseObj.type)
-  const defaultDetails = modality?.defaultDetails as DetailsType || { sets: [], time: "", intensity: "", reps: "" }
+  const defaultDetails = (modality?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
