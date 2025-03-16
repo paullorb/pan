@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./status.module.css"
 
 type StatusProps = {
@@ -9,6 +9,11 @@ type StatusProps = {
 
 export default function Status({ imageSrc }: StatusProps) {
   const [imgError, setImgError] = useState(false)
+  
+  useEffect(() => {
+    setImgError(false)
+  }, [imageSrc])
+
   return (
     <div className={styles.statusContainer}>
       {imageSrc && !imgError ? (
