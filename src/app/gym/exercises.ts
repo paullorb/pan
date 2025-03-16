@@ -68,7 +68,7 @@ const modalities = [
     name: 'cardio',
     defaultDetails: {
       sets: [],
-      time: '30',
+      time: '10',
       intensity: '5',
       reps: ''
     }
