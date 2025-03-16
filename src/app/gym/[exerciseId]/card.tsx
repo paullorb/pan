@@ -24,7 +24,7 @@ const Card = () => {
 
   const { user } = useAuth()
   const { createExercise } = useExercise()
-  const { exercises: workoutExercises, setExercises, currentIndex, setCurrentIndex } =
+  const { exercises: workoutExercises, setExercises, setCurrentIndex } =
     useWorkout()
 
   useEffect(() => {
