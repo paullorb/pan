@@ -30,6 +30,9 @@ const exercises = [
   { name: 'seated mid row', mainMuscle: 'back', type: 'weight' },
   { name: 'treadmill', mainMuscle: 'legs', type: 'cardio' },
   { name: 'rowing machine', mainMuscle: 'legs', type: 'cardio' },
+  { name: 'seated chess press', mainMuscle: 'chest', type: 'weight' },
+  { name: 'seated low row', mainMuscle: 'back', type: 'weight' },
+  { name: 'tricep pull down', mainMuscle: 'arms', type: 'weight' },
 ]
 
 export default exercises
