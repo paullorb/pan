@@ -5,7 +5,7 @@
 }
 
 .exerciseHeader {
-  position: relative; /* so the dropdown can be absolutely positioned */
+  position: relative; 
   width: 100%;
   margin-bottom: 1rem;
 }
@@ -16,13 +16,12 @@
   display: inline-block;
 }
 
-/* Dropdown wrapper stretches full width below the exerciseName */
 .dropdownWrapper {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
-  z-index: 999; /* so it appears on top of other elements */
+  z-index: 999; 
 }
 
 .dropdown {
@@ -47,4 +46,13 @@
 
 .type {
   font-weight: bold;
+}
+
+.completeContainer {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-m);
+  border: 3px solid #ccc;
+  padding: var(--spacing-s);
+  border-radius: 10px;
 }

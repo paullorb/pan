@@ -6,13 +6,13 @@
   gap: var(--spacing-s);
 }
 
-.setContainer {
+.setContainer, .inputContainer {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
 }
 
-.setContainer input {
+.setContainer input, .inputContainer input{
   width: 50px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -20,6 +20,10 @@
   text-align: center;
   font-size: 1.1rem;
 }
+
+ .buttonContainer button {
+  padding: var(--spacing-xs);
+ }
 
 .unit {
   opacity: 0.5;
