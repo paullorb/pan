@@ -56,8 +56,8 @@ const modalities = [
     defaultDetails: {
       sets: [
         { reps: '10', weight: '10' },
-        { reps: '15', weight: '10' },
-        { reps: '20', weight: '10' }
+        { reps: '10', weight: '15' },
+        { reps: '10', weight: '20' }
       ],
       time: '',
       intensity: '',
@@ -69,7 +69,7 @@ const modalities = [
     defaultDetails: {
       sets: [],
       time: '10',
-      intensity: '5',
+      intensity: '10',
       reps: ''
     }
   },
@@ -77,9 +77,9 @@ const modalities = [
     name: 'stretch',
     defaultDetails: {
       sets: [],
-      time: '30',
+      time: '10',
       intensity: '',
-      reps: '8'
+      reps: '10'
     }
   }
 ]
