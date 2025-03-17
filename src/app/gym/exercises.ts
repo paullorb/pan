@@ -45,7 +45,8 @@ const exercises = [
   { name: 'knee to chest', mainMuscle: 'back', type: 'stretch', bestPractice: 'Hold each side steadily to relieve lower back tension' },
   { name: 'wrist extensor stretch', mainMuscle: 'arms', type: 'stretch', bestPractice: 'Extend your wrist gently and hold to relieve forearm tension' },
   { name: 'chest opener', mainMuscle: 'chest', type: 'stretch', bestPractice: 'Open your arms wide and gently stretch your chest muscles' },
-  { name: 'wrist flexor stretch', mainMuscle: 'arms', type: 'stretch', bestPractice: 'Gently pull your fingers back and hold to stretch your wrist flexors' }
+  { name: 'wrist flexor stretch', mainMuscle: 'arms', type: 'stretch', bestPractice: 'Gently pull your fingers back and hold to stretch your wrist flexors' },
+  { name: 'recumbent bike', mainMuscle: 'legs', type: 'cardio', bestPractice: 'Adjust the seat for proper alignment and focus on a smooth pedal stroke' },
 ]
 
 export default exercises
