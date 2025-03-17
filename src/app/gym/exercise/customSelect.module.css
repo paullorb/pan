@@ -1,0 +1,24 @@
+.customSelect {
+  position: relative;
+  width: 100px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.selected {
+  padding: 8px;
+}
+.options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 10;
+}
+.option {
+  padding: 8px;
+}
+.option:hover {
+  background: #eee;
+}

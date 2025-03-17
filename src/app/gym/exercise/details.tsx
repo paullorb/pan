@@ -1,5 +1,6 @@
 "use client"
 import styles from "./details.module.css"
+import CustomSelect from "./customSelect"
 
 type SetType = { reps: string; weight: string }
 export type DetailsType = {
@@ -39,31 +40,21 @@ export default function Details({
       <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
         {sets.map((set, index) => (
           <div key={index} className={styles.setContainer}>
-            <select
+            <CustomSelect
+              options={repsRange}
               value={set.reps}
-              onChange={e => updateSet(index, "reps", e.target.value)}
+              onChange={val => updateSet(index, "reps", val)}
               onKeyDown={handleKeyDown}
               className={styles.repsInput}
-            >
-              {repsRange.map(opt => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
+            />
             <span className={styles.unit}>x</span>
-            <select
+            <CustomSelect
+              options={weightRange}
               value={set.weight}
-              onChange={e => updateSet(index, "weight", e.target.value)}
+              onChange={val => updateSet(index, "weight", val)}
               onKeyDown={handleKeyDown}
               className={styles.weightsInput}
-            >
-              {weightRange.map(opt => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
+            />
             <span className={styles.unit}>kg</span>
           </div>
         ))}
@@ -78,37 +69,26 @@ export default function Details({
       </form>
     )
   }
-
   const isCardio = exerciseType === "cardio"
   return (
     <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
       <div className={styles.inputContainer}>
         <label>{isCardio ? "Time (min):" : "Time (sec):"}</label>
-        <select
+        <CustomSelect
+          options={timeRange}
           value={time}
-          onChange={e => updateDetailField("time", e.target.value)}
+          onChange={val => updateDetailField("time", val)}
           onKeyDown={handleKeyDown}
-        >
-          {timeRange.map(opt => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        />
         <label>{isCardio ? "Intensity:" : "Reps:"}</label>
-        <select
+        <CustomSelect
+          options={isCardio ? intensityRange : repsRange}
           value={isCardio ? intensity : reps}
-          onChange={e =>
-            updateDetailField(isCardio ? "intensity" : "reps", e.target.value)
+          onChange={val =>
+            updateDetailField(isCardio ? "intensity" : "reps", val)
           }
           onKeyDown={handleKeyDown}
-        >
-          {(isCardio ? intensityRange : repsRange).map(opt => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        />
       </div>
     </form>
   )
