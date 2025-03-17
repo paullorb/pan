@@ -16,7 +16,7 @@ type Props = {
   addSet: () => void
   deleteSet: () => void
   updateDetailField: (field: "time" | "intensity" | "reps", value: string) => void
-  handleKeyDown: (e: React.KeyboardEvent<HTMLSelectElement>) => void
+  handleKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void
 }
 
 export default function Details({

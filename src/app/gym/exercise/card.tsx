@@ -79,8 +79,8 @@ const Card = () => {
   const updateDetailField = (field: "time" | "intensity" | "reps", value: string) => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
   }
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") e.currentTarget.blur()
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+  if (e.key === "Enter") e.currentTarget.blur()
   }
   const completeExercise = () => {
     if (!user) return
