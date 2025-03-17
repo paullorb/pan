@@ -131,7 +131,6 @@ const Card = () => {
 
   return (
     <div className={styles.card}>
-      <ProgressLine />
       <div className={styles.exerciseHeader}>
         <div className={styles.exerciseName} onClick={toggleDropdown}>
           {selectedExercise} {statusText} {dropdownOpen ? "▲" : "▼"}
