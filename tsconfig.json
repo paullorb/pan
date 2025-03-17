@@ -34,7 +34,7 @@
     "next-env.d.ts",
     "src/**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/gym/layout.js", "src/app/layout.js"  ],
   "exclude": [
     "node_modules"
   ]

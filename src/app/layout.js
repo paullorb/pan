@@ -6,7 +6,7 @@ import { CategoryProvider } from './category/categoryContext';
 import { EntryProvider } from './entry/entryContext';
 import { AuthProvider } from './auth/authContext';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
