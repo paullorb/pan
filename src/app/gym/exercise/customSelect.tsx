@@ -18,7 +18,8 @@ export default function CustomSelect({
   className
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const toggleOpen = () => setOpen(prev => !prev)
   const handleOptionClick = (option: string) => {
     onChange(option)
@@ -26,7 +27,7 @@ export default function CustomSelect({
   }
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
         setOpen(false)
       }
     }
@@ -35,13 +36,25 @@ export default function CustomSelect({
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+  useEffect(() => {
+    if (open && containerRef.current) {
+      const selectedIndex = options.indexOf(value)
+      if (selectedIndex < 0) return
+      const firstChild = containerRef.current.firstElementChild as HTMLElement
+      if (!firstChild) return
+      const itemHeight = firstChild.offsetHeight
+      const containerHeight = containerRef.current.clientHeight
+      const scrollTop = selectedIndex * itemHeight - (containerHeight / 2 - itemHeight / 2)
+      containerRef.current.scrollTop = scrollTop
+    }
+  }, [open, options, value])
   return (
-    <div className={`${styles.customSelect} ${className || ""}`} ref={ref}>
+    <div className={`${styles.customSelect} ${className || ""}`} ref={wrapperRef}>
       <div className={styles.selected} onClick={toggleOpen} onKeyDown={onKeyDown} tabIndex={0}>
         {value}
       </div>
       {open && (
-        <div className={styles.options} style={{ maxHeight: "150px", overflowY: "auto" }}>
+        <div className={styles.options} ref={containerRef} style={{ maxHeight: "150px", overflowY: "auto" }}>
           {options.map(opt => (
             <div key={opt} className={styles.option} onClick={() => handleOptionClick(opt)}>
               {opt}
