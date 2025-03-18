@@ -50,7 +50,6 @@
 
 .todayCircle,
 .selectedCircle {
-  border-radius: 50%;
   width: 24px;
   height: 24px;
   display: inline-flex;
@@ -65,7 +64,7 @@
 }
 
 .selectedCircle {
-  background-color: gray;
+  background-color: black;
   color: white;
 }
 
