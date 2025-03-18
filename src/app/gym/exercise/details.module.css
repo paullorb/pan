@@ -9,16 +9,7 @@
 .setContainer, .inputContainer {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
-}
-
-.setContainer input, .inputContainer input{
-  width: 50px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: var(--spacing-xs);
-  text-align: center;
-  font-size: 1.1rem;
+  gap: var(--spacing-xxs);
 }
 
  .buttonContainer button {
