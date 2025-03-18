@@ -31,7 +31,7 @@ export default function Details({
 }: Props) {
   const { sets, time, intensity, reps } = exerciseDetails
   const repsRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
-  const weightRange = Array.from({ length: 101 }, (_, i) => (i * 0.5).toString())
+  const weightRange = Array.from({ length: 401 }, (_, i) => (i * 0.5).toString())
   const timeRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
   const intensityRange = Array.from({ length: 20 }, (_, i) => (i + 1).toString())
 
