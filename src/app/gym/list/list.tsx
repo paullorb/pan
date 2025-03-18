@@ -6,6 +6,7 @@ type ExerciseItem = {
   name: string
   type: string
   mainMuscle: string
+  keyMovement?: string
 }
 
 type ListProps = {
@@ -16,6 +17,7 @@ type ListProps = {
 const List = ({ exercises, onSelectExercise }: ListProps) => {
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
+  const [selectedMovement, setSelectedMovement] = useState("")
 
   const sortedExercises = useMemo(() => {
     return [...exercises].sort((a, b) => a.name.localeCompare(b.name))
@@ -24,9 +26,10 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
   const filteredExercises = useMemo(() => {
     return sortedExercises.filter(ex => {
       return (selectedModality ? ex.type === selectedModality : true) &&
-             (selectedMainMuscle ? ex.mainMuscle === selectedMainMuscle : true)
+             (selectedMainMuscle ? ex.mainMuscle === selectedMainMuscle : true) &&
+             (selectedMovement ? ex.keyMovement === selectedMovement : true)
     })
-  }, [sortedExercises, selectedModality, selectedMainMuscle])
+  }, [sortedExercises, selectedModality, selectedMainMuscle, selectedMovement])
 
   const modalities = useMemo(() => {
     const set = new Set(sortedExercises.map(ex => ex.type))
@@ -35,6 +38,11 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
 
   const mainMuscles = useMemo(() => {
     const set = new Set(sortedExercises.map(ex => ex.mainMuscle))
+    return Array.from(set).sort()
+  }, [sortedExercises])
+
+  const movements = useMemo(() => {
+    const set = new Set(sortedExercises.map(ex => ex.keyMovement).filter(Boolean))
     return Array.from(set).sort()
   }, [sortedExercises])
 
@@ -51,6 +59,12 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
           <option value="">All Main Muscles</option>
           {mainMuscles.map(mm => (
             <option key={mm} value={mm}>{mm}</option>
+          ))}
+        </select>
+        <select value={selectedMovement} onChange={e => setSelectedMovement(e.target.value)}>
+          <option value="">All Movements</option>
+          {movements.map(mv => (
+            <option key={mv} value={mv}>{mv}</option>
           ))}
         </select>
       </div>
