@@ -39,7 +39,7 @@ const Card = () => {
   useEffect(() => {
     if (!workoutExercises.length) {
       const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
-      const sortedModalities = [...new Set(exercises.map(ex => ex.type))].sort((a, b) => orderMap[a] - orderMap[b])
+      const sortedModalities = Array.from(new Set(exercises.map(ex => ex.type))).sort((a, b) => orderMap[a] - orderMap[b])
       const orderedExercises: string[] = []
       sortedModalities.forEach(mod => {
         exercises.filter(ex => ex.type === mod).forEach(ex => orderedExercises.push(ex.name))
