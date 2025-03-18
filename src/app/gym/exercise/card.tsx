@@ -152,9 +152,9 @@ const Card = () => {
         handleKeyDown={handleKeyDown}
       />
       <BestPractice selectedExercise={selectedExercise} />
-      <div className={styles.completeContainer}>
-        <button onClick={completeExercise} className={styles.completeButton}>
-          Complete Exercise
+      <div onClick={completeExercise} className={styles.completeContainer}>
+        <button className={styles.completeButton}>
+          Exercise Completed
         </button>
       </div>
     </div>
