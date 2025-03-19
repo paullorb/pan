@@ -3,9 +3,7 @@ import React, { useState, useRef } from 'react'
 import Weekday from '../cal/weekDay'
 import MonthNavigation from '../cal/monthNavigation'
 import YearNavigation from '../cal/yearNavigation'
-import Category from '../category/category'
 import styles from './header.module.css'
-import Categories from '../category/categories'
 import { useAuth } from '../auth/authContext'
 import EntryInput from 'app/entry/entryInput'
 import { useCalendar } from 'app/cal/calendarContext'
@@ -49,13 +47,7 @@ const Header: React.FC = () => {
           <MonthNavigation />
           <YearNavigation />
         </div>
-        <Category isShown={showCategories} onToggle={() => setShowCategories(prev => !prev)} />
       </div>
-      {showCategories && (
-        <div className={styles.bottom}>
-          <Categories />
-        </div>
-      )}
     </header>
   )
 }
