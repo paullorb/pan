@@ -11,6 +11,7 @@ export type ExercisePayload = {
 
 type ExerciseContextType = {
   createExercise: (payload: ExercisePayload) => Promise<void>
+  deleteExercise: (exerciseId: string) => Promise<void>
 }
 
 const ExerciseContext = createContext<ExerciseContextType | undefined>(undefined)
@@ -30,8 +31,18 @@ export const ExerciseProvider = ({ children }: { children: ReactNode }) => {
     })
   }, [user])
 
+  const deleteExercise = useCallback(async (exerciseId: string) => {
+    if (!user?.token) return
+    await fetch(`/api/exercises?exerciseId=${exerciseId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${user.token}`
+      }
+    })
+  }, [user])
+
   return (
-    <ExerciseContext.Provider value={{ createExercise }}>
+    <ExerciseContext.Provider value={{ createExercise, deleteExercise }}>
       {children}
     </ExerciseContext.Provider>
   )

@@ -4,7 +4,7 @@ import styles from "./card.module.css"
 import exercises, { modalities } from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
-import { slugify } from "./utils"
+import { slugify, daysBetween } from "./utils"
 import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
@@ -20,18 +20,13 @@ type DetailsType = {
   reps: string
 }
 
-function daysBetween(a: Date, b: Date) {
-  const diff = b.getTime() - a.getTime()
-  return Math.floor(diff / (1000 * 60 * 60 * 24))
-}
-
 const Card = () => {
   const defaultExerciseObj = exercises[0]
   const defaultDetails = (modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
-  const { createExercise } = useExercise()
+  const { createExercise, deleteExercise } = useExercise()
   const { exercises: workoutExercises, setExercises, setCurrentIndex } = useWorkout()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
@@ -55,6 +50,7 @@ const Card = () => {
     const mod = modalities.find(m => m.name === newExercise?.type)
     setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
     setDropdownOpen(false)
+    setLastDoneDate(undefined)
   }
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
     const newSets = [...exerciseDetails.sets]
@@ -80,24 +76,30 @@ const Card = () => {
     setExerciseDetails({ ...exerciseDetails, [field]: value })
   }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-  if (e.key === "Enter") e.currentTarget.blur()
+    if (e.key === "Enter") e.currentTarget.blur()
   }
-  const completeExercise = () => {
+  const toggleCompletion = async () => {
     if (!user) return
     const exercise = exercises.find(ex => ex.name === selectedExercise)
     if (!exercise) return
-    const now = new Date().toISOString()
-    setLastDoneDate(now)
-    const payload = {
-      exerciseId: slugify(selectedExercise),
-      type: exercise.type,
-      details: exerciseDetails,
-      date: now
-    }
-    createExercise(payload)
-    const exerciseIndex = workoutExercises.indexOf(selectedExercise)
-    if (exerciseIndex !== -1) {
-      setCurrentIndex(exerciseIndex + 1)
+    const exerciseIdSlug = slugify(selectedExercise)
+    if (!lastDoneDate) {
+      const now = new Date().toISOString()
+      setLastDoneDate(now)
+      const payload = {
+        exerciseId: exerciseIdSlug,
+        type: exercise.type,
+        details: exerciseDetails,
+        date: now
+      }
+      createExercise(payload)
+      const exerciseIndex = workoutExercises.indexOf(selectedExercise)
+      if (exerciseIndex !== -1) {
+        setCurrentIndex(exerciseIndex + 1)
+      }
+    } else {
+      await deleteExercise(exerciseIdSlug)
+      setLastDoneDate(undefined)
     }
   }
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
@@ -152,9 +154,9 @@ const Card = () => {
         handleKeyDown={handleKeyDown}
       />
       <BestPractice selectedExercise={selectedExercise} />
-      <div onClick={completeExercise} className={styles.completeContainer}>
+      <div onClick={toggleCompletion} className={styles.completeContainer}>
         <button className={styles.completeButton}>
-          Exercise Completed
+          {lastDoneDate ? "Mark as Incomplete" : "Exercise Completed"}
         </button>
       </div>
     </div>
