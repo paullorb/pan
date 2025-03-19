@@ -10,6 +10,8 @@ const defaultCategories: Category[] = [
   { name: 'Gym', backgroundColor: '#D4EDDA' },
   { name: 'Personal', backgroundColor: '#D1ECF1' },
   { name: 'Work', backgroundColor: '#FFF3CD' },
+  { name: 'Health', backgroundColor: '#F8D7DA' },
+  { name: 'Social', backgroundColor: '#CCE5FF' },
 ];
 
 const CategoryContext = createContext<Category[]>(defaultCategories);
