@@ -48,7 +48,7 @@
 }
 
 .input {
-  padding: var(--spacing-xs);
+  padding: var(--spacing-xs) 0;
   border-top: none;
   border-left: none;
   border-right: none;
