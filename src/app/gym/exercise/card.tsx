@@ -22,7 +22,9 @@ type DetailsType = {
 
 const Card = () => {
   const defaultExerciseObj = exercises[0]
-  const defaultDetails = (modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
+  const defaultDetails =
+    (modalities.find(m => m.name === defaultExerciseObj.type)
+      ?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
@@ -34,7 +36,9 @@ const Card = () => {
   useEffect(() => {
     if (!workoutExercises.length) {
       const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
-      const sortedModalities = Array.from(new Set(exercises.map(ex => ex.type))).sort((a, b) => orderMap[a] - orderMap[b])
+      const sortedModalities = Array.from(new Set(exercises.map(ex => ex.type))).sort(
+        (a, b) => orderMap[a] - orderMap[b]
+      )
       const orderedExercises: string[] = []
       sortedModalities.forEach(mod => {
         exercises.filter(ex => ex.type === mod).forEach(ex => orderedExercises.push(ex.name))
@@ -53,8 +57,11 @@ const Card = () => {
     setLastDoneDate(undefined)
   }
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
-    const newSets = [...exerciseDetails.sets]
-    newSets[index] = { ...newSets[index], [field]: value }
+    const newSets = exerciseDetails.sets.map(set => ({ ...set }))
+    newSets[index][field] = value
+    for (let i = index + 1; i < newSets.length; i++) {
+      newSets[i][field] = value
+    }
     setExerciseDetails({ ...exerciseDetails, sets: newSets })
   }
   const addSet = () => {
@@ -106,7 +113,8 @@ const Card = () => {
   let statusText = ""
   if (lastDoneDate) {
     const diff = daysBetween(new Date(lastDoneDate), new Date())
-    statusText = diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
+    statusText =
+      diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
   }
 
   useEffect(() => {
