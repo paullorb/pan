@@ -5,6 +5,7 @@ import styles from "./customSelect.module.css"
 type CustomSelectProps = {
   options: string[]
   value: string
+  unit?: string
   onChange: (value: string) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void
   className?: string
@@ -13,6 +14,7 @@ type CustomSelectProps = {
 export default function CustomSelect({
   options,
   value,
+  unit,
   onChange,
   onKeyDown,
   className
@@ -37,7 +39,7 @@ export default function CustomSelect({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
   
-  // When open, scroll the container so that the selected option is centered.
+  // When open, center the selected option
   useEffect(() => {
     if (open && containerRef.current) {
       const selectedIndex = options.indexOf(value)
@@ -52,13 +54,13 @@ export default function CustomSelect({
   
   return (
     <div className={`${styles.customSelect} ${className || ""}`} ref={wrapperRef}>
-      <div
-        className={styles.selectTrigger}
-        onClick={toggleOpen}
-        onKeyDown={onKeyDown}
+      <div 
+        className={styles.selectTrigger} 
+        onClick={toggleOpen} 
+        onKeyDown={onKeyDown} 
         tabIndex={0}
       >
-        {value}
+        {value}{unit ? ` ${unit}` : ""}
       </div>
       {open && (
         <div className={styles.optionsContainer} ref={containerRef}>
@@ -71,6 +73,7 @@ export default function CustomSelect({
               {opt}
             </div>
           ))}
+          {unit && <div className={styles.fixedUnit}>{unit}</div>}
         </div>
       )}
     </div>

@@ -18,7 +18,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  height: 150px; /* Assuming each option is ~30px, showing 5 options total */
+  height: 150px; /* ~5 options if each is ~30px */
   overflow-y: auto;
   top: 50%;
   transform: translateY(-50%);
@@ -28,7 +28,7 @@
   border-radius: 4px;
 }
 
-/* Each option styling */
+/* Option styling */
 .option {
   padding: 8px;
   font-size: 0.9rem;
@@ -63,4 +63,15 @@
 .optionsContainer::after {
   bottom: 0;
   background: linear-gradient(to top, #fff, transparent);
+}
+
+/* Fixed unit styling inside the scrollable container */
+.fixedUnit {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-weight: bold;
+  color: #333;
 }

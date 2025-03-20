@@ -46,16 +46,16 @@ export default function Details({
               onChange={val => updateSet(index, "reps", val)}
               onKeyDown={handleKeyDown}
               className={styles.repsInput}
+              unit="reps"
             />
-            <span className={styles.unit}>x</span>
             <CustomSelect
               options={weightRange}
               value={set.weight}
               onChange={val => updateSet(index, "weight", val)}
               onKeyDown={handleKeyDown}
               className={styles.weightsInput}
+              unit="kg"
             />
-            <span className={styles.unit}>kg</span>
           </div>
         ))}
         <div className={styles.buttonContainer}>
