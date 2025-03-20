@@ -14,25 +14,29 @@
   font-weight: 500;
 }
 
-.optionsContainer {
+.optionsWrapper {
   position: absolute;
   left: 0;
   right: 0;
-  height: 150px; /* ~5 options if each is ~30px */
-  overflow-y: auto;
+  height: 150px; /* Shows approx. 5 options */
   top: 50%;
   transform: translateY(-50%);
   border: 1px solid #ccc;
   background: #fff;
   z-index: 10;
   border-radius: 4px;
+  overflow: hidden;
 }
 
-/* Option styling */
+.optionsContainer {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 30px; /* Reserve space for the fixed unit */
+}
+
 .option {
   padding: 8px;
-  font-size: 0.9rem;
-  text-align: center;
+  text-align: right;
   transition: background 0.2s;
 }
 
@@ -44,9 +48,17 @@
   font-weight: bold;
 }
 
+.fixedUnit {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
 /* Gradient overlays for a wheel effect */
-.optionsContainer::before,
-.optionsContainer::after {
+.optionsWrapper::before,
+.optionsWrapper::after {
   content: "";
   position: absolute;
   left: 0;
@@ -55,23 +67,12 @@
   pointer-events: none;
 }
 
-.optionsContainer::before {
+.optionsWrapper::before {
   top: 0;
   background: linear-gradient(to bottom, #fff, transparent);
 }
 
-.optionsContainer::after {
+.optionsWrapper::after {
   bottom: 0;
   background: linear-gradient(to top, #fff, transparent);
-}
-
-/* Fixed unit styling inside the scrollable container */
-.fixedUnit {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  font-weight: bold;
-  color: #333;
 }

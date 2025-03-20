@@ -39,7 +39,7 @@ export default function CustomSelect({
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
   
-  // When open, center the selected option
+  // When open, scroll so the selected option is centered.
   useEffect(() => {
     if (open && containerRef.current) {
       const selectedIndex = options.indexOf(value)
@@ -47,7 +47,8 @@ export default function CustomSelect({
       if (!firstChild) return
       const optionHeight = firstChild.offsetHeight
       const containerHeight = containerRef.current.clientHeight
-      const scrollTop = selectedIndex * optionHeight - (containerHeight / 2 - optionHeight / 2)
+      const scrollTop =
+        selectedIndex * optionHeight - (containerHeight / 2 - optionHeight / 2)
       containerRef.current.scrollTop = scrollTop
     }
   }, [open, options, value])
@@ -63,16 +64,18 @@ export default function CustomSelect({
         {value}{unit ? ` ${unit}` : ""}
       </div>
       {open && (
-        <div className={styles.optionsContainer} ref={containerRef}>
-          {options.map(opt => (
-            <div
-              key={opt}
-              className={`${styles.option} ${opt === value ? styles.selectedOption : ""}`}
-              onClick={() => handleOptionClick(opt)}
-            >
-              {opt}
-            </div>
-          ))}
+        <div className={styles.optionsWrapper}>
+          <div className={styles.optionsContainer} ref={containerRef}>
+            {options.map(opt => (
+              <div
+                key={opt}
+                className={`${styles.option} ${opt === value ? styles.selectedOption : ""}`}
+                onClick={() => handleOptionClick(opt)}
+              >
+                {opt}
+              </div>
+            ))}
+          </div>
           {unit && <div className={styles.fixedUnit}>{unit}</div>}
         </div>
       )}
