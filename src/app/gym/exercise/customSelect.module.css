@@ -1,25 +1,66 @@
 .customSelect {
-  text-align: center;
   position: relative;
   width: 100px;
   border: 1px solid #ccc;
+  text-align: center;
   cursor: pointer;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #fafafa, #f0f0f0);
 }
-.selected {
+
+.selectTrigger {
   padding: 8px;
+  background: #fff;
+  font-weight: 500;
 }
-.options {
+
+.optionsContainer {
   position: absolute;
-  top: 100%;
   left: 0;
   right: 0;
+  height: 150px; /* Assuming each option is ~30px, showing 5 options total */
+  overflow-y: auto;
+  top: 50%;
+  transform: translateY(-50%);
   border: 1px solid #ccc;
   background: #fff;
   z-index: 10;
+  border-radius: 4px;
 }
+
+/* Each option styling */
 .option {
   padding: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background 0.2s;
 }
+
 .option:hover {
-  background: #eee;
+  background: rgba(200, 200, 200, 0.3);
+}
+
+.selectedOption {
+  font-weight: bold;
+}
+
+/* Gradient overlays for a wheel effect */
+.optionsContainer::before,
+.optionsContainer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20px;
+  pointer-events: none;
+}
+
+.optionsContainer::before {
+  top: 0;
+  background: linear-gradient(to bottom, #fff, transparent);
+}
+
+.optionsContainer::after {
+  bottom: 0;
+  background: linear-gradient(to top, #fff, transparent);
 }

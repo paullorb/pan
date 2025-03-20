@@ -18,13 +18,15 @@ export default function CustomSelect({
   className
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  
   const toggleOpen = () => setOpen(prev => !prev)
   const handleOptionClick = (option: string) => {
     onChange(option)
     setOpen(false)
   }
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -32,31 +34,40 @@ export default function CustomSelect({
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
+    return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+  
+  // When open, scroll the container so that the selected option is centered.
   useEffect(() => {
     if (open && containerRef.current) {
       const selectedIndex = options.indexOf(value)
-      if (selectedIndex < 0) return
       const firstChild = containerRef.current.firstElementChild as HTMLElement
       if (!firstChild) return
-      const itemHeight = firstChild.offsetHeight
+      const optionHeight = firstChild.offsetHeight
       const containerHeight = containerRef.current.clientHeight
-      const scrollTop = selectedIndex * itemHeight - (containerHeight / 2 - itemHeight / 2)
+      const scrollTop = selectedIndex * optionHeight - (containerHeight / 2 - optionHeight / 2)
       containerRef.current.scrollTop = scrollTop
     }
   }, [open, options, value])
+  
   return (
     <div className={`${styles.customSelect} ${className || ""}`} ref={wrapperRef}>
-      <div className={styles.selected} onClick={toggleOpen} onKeyDown={onKeyDown} tabIndex={0}>
+      <div
+        className={styles.selectTrigger}
+        onClick={toggleOpen}
+        onKeyDown={onKeyDown}
+        tabIndex={0}
+      >
         {value}
       </div>
       {open && (
-        <div className={styles.options} ref={containerRef} style={{ maxHeight: "150px", overflowY: "auto" }}>
+        <div className={styles.optionsContainer} ref={containerRef}>
           {options.map(opt => (
-            <div key={opt} className={styles.option} onClick={() => handleOptionClick(opt)}>
+            <div
+              key={opt}
+              className={`${styles.option} ${opt === value ? styles.selectedOption : ""}`}
+              onClick={() => handleOptionClick(opt)}
+            >
               {opt}
             </div>
           ))}
