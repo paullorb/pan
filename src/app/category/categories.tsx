@@ -1,6 +1,7 @@
 "use client"
 import React from "react"
 import { useCategory, Category } from "../category/categoryContext"
+import { darkenColor } from "../category/utils"
 import styles from "./categories.module.css"
 
 interface CategoriesProps {
@@ -21,23 +22,44 @@ const Categories: React.FC<CategoriesProps> = ({
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.button} ${onlyOpen ? styles.active : ""}`}
+        className={styles.button}
         onClick={onToggleOnlyOpen}
+        style={
+          onlyOpen
+            ? {
+                backgroundColor: "#e0e0e0",
+                border: "1px solid #333",
+                color: "#333",
+              }
+            : {}
+        }
       >
         ✔
       </button>
-      {categories.map((cat: Category) => (
-        <button
-          key={cat.name}
-          className={`${styles.button} ${
-            selectedCategory === cat.name ? styles.active : ""
-          }`}
-          style={{ backgroundColor: cat.backgroundColor }}
-          onClick={() => onSelectCategory(cat.name)}
-        >
-          {cat.name}
-        </button>
-      ))}
+      {categories.map((cat: Category) => {
+        const isSelected = selectedCategory === cat.name
+        const inlineStyle = isSelected
+          ? {
+              backgroundColor: cat.backgroundColor,
+              border: `1px solid ${darkenColor(cat.backgroundColor, 10)}`,
+              color: darkenColor(cat.backgroundColor, 50),
+            }
+          : {
+              backgroundColor: "#e0e0e0",
+              border: "1px solid transparent",
+              color: "#333",
+            }
+        return (
+          <button
+            key={cat.name}
+            className={styles.button}
+            style={inlineStyle}
+            onClick={() => onSelectCategory(cat.name)}
+          >
+            {cat.name}
+          </button>
+        )
+      })}
     </div>
   )
 }
