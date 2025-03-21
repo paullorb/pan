@@ -1,28 +1,37 @@
 "use client"
 import React from "react"
-import { useCategory, Category } from "./categoryContext"
+import { useCategory, Category } from "../category/categoryContext"
 import styles from "./categories.module.css"
 
 interface CategoriesProps {
   selectedCategory: string | null
-  onSelectCategory: (category: string | null) => void
+  onlyOpen: boolean
+  onSelectCategory: (category: string) => void
+  onToggleOnlyOpen: () => void
 }
 
-const Categories: React.FC<CategoriesProps> = ({ selectedCategory, onSelectCategory }) => {
+const Categories: React.FC<CategoriesProps> = ({
+  selectedCategory,
+  onlyOpen,
+  onSelectCategory,
+  onToggleOnlyOpen,
+}) => {
   const categories = useCategory()
 
   return (
     <div className={styles.container}>
       <button
-        className={`${styles.button} ${selectedCategory === null ? styles.active : ""}`}
-        onClick={() => onSelectCategory(null)}
+        className={`${styles.button} ${onlyOpen ? styles.active : ""}`}
+        onClick={onToggleOnlyOpen}
       >
-        All
+        ✔
       </button>
       {categories.map((cat: Category) => (
         <button
           key={cat.name}
-          className={`${styles.button} ${selectedCategory === cat.name ? styles.active : ""}`}
+          className={`${styles.button} ${
+            selectedCategory === cat.name ? styles.active : ""
+          }`}
           style={{ backgroundColor: cat.backgroundColor }}
           onClick={() => onSelectCategory(cat.name)}
         >

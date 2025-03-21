@@ -9,9 +9,10 @@ import EntryList from "./entryList"
 
 interface EntryProps {
   selectedCategory?: string | null
+  onlyOpen?: boolean
 }
 
-const Entry: React.FC<EntryProps> = ({ selectedCategory = null }) => {
+const Entry: React.FC<EntryProps> = ({ selectedCategory = null, onlyOpen = false }) => {
   const { selectedDate } = useCalendar()
   const { entries, fetchDayEntries } = useEntry()
   const { user } = useAuth()
@@ -22,9 +23,13 @@ const Entry: React.FC<EntryProps> = ({ selectedCategory = null }) => {
   }, [keyDate, user, fetchDayEntries])
 
   const selectedEntries = entries[keyDate] || []
-  const filteredEntries = selectedCategory
+  let filteredEntries = selectedCategory
     ? selectedEntries.filter((entry) => entry.category === selectedCategory)
     : selectedEntries
+
+  if (onlyOpen) {
+    filteredEntries = filteredEntries.filter((entry) => !entry.done)
+  }
 
   return (
     <div className={styles.container}>
