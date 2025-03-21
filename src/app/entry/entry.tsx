@@ -7,7 +7,11 @@ import { getDateKey } from "./utils"
 import { useAuth } from "../auth/authContext"
 import EntryList from "./entryList"
 
-const Entry: React.FC = () => {
+interface EntryProps {
+  selectedCategory?: string | null
+}
+
+const Entry: React.FC<EntryProps> = ({ selectedCategory = null }) => {
   const { selectedDate } = useCalendar()
   const { entries, fetchDayEntries } = useEntry()
   const { user } = useAuth()
@@ -18,10 +22,13 @@ const Entry: React.FC = () => {
   }, [keyDate, user, fetchDayEntries])
 
   const selectedEntries = entries[keyDate] || []
+  const filteredEntries = selectedCategory
+    ? selectedEntries.filter((entry) => entry.category === selectedCategory)
+    : selectedEntries
 
   return (
     <div className={styles.container}>
-      <EntryList entries={selectedEntries} />
+      <EntryList entries={filteredEntries} />
     </div>
   )
 }

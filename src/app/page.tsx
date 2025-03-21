@@ -1,9 +1,9 @@
-import CalendarTable from './cal/calendarTable';
-import Entry from './entry/entry';
-import Nav from './nav/nav';
-import Header from './header/header';
-import styles from './aesthetics/page.module.css';
-import './aesthetics/globals.css';
+import CalendarTable from "./cal/calendarTable"
+import CategoryEntryFilter from "./entry/categoryEntryFilter"
+import Nav from "./nav/nav"
+import Header from "./header/header"
+import styles from "./aesthetics/page.module.css"
+import "./aesthetics/globals.css"
 
 export default function NewCal() {
   return (
@@ -12,8 +12,8 @@ export default function NewCal() {
       <Header />
       <main className={styles.main}>
         <CalendarTable />
-        <Entry />
+        <CategoryEntryFilter />
       </main>
     </div>
-  );
+  )
 }

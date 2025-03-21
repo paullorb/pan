@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.active {
+  border: 2px solid #333;
+}
