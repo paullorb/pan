@@ -47,10 +47,11 @@ const exercises = [
   { name: 'chest opener', mainMuscle: 'chest', type: 'stretch', bestPractice: 'Open your arms wide and gently stretch your chest muscles', keyMovement: '' },
   { name: 'wrist flexor stretch', mainMuscle: 'arms', type: 'stretch', bestPractice: 'Gently pull your fingers back and hold to stretch your wrist flexors', keyMovement: '' },
   { name: 'recumbent bike', mainMuscle: 'legs', type: 'cardio', bestPractice: 'Adjust the seat for proper alignment and focus on a smooth pedal stroke', keyMovement: '' },
+  { name: 'ab rollout', mainMuscle: 'core', type: 'weight', bestPractice: 'Keep your core engaged and avoid arching your back during the movement', keyMovement: '' },
+  { name: 'skillmill', mainMuscle: 'legs', type: 'cardio', bestPractice: 'Maintain an upright posture and control your pace for optimal performance', keyMovement: '' }
 ]
 
 export default exercises
-
 
 const modalities = [
   { 
