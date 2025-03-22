@@ -25,6 +25,7 @@
   background: #fff;
   z-index: 10;
   overflow: hidden;
+  border: 1px solid #ccc;
 }
 
 .optionsContainer {
