@@ -6,13 +6,25 @@
 }
 
 .button {
+  background-color: var(--default-bg-color, #e0e0e0);
+  border: var(--default-border, 1px solid transparent);
+  color: var(--default-color, #333);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition: transform 0.1s ease-in-out;
+  transition: transform 0.1s ease-in-out, background-color 0.2s, border 0.2s, color 0.2s;
   font-size: 0.9rem;
 }
 
 .button:hover {
+  background-color: var(--bg-color);
+  border: var(--border-color);
+  color: var(--text-color);
   transform: scale(1.05);
+}
+
+.selected {
+  background-color: var(--bg-color) !important;
+  border: var(--border-color) !important;
+  color: var(--text-color) !important;
 }
