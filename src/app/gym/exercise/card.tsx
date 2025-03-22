@@ -8,7 +8,6 @@ import { slugify, daysBetween } from "./utils"
 import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
-import ProgressLine from "./progressLine"
 import { useWorkout } from "../workout/workoutContext"
 import BestPractice from "./bestPractice"
 
