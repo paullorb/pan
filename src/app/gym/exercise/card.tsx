@@ -21,12 +21,12 @@ type DetailsType = {
 const Card = () => {
   const defaultExerciseObj = exercises[0]
   const defaultDetails =
-    (modalities.find(m => m.name === defaultExerciseObj.type)
-      ?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
+    (modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails as DetailsType) ||
+    { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
-  const { createExercise, deleteExercise } = useExercise()
+  const { createExercise, deleteExercise, getExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
 
@@ -99,24 +99,19 @@ const Card = () => {
   useEffect(() => {
     if (!user) return
     const fetchExisting = async () => {
-      const res = await fetch(`/api/exercises?exerciseId=${slugify(selectedExercise)}`, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      })
-      if (res.ok) {
-        const data = await res.json()
-        if (data.exercise) {
-          setExerciseDetails(data.exercise.details)
-          setLastDoneDate(data.exercise.date)
-        } else {
-          const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj
-          const mod = modalities.find(m => m.name === currentExercise.type)
-          setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
-          setLastDoneDate(undefined)
-        }
+      const exercise = await getExercise(slugify(selectedExercise))
+      if (exercise) {
+        setExerciseDetails(exercise.details)
+        setLastDoneDate(exercise.date)
+      } else {
+        const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj
+        const mod = modalities.find(m => m.name === currentExercise.type)
+        setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
+        setLastDoneDate(undefined)
       }
     }
     fetchExisting()
-  }, [user, selectedExercise, defaultExerciseObj, defaultDetails])
+  }, [user, selectedExercise, defaultExerciseObj, defaultDetails, getExercise])
 
   return (
     <div className={styles.card}>

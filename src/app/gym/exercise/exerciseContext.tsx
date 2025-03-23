@@ -26,7 +26,7 @@ export const ExerciseProvider = ({ children }: { children: ReactNode }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${user.token}`
+        Authorization: `Bearer ${user.token}`
       },
       body: JSON.stringify(payload)
     })
