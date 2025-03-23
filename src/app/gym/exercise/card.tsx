@@ -8,7 +8,6 @@ import { slugify, daysBetween } from "./utils"
 import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
-import { useWorkout } from "../workout/workoutContext"
 import BestPractice from "./bestPractice"
 
 type SetType = { reps: string; weight: string }
@@ -28,23 +27,8 @@ const Card = () => {
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
   const { user } = useAuth()
   const { createExercise, deleteExercise } = useExercise()
-  const { exercises: workoutExercises, setExercises, setCurrentIndex } = useWorkout()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
-
-  useEffect(() => {
-    if (!workoutExercises.length) {
-      const orderMap: Record<string, number> = { cardio: 1, weight: 2, stretch: 3 }
-      const sortedModalities = Array.from(new Set(exercises.map(ex => ex.type))).sort(
-        (a, b) => orderMap[a] - orderMap[b]
-      )
-      const orderedExercises: string[] = []
-      sortedModalities.forEach(mod => {
-        exercises.filter(ex => ex.type === mod).forEach(ex => orderedExercises.push(ex.name))
-      })
-      setExercises(orderedExercises)
-    }
-  }, [workoutExercises, setExercises])
 
   const toggleDropdown = () => setDropdownOpen(prev => !prev)
   const onSelectExercise = (exerciseName: string) => {
@@ -99,10 +83,6 @@ const Card = () => {
         date: now
       }
       createExercise(payload)
-      const exerciseIndex = workoutExercises.indexOf(selectedExercise)
-      if (exerciseIndex !== -1) {
-        setCurrentIndex(exerciseIndex + 1)
-      }
     } else {
       await deleteExercise(exerciseIdSlug)
       setLastDoneDate(undefined)
@@ -163,7 +143,7 @@ const Card = () => {
       <BestPractice selectedExercise={selectedExercise} />
       <div onClick={toggleCompletion} className={styles.completeContainer}>
         <button className={styles.completeButton}>
-          {lastDoneDate ? "Mark as Incomplete" : "Exercise Completed"}
+          {lastDoneDate ? "Mark as Incomplete" : "Mark as Completed"}
         </button>
       </div>
     </div>
