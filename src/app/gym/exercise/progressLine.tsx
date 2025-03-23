@@ -14,7 +14,7 @@ export default function ProgressLine() {
         </div>
           <div
             className={styles.item}
-          >
+>
             <div
               className={styles.itemContent}
             >

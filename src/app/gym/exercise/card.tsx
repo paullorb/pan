@@ -9,18 +9,24 @@ import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
 import BestPractice from "./bestPractice"
-import type { DetailsType } from "./details"
+
+type SetType = { reps: string; weight: string }
+type DetailsType = {
+  sets: SetType[]
+  time: string
+  intensity: string
+  reps: string
+}
 
 const Card = () => {
   const defaultExerciseObj = exercises[0]
   const defaultDetails =
-    (modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails as DetailsType) ||
-    { sets: [], time: "", intensity: "", reps: "" }
+    (modalities.find(m => m.name === defaultExerciseObj.type)
+      ?.defaultDetails as DetailsType) || { sets: [], time: "", intensity: "", reps: "" }
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState<DetailsType>(defaultDetails)
-  const [referenceDetails, setReferenceDetails] = useState<DetailsType | null>(null)
   const { user } = useAuth()
-  const { createExercise, deleteExercise, getExercise } = useExercise()
+  const { createExercise, deleteExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
 
@@ -32,7 +38,6 @@ const Card = () => {
     setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
     setDropdownOpen(false)
     setLastDoneDate(undefined)
-    setReferenceDetails(null)
   }
   const updateSet = (index: number, field: "reps" | "weight", value: string) => {
     const newSets = exerciseDetails.sets.map(set => ({ ...set }))
@@ -87,21 +92,31 @@ const Card = () => {
   let statusText = ""
   if (lastDoneDate) {
     const diff = daysBetween(new Date(lastDoneDate), new Date())
-    statusText = diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
+    statusText =
+      diff === 0 ? "(done today)" : `(${diff} day${diff > 1 ? "s" : ""} since last done)`
   }
 
   useEffect(() => {
     if (!user) return
     const fetchExisting = async () => {
-      const exerciseIdSlug = slugify(selectedExercise)
-      const data = await getExercise(exerciseIdSlug)
-      if (data) {
-        setReferenceDetails(data.details)
-        setLastDoneDate(data.date)
+      const res = await fetch(`/api/exercises?exerciseId=${slugify(selectedExercise)}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.exercise) {
+          setExerciseDetails(data.exercise.details)
+          setLastDoneDate(data.exercise.date)
+        } else {
+          const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj
+          const mod = modalities.find(m => m.name === currentExercise.type)
+          setExerciseDetails((mod?.defaultDetails as DetailsType) || defaultDetails)
+          setLastDoneDate(undefined)
+        }
       }
     }
     fetchExisting()
-  }, [user, selectedExercise, defaultExerciseObj, defaultDetails, getExercise])
+  }, [user, selectedExercise, defaultExerciseObj, defaultDetails])
 
   return (
     <div className={styles.card}>
@@ -115,20 +130,6 @@ const Card = () => {
           </div>
         )}
       </div>
-      {referenceDetails && (
-        <div className={styles.referencePanel}>
-          {exerciseType === "weight" ? (
-            <>
-              <div>Last set: {referenceDetails.sets[referenceDetails.sets.length - 1].reps} reps at {referenceDetails.sets[referenceDetails.sets.length - 1].weight} kg</div>
-            </>
-          ) : (
-            <>
-              <div>Time: {referenceDetails.time} {exerciseType === "cardio" ? "min" : "sec"}</div>
-              <div>{exerciseType === "cardio" ? "Intensity" : "Reps"}: {exerciseType === "cardio" ? referenceDetails.intensity : referenceDetails.reps}</div>
-            </>
-          )}
-        </div>
-      )}
       <Status imageSrc={`/${selectedExercise}.png`} />
       <Details
         exerciseType={exerciseType}
