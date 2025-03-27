@@ -136,7 +136,10 @@ const Card = () => {
         handleKeyDown={handleKeyDown}
       />
       <BestPractice selectedExercise={selectedExercise} />
-      <div onClick={toggleCompletion} className={styles.completeContainer}>
+      <div
+        onClick={toggleCompletion}
+        className={`${styles.completeContainer} ${lastDoneDate ? styles.completed : styles.incomplete}`}
+      >
         <button className={styles.completeButton}>
           {lastDoneDate ? "Mark as Incomplete" : "Mark as Completed"}
         </button>
