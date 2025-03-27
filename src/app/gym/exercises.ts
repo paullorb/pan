@@ -36,7 +36,6 @@ const exercises = [
   { name: 'shoulder stretch', mainMuscle: 'shoulders', type: 'stretch', bestPractice: 'Hold gently without bouncing to release shoulder tension', keyMovement: '' },
   { name: 'quad stretch', mainMuscle: 'legs', type: 'stretch', bestPractice: 'Keep your knee aligned and hold each side for balance', keyMovement: '' },
   { name: 'hamstring stretch', mainMuscle: 'legs', type: 'stretch', bestPractice: 'Keep your back straight and lean into the stretch slowly', keyMovement: '' },
-  { name: 'seated cable row', mainMuscle: 'back', type: 'weight', bestPractice: 'Pull with your back muscles and keep a slight bend in your elbows', keyMovement: 'pull' },
   { name: 'tricep stretch', mainMuscle: 'arms', type: 'stretch', bestPractice: 'Keep your arm close to your head and feel the stretch in your tricep', keyMovement: '' },
   { name: 'seated lower back rotational stretch', mainMuscle: 'back', type: 'stretch', bestPractice: 'Move slowly to avoid strain and feel a gentle twist in your lower back', keyMovement: '' },
   { name: 'seated neck stretch', mainMuscle: 'neck', type: 'stretch', bestPractice: 'Tilt your head slowly and gently hold to avoid tension', keyMovement: '' },
