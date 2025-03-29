@@ -31,7 +31,6 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
             className={`${styles.item} ${entry.done ? styles.done : ""}`}
             style={{ border: `3px solid ${borderColor}`, position: "relative" }}
           >
-            {/* Floating label appears only when a category is selected and the category list is not open */}
             {selectedCategory && selectedCat && !openCategories[key] && (
               <span
                 className={styles.categoryFloating}
