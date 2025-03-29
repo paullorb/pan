@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./entry.module.css";
 import { useEntry, Entry } from "./entryContext";
 import { useCategory, Category } from "../category/categoryContext";
@@ -11,7 +11,6 @@ interface EntryListProps {
 const EntryList: React.FC<EntryListProps> = ({ entries }) => {
   const { toggleEntryDone, updateEntryCategory } = useEntry();
   const categories = useCategory();
-  const [openCategories, setOpenCategories] = useState<{ [key: string]: boolean }>({});
 
   const sortedEntries = entries
     .map((entry, index) => ({ ...entry, originalIndex: index }))
@@ -31,29 +30,24 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
             className={`${styles.item} ${entry.done ? styles.done : ""}`}
             style={{ border: `3px solid ${borderColor}`, position: "relative" }}
           >
-            {selectedCategory && selectedCat && !openCategories[key] && (
+            {selectedCategory ? (
               <span
                 className={styles.categoryFloating}
                 style={{
-                  backgroundColor: selectedCat.backgroundColor,
-                  border: `1px solid ${darkenColor(selectedCat.backgroundColor, 10)}`,
+                  backgroundColor: selectedCat?.backgroundColor,
+                  border: `1px solid ${
+                    selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black"
+                  }`,
                 }}
                 onClick={() =>
-                  setOpenCategories((prev) => ({ ...prev, [key]: true }))
+                  updateEntryCategory(entry.date, entry._id || entry.originalIndex, null)
                 }
               >
                 {selectedCategory}
               </span>
-            )}
-            <span
-              className={styles.entryText}
-              onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
-            >
-              {entry.text}
-            </span>
-            <div className={styles.categoryContainer}>
-              {(selectedCategory === null || openCategories[key]) &&
-                categories.map((cat: Category) => (
+            ) : (
+              <div className={styles.categoryContainer}>
+                {categories.map((cat: Category) => (
                   <button
                     key={cat.name}
                     className={styles.categoryButton}
@@ -61,19 +55,25 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
                       backgroundColor: cat.backgroundColor,
                       border: `1px solid ${darkenColor(cat.backgroundColor, 10)}`,
                     }}
-                    onClick={() => {
+                    onClick={() =>
                       updateEntryCategory(
                         entry.date,
                         entry._id || entry.originalIndex,
                         cat.name
-                      );
-                      setOpenCategories((prev) => ({ ...prev, [key]: false }));
-                    }}
+                      )
+                    }
                   >
                     {cat.name}
                   </button>
                 ))}
-            </div>
+              </div>
+            )}
+            <span
+              className={styles.entryText}
+              onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
+            >
+              {entry.text}
+            </span>
           </li>
         );
       })}
