@@ -5,6 +5,7 @@ const EntrySchema = new Schema({
   text: { type: String, required: true },
   category: { type: String, default: null },
   done: { type: Boolean, default: false },
+  completedAt: { type: Date },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 })
 
