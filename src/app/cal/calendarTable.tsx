@@ -79,7 +79,11 @@ const CalendarTable: React.FC = () => {
                   onClick={() => setSelectedDate(cell.date)}
                 >
                   <div className={styles.cellWrapper}>
-                    {dayNumberContent}
+                    <div className={styles.dayNumberWrapper}>
+                      <div className={styles.side}></div>
+                      <div>{dayNumberContent}</div>
+                      <div className={styles.side}></div>
+                    </div>
                     {previews.length > 0 && (
                       <div className={styles.itemPreviews}>
                         {previews.map((entry, index) => {
