@@ -9,6 +9,9 @@ import { useEntry } from '../entry/entryContext';
 import { useAuth } from '../auth/authContext';
 import { useCategory } from 'app/category/categoryContext';
 
+const TotalEntriesCounter: React.FC<{ total: number }> = React.memo(({ total }) => <span>{total}</span>, (prev, next) => prev.total === next.total);
+const CompletedEntriesCounter: React.FC<{ completed: number }> = React.memo(({ completed }) => <span>{completed}</span>, (prev, next) => prev.completed === next.completed);
+
 const CalendarTable: React.FC = () => {
   const { selectedDate, setSelectedDate } = useCalendar();
   const { entries, fetchMonthEntries } = useEntry();
@@ -53,9 +56,9 @@ const CalendarTable: React.FC = () => {
                 cellMonth === today.getMonth() &&
                 cellDay === today.getDate();
               const dateKey = getDateKey(cell.date);
-              const previews = entries[dateKey]
-                ? entries[dateKey].filter(entry => !entry.done).slice(0, 10)
-                : [];
+              const dayEntries = entries[dateKey] || [];
+              const totalCount = dayEntries.length;
+              const completedCount = dayEntries.filter(entry => entry.done).length;
               let dayNumberContent;
               if (isSelected) {
                 dayNumberContent = (
@@ -84,32 +87,38 @@ const CalendarTable: React.FC = () => {
                       <div>{dayNumberContent}</div>
                       <div className={styles.side}></div>
                     </div>
-                    {previews.length > 0 && (
+                    <div className={styles.counter}>
+                      <TotalEntriesCounter total={totalCount} /> / <CompletedEntriesCounter completed={completedCount} />
+                    </div>
+                    {dayEntries.length > 0 && (
                       <div className={styles.itemPreviews}>
-                        {previews.map((entry, index) => {
-                          const categoryForEntry = entry.category
-                            ? categories.find(c => c.name === entry.category)
-                            : null;
-                          const previewClass = categoryForEntry
-                            ? `${styles.itemPreview} ${styles.itemPreviewCategory}`
-                            : styles.itemPreview;
-                          return (
-                            <div
-                              key={index}
-                              className={previewClass}
-                              style={
-                                categoryForEntry
-                                  ? ({
-                                      '--bg-color': categoryForEntry.backgroundColor,
-                                      '--border-color': darkenColor(categoryForEntry.backgroundColor, 10)
-                                    } as React.CSSProperties)
-                                  : undefined
-                              }
-                            >
-                              {entry.text.split(' ')[0]}
-                            </div>
-                          );
-                        })}
+                        {dayEntries
+                          .filter(entry => !entry.done)
+                          .slice(0, 10)
+                          .map((entry, index) => {
+                            const categoryForEntry = entry.category
+                              ? categories.find(c => c.name === entry.category)
+                              : null;
+                            const previewClass = categoryForEntry
+                              ? `${styles.itemPreview} ${styles.itemPreviewCategory}`
+                              : styles.itemPreview;
+                            return (
+                              <div
+                                key={index}
+                                className={previewClass}
+                                style={
+                                  categoryForEntry
+                                    ? ({
+                                        '--bg-color': categoryForEntry.backgroundColor,
+                                        '--border-color': darkenColor(categoryForEntry.backgroundColor, 10)
+                                      } as React.CSSProperties)
+                                    : undefined
+                                }
+                              >
+                                {entry.text.split(' ')[0]}
+                              </div>
+                            );
+                          })}
                       </div>
                     )}
                   </div>
