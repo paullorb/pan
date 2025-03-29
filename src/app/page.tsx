@@ -11,7 +11,6 @@ export default function NewCal() {
       <Nav />
       <Header />
       <main className={styles.main}>
-        <CalendarTable />
         <CategoryEntryFilter />
       </main>
     </div>
