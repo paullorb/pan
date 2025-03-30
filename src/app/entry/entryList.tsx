@@ -3,6 +3,7 @@ import styles from "./entry.module.css";
 import { useEntry, Entry } from "./entryContext";
 import { useCategory, Category } from "../category/categoryContext";
 import { darkenColor } from "../category/utils";
+import SubEntry from "./subEntry";
 
 interface EntryListProps {
   entries: Entry[];
@@ -35,9 +36,7 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
                 className={styles.categoryFloating}
                 style={{
                   backgroundColor: selectedCat?.backgroundColor,
-                  border: `1px solid ${
-                    selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black"
-                  }`,
+                  border: `1px solid ${selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black"}`,
                 }}
                 onClick={() =>
                   updateEntryCategory(entry.date, entry._id || entry.originalIndex, null)
@@ -56,11 +55,7 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
                       border: `1px solid ${darkenColor(cat.backgroundColor, 10)}`,
                     }}
                     onClick={() =>
-                      updateEntryCategory(
-                        entry.date,
-                        entry._id || entry.originalIndex,
-                        cat.name
-                      )
+                      updateEntryCategory(entry.date, entry._id || entry.originalIndex, cat.name)
                     }
                   >
                     {cat.name}
@@ -68,12 +63,15 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
                 ))}
               </div>
             )}
-            <span
-              className={styles.entryText}
-              onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
-            >
-              {entry.text}
-            </span>
+            <div className={styles.itemContent}>
+              <SubEntry />
+              <span
+                className={styles.entryText}
+                onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
+              >
+                {entry.text}
+              </span>
+            </div>
           </li>
         );
       })}
