@@ -64,7 +64,8 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
               </div>
             )}
             <div className={styles.itemContent}>
-              <SubEntry />
+              {/* Pass a valid entryId to the SubEntry component */}
+              <SubEntry entryId={entry._id || entry.originalIndex.toString()} />
               <span
                 className={styles.entryText}
                 onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}

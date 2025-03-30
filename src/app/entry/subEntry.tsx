@@ -3,16 +3,33 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./subentry.module.css";
 
 interface SubEntryItem {
+  _id: string;
+  entryId: string;
   text: string;
   done: boolean;
 }
 
-const SubEntry: React.FC = () => {
+interface SubEntryProps {
+  entryId: string;
+}
+
+const SubEntry: React.FC<SubEntryProps> = ({ entryId }) => {
   const [subEntries, setSubEntries] = useState<SubEntryItem[]>([]);
   const [isInputActive, setInputActive] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchSubEntries = async () => {
+      const res = await fetch(`/api/subentry?entryId=${entryId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSubEntries(data.subEntries);
+      }
+    };
+    fetchSubEntries();
+  }, [entryId]);
 
   useEffect(() => {
     if (isInputActive && inputRef.current) {
@@ -31,20 +48,36 @@ const SubEntry: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isInputActive]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
-      setSubEntries(prev => [...prev, { text: inputValue.trim(), done: false }]);
+      const res = await fetch("/api/subentry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entryId, text: inputValue.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSubEntries(prev => [...prev, data.subEntry]);
+      }
       setInputValue("");
       setInputActive(false);
     }
   };
 
-  const toggleSubEntryDone = (index: number) => {
-    setSubEntries(prev => {
-      const newSubs = [...prev];
-      newSubs[index] = { ...newSubs[index], done: !newSubs[index].done };
-      return newSubs;
+  const toggleSubEntryDone = async (subEntryId: string, index: number) => {
+    const res = await fetch("/api/subentry", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ subEntryId }),
     });
+    if (res.ok) {
+      const data = await res.json();
+      setSubEntries(prev => {
+        const newSubs = [...prev];
+        newSubs[index] = data.subEntry;
+        return newSubs;
+      });
+    }
   };
 
   return (
@@ -61,20 +94,19 @@ const SubEntry: React.FC = () => {
           />
         </div>
       ) : (
-        <button onClick={() => setInputActive(true)} className={styles.plusButton}>+</button>
+        <button onClick={() => setInputActive(true)} className={styles.plusButton}>
+          +
+        </button>
       )}
-      {/* You can decide to render previously added subentries here if needed */}
-      {!isInputActive &&
-        subEntries.map((sub, i) => (
-          <span
-            key={i}
-            onClick={() => toggleSubEntryDone(i)}
-            className={`${styles.subEntry} ${sub.done ? styles.done : ""}`}
-          >
-            {sub.text}
-          </span>
-        ))
-      }
+      {subEntries.map((sub, i) => (
+        <span
+          key={sub._id}
+          onClick={() => toggleSubEntryDone(sub._id, i)}
+          className={`${styles.subEntry} ${sub.done ? styles.done : ""}`}
+        >
+          {sub.text}
+        </span>
+      ))}
     </div>
   );
 };
