@@ -48,10 +48,14 @@
 }
 
 .input {
+  display: inline-block;
   padding: var(--spacing-xs) 0;
   border-top: none;
   border-left: none;
   border-right: none;
+  width: fit-content;
+  min-width: 50px;
+  white-space: nowrap;
 }
 
 .categoryFloating {
