@@ -9,6 +9,7 @@ import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
 import BestPractice from "./bestPractice"
+import LastDetails from "./lastDetails"
 
 type SetType = { reps: string; weight: string }
 type DetailsType = {
@@ -29,6 +30,7 @@ const Card = () => {
   const { createExercise, deleteExercise, getExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [lastDoneDate, setLastDoneDate] = useState<string | undefined>(undefined)
+  const lastSet = exerciseDetails.sets[exerciseDetails.sets.length - 1]
 
   const toggleDropdown = () => setDropdownOpen(prev => !prev)
   const onSelectExercise = (exerciseName: string) => {
@@ -126,6 +128,7 @@ const Card = () => {
         )}
       </div>
       <Status imageSrc={`/${selectedExercise}.png`} />
+      <LastDetails lastSet={lastSet} />
       <Details
         exerciseType={exerciseType}
         exerciseDetails={exerciseDetails}
