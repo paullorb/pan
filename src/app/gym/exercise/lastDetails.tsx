@@ -3,14 +3,25 @@
 import styles from "./lastDetails.module.css"
 
 type LastDetailsProps = {
-  lastSet: { reps: string; weight: string } | null
+  exerciseType: string
+  lastDetails: { reps?: string; weight?: string; time?: string; intensity?: string } | null
 }
-export default function LastDetails({ lastSet }: LastDetailsProps) {
-  if (!lastSet) return null
+
+export default function LastDetails({ exerciseType, lastDetails }: LastDetailsProps) {
+  if (!lastDetails) return null
   return (
     <div className={styles.container}>
-      <div className={styles.value}>{lastSet.reps} reps</div> 
-      <div className={styles.value}>{lastSet.weight} kg</div>
+      {exerciseType === "weight" ? (
+        <>
+          <div className={styles.value}>{lastDetails.reps} reps</div>
+          <div className={styles.value}>{lastDetails.weight} kg</div>
+        </>
+      ) : exerciseType === "cardio" ? (
+        <>
+          <div className={styles.value}>{lastDetails.time} min</div>
+          <div className={styles.value}>{lastDetails.intensity} speed</div>
+        </>
+      ) : null}
     </div>
   )
 }

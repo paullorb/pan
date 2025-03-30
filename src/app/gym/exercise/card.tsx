@@ -91,6 +91,10 @@ const Card = () => {
     }
   }
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
+  const lastDetails =
+  exerciseType === "weight"
+    ? exerciseDetails.sets[exerciseDetails.sets.length - 1]
+    : { time: exerciseDetails.time, intensity: exerciseDetails.intensity }
   let statusText = ""
   if (lastDoneDate) {
     const diff = daysBetween(new Date(lastDoneDate), new Date())
@@ -128,7 +132,7 @@ const Card = () => {
         )}
       </div>
       <Status imageSrc={`/${selectedExercise}.png`} />
-      <LastDetails lastSet={lastSet} />
+      <LastDetails exerciseType={exerciseType} lastDetails={lastDetails} />
       <Details
         exerciseType={exerciseType}
         exerciseDetails={exerciseDetails}
