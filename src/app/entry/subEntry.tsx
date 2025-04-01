@@ -18,7 +18,6 @@ const SubEntry: React.FC<SubEntryProps> = ({ entryId }) => {
   const [isInputActive, setInputActive] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchSubEntries = async () => {
@@ -37,16 +36,10 @@ const SubEntry: React.FC<SubEntryProps> = ({ entryId }) => {
     }
   }, [isInputActive]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (isInputActive && containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setInputActive(false);
-        setInputValue("");
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isInputActive]);
+  const handleBlur = () => {
+    setInputActive(false);
+    setInputValue("");
+  };
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputValue.trim()) {
@@ -81,7 +74,7 @@ const SubEntry: React.FC<SubEntryProps> = ({ entryId }) => {
   };
 
   return (
-    <div ref={containerRef} className={styles.subEntryContainer}>
+    <div className={styles.subEntryContainer}>
       {isInputActive ? (
         <div className={styles.subEntryInput}>
           <input
@@ -90,6 +83,7 @@ const SubEntry: React.FC<SubEntryProps> = ({ entryId }) => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
+            onBlur={handleBlur}
             placeholder="subentry"
           />
         </div>
