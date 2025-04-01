@@ -33,11 +33,11 @@ const Card = () => {
       ])
 
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
-        setSets(today.sets)
-        setCompletedToday(true)
+        setSets(Array.isArray(today.sets) ? today.sets : []);
+        setCompletedToday(true);
       } else {
-        setSets([{ reps: "", weight: "", duration: "", intensity: "" }])
-        setCompletedToday(false)
+        setSets([{ reps: "", weight: "", duration: "", intensity: "" }]);
+        setCompletedToday(false);
       }
       setLastSets(last?.sets || null)
     }
@@ -82,7 +82,7 @@ const Card = () => {
       </div>
       <Status imageSrc={`/${selectedExercise.name}.png`} />
       <LastDetails exerciseType={selectedExercise.type} lastDetails={lastSets?.slice(-1)[0]} />
-      <Details exerciseType={selectedExercise.type} sets={sets} updateSets={setSets} />
+      <Details exerciseType={selectedExercise.type} sets={sets || []} updateSets={setSets} />
       <div className={styles.buttonGroup}>
         <button className={styles.setsButton} onClick={() => setSets(addSet(sets))}>+</button>
         <button className={styles.setsButton} onClick={() => setSets(deleteSet(sets))}>-</button>
