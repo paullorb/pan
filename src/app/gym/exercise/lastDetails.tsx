@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import styles from "./lastDetails.module.css"
+import styles from "./lastDetails.module.css";
 
 type LastDetailsProps = {
-  exerciseType: string
-  lastDetails: { reps?: string; weight?: string; time?: string; intensity?: string } | null
-}
+  exerciseType: string;
+  lastDetails: { reps?: string; weight?: string; time?: string; intensity?: string } | null;
+};
 
 export default function LastDetails({ exerciseType, lastDetails }: LastDetailsProps) {
-  if (!lastDetails) return null
+  if (!lastDetails) return null;
+
   return (
     <div className={styles.container}>
       {exerciseType === "weight" ? (
@@ -23,5 +24,5 @@ export default function LastDetails({ exerciseType, lastDetails }: LastDetailsPr
         </>
       ) : null}
     </div>
-  )
+  );
 }

@@ -20,10 +20,10 @@ const Card = () => {
   const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
   const [exerciseDetails, setExerciseDetails] = useState(defaultDetails)
   const { user } = useAuth()
-  const { createExercise, deleteExercise, getExercise } = useExercise()
+  const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [completedToday, setCompletedToday] = useState(false)
-
+  const [lastExerciseDetails, setLastExerciseDetails] = useState<any>(null);
   const toggleDropdown = () => setDropdownOpen(prev => !prev)
 
   const onSelectExercise = (exerciseName: string) => {
@@ -57,21 +57,31 @@ const Card = () => {
   }
 
   useEffect(() => {
-    if (!user) return
-    const fetchExisting = async () => {
-      const exercise = await getExercise(slugify(selectedExercise))
-      if (exercise && new Date(exercise.date).toDateString() === new Date().toDateString()) {
-        setExerciseDetails(exercise.details)
-        setCompletedToday(true)
+    if (!user) return;
+    
+    const fetchExerciseData = async () => {
+      const exerciseSlug = slugify(selectedExercise);
+      
+      const [exerciseToday, lastExercise] = await Promise.all([
+        getExercise(exerciseSlug),
+        getLastExercise(exerciseSlug),
+      ]);
+
+      if (exerciseToday && new Date(exerciseToday.date).toDateString() === new Date().toDateString()) {
+        setExerciseDetails(exerciseToday.details);
+        setCompletedToday(true);
       } else {
-        const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj
-        const mod = modalities.find(m => m.name === currentExercise.type)
-        setExerciseDetails(mod?.defaultDetails || defaultDetails)
-        setCompletedToday(false)
+        const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj;
+        const mod = modalities.find(m => m.name === currentExercise.type);
+        setExerciseDetails(mod?.defaultDetails || defaultDetails);
+        setCompletedToday(false);
       }
-    }
-    fetchExisting()
-  }, [user, selectedExercise, defaultExerciseObj, defaultDetails, getExercise])
+
+      setLastExerciseDetails(lastExercise?.details || null);
+    };
+
+    fetchExerciseData();
+  }, [user, selectedExercise, getExercise, getLastExercise]);
 
   const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
 
@@ -88,7 +98,7 @@ const Card = () => {
         )}
       </div>
       <Status imageSrc={`/${selectedExercise}.png`} />
-      <LastDetails exerciseType={exerciseType} lastDetails={exerciseType === "weight" ? exerciseDetails.sets.slice(-1)[0] : { time: exerciseDetails.time, intensity: exerciseDetails.intensity }} />
+      <LastDetails exerciseType={exerciseType} lastDetails={lastExerciseDetails} />
       <Details
         exerciseType={exerciseType}
         exerciseDetails={exerciseDetails}
