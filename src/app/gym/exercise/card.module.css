@@ -63,3 +63,18 @@
 .completed {
   background-color: green;
 }
+
+.buttonGroup {
+  display: flex;
+  gap: var(--spacing-s);
+  justify-content: center;
+}
+
+.setsButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: var(--spacing-xs);
+  border-radius: 5px;
+  cursor: pointer;
+}
