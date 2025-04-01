@@ -5,9 +5,10 @@ import { useAuth } from "../../auth/authContext"
 export type ExercisePayload = {
   exerciseId: string
   type: string
-  details: any
+  sets: { reps?: string; weight?: string; duration?: string; intensity?: string }[]
   date: string
 }
+
 
 type ExerciseContextType = {
   createExercise: (payload: ExercisePayload) => Promise<void>

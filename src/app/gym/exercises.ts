@@ -53,39 +53,3 @@ const exercises = [
 ]
 
 export default exercises
-
-const modalities = [
-  { 
-    name: 'weight',
-    defaultDetails: {
-      sets: [
-        { reps: '10', weight: '10' },
-        { reps: '10', weight: '15' },
-        { reps: '10', weight: '20' }
-      ],
-      time: '',
-      intensity: '',
-      reps: ''
-    }
-  },
-  { 
-    name: 'cardio',
-    defaultDetails: {
-      sets: [],
-      time: '10',
-      intensity: '10',
-      reps: ''
-    }
-  },
-  { 
-    name: 'stretch',
-    defaultDetails: {
-      sets: [],
-      time: '10',
-      intensity: '',
-      reps: '10'
-    }
-  }
-]
-
-export { modalities }

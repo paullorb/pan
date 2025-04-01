@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import styles from "./card.module.css"
-import exercises, { modalities } from "../exercises"
+import exercises from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
@@ -12,124 +12,74 @@ import BestPractice from "./bestPractice"
 import LastDetails from "./lastDetails"
 
 const Card = () => {
-  const defaultExerciseObj = exercises[0]
-  const defaultDetails =
-    modalities.find(m => m.name === defaultExerciseObj.type)?.defaultDetails ||
-    { sets: [], time: "", intensity: "", reps: "" }
-
-  const [selectedExercise, setSelectedExercise] = useState(defaultExerciseObj.name)
-  const [exerciseDetails, setExerciseDetails] = useState(defaultDetails)
+  const [selectedExercise, setSelectedExercise] = useState(exercises[0])
+  const [sets, setSets] = useState([{ reps: '', weight: '', duration: '', intensity: '' }])
   const { user } = useAuth()
   const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [completedToday, setCompletedToday] = useState(false)
-  const [lastExerciseDetails, setLastExerciseDetails] = useState<any>(null);
-  const toggleDropdown = () => setDropdownOpen(prev => !prev)
+  const [lastSets, setLastSets] = useState<any>(null)
 
-  const onSelectExercise = (exerciseName: string) => {
-    setSelectedExercise(exerciseName)
-    const newExercise = exercises.find(ex => ex.name === exerciseName)
-    const mod = modalities.find(m => m.name === newExercise?.type)
-    setExerciseDetails(mod?.defaultDetails || defaultDetails)
-    setDropdownOpen(false)
-    setCompletedToday(false)
-  }
+  useEffect(() => {
+    if (!user) return
+    const fetchData = async () => {
+      const slug = slugify(selectedExercise.name)
+      const [today, last] = await Promise.all([getExercise(slug), getLastExercise(slug)])
+
+      if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
+        setSets(today.sets)
+        setCompletedToday(true)
+      } else {
+        setSets([{ reps: '', weight: '', duration: '', intensity: '' }])
+        setCompletedToday(false)
+      }
+      setLastSets(last?.sets || null)
+    }
+    fetchData()
+  }, [user, selectedExercise, getExercise, getLastExercise])
 
   const toggleCompletion = async () => {
     if (!user) return
-    const exercise = exercises.find(ex => ex.name === selectedExercise)
-    if (!exercise) return
-    const exerciseIdSlug = slugify(selectedExercise)
-
+    const slug = slugify(selectedExercise.name)
     if (!completedToday) {
-      const now = new Date().toISOString()
-      setCompletedToday(true)
-      await createExercise({
-        exerciseId: exerciseIdSlug,
-        type: exercise.type,
-        details: exerciseDetails,
-        date: now
+      await createExercise({ 
+        exerciseId: slug, 
+        type: selectedExercise.type, 
+        sets, 
+        date: new Date().toISOString() 
       })
+      setCompletedToday(true)
     } else {
-      await deleteExercise(exerciseIdSlug)
+      await deleteExercise(slug)
       setCompletedToday(false)
     }
   }
 
-  useEffect(() => {
-    if (!user) return;
-    
-    const fetchExerciseData = async () => {
-      const exerciseSlug = slugify(selectedExercise);
-      
-      const [exerciseToday, lastExercise] = await Promise.all([
-        getExercise(exerciseSlug),
-        getLastExercise(exerciseSlug),
-      ]);
-
-      if (exerciseToday && new Date(exerciseToday.date).toDateString() === new Date().toDateString()) {
-        setExerciseDetails(exerciseToday.details);
-        setCompletedToday(true);
-      } else {
-        const currentExercise = exercises.find(ex => ex.name === selectedExercise) || defaultExerciseObj;
-        const mod = modalities.find(m => m.name === currentExercise.type);
-        setExerciseDetails(mod?.defaultDetails || defaultDetails);
-        setCompletedToday(false);
-      }
-
-      setLastExerciseDetails(lastExercise?.details || null);
-    };
-
-    fetchExerciseData();
-  }, [user, selectedExercise, getExercise, getLastExercise]);
-
-  const exerciseType = exercises.find(ex => ex.name === selectedExercise)?.type || ""
-
   return (
     <div className={styles.card}>
       <div className={styles.exerciseHeader}>
-        <div className={styles.exerciseName} onClick={toggleDropdown}>
-          {selectedExercise} {completedToday ? "✔️" : ""} {dropdownOpen ? "▲" : "▼"}
+        <div className={styles.exerciseName} onClick={() => setDropdownOpen(!dropdownOpen)}>
+          {selectedExercise.name} {completedToday ? "✔️" : ""} {dropdownOpen ? "▲" : "▼"}
         </div>
         {dropdownOpen && (
           <div className={styles.dropdownWrapper}>
-            <List exercises={exercises} onSelectExercise={onSelectExercise} />
+            <List exercises={exercises} onSelectExercise={ex => { 
+              const selected = exercises.find(e => e.name === ex);
+              if (selected) setSelectedExercise(selected); 
+              setDropdownOpen(false);
+            }} />
           </div>
         )}
       </div>
-      <Status imageSrc={`/${selectedExercise}.png`} />
-      <LastDetails exerciseType={exerciseType} lastDetails={lastExerciseDetails} />
+      <Status imageSrc={`/${selectedExercise.name}.png`} />
+      <LastDetails exerciseType={selectedExercise.type} lastDetails={lastSets?.slice(-1)[0]} />
       <Details
-        exerciseType={exerciseType}
-        exerciseDetails={exerciseDetails}
-        updateSet={(idx, field, val) => {
-          const newSets = [...exerciseDetails.sets]
-          newSets[idx][field] = val
-          setExerciseDetails({ ...exerciseDetails, sets: newSets })
-        }}
-        addSet={() => {
-          const lastSet = exerciseDetails.sets.slice(-1)[0]
-          setExerciseDetails({
-            ...exerciseDetails,
-            sets: [...exerciseDetails.sets, { reps: lastSet.reps, weight: lastSet.weight }]
-          })
-        }}
-        deleteSet={() => {
-          if (exerciseDetails.sets.length > 1) {
-            setExerciseDetails({
-              ...exerciseDetails,
-              sets: exerciseDetails.sets.slice(0, -1)
-            })
-          }
-        }}
-        updateDetailField={(field, val) => setExerciseDetails({ ...exerciseDetails, [field]: val })}
-        handleKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur() }}
+        exerciseType={selectedExercise.type}
+        sets={sets}
+        updateSets={setSets}
       />
-      <BestPractice selectedExercise={selectedExercise} />
-      <div
-        onClick={toggleCompletion}
-        className={`${styles.completeContainer} ${completedToday ? styles.completed : styles.incomplete}`}
-      >
+      <BestPractice selectedExercise={selectedExercise.name} />
+      <div onClick={toggleCompletion} className={`${styles.completeContainer} ${completedToday ? styles.completed : styles.incomplete}`}>
         <button className={styles.completeButton}>
           {completedToday ? "Mark as Incomplete" : "Mark as Completed"}
         </button>

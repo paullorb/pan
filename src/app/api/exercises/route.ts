@@ -70,38 +70,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
   }
   const userId = decoded.userId
-  const { exerciseId, type, details, date } = await request.json()
-  if (!exerciseId || !type) {
+  const { exerciseId, type, sets, date } = await request.json()
+
+  if (!exerciseId || !type || !sets) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
-  
+
   await connectDB()
   const exerciseDate = date ? new Date(date) : new Date()
   const dayStart = new Date(exerciseDate.getFullYear(), exerciseDate.getMonth(), exerciseDate.getDate())
   const dayEnd = new Date(dayStart)
   dayEnd.setDate(dayEnd.getDate() + 1)
-  
-  const existing = await Exercise.findOne({
-    userId,
-    exerciseId,
-    date: { $gte: dayStart, $lt: dayEnd }
-  })
-  
+
+  const existing = await Exercise.findOne({ userId, exerciseId, date: { $gte: dayStart, $lt: dayEnd } })
+
   if (existing) {
     existing.type = type
-    existing.details = details
+    existing.sets = sets
     existing.date = exerciseDate
     await existing.save()
     return NextResponse.json({ message: 'Exercise updated' }, { status: 200 })
   } else {
-    const newExercise = new Exercise({
-      userId,
-      exerciseId,
-      type,
-      date: exerciseDate,
-      details
-    })
-    await newExercise.save()
+    await Exercise.create({ userId, exerciseId, type, sets, date: exerciseDate })
     return NextResponse.json({ message: 'Exercise created' }, { status: 201 })
   }
 }

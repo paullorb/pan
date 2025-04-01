@@ -2,94 +2,41 @@
 import styles from "./details.module.css"
 import CustomSelect from "./customSelect"
 
-type SetType = { reps: string; weight: string }
-export type DetailsType = {
-  sets: SetType[]
-  time: string
-  intensity: string
-  reps: string
-}
-
-type Props = {
-  exerciseType: string
-  exerciseDetails: DetailsType
-  updateSet: (index: number, field: "reps" | "weight", value: string) => void
-  addSet: () => void
-  deleteSet: () => void
-  updateDetailField: (field: "time" | "intensity" | "reps", value: string) => void
-  handleKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void
-}
-
-export default function Details({
-  exerciseType,
-  exerciseDetails,
-  updateSet,
-  addSet,
-  deleteSet,
-  updateDetailField,
-  handleKeyDown
-}: Props) {
-  const { sets, time, intensity, reps } = exerciseDetails
+export default function Details({ exerciseType, sets, updateSets }: { exerciseType: string, sets: any[], updateSets: (newSets: any[]) => void }) {
   const repsRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
   const weightRange = Array.from({ length: 401 }, (_, i) => (i * 0.5).toString())
-  const timeRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
+  const durationRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
   const intensityRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
 
-  if (exerciseType === "weight") {
-    return (
-      <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
-        {sets.map((set, index) => (
-          <div key={index} className={styles.setContainer}>
-            <CustomSelect
-              options={repsRange}
-              value={set.reps}
-              onChange={val => updateSet(index, "reps", val)}
-              onKeyDown={handleKeyDown}
-              className={styles.repsInput}
-              unit="reps"
-            />
-            <CustomSelect
-              options={weightRange}
-              value={set.weight}
-              onChange={val => updateSet(index, "weight", val)}
-              onKeyDown={handleKeyDown}
-              className={styles.weightsInput}
-              unit="kg"
-            />
-          </div>
-        ))}
-        <div className={styles.buttonContainer}>
-          <button onClick={deleteSet} className={styles.deleteButton}>
-            Delete Last Set
-          </button>
-          <button onClick={addSet} className={styles.addButton}>
-            Add New Set
-          </button>
-        </div>
-      </form>
-    )
+  const updateSetField = (idx: number, field: string, val: string) => {
+    const newSets = sets.map((set, i) => i === idx ? { ...set, [field]: val } : set)
+    updateSets(newSets)
   }
-  const isCardio = exerciseType === "cardio"
+
   return (
-    <form onSubmit={e => e.preventDefault()} className={styles.detailsForm}>
-      <div className={styles.inputContainer}>
-        <label>{isCardio ? "Time (min):" : "Time (sec):"}</label>
-        <CustomSelect
-          options={timeRange}
-          value={time}
-          onChange={val => updateDetailField("time", val)}
-          onKeyDown={handleKeyDown}
-        />
-        <label>{isCardio ? "Intensity:" : "Reps:"}</label>
-        <CustomSelect
-          options={isCardio ? intensityRange : repsRange}
-          value={isCardio ? intensity : reps}
-          onChange={val =>
-            updateDetailField(isCardio ? "intensity" : "reps", val)
-          }
-          onKeyDown={handleKeyDown}
-        />
-      </div>
+    <form className={styles.detailsForm}>
+      {sets.map((set, idx) => (
+        <div key={idx} className={styles.setContainer}>
+          {exerciseType === "weight" && (
+            <>
+              <CustomSelect options={repsRange} value={set.reps} onChange={val => updateSetField(idx, "reps", val)} unit="reps" />
+              <CustomSelect options={weightRange} value={set.weight} onChange={val => updateSetField(idx, "weight", val)} unit="kg" />
+            </>
+          )}
+          {exerciseType === "cardio" && (
+            <>
+              <CustomSelect options={durationRange} value={set.duration} onChange={val => updateSetField(idx, "duration", val)} unit="min" />
+              <CustomSelect options={intensityRange} value={set.intensity} onChange={val => updateSetField(idx, "intensity", val)} unit="intensity" />
+            </>
+          )}
+          {exerciseType === "stretch" && (
+            <>
+              <CustomSelect options={repsRange} value={set.reps} onChange={val => updateSetField(idx, "reps", val)} unit="reps" />
+              <CustomSelect options={intensityRange} value={set.intensity} onChange={val => updateSetField(idx, "intensity", val)} unit="intensity" />
+            </>
+          )}
+        </div>
+      ))}
     </form>
   )
 }
