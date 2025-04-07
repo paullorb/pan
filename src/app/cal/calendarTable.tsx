@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styles from './calendar.module.css'
 import { getCalendarWeeks, Cell, WEEKDAY_NAMES_FULL, WEEKDAY_HEADER_LENGTH } from './utils'
 import { darkenColor } from 'app/category/utils'
@@ -18,7 +18,7 @@ const CalendarTable: React.FC<CalendarTableProps> = ({ selectedCategory = null }
   const { entries, fetchMonthEntries } = useEntry()
   const { user } = useAuth()
   const categories = useCategory()
-  const weeks = getCalendarWeeks(selectedDate)
+  const weeks = useMemo(() => getCalendarWeeks(selectedDate), [selectedDate])
   const today = new Date()
   const headerNames = WEEKDAY_NAMES_FULL.slice(1).concat(WEEKDAY_NAMES_FULL.slice(0, 1))
 
@@ -57,11 +57,9 @@ const CalendarTable: React.FC<CalendarTableProps> = ({ selectedCategory = null }
                 cellMonth === today.getMonth() &&
                 cellDay === today.getDate()
               const dateKey = getDateKey(cell.date)
-              let previews = entries[dateKey]
-                ? entries[dateKey].filter(entry => !entry.done)
-                : []
+              let previews = entries[dateKey] ? entries[dateKey].filter(e => !e.done) : []
               if (selectedCategory) {
-                previews = previews.filter(entry => entry.category === selectedCategory)
+                previews = previews.filter(e => e.category === selectedCategory)
               }
               previews = previews.slice(0, 10)
               const dayNumberContent = isSelected ? (
