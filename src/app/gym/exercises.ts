@@ -50,6 +50,7 @@ const exercises = [
   { name: 'ab rollout', mainMuscle: 'core', type: 'weight', bestPractice: 'Keep your core engaged and avoid arching your back during the movement', keyMovement: '' },
   { name: 'skillmill', mainMuscle: 'legs', type: 'cardio', bestPractice: 'Maintain an upright posture and control your pace for optimal performance', keyMovement: '' },
   { name: 'inclined bench press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Adjust the bench to target different areas of the chest and press evenly', keyMovement: 'push' },
+  { name: 'iso-lateral incline press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Focus on a full range of motion and control the weight throughout', keyMovement: 'push' },
 ]
 
 export default exercises
