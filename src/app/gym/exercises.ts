@@ -51,6 +51,7 @@ const exercises = [
   { name: 'skillmill', mainMuscle: 'legs', type: 'cardio', bestPractice: 'Maintain an upright posture and control your pace for optimal performance', keyMovement: '' },
   { name: 'inclined bench press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Adjust the bench to target different areas of the chest and press evenly', keyMovement: 'push' },
   { name: 'iso-lateral incline press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Focus on a full range of motion and control the weight throughout', keyMovement: 'push' },
+  { name: 'bicep curl', mainMuscle: 'arms', type: 'weight', bestPractice: 'Keep your elbows close to your body and avoid swinging the weights', keyMovement: 'pull' },
 ]
 
 export default exercises
