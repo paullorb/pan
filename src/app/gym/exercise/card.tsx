@@ -10,18 +10,17 @@ import List from "../list/list"
 import Status from "./status"
 import BestPractice from "./bestPractice"
 import LastDetails from "./lastDetails"
-
-// Import the helper functions
 import { addSet, deleteSet } from "./manageSets"
+import { toggleSetCompletion } from "./toggleSetCompletion"
 
 const Card = () => {
   const [selectedExercise, setSelectedExercise] = useState(exercises[0])
-  const [sets, setSets] = useState([{ reps: "", weight: "", duration: "", intensity: "" }])
+  const [sets, setSets] = useState([{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+  const [completedToday, setCompletedToday] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [lastSets, setLastSets] = useState<any>(null)
   const { user } = useAuth()
   const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [completedToday, setCompletedToday] = useState(false)
-  const [lastSets, setLastSets] = useState<any>(null)
 
   useEffect(() => {
     if (!user) return
@@ -31,21 +30,27 @@ const Card = () => {
         getExercise(slug),
         getLastExercise(slug)
       ])
-
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
-        setSets(Array.isArray(today.sets) ? today.sets : []);
-        setCompletedToday(true);
+        setSets(Array.isArray(today.sets) ? today.sets : [])
+        setCompletedToday(true)
       } else {
-        setSets([{ reps: "", weight: "", duration: "", intensity: "" }]);
-        setCompletedToday(false);
+        setSets([{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setCompletedToday(false)
       }
       setLastSets(last?.sets || null)
     }
     fetchData()
   }, [user, selectedExercise, getExercise, getLastExercise])
 
+  const allSetsCompleted = sets.every(s => s.completed)
+  const toggleSetComplete = (i: number) => {
+    if (completedToday) return
+    setSets(toggleSetCompletion(sets, i))
+  }
+
   const toggleCompletion = async () => {
     if (!user) return
+    if (!completedToday && !allSetsCompleted) return
     const slug = slugify(selectedExercise.name)
     if (!completedToday) {
       await createExercise({
@@ -57,6 +62,8 @@ const Card = () => {
       setCompletedToday(true)
     } else {
       await deleteExercise(slug)
+      const resetSets = sets.map(s => ({ ...s, completed: false }))
+      setSets(resetSets)
       setCompletedToday(false)
     }
   }
@@ -82,17 +89,23 @@ const Card = () => {
       </div>
       <Status imageSrc={`/${selectedExercise.name}.png`} />
       <LastDetails exerciseType={selectedExercise.type} lastDetails={lastSets?.slice(-1)[0]} />
-      <Details exerciseType={selectedExercise.type} sets={sets || []} updateSets={setSets} />
+      <Details
+        exerciseType={selectedExercise.type}
+        sets={sets}
+        updateSets={setSets}
+        toggleSetComplete={toggleSetComplete}
+        exerciseCompleted={completedToday}
+      />
       <div className={styles.buttonGroup}>
-        <button className={styles.setsButton} onClick={() => setSets(addSet(sets))}>+</button>
-        <button className={styles.setsButton} onClick={() => setSets(deleteSet(sets))}>-</button>
+        <button onClick={() => setSets(addSet(sets))} className={styles.setsButton}>+</button>
+        <button onClick={() => setSets(deleteSet(sets))} className={styles.setsButton}>-</button>
       </div>
       <BestPractice selectedExercise={selectedExercise.name} />
       <div
         onClick={toggleCompletion}
         className={`${styles.completeContainer} ${completedToday ? styles.completed : styles.incomplete}`}
       >
-        <button className={styles.completeButton}>
+        <button disabled={!allSetsCompleted && !completedToday} className={styles.completeButton}>
           {completedToday ? "Mark as Incomplete" : "Mark as Completed"}
         </button>
       </div>

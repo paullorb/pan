@@ -13,14 +13,18 @@
   font-weight: 500;
 }
 
+.selectTrigger.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .optionsWrapper {
   position: absolute;
   left: 0;
   right: 0;
-  height: 150px; /* Shows approx. 5 options */
+  height: 150px;
   top: 50%;
   transform: translateY(-50%);
-  border-radius: 0,5rem;
   background: #fff;
   z-index: 10;
   overflow: hidden;
@@ -30,7 +34,7 @@
 .optionsContainer {
   height: 100%;
   overflow-y: auto;
-  padding-right: 30px; /* Reserve space for the fixed unit */
+  padding-right: 30px;
 }
 
 .option {
@@ -55,7 +59,6 @@
   pointer-events: none;
 }
 
-/* Gradient overlays for a wheel effect */
 .optionsWrapper::before,
 .optionsWrapper::after {
   content: "";
