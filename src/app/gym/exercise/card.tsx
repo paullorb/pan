@@ -24,34 +24,29 @@ type SetItem = {
 const Card = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [completedToday, setCompletedToday] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState(exercises[0])
+  const [hasMounted, setHasMounted] = useState(false)
 
-  useEffect(() => {
-    const storedSlug = localStorage.getItem("lastSelectedExercise")
-    const found = exercises.find(e => slugify(e.name) === storedSlug)
-    if (found) setSelectedExercise(found)
-  }, [])
+  const [selectedExercise, setSelectedExercise] = useState(exercises[0])
   const [sets, setSets] = useState<SetItem[]>([])
   const [lastSets, setLastSets] = useState<SetItem[] | null>(null)
+
   const { user } = useAuth()
   const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
 
   useEffect(() => {
-    localStorage.setItem("lastSelectedExercise", slugify(selectedExercise.name))
-  }, [selectedExercise])
+    setHasMounted(true)
+    const storedSlug = localStorage.getItem("lastSelectedExercise")
+    const found = exercises.find(e => slugify(e.name) === storedSlug)
+    if (found) setSelectedExercise(found)
+  }, [])
 
   useEffect(() => {
     let isMounted = true
     const slug = slugify(selectedExercise.name)
     const localKey = `sets_${slug}`
 
-    const loadLocal = () => {
-      const stored = localStorage.getItem(localKey)
-      return stored ? JSON.parse(stored) as SetItem[] : null
-    }
-
     const loadData = async () => {
-      const localSets = loadLocal()
+      const localSets = JSON.parse(localStorage.getItem(localKey) || 'null')
       if (!user) {
         if (isMounted) {
           setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
@@ -62,7 +57,7 @@ const Card = () => {
       const [today, last] = await Promise.all([getExercise(slug), getLastExercise(slug)])
       if (!isMounted) return
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
-        setSets(Array.isArray(today.sets) ? today.sets : [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setSets(today.sets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
         setCompletedToday(true)
         localStorage.removeItem(localKey)
       } else {
@@ -73,16 +68,26 @@ const Card = () => {
     }
 
     loadData()
+
     return () => { isMounted = false }
   }, [user, selectedExercise, getExercise, getLastExercise])
 
   useEffect(() => {
-    if (!completedToday) {
+    if (!completedToday && hasMounted) {
       const slug = slugify(selectedExercise.name)
       const localKey = `sets_${slug}`
       localStorage.setItem(localKey, JSON.stringify(sets))
     }
-  }, [sets, selectedExercise, completedToday])
+  }, [sets, selectedExercise, completedToday, hasMounted])
+
+  const handleSelectExercise = (exerciseName: string) => {
+    const found = exercises.find(e => e.name === exerciseName)
+    if (found) {
+      setSelectedExercise(found)
+      localStorage.setItem("lastSelectedExercise", slugify(found.name))
+      setDropdownOpen(false)
+    }
+  }
 
   const toggleSetComplete = (i: number) => {
     if (completedToday) return
@@ -120,14 +125,7 @@ const Card = () => {
         </div>
         {dropdownOpen && (
           <div className={styles.dropdownWrapper}>
-            <List
-              exercises={exercises}
-              onSelectExercise={ex => {
-                const found = exercises.find(e => e.name === ex)
-                if (found) setSelectedExercise(found)
-                setDropdownOpen(false)
-              }}
-            />
+            <List exercises={exercises} onSelectExercise={handleSelectExercise} />
           </div>
         )}
       </div>
