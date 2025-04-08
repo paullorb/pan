@@ -14,7 +14,9 @@ import { addSet, deleteSet } from "./manageSets"
 import { toggleSetCompletion } from "./toggleSetCompletion"
 
 const Card = () => {
-  const [selectedExercise, setSelectedExercise] = useState(exercises[0])
+  const storedSlug = typeof window !== "undefined" ? localStorage.getItem("lastSelectedExercise") : null
+  const initial = exercises.find(e => slugify(e.name) === storedSlug) || exercises[0]
+  const [selectedExercise, setSelectedExercise] = useState(initial)
   const [sets, setSets] = useState([{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
   const [completedToday, setCompletedToday] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -26,10 +28,7 @@ const Card = () => {
     if (!user) return
     const fetchData = async () => {
       const slug = slugify(selectedExercise.name)
-      const [today, last] = await Promise.all([
-        getExercise(slug),
-        getLastExercise(slug)
-      ])
+      const [today, last] = await Promise.all([getExercise(slug), getLastExercise(slug)])
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
         setSets(Array.isArray(today.sets) ? today.sets : [])
         setCompletedToday(true)
@@ -42,6 +41,10 @@ const Card = () => {
     fetchData()
   }, [user, selectedExercise, getExercise, getLastExercise])
 
+  useEffect(() => {
+    localStorage.setItem("lastSelectedExercise", slugify(selectedExercise.name))
+  }, [selectedExercise])
+
   const allSetsCompleted = sets.every(s => s.completed)
   const toggleSetComplete = (i: number) => {
     if (completedToday) return
@@ -53,17 +56,11 @@ const Card = () => {
     if (!completedToday && !allSetsCompleted) return
     const slug = slugify(selectedExercise.name)
     if (!completedToday) {
-      await createExercise({
-        exerciseId: slug,
-        type: selectedExercise.type,
-        sets,
-        date: new Date().toISOString()
-      })
+      await createExercise({ exerciseId: slug, type: selectedExercise.type, sets, date: new Date().toISOString() })
       setCompletedToday(true)
     } else {
       await deleteExercise(slug)
-      const resetSets = sets.map(s => ({ ...s, completed: false }))
-      setSets(resetSets)
+      setSets(sets.map(s => ({ ...s, completed: false })))
       setCompletedToday(false)
     }
   }
