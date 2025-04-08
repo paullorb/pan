@@ -4,7 +4,13 @@ import styles from "./card.module.css"
 import exercises from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
-import { slugify } from "./utils"
+import {
+  slugify,
+  DEFAULT_SETS,
+  loadLocalSets,
+  storeLocalSets,
+  removeLocalSets
+} from "./utils"
 import Details from "./details"
 import List from "../list/list"
 import Status from "./status"
@@ -42,46 +48,36 @@ const Card = () => {
   }, [selectedExercise])
 
   useEffect(() => {
-    let isMounted = true
+    let mounted = true
     const slug = slugify(selectedExercise.name)
-    const localKey = `sets_${slug}`
-
-    const loadLocal = () => {
-      const stored = localStorage.getItem(localKey)
-      return stored ? JSON.parse(stored) as SetItem[] : null
-    }
-
     const loadData = async () => {
-      const localSets = loadLocal()
+      const local = loadLocalSets(slug)
       if (!user) {
-        if (isMounted) {
-          setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
-          setCompletedToday(false)
-        }
+        if (mounted) setSets(local || DEFAULT_SETS)
+        setCompletedToday(false)
         return
       }
       const [today, last] = await Promise.all([getExercise(slug), getLastExercise(slug)])
-      if (!isMounted) return
+      if (!mounted) return
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
-        setSets(Array.isArray(today.sets) ? today.sets : [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setSets(Array.isArray(today.sets) ? today.sets : DEFAULT_SETS)
         setCompletedToday(true)
-        localStorage.removeItem(localKey)
+        removeLocalSets(slug)
       } else {
-        setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setSets(local || DEFAULT_SETS)
         setCompletedToday(false)
       }
       setLastSets(last?.sets || null)
     }
-
     loadData()
-    return () => { isMounted = false }
+    return () => {
+      mounted = false
+    }
   }, [user, selectedExercise, getExercise, getLastExercise])
 
   useEffect(() => {
     if (!completedToday) {
-      const slug = slugify(selectedExercise.name)
-      const localKey = `sets_${slug}`
-      localStorage.setItem(localKey, JSON.stringify(sets))
+      storeLocalSets(slugify(selectedExercise.name), sets)
     }
   }, [sets, selectedExercise, completedToday])
 
@@ -93,7 +89,6 @@ const Card = () => {
   const toggleCompletion = async () => {
     if (!user) return
     const slug = slugify(selectedExercise.name)
-    const localKey = `sets_${slug}`
     if (!completedToday) {
       if (!sets.every(s => s.completed)) return
       await createExercise({
@@ -103,13 +98,13 @@ const Card = () => {
         date: new Date().toISOString()
       })
       setCompletedToday(true)
-      localStorage.removeItem(localKey)
+      removeLocalSets(slug)
     } else {
       await deleteExercise(slug)
       setCompletedToday(false)
-      const resetSets = sets.map(s => ({ ...s, completed: false }))
-      localStorage.setItem(localKey, JSON.stringify(resetSets))
-      setSets(resetSets)
+      const reset = sets.map(s => ({ ...s, completed: false }))
+      storeLocalSets(slug, reset)
+      setSets(reset)
     }
   }
 
