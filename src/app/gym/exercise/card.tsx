@@ -5,13 +5,13 @@ import exercises from "../exercises"
 import { useAuth } from "../../auth/authContext"
 import { useExercise } from "./exerciseContext"
 import { slugify } from "./utils"
-import Details from "./details"
+import Details from "../sets/details"
 import List from "../list/list"
 import Status from "./status"
 import BestPractice from "./bestPractice"
-import LastDetails from "./lastDetails"
-import { addSet, deleteSet } from "./manageSets"
-import { toggleSetCompletion } from "./toggleSetCompletion"
+import LastDetails from "../sets/lastDetails"
+import { addSet, deleteSet } from "../sets/manageSets"
+import { toggleSetCompletion } from "../sets/toggleSetCompletion"
 
 type SetItem = {
   reps: string
