@@ -1,25 +1,64 @@
-.dropdown {
-  width: 100%;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  border: 1px solid #ccc;
+.filterBar {
+  display: flex;
+  justify-content: center;
+  background-color: white;
 }
 
-.dropdown li {
-  display: flex;
-  gap: 1rem;
-  padding: 0.5rem;
+.sortBtn {
   cursor: pointer;
 }
 
-.dropdown li:hover {
-  background: #f0f0f0;
+.filterLabel {
+  margin: 0 2px;
 }
 
-.type {
-  font-weight: bold;
-  opacity: 0.6;
-  letter-spacing: -1px;
+.toggleView {
+  cursor: pointer;
+  background-color: white;
+}
+
+.tileContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  background-color: white;
+}
+
+.tile {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.typeLabel {
+  display: block;
+  font-size: 0.8em;
+  color: #666;
+}
+
+.listScroll {
+  overflow-x: auto;
+}
+
+.listTable {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.listTable th,
+.listTable td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.listRow:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
 }

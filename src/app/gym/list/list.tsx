@@ -7,6 +7,7 @@ type ExerciseItem = {
   type: string
   mainMuscle: string
   keyMovement?: string
+  equipment?: string
 }
 
 type ListProps = {
@@ -18,64 +19,106 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
-
-  const sortedExercises = useMemo(() => {
-    return [...exercises].sort((a, b) => a.name.localeCompare(b.name))
-  }, [exercises])
+  const [isTileView, setIsTileView] = useState(true)
+  const [sortField, setSortField] = useState<keyof ExerciseItem | null>(null)
 
   const filteredExercises = useMemo(() => {
-    return sortedExercises.filter(ex => {
-      return (selectedModality ? ex.type === selectedModality : true) &&
-             (selectedMainMuscle ? ex.mainMuscle === selectedMainMuscle : true) &&
-             (selectedMovement ? ex.keyMovement === selectedMovement : true)
-    })
-  }, [sortedExercises, selectedModality, selectedMainMuscle, selectedMovement])
+    let result = exercises.filter(ex =>
+      (!selectedModality || ex.type === selectedModality) &&
+      (!selectedMainMuscle || ex.mainMuscle === selectedMainMuscle) &&
+      (!selectedMovement || ex.keyMovement === selectedMovement)
+    )
+    if (sortField) {
+      result = result.sort((a, b) =>
+        (a[sortField] ?? '').localeCompare(b[sortField] ?? '')
+      )
+    } else {
+      result = result.sort((a, b) => a.name.localeCompare(b.name))
+    }
+    return result
+  }, [exercises, selectedModality, selectedMainMuscle, selectedMovement, sortField])
 
-  const modalities = useMemo(() => {
-    const set = new Set(sortedExercises.map(ex => ex.type))
-    return Array.from(set).sort()
-  }, [sortedExercises])
+  const uniqueValues = (field: keyof ExerciseItem) =>
+    Array.from(new Set(exercises.map(ex => ex[field]).filter(Boolean))).sort()
 
-  const mainMuscles = useMemo(() => {
-    const set = new Set(sortedExercises.map(ex => ex.mainMuscle))
-    return Array.from(set).sort()
-  }, [sortedExercises])
-
-  const movements = useMemo(() => {
-    const set = new Set(sortedExercises.map(ex => ex.keyMovement).filter(Boolean))
-    return Array.from(set).sort()
-  }, [sortedExercises])
+  const toggleSort = (field: keyof ExerciseItem) => {
+    setSortField(prev => (prev === field ? null : field))
+  }
 
   return (
     <div>
-      <div>
-        <select value={selectedModality} onChange={e => setSelectedModality(e.target.value)}>
-          <option value="">All Modalities</option>
-          {modalities.map(mod => (
-            <option key={mod} value={mod}>{mod}</option>
-          ))}
-        </select>
-        <select value={selectedMainMuscle} onChange={e => setSelectedMainMuscle(e.target.value)}>
-          <option value="">All Main Muscles</option>
-          {mainMuscles.map(mm => (
-            <option key={mm} value={mm}>{mm}</option>
-          ))}
-        </select>
-        <select value={selectedMovement} onChange={e => setSelectedMovement(e.target.value)}>
-          <option value="">All Movements</option>
-          {movements.map(mv => (
-            <option key={mv} value={mv}>{mv}</option>
-          ))}
-        </select>
+      <div className={styles.filterBar}>
+        <div className={styles.filterLabel}>
+          <select value={selectedModality} onChange={e => setSelectedModality(e.target.value)}>
+            <option value="">All Modalities</option>
+            {uniqueValues("type").map(m => <option key={m}>{m}</option>)}
+          </select>
+          <button onClick={() => toggleSort("type")} className={styles.sortBtn}>
+            ⇅
+          </button>
+        </div>
+
+        <div className={styles.filterLabel}>
+          <select value={selectedMainMuscle} onChange={e => setSelectedMainMuscle(e.target.value)}>
+            <option value="">All Muscles</option>
+            {uniqueValues("mainMuscle").map(mm => <option key={mm}>{mm}</option>)}
+          </select>
+          <button onClick={() => toggleSort("mainMuscle")} className={styles.sortBtn}>
+            ⇅
+          </button>
+        </div>
+
+        <div className={styles.filterLabel}>
+          <select value={selectedMovement} onChange={e => setSelectedMovement(e.target.value)}>
+            <option value="">All Movements</option>
+            {uniqueValues("keyMovement").map(km => <option key={km}>{km}</option>)}
+          </select>
+          <button onClick={() => toggleSort("keyMovement")} className={styles.sortBtn}>
+            ⇅
+          </button>
+        </div>
+        <div>
+          <button onClick={() => setIsTileView(prev => !prev)} className={styles.toggleView}>
+            {isTileView ? "items" : "tiles"}
+          </button>
+        </div>
       </div>
-      <ul className={styles.dropdown}>
-        {filteredExercises.map((ex, i) => (
-          <li key={i} onClick={() => onSelectExercise(ex.name)}>
-            <span className={styles.type}>{ex.type}</span>
-            <span>{ex.name}</span>
-          </li>
-        ))}
-      </ul>
+
+      {isTileView ? (
+        <ul className={styles.tileContainer}>
+          {filteredExercises.map((ex, i) => (
+            <li key={i} className={styles.tile} onClick={() => onSelectExercise(ex.name)}>
+              <span className={styles.typeLabel}>{ex.type}</span>
+              <span>{ex.name}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className={styles.listScroll}>
+          <table className={styles.listTable}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Main Muscle</th>
+                <th>Type</th>
+                <th>Movement</th>
+                <th>Equipment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredExercises.map((ex, i) => (
+                <tr key={i} onClick={() => onSelectExercise(ex.name)} className={styles.listRow}>
+                  <td>{ex.name}</td>
+                  <td>{ex.mainMuscle}</td>
+                  <td>{ex.type}</td>
+                  <td>{ex.keyMovement || ''}</td>
+                  <td>{ex.equipment || ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }
