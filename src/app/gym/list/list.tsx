@@ -16,6 +16,10 @@ type ListProps = {
 }
 
 const List = ({ exercises, onSelectExercise }: ListProps) => {
+  if (!exercises || exercises.length === 0) {
+    return <div>No exercises found</div>
+  }
+  
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
@@ -84,7 +88,11 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
         </div>
       </div>
 
-      {isTileView ? (
+      {filteredExercises.length === 0 && (
+        <div>No exercises match your filters</div>
+      )}
+
+      {filteredExercises.length > 0 && isTileView ? (
         <ul className={styles.tileContainer}>
           {filteredExercises.map((ex, i) => (
             <li key={i} className={styles.tile} onClick={() => onSelectExercise(ex.name)}>
@@ -93,7 +101,7 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
             </li>
           ))}
         </ul>
-      ) : (
+      ) : filteredExercises.length > 0 && (
         <div className={styles.listScroll}>
           <table className={styles.listTable}>
             <thead>

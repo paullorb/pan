@@ -12,6 +12,7 @@ import BestPractice from "./bestPractice"
 import LastDetails from "../sets/lastDetails"
 import { addSet, deleteSet } from "../sets/manageSets"
 import { toggleSetCompletion } from "../sets/toggleSetCompletion"
+import NextUp from "./nextUp"
 
 type SetItem = {
   reps: string
@@ -21,12 +22,12 @@ type SetItem = {
   completed: boolean
 }
 
-const Card = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+export default function Card() {
+  const [mode, setMode] = useState<"none" | "current" | "next">("none")
   const [completedToday, setCompletedToday] = useState(false)
   const [hasMounted, setHasMounted] = useState(false)
-
   const [selectedExercise, setSelectedExercise] = useState(exercises[0])
+  const [nextExercise, setNextExercise] = useState(exercises[1] || exercises[0])
   const [sets, setSets] = useState<SetItem[]>([])
   const [lastSets, setLastSets] = useState<SetItem[] | null>(null)
 
@@ -44,9 +45,8 @@ const Card = () => {
     let isMounted = true
     const slug = slugify(selectedExercise.name)
     const localKey = `sets_${slug}`
-
     const loadData = async () => {
-      const localSets = JSON.parse(localStorage.getItem(localKey) || 'null')
+      const localSets = JSON.parse(localStorage.getItem(localKey) || "null")
       if (!user) {
         if (isMounted) {
           setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
@@ -66,10 +66,10 @@ const Card = () => {
       }
       setLastSets(last?.sets || null)
     }
-
     loadData()
-
-    return () => { isMounted = false }
+    return () => {
+      isMounted = false
+    }
   }, [user, selectedExercise, getExercise, getLastExercise])
 
   useEffect(() => {
@@ -80,13 +80,21 @@ const Card = () => {
     }
   }, [sets, selectedExercise, completedToday, hasMounted])
 
-  const handleSelectExercise = (exerciseName: string) => {
-    const found = exercises.find(e => e.name === exerciseName)
-    if (found) {
-      setSelectedExercise(found)
-      localStorage.setItem("lastSelectedExercise", slugify(found.name))
-      setDropdownOpen(false)
+  const handleSelectExercise = (name: string) => {
+    if (mode === "current") {
+      const found = exercises.find(e => e.name === name)
+      if (found) {
+        setSelectedExercise(found)
+        localStorage.setItem("lastSelectedExercise", slugify(found.name))
+      }
     }
+    if (mode === "next") {
+      const found = exercises.find(e => e.name === name)
+      if (found) {
+        setNextExercise(found)
+      }
+    }
+    setMode("none")
   }
 
   const toggleSetComplete = (i: number) => {
@@ -120,17 +128,33 @@ const Card = () => {
   return (
     <div className={styles.card}>
       <div className={styles.exerciseHeader}>
-        <div className={styles.exerciseName} onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {selectedExercise.name} {completedToday ? "✔️" : ""} {dropdownOpen ? "▲" : "▼"}
+        <div
+          className={`
+            ${styles.exerciseName}
+            ${mode === "current" ? styles.changingCurrent : ""}
+          `}
+          onClick={() => setMode(mode === "current" ? "none" : "current")}
+        >
+          {selectedExercise.name} {completedToday ? "✔️" : ""}
         </div>
-        {dropdownOpen && (
-          <div className={styles.dropdownWrapper}>
-            <List exercises={exercises} onSelectExercise={handleSelectExercise} />
-          </div>
-        )}
+        <NextUp
+          exercise={nextExercise}
+          isActive={mode === "next"}
+          onClick={() => setMode(mode === "next" ? "none" : "next")}
+        />
       </div>
+
+      {mode !== "none" && (
+        <div className={styles.dropdownWrapper}>
+          <List exercises={exercises} onSelectExercise={handleSelectExercise} />
+        </div>
+      )}
+
       <Status imageSrc={`/${selectedExercise.name}.png`} />
-      <LastDetails exerciseType={selectedExercise.type} lastDetails={lastSets?.slice(-1)[0] ?? null} />
+      <LastDetails
+        exerciseType={selectedExercise.type}
+        lastDetails={lastSets?.slice(-1)?.[0] || null}
+      />
       <Details
         exerciseType={selectedExercise.type}
         sets={sets}
@@ -147,12 +171,13 @@ const Card = () => {
         onClick={toggleCompletion}
         className={`${styles.completeContainer} ${completedToday ? styles.completed : styles.incomplete}`}
       >
-        <button disabled={!sets.every(s => s.completed) && !completedToday} className={styles.completeButton}>
+        <button
+          disabled={!sets.every(s => s.completed) && !completedToday}
+          className={styles.completeButton}
+        >
           {completedToday ? "Mark as Incomplete" : "Mark as Completed"}
         </button>
       </div>
     </div>
   )
 }
-
-export default Card

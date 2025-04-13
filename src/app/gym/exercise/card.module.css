@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: var(--spacing-s);
+  gap: var(--spacing-xs);
 }
 
 .exerciseHeader {
   position: relative; 
   text-align: left;
   width: 100%;
-  margin-bottom: 1rem;
+  overflow: visible;
 }
 
 .exerciseName {
@@ -19,11 +19,9 @@
 }
 
 .dropdownWrapper {
-  position: absolute;
-  top: 100%;
-  left: 0;
   width: 100%;
-  z-index: 999; 
+  z-index: 999;
+  background: #fff;
 }
 
 .dropdown {
@@ -77,4 +75,14 @@
   padding: var(--spacing-xs);
   border-radius: 5px;
   cursor: pointer;
+}
+
+.changingCurrent {
+  color: #d9534f;
+  text-decoration: underline;
+}
+
+.changingNext {
+  color: #0275d8;
+  text-decoration: underline;
 }
