@@ -35,6 +35,7 @@ const EntryList: React.FC<EntryListProps> = ({ entries }) => {
             >
               {entry.category ? (
                 <span
+                  className={styles.categoryFloating}
                   style={{
                     backgroundColor: categoryObj?.backgroundColor,
                     border: `1px solid ${
