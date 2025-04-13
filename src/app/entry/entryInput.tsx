@@ -6,7 +6,7 @@ interface EntryInputProps {
   input: string;
   onChange: (value: string) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | null>
 }
 
 const EntryInput: React.FC<EntryInputProps> = ({ input, onChange, onKeyDown, inputRef }) => {
