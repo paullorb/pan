@@ -27,11 +27,17 @@
 }
 
 .tile {
+  display: flex;
+  flex-direction: column;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+}
+
+.type {
+  opacity: 0.8;
 }
 
 .typeLabel {

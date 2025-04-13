@@ -1,4 +1,4 @@
-const exercises = [
+const base = [
   { name: 'deadlift', mainMuscle: 'legs', type: 'weight', bestPractice: 'Keep your back straight and lift with your legs', keyMovement: 'pull' },
   { name: 'leg extension', mainMuscle: 'legs', type: 'weight', bestPractice: 'Use controlled motion and avoid locking your knees at the top', keyMovement: '' },
   { name: 'inclined leg press', mainMuscle: 'legs', type: 'weight', bestPractice: 'Focus on a full range of motion while keeping your back against the seat', keyMovement: 'push' },
@@ -53,5 +53,12 @@ const exercises = [
   { name: 'iso-lateral incline press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Focus on a full range of motion and control the weight throughout', keyMovement: 'push' },
   { name: 'bicep curl', mainMuscle: 'arms', type: 'weight', bestPractice: 'Keep your elbows close to your body and avoid swinging the weights', keyMovement: 'pull' },
 ]
+const colorMap: { [key: string]: string } = {
+  weight: "red",
+  cardio: "green",
+  stretch: "blue"
+}
+
+const exercises = base.map(x => ({ ...x, color: colorMap[x.type] || "black" }))
 
 export default exercises

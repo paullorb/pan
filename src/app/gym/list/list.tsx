@@ -1,6 +1,7 @@
 "use client"
 import { useState, useMemo } from "react"
 import styles from "./list.module.css"
+import Tile from "./tile"
 
 type ExerciseItem = {
   name: string
@@ -8,22 +9,22 @@ type ExerciseItem = {
   mainMuscle: string
   keyMovement?: string
   equipment?: string
+  color?: string
 }
 
 type ListProps = {
   exercises: ExerciseItem[]
-  onSelectExercise: (exercise: string) => void
+  onSelectExercise: (exerciseName: string) => void
 }
 
-const List = ({ exercises = [], onSelectExercise }: ListProps) => {
-  // 1) Always call Hooks unconditionally at the top
+export default function List({ exercises = [], onSelectExercise }: ListProps) {
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
   const [isTileView, setIsTileView] = useState(true)
   const [sortField, setSortField] = useState<keyof ExerciseItem | null>(null)
+  const [showImages, setShowImages] = useState(false)
 
-  // 2) Then do your memoized filtering
   const filteredExercises = useMemo(() => {
     const filtered = exercises.filter(ex =>
       (!selectedModality || ex.type === selectedModality) &&
@@ -38,7 +39,6 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
     return filtered
   }, [exercises, selectedModality, selectedMainMuscle, selectedMovement, sortField])
 
-  // 3) Only after the Hooks, return early if nothing is there
   if (!exercises.length) {
     return <div>No exercises found</div>
   }
@@ -54,7 +54,10 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
     <div>
       <div className={styles.filterBar}>
         <div className={styles.filterLabel}>
-          <select value={selectedModality} onChange={e => setSelectedModality(e.target.value)}>
+          <select
+            value={selectedModality}
+            onChange={e => setSelectedModality(e.target.value)}
+          >
             <option value="">All Modalities</option>
             {uniqueValues("type").map(m => <option key={m}>{m}</option>)}
           </select>
@@ -64,7 +67,10 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
         </div>
 
         <div className={styles.filterLabel}>
-          <select value={selectedMainMuscle} onChange={e => setSelectedMainMuscle(e.target.value)}>
+          <select
+            value={selectedMainMuscle}
+            onChange={e => setSelectedMainMuscle(e.target.value)}
+          >
             <option value="">All Muscles</option>
             {uniqueValues("mainMuscle").map(mm => <option key={mm}>{mm}</option>)}
           </select>
@@ -74,7 +80,10 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
         </div>
 
         <div className={styles.filterLabel}>
-          <select value={selectedMovement} onChange={e => setSelectedMovement(e.target.value)}>
+          <select
+            value={selectedMovement}
+            onChange={e => setSelectedMovement(e.target.value)}
+          >
             <option value="">All Movements</option>
             {uniqueValues("keyMovement").map(km => <option key={km}>{km}</option>)}
           </select>
@@ -82,24 +91,27 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
             ⇅
           </button>
         </div>
-        <div>
-          <button onClick={() => setIsTileView(x => !x)} className={styles.toggleView}>
-            {isTileView ? "items" : "tiles"}
-          </button>
-        </div>
+
+        <button onClick={() => setIsTileView(x => !x)} className={styles.toggleView}>
+          {isTileView ? "items" : "tiles"}
+        </button>
+
+        <button onClick={() => setShowImages(x => !x)}>
+          {showImages ? "Hide Images" : "Show Images"}
+        </button>
       </div>
 
-      {filteredExercises.length === 0 && (
-        <div>No exercises match your filters</div>
-      )}
+      {!filteredExercises.length && <div>No exercises match your filters</div>}
 
       {filteredExercises.length > 0 && isTileView ? (
         <ul className={styles.tileContainer}>
-          {filteredExercises.map((ex, i) => (
-            <li key={i} className={styles.tile} onClick={() => onSelectExercise(ex.name)}>
-              <span className={styles.typeLabel}>{ex.type}</span>
-              <span>{ex.name}</span>
-            </li>
+          {filteredExercises.map((ex, idx) => (
+            <Tile
+              key={idx}
+              ex={ex}
+              onSelectExercise={onSelectExercise}
+              showImages={showImages}
+            />
           ))}
         </ul>
       ) : filteredExercises.length > 0 && (
@@ -115,11 +127,15 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
               </tr>
             </thead>
             <tbody>
-              {filteredExercises.map((ex, i) => (
-                <tr key={i} onClick={() => onSelectExercise(ex.name)} className={styles.listRow}>
+              {filteredExercises.map((ex, idx) => (
+                <tr
+                  key={idx}
+                  onClick={() => onSelectExercise(ex.name)}
+                  className={styles.listRow}
+                >
                   <td>{ex.name}</td>
                   <td>{ex.mainMuscle}</td>
-                  <td>{ex.type}</td>
+                  <td style={{ color: ex.color }}>{ex.type}</td>
                   <td>{ex.keyMovement || ""}</td>
                   <td>{ex.equipment || ""}</td>
                 </tr>
@@ -131,5 +147,3 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
     </div>
   )
 }
-
-export default List
