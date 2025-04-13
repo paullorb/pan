@@ -48,16 +48,6 @@
   font-weight: bold;
 }
 
-.completeContainer {
-  display: flex;
-  justify-content: center;
-  margin: var(--spacing-m);
-  border: 3px solid #ccc;
-  padding: var(--spacing-s);
-  border-radius: 10px;
-  user-select: none;
-}
-
 .completed {
   background-color: green;
 }

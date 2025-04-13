@@ -13,6 +13,7 @@ import LastDetails from "../sets/lastDetails"
 import { addSet, deleteSet } from "../sets/manageSets"
 import { toggleSetCompletion } from "../sets/toggleSetCompletion"
 import NextUp from "./nextUp"
+import Completed from "./completed"
 
 type SetItem = {
   reps: string
@@ -125,6 +126,15 @@ export default function Card() {
     }
   }
 
+  // Called when user wants to complete AND jump to next
+  const handleCompleteAndNext = async () => {
+    if (!completedToday) {
+      await toggleCompletion()
+      setSelectedExercise(nextExercise)
+      localStorage.setItem("lastSelectedExercise", slugify(nextExercise.name))
+    }
+  }
+
   return (
     <div className={styles.card}>
       <div className={styles.exerciseHeader}>
@@ -163,21 +173,21 @@ export default function Card() {
         exerciseCompleted={completedToday}
       />
       <div className={styles.buttonGroup}>
-        <button onClick={() => setSets(addSet(sets))} className={styles.setsButton}>+</button>
-        <button onClick={() => setSets(deleteSet(sets))} className={styles.setsButton}>-</button>
-      </div>
-      <BestPractice selectedExercise={selectedExercise.name} />
-      <div
-        onClick={toggleCompletion}
-        className={`${styles.completeContainer} ${completedToday ? styles.completed : styles.incomplete}`}
-      >
-        <button
-          disabled={!sets.every(s => s.completed) && !completedToday}
-          className={styles.completeButton}
-        >
-          {completedToday ? "Mark as Incomplete" : "Mark as Completed"}
+        <button onClick={() => setSets(addSet(sets))} className={styles.setsButton}>
+          +
+        </button>
+        <button onClick={() => setSets(deleteSet(sets))} className={styles.setsButton}>
+          -
         </button>
       </div>
+      <BestPractice selectedExercise={selectedExercise.name} />
+
+      <Completed
+        completedToday={completedToday}
+        sets={sets}
+        onToggleCompletion={toggleCompletion}
+        onCompleteAndNext={handleCompleteAndNext}
+      />
     </div>
   )
 }
