@@ -22,10 +22,10 @@ export default function Status({ imageSrc }: StatusProps) {
         <Image
           src={imageSrc}
           alt=""
-          fill
+          width={400}
+          height={300}
           className={styles.responsiveImage}
           onError={() => setImgError(true)}
-          style={{ objectFit: 'contain' }}
         />
       ) : (
         <div className={styles.placeholder}>no image</div>

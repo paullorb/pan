@@ -2,12 +2,12 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: auto;
   gap: var(--spacing-s);
 }
 
 .exerciseHeader {
   position: relative; 
+  text-align: left;
   width: 100%;
   margin-bottom: 1rem;
 }
