@@ -15,16 +15,18 @@ type ListProps = {
   onSelectExercise: (exercise: string) => void
 }
 
-const List = ({ exercises, onSelectExercise }: ListProps) => {
-  if (!exercises || exercises.length === 0) {
-    return <div>No exercises found</div>
-  }
-  
+const List = ({ exercises = [], onSelectExercise }: ListProps) => {
+  // 1) Call Hooks unconditionally
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
   const [isTileView, setIsTileView] = useState(true)
   const [sortField, setSortField] = useState<keyof ExerciseItem | null>(null)
+
+  // 2) Now it’s safe to conditionally return
+  if (exercises.length === 0) {
+    return <div>No exercises found</div>
+  }
 
   const filteredExercises = useMemo(() => {
     let result = exercises.filter(ex =>
@@ -34,7 +36,7 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
     )
     if (sortField) {
       result = result.sort((a, b) =>
-        (a[sortField] ?? '').localeCompare(b[sortField] ?? '')
+        (a[sortField] ?? "").localeCompare(b[sortField] ?? "")
       )
     } else {
       result = result.sort((a, b) => a.name.localeCompare(b.name))
@@ -119,8 +121,8 @@ const List = ({ exercises, onSelectExercise }: ListProps) => {
                   <td>{ex.name}</td>
                   <td>{ex.mainMuscle}</td>
                   <td>{ex.type}</td>
-                  <td>{ex.keyMovement || ''}</td>
-                  <td>{ex.equipment || ''}</td>
+                  <td>{ex.keyMovement || ""}</td>
+                  <td>{ex.equipment || ""}</td>
                 </tr>
               ))}
             </tbody>
