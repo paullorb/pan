@@ -16,33 +16,32 @@ type ListProps = {
 }
 
 const List = ({ exercises = [], onSelectExercise }: ListProps) => {
-  // 1) Call Hooks unconditionally
+  // 1) Always call Hooks unconditionally at the top
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
   const [isTileView, setIsTileView] = useState(true)
   const [sortField, setSortField] = useState<keyof ExerciseItem | null>(null)
 
-  // 2) Now it’s safe to conditionally return
-  if (exercises.length === 0) {
-    return <div>No exercises found</div>
-  }
-
+  // 2) Then do your memoized filtering
   const filteredExercises = useMemo(() => {
-    let result = exercises.filter(ex =>
+    const filtered = exercises.filter(ex =>
       (!selectedModality || ex.type === selectedModality) &&
       (!selectedMainMuscle || ex.mainMuscle === selectedMainMuscle) &&
       (!selectedMovement || ex.keyMovement === selectedMovement)
     )
     if (sortField) {
-      result = result.sort((a, b) =>
-        (a[sortField] ?? "").localeCompare(b[sortField] ?? "")
-      )
+      filtered.sort((a, b) => (a[sortField] ?? "").localeCompare(b[sortField] ?? ""))
     } else {
-      result = result.sort((a, b) => a.name.localeCompare(b.name))
+      filtered.sort((a, b) => a.name.localeCompare(b.name))
     }
-    return result
+    return filtered
   }, [exercises, selectedModality, selectedMainMuscle, selectedMovement, sortField])
+
+  // 3) Only after the Hooks, return early if nothing is there
+  if (!exercises.length) {
+    return <div>No exercises found</div>
+  }
 
   const uniqueValues = (field: keyof ExerciseItem) =>
     Array.from(new Set(exercises.map(ex => ex[field]).filter(Boolean))).sort()
@@ -84,7 +83,7 @@ const List = ({ exercises = [], onSelectExercise }: ListProps) => {
           </button>
         </div>
         <div>
-          <button onClick={() => setIsTileView(prev => !prev)} className={styles.toggleView}>
+          <button onClick={() => setIsTileView(x => !x)} className={styles.toggleView}>
             {isTileView ? "items" : "tiles"}
           </button>
         </div>
