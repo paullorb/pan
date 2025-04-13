@@ -4,27 +4,30 @@ import Exercise from '../../lib/models/Exercise'
 import jwt from 'jsonwebtoken'
 
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader?.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authHeader = request.headers.get("authorization")
+  if (!authHeader?.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const token = authHeader.split(' ')[1]
+  const token = authHeader.split(" ")[1]
   let decoded: any
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET as string)
   } catch {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 })
   }
-
   const userId = decoded.userId
   const { searchParams } = new URL(request.url)
-  const fetchMonth = searchParams.get('month') === 'true'
-  if (fetchMonth) {
+  const monthParam = searchParams.get("month")
+  const yearParam = searchParams.get("year")
+
+  // Fetch for a given month/year
+  if (monthParam && yearParam) {
     await connectDB()
-    const now = new Date()
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
+    const monthNum = parseInt(monthParam, 10)
+    const yearNum = parseInt(yearParam, 10)
+    const startOfMonth = new Date(yearNum, monthNum, 1)
+    const endOfMonth = new Date(yearNum, monthNum + 1, 1)
     const exercises = await Exercise.find({
       userId,
       date: { $gte: startOfMonth, $lt: endOfMonth }
@@ -32,10 +35,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ exercises }, { status: 200 })
   }
 
-  const exerciseId = searchParams.get('exerciseId')
-  const fetchLast = searchParams.get('last') === 'true'
+  // Existing logic below
+  const exerciseId = searchParams.get("exerciseId")
+  const fetchLast = searchParams.get("last") === "true"
   if (!exerciseId) {
-    return NextResponse.json({ error: 'Missing exerciseId' }, { status: 400 })
+    return NextResponse.json({ error: "Missing exerciseId" }, { status: 400 })
   }
 
   await connectDB()
@@ -56,15 +60,16 @@ export async function GET(request: NextRequest) {
     const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     const dayEnd = new Date(dayStart)
     dayEnd.setDate(dayEnd.getDate() + 1)
+
     const existing = await Exercise.findOne({
       userId,
       exerciseId,
       date: { $gte: dayStart, $lt: dayEnd }
     }).lean()
+
     return NextResponse.json({ exercise: existing || null }, { status: 200 })
   }
 }
-
 
 export async function POST(request: NextRequest) {
   const authHeader = request.headers.get('authorization')

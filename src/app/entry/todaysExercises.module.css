@@ -1,0 +1,13 @@
+.container {
+  border: 1px solid black;
+  border-radius: var(--spacing-s);
+  padding: var(--spacing-xs);
+}
+
+.exs {
+  display: flex;
+}
+
+.ex {
+  font-size: 0.8rem;
+}
