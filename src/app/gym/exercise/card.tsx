@@ -12,7 +12,7 @@ import BestPractice from "./bestPractice"
 import LastDetails from "../sets/lastDetails"
 import { addSet, deleteSet } from "../sets/manageSets"
 import { toggleSetCompletion } from "../sets/toggleSetCompletion"
-import NextUp from "./nextUp"
+import NextUp from "../exercises/nextUp"
 import Completed from "./completed"
 
 type SetItem = {
