@@ -14,6 +14,7 @@ import { addSet, deleteSet } from "../sets/manageSets"
 import { toggleSetCompletion } from "../sets/toggleSetCompletion"
 import NextUp from "../exercises/nextUp"
 import Completed from "./completed"
+import Timeline from "../exercises/timeline"
 
 type SetItem = {
   reps: string
@@ -104,37 +105,35 @@ export default function Card() {
   }
 
   const toggleCompletion = () => {
-  if (!user) return
-  const slug = slugify(selectedExercise.name)
-  if (!completedToday && !sets.every(s => s.completed)) return
+    if (!user) return
+    const slug = slugify(selectedExercise.name)
+    if (!completedToday && !sets.every(s => s.completed)) return
 
-  if (!completedToday) {
-    localStorage.removeItem(`sets_${slug}`)
-    setCompletedToday(true)
-    createExercise({
-      exerciseId: slug,
-      type: selectedExercise.type,
-      sets,
-      date: new Date().toISOString()
-    }).catch(() => {
-      setCompletedToday(false)
-      localStorage.setItem(`sets_${slug}`, JSON.stringify(sets))
-    })
-  } else {
-    setCompletedToday(false)
-    const resetSets = sets.map(s => ({ ...s, completed: false }))
-    setSets(resetSets)
-    localStorage.setItem(`sets_${slug}`, JSON.stringify(resetSets))
-    deleteExercise(slug).catch(() => {
-      setCompletedToday(true)
-      setSets(sets)
+    if (!completedToday) {
       localStorage.removeItem(`sets_${slug}`)
-    })
+      setCompletedToday(true)
+      createExercise({
+        exerciseId: slug,
+        type: selectedExercise.type,
+        sets,
+        date: new Date().toISOString()
+      }).catch(() => {
+        setCompletedToday(false)
+        localStorage.setItem(`sets_${slug}`, JSON.stringify(sets))
+      })
+    } else {
+      setCompletedToday(false)
+      const resetSets = sets.map(s => ({ ...s, completed: false }))
+      setSets(resetSets)
+      localStorage.setItem(`sets_${slug}`, JSON.stringify(resetSets))
+      deleteExercise(slug).catch(() => {
+        setCompletedToday(true)
+        setSets(sets)
+        localStorage.removeItem(`sets_${slug}`)
+      })
+    }
   }
-}
 
-
-  // Called when user wants to complete AND jump to next
   const handleCompleteAndNext = async () => {
     if (!completedToday) {
       await toggleCompletion()
@@ -145,12 +144,16 @@ export default function Card() {
 
   return (
     <div className={styles.card}>
+      <Timeline
+        currentExercise={{
+          name: selectedExercise.name,
+          slug: slugify(selectedExercise.name),
+          completed: completedToday
+        }}
+      />
       <div className={styles.exerciseHeader}>
         <div
-          className={`
-            ${styles.exerciseName}
-            ${mode === "current" ? styles.changingCurrent : ""}
-          `}
+          className={`${styles.exerciseName} ${mode === "current" ? styles.changingCurrent : ""}`}
           onClick={() => setMode(mode === "current" ? "none" : "current")}
         >
           {selectedExercise.name} {completedToday ? "✔️" : ""}
@@ -161,13 +164,11 @@ export default function Card() {
           onClick={() => setMode(mode === "next" ? "none" : "next")}
         />
       </div>
-
       {mode !== "none" && (
         <div className={styles.dropdownWrapper}>
           <List exercises={exercises} onSelectExercise={handleSelectExercise} />
         </div>
       )}
-
       <Status imageSrc={`/${selectedExercise.name}.png`} />
       <LastDetails
         exerciseType={selectedExercise.type}
@@ -189,7 +190,6 @@ export default function Card() {
         </button>
       </div>
       <BestPractice selectedExercise={selectedExercise.name} />
-
       <Completed
         completedToday={completedToday}
         sets={sets}

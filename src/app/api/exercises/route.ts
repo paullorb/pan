@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
   if (!authHeader?.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
-
   const token = authHeader.split(" ")[1]
   let decoded: any
   try {
@@ -18,10 +17,21 @@ export async function GET(request: NextRequest) {
   }
   const userId = decoded.userId
   const { searchParams } = new URL(request.url)
+  const todayParam = searchParams.get("today")
+  if (todayParam === "true") {
+    const now = new Date()
+    const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const dayEnd = new Date(dayStart)
+    dayEnd.setDate(dayEnd.getDate() + 1)
+    await connectDB()
+    const todaysExercises = await Exercise.find({
+      userId,
+      date: { $gte: dayStart, $lt: dayEnd }
+    }).lean()
+    return NextResponse.json({ exercises: todaysExercises }, { status: 200 })
+  }
   const monthParam = searchParams.get("month")
   const yearParam = searchParams.get("year")
-
-  // Fetch for a given month/year
   if (monthParam && yearParam) {
     await connectDB()
     const monthNum = parseInt(monthParam, 10)
@@ -34,16 +44,12 @@ export async function GET(request: NextRequest) {
     }).lean()
     return NextResponse.json({ exercises }, { status: 200 })
   }
-
-  // Existing logic below
   const exerciseId = searchParams.get("exerciseId")
   const fetchLast = searchParams.get("last") === "true"
   if (!exerciseId) {
     return NextResponse.json({ error: "Missing exerciseId" }, { status: 400 })
   }
-
   await connectDB()
-
   if (fetchLast) {
     const dayStartToday = new Date()
     dayStartToday.setHours(0, 0, 0, 0)
@@ -60,13 +66,11 @@ export async function GET(request: NextRequest) {
     const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     const dayEnd = new Date(dayStart)
     dayEnd.setDate(dayEnd.getDate() + 1)
-
     const existing = await Exercise.findOne({
       userId,
       exerciseId,
       date: { $gte: dayStart, $lt: dayEnd }
     }).lean()
-
     return NextResponse.json({ exercise: existing || null }, { status: 200 })
   }
 }

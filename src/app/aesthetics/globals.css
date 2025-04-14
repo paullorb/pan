@@ -13,6 +13,10 @@
   --hover-color: #c0c0c069;
   --white-b: solid white;
   --black-b: solid black;
+  --color-success: #4caf50;
+  --color-error: #f44336;
+  --color-warning: #ff9800;
+  --color-info: #2196f3;
   --bg-active: rgba(0, 0, 0, 0.2);
   --border-radius-xs: 0.25rem;
   --border-radius-s: 0.5rem;
@@ -25,6 +29,7 @@
   --spacing-l: 3rem;
   --spacing-xl: 4rem;
   --spacing-xxl: 5rem;
+
 }
 
 button {
