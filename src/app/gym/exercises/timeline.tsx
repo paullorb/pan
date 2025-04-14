@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../../auth/authContext"
 import styles from "./timeline.module.css"
+import React from "react"
 
 type Exercise = {
   exerciseId: string
