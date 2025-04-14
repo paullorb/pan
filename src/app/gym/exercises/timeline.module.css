@@ -13,7 +13,6 @@
   padding: var(--spacing-xs);
   font-size: 0.8rem;
   letter-spacing: -1px;
-  font-weight: bold;
 }
 
 .completed {
