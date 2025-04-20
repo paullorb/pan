@@ -1,6 +1,7 @@
 "use client"
+
+import { useState } from "react"
 import styles from "./details.module.css"
-import CustomSelect from "./customSelect"
 
 export default function Details({
   exerciseType,
@@ -15,6 +16,8 @@ export default function Details({
   toggleSetComplete: (i: number) => void
   exerciseCompleted: boolean
 }) {
+  const [openSelect, setOpenSelect] = useState<string | null>(null)
+
   const repsRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
   const weightRange = Array.from({ length: 401 }, (_, i) => (i * 0.5).toString())
   const durationRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
@@ -28,6 +31,36 @@ export default function Details({
     updateSets(newSets)
   }
 
+  const renderSelect = (
+    idx: number,
+    field: string,
+    options: string[],
+    value: string,
+    unit: string
+  ) => {
+    const key = `${idx}-${field}`
+    return (
+      <div className={styles.basicSelectWrapper}>
+        <select
+          value={value}
+          disabled={sets[idx].completed || exerciseCompleted}
+          size={openSelect === key ? 5 : 1}
+          onFocus={() => setOpenSelect(key)}
+          onBlur={() => setOpenSelect(null)}
+          onChange={e => updateSetField(idx, field, e.target.value)}
+          className={styles.basicSelect}
+        >
+          {options.map(opt => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+        <span className={styles.unit}>{unit}</span>
+      </div>
+    )
+  }
+
   return (
     <form className={styles.detailsForm}>
       {sets.map((set, idx) => (
@@ -37,64 +70,28 @@ export default function Details({
             <div className={styles.selectsWrapper}>
               {exerciseType === "weight" && (
                 <>
-                  <CustomSelect
-                    options={repsRange}
-                    value={set.reps}
-                    onChange={val => updateSetField(idx, "reps", val)}
-                    unit="reps"
-                    disabled={set.completed || exerciseCompleted}
-                  />
-                  <CustomSelect
-                    options={weightRange}
-                    value={set.weight}
-                    onChange={val => updateSetField(idx, "weight", val)}
-                    unit="kg"
-                    disabled={set.completed || exerciseCompleted}
-                  />
+                  {renderSelect(idx, "reps", repsRange, set.reps, "reps")}
+                  {renderSelect(idx, "weight", weightRange, set.weight, "kg")}
                 </>
               )}
               {exerciseType === "cardio" && (
                 <>
-                  <CustomSelect
-                    options={durationRange}
-                    value={set.duration}
-                    onChange={val => updateSetField(idx, "duration", val)}
-                    unit="min"
-                    disabled={set.completed || exerciseCompleted}
-                  />
-                  <CustomSelect
-                    options={intensityRange}
-                    value={set.intensity}
-                    onChange={val => updateSetField(idx, "intensity", val)}
-                    unit="intensity"
-                    disabled={set.completed || exerciseCompleted}
-                  />
+                  {renderSelect(idx, "duration", durationRange, set.duration, "min")}
+                  {renderSelect(idx, "intensity", intensityRange, set.intensity, "intensity")}
                 </>
               )}
               {exerciseType === "stretch" && (
                 <>
-                  <CustomSelect
-                    options={repsRange}
-                    value={set.reps}
-                    onChange={val => updateSetField(idx, "reps", val)}
-                    unit="reps"
-                    disabled={set.completed || exerciseCompleted}
-                  />
-                  <CustomSelect
-                    options={intensityRange}
-                    value={set.intensity}
-                    onChange={val => updateSetField(idx, "intensity", val)}
-                    unit="intensity"
-                    disabled={set.completed || exerciseCompleted}
-                  />
+                  {renderSelect(idx, "reps", repsRange, set.reps, "reps")}
+                  {renderSelect(idx, "intensity", intensityRange, set.intensity, "intensity")}
                 </>
               )}
             </div>
             <div
               onClick={() => toggleSetComplete(idx)}
               className={`
-                ${styles.setCompletionCircle} 
-                ${set.completed ? styles.completed : ""} 
+                ${styles.setCompletionCircle}
+                ${set.completed ? styles.completed : ""}
                 ${exerciseCompleted ? styles.disabled : ""}
               `}
             />
