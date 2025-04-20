@@ -1,8 +1,8 @@
-"use client"
-import { createContext, useContext, useState, useEffect } from "react"
+// sessionContext.tsx
+'use client'
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react'
 
-type SessionState = "idle" | "running" | "paused" | "ended"
-
+type SessionState = 'idle' | 'running' | 'paused' | 'ended'
 type SessionContextType = {
   state: SessionState
   time: number
@@ -11,33 +11,38 @@ type SessionContextType = {
   end: () => void
 }
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined)
+const SessionContext = createContext<SessionContextType|undefined>(undefined)
 
-export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<SessionState>("idle")
+export function SessionProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<SessionState>('idle')
   const [time, setTime] = useState(0)
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null)
+  const intervalRef = useRef<NodeJS.Timeout|null>(null)
 
   useEffect(() => {
-    if (state === "running") {
-      const id = setInterval(() => setTime(t => t + 1), 1000)
-      setIntervalId(id)
-    } else if (intervalId) {
-      clearInterval(intervalId)
-      setIntervalId(null)
+    if (state === 'running') {
+      intervalRef.current = setInterval(() => setTime(t => t + 1), 1000)
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
     }
   }, [state])
 
   const start = () => {
-    if (state === "idle" || state === "paused") setState("running")
+    if (state === 'idle' || state === 'paused') setState('running')
   }
-
   const pause = () => {
-    if (state === "running") setState("paused")
+    if (state === 'running') setState('paused')
   }
-
   const end = () => {
-    setState("ended")
+    setState('ended')
     setTime(0)
   }
 
@@ -49,7 +54,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useSession() {
-  const context = useContext(SessionContext)
-  if (!context) throw new Error("useSession must be used within SessionProvider")
-  return context
+  const ctx = useContext(SessionContext)
+  if (!ctx) throw new Error('useSession must be used within SessionProvider')
+  return ctx
 }
