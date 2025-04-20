@@ -6,10 +6,10 @@ const EntrySchema = new Schema({
   category: { type: String, default: null },
   done: { type: Boolean, default: false },
   completedAt: { type: Date },
+  parentId: { type: Schema.Types.ObjectId, ref: 'Entry', default: null },
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 })
 
 EntrySchema.index({ date: 1, text: 1 }, { unique: true })
 
-const Entry = models.Entry || model('Entry', EntrySchema)
-export default Entry
+export default models.Entry || model('Entry', EntrySchema)
