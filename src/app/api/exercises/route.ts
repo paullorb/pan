@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
-import connectDB from '../../../lib/mongodb'
-import Exercise from '../../../lib/models/Exercise'
+import connectDB from '../../lib/mongodb'
+import Exercise from '../../lib/models/Exercise'
 import jwt from 'jsonwebtoken'
 
 export async function GET(request: NextRequest) {
