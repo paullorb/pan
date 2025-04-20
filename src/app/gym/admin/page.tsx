@@ -1,11 +1,12 @@
-import React from 'react';
+import React from 'react'
+import { ExProvider } from './exContext'
+import Table from './table'
 
 export default function AdminPage() {
-  
-
   return (
-    <div>
+    <ExProvider>
       <h1>Exercises List</h1>
-    </div>
-  );
+      <Table />
+    </ExProvider>
+  )
 }
