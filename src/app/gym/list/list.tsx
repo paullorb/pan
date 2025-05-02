@@ -1,5 +1,5 @@
 "use client"
-import { useState, useMemo } from "react"
+import React, { useState, useMemo } from "react"
 import styles from "./list.module.css"
 import Tile from "./tile"
 import Block from "./block"
@@ -53,8 +53,31 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
   }
 
   return (
-    <div>
-      <div className={styles.filterBar}>
+    <>
+      <div className={styles.header}>
+              <button 
+          onClick={() => setIsTileView(x => !x)} 
+          className={styles.toggleView}
+          title={isTileView ? "Switch to cell view" : "Switch to tile view"}
+        >
+          {isTileView ? "📊" : "🧩"}
+        </button>
+
+        <button 
+          onClick={() => setShowImages(x => !x)}
+          title={showImages ? "Hide images" : "Show images"}
+        >
+          {showImages ? "🖼️" : "📷"}
+        </button>
+
+          <button 
+            onClick={() => setColumns(columns === 2 ? 3 : 2)}
+            title={`Switch to ${columns === 2 ? 3 : 2} columns`}
+          >
+            {columns === 2 ? "📑" : "📋"}
+          </button>
+      </div>
+      <div className={styles.filters}>
         <div className={styles.filterLabel}>
           <select
             value={selectedModality}
@@ -93,44 +116,11 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
             ⇅
           </button>
         </div>
-
-        <button 
-          onClick={() => setIsTileView(x => !x)} 
-          className={styles.toggleView}
-          title={isTileView ? "Switch to cell view" : "Switch to tile view"}
-        >
-          {isTileView ? "📊" : "🧩"}
-        </button>
-
-        <button 
-          onClick={() => setShowImages(x => !x)}
-          title={showImages ? "Hide images" : "Show images"}
-        >
-          {showImages ? "🖼️" : "📷"}
-        </button>
-
-          <button 
-            onClick={() => setColumns(columns === 2 ? 3 : 2)}
-            title={`Switch to ${columns === 2 ? 3 : 2} columns`}
-          >
-            {columns === 2 ? "📑" : "📋"}
-          </button>
       </div>
 
       {!filteredExercises.length && <div>No exercises match your filters</div>}
 
-      {filteredExercises.length > 0 && isTileView ? (
-        <ul className={styles.tileContainer}>
-          {filteredExercises.map((ex, idx) => (
-            <Tile
-              key={idx}
-              ex={ex}
-              onSelectExercise={onSelectExercise}
-              showImages={showImages}
-            />
-          ))}
-        </ul>
-      ) : filteredExercises.length > 0 && (
+      {filteredExercises.length > 0 && (
         <div className={styles.listScroll}>
           {isTileView ? (
             <div className={`${styles.blockContainer} ${styles[`columns${columns}`]}`}>
@@ -171,6 +161,6 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
           )}
         </div>
       )}
-    </div>
+    </>
   )
 }

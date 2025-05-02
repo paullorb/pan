@@ -1,4 +1,4 @@
-.filterBar {
+.filters {
   display: flex;
   justify-content: center;
   background-color: white;
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.filterBar button {
+.filters button {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -17,7 +17,7 @@
   transition: all 0.2s ease;
 }
 
-.filterBar button:hover {
+.filters button:hover {
   background: #f0f0f0;
   transform: translateY(-1px);
 }
