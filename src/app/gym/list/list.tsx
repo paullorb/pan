@@ -74,7 +74,7 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
             onClick={() => setColumns(columns === 2 ? 3 : 2)}
             title={`Switch to ${columns === 2 ? 3 : 2} columns`}
           >
-            {columns === 2 ? "📑" : "📋"}
+            {columns === 2 ? "🧑‍🧒" : "🧑‍🧒‍🧒"}
           </button>
       </div>
       <div className={styles.filters}>

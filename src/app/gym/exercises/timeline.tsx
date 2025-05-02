@@ -35,7 +35,7 @@ export default function Timeline({ currentExercise }: TimelineProps) {
       .then(res => res.json())
       .then(data => setExercises(data.exercises || []))
   }, [user])
-
+  console.log(exercises)
   let timelineItems = exercises
   if (currentExercise && !exercises.find(ex => ex.exerciseId === currentExercise.slug)) {
     timelineItems = [
@@ -66,14 +66,22 @@ export default function Timeline({ currentExercise }: TimelineProps) {
             ? styles.completed
             : styles.incomplete
           : styles.completed
+        
+        const exerciseData = exercises.find(e => e.name === ex.exerciseId) || {
+          name: ex.exerciseId,
+          type: ex.type,
+          mainMuscle: ex.mainMuscle || "",
+          color: ex.color
+        }
+        
         return (
           <div key={idx} className={`${styles.item} ${statusClass}`}>
             <Block
               ex={{
-                name: ex.name,
-                type: ex.type,
-                mainMuscle: ex.mainMuscle || "",
-                color: ex.color
+                name: exerciseData.name,
+                type: exerciseData.type,
+                mainMuscle: exerciseData.mainMuscle || "",
+                color: exerciseData.color
               }}
               isTimeline={true}
             />
