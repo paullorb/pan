@@ -2,6 +2,7 @@
 import { useState, useMemo } from "react"
 import styles from "./list.module.css"
 import Tile from "./tile"
+import Block from "./block"
 
 type ExerciseItem = {
   name: string
@@ -21,9 +22,10 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
   const [selectedModality, setSelectedModality] = useState("")
   const [selectedMainMuscle, setSelectedMainMuscle] = useState("")
   const [selectedMovement, setSelectedMovement] = useState("")
-  const [isTileView, setIsTileView] = useState(true)
+  const [isTileView, setIsTileView] = useState(false)
   const [sortField, setSortField] = useState<keyof ExerciseItem | null>(null)
   const [showImages, setShowImages] = useState(false)
+  const [columns, setColumns] = useState(2)
 
   const filteredExercises = useMemo(() => {
     const filtered = exercises.filter(ex =>
@@ -92,13 +94,27 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
           </button>
         </div>
 
-        <button onClick={() => setIsTileView(x => !x)} className={styles.toggleView}>
-          {isTileView ? "items" : "tiles"}
+        <button 
+          onClick={() => setIsTileView(x => !x)} 
+          className={styles.toggleView}
+          title={isTileView ? "Switch to cell view" : "Switch to tile view"}
+        >
+          {isTileView ? "📊" : "🧩"}
         </button>
 
-        <button onClick={() => setShowImages(x => !x)}>
-          {showImages ? "Hide Images" : "Show Images"}
+        <button 
+          onClick={() => setShowImages(x => !x)}
+          title={showImages ? "Hide images" : "Show images"}
+        >
+          {showImages ? "🖼️" : "📷"}
         </button>
+
+          <button 
+            onClick={() => setColumns(columns === 2 ? 3 : 2)}
+            title={`Switch to ${columns === 2 ? 3 : 2} columns`}
+          >
+            {columns === 2 ? "📑" : "📋"}
+          </button>
       </div>
 
       {!filteredExercises.length && <div>No exercises match your filters</div>}
@@ -116,32 +132,43 @@ export default function List({ exercises = [], onSelectExercise }: ListProps) {
         </ul>
       ) : filteredExercises.length > 0 && (
         <div className={styles.listScroll}>
-          <table className={styles.listTable}>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Main Muscle</th>
-                <th>Type</th>
-                <th>Movement</th>
-                <th>Equipment</th>
-              </tr>
-            </thead>
-            <tbody>
+          {isTileView ? (
+            <div className={`${styles.blockContainer} ${styles[`columns${columns}`]}`}>
               {filteredExercises.map((ex, idx) => (
-                <tr
+                <Block
                   key={idx}
-                  onClick={() => onSelectExercise(ex.name)}
-                  className={styles.listRow}
-                >
-                  <td>{ex.name}</td>
-                  <td>{ex.mainMuscle}</td>
-                  <td style={{ color: ex.color }}>{ex.type}</td>
-                  <td>{ex.keyMovement || ""}</td>
-                  <td>{ex.equipment || ""}</td>
-                </tr>
+                  ex={ex}
+                  onSelectExercise={onSelectExercise}
+                  showImages={showImages}
+                />
               ))}
-            </tbody>
-          </table>
+            </div>
+          ) : (
+            <table className={styles.cellTable}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Main Muscle</th>
+                  <th>Movement</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredExercises.map((ex, idx) => (
+                  <tr
+                    key={idx}
+                    onClick={() => onSelectExercise(ex.name)}
+                    className={styles.cellRow}
+                  >
+                    <td>{ex.name}</td>
+                    <td>{ex.type}</td>
+                    <td>{ex.mainMuscle}</td>
+                    <td>{ex.keyMovement || ""}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react"
 import { useAuth } from "../../auth/authContext"
 import styles from "./timeline.module.css"
+import Block from "../list/block"
 import React from "react"
 
 type Exercise = {
@@ -9,11 +10,16 @@ type Exercise = {
   type: string
   sets: any[]
   date: string
+  name: string
+  color?: string
+  mainMuscle?: string
 }
 type CurrentExercise = {
   name: string
   slug: string
   completed: boolean
+  type?: string
+  color?: string
 }
 type TimelineProps = {
   currentExercise?: CurrentExercise
@@ -34,7 +40,14 @@ export default function Timeline({ currentExercise }: TimelineProps) {
   if (currentExercise && !exercises.find(ex => ex.exerciseId === currentExercise.slug)) {
     timelineItems = [
       ...exercises,
-      { exerciseId: currentExercise.slug, type: "", sets: [], date: new Date().toISOString() }
+      { 
+        exerciseId: currentExercise.slug, 
+        type: currentExercise.type || "", 
+        sets: [], 
+        date: new Date().toISOString(),
+        name: currentExercise.name,
+        color: currentExercise.color
+      }
     ]
   }
 
@@ -55,7 +68,15 @@ export default function Timeline({ currentExercise }: TimelineProps) {
           : styles.completed
         return (
           <div key={idx} className={`${styles.item} ${statusClass}`}>
-            <span>{ex.exerciseId}</span>
+            <Block
+              ex={{
+                name: ex.name,
+                type: ex.type,
+                mainMuscle: ex.mainMuscle || "",
+                color: ex.color
+              }}
+              isTimeline={true}
+            />
             <div className={`${styles.line} ${statusClass}`}></div>
           </div>
         )
