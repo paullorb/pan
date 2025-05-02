@@ -15,7 +15,6 @@ import { toggleSetCompletion } from "../sets/toggleSetCompletion"
 import NextUp from "../exercises/nextUp"
 import Completed from "./completed"
 import Timeline from "../exercises/timeline"
-import Session from "./session"
 
 type SetItem = {
   reps: string
@@ -145,7 +144,6 @@ export default function Card() {
 
   return (
     <div className={styles.card}>
-      <Session />
       <Timeline
         currentExercise={{
           name: selectedExercise.name,
