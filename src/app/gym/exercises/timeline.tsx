@@ -35,7 +35,6 @@ export default function Timeline({ currentExercise }: TimelineProps) {
       .then(res => res.json())
       .then(data => setExercises(data.exercises || []))
   }, [user])
-  console.log(exercises)
   let timelineItems = exercises
   if (currentExercise && !exercises.find(ex => ex.exerciseId === currentExercise.slug)) {
     timelineItems = [
