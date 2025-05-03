@@ -19,12 +19,6 @@
   margin: 0 auto;
 }
 
-.leftPlaceholder {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-}
-
 .selectsWrapper {
   display: inline-flex;
   gap: var(--spacing-xxs);
@@ -65,4 +59,8 @@
 .setCompletionCircle.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.placeholder {
+  opacity: 0;
 }

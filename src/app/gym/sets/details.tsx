@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import styles from "./details.module.css"
 import { SET_RANGES } from "./constants"
 
@@ -78,7 +78,11 @@ export default function Details({
       {sets.map((set, idx) => (
         <div key={idx} className={styles.setContainer}>
           <div className={styles.setInner}>
-            <div className={styles.leftPlaceholder} />
+            <div
+              className={`
+                ${styles.setCompletionCircle} ${styles.placeholder}
+              `}
+            />
             <div className={styles.selectsWrapper}>
               {exerciseType === "weight" && (
                 <>

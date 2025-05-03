@@ -71,11 +71,12 @@ export default function Card() {
         setCompletedToday(true)
         localStorage.removeItem(localKey)
       } else {
+        const lastSet = last?.sets?.slice(-1)?.[0];
         setSets(localSets || [{
-          reps: "",
-          weight: "",
-          duration: "",
-          intensity: "",
+          reps: lastSet?.reps || "",
+          weight: lastSet?.weight || "",
+          duration: lastSet?.duration || "",
+          intensity: lastSet?.intensity || "",
           completed: false
         }])
         setCompletedToday(false)
