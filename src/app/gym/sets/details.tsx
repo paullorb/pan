@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import styles from "./details.module.css"
+import { SET_RANGES } from "./constants"
 
 import { 
   ExerciseType, 
@@ -25,10 +26,10 @@ export default function Details({
 }: DetailsProps) {
   const [openSelect, setOpenSelect] = useState<string | null>(null)
 
-  const repsRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
-  const weightRange = Array.from({ length: 401 }, (_, i) => (i * 0.5).toString())
-  const durationRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
-  const intensityRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
+  const repsRange = SET_RANGES.reps
+  const weightRange = SET_RANGES.weight
+  const durationRange = SET_RANGES.duration
+  const intensityRange = SET_RANGES.intensity
 
   const updateSetField = (
     idx: number, 
