@@ -3,19 +3,27 @@
 import { useState } from "react"
 import styles from "./details.module.css"
 
+import { 
+  ExerciseType, 
+  ExerciseSet, 
+  ExerciseDetails 
+} from "../../lib/types/exercise"
+
+interface DetailsProps {
+  exerciseType: ExerciseType;
+  sets: ExerciseSet[];
+  updateSets: (newSets: ExerciseSet[]) => void;
+  toggleSetComplete: (i: number) => void;
+  exerciseCompleted: boolean;
+}
+
 export default function Details({
   exerciseType,
   sets,
   updateSets,
   toggleSetComplete,
   exerciseCompleted
-}: {
-  exerciseType: string
-  sets: any[]
-  updateSets: (newSets: any[]) => void
-  toggleSetComplete: (i: number) => void
-  exerciseCompleted: boolean
-}) {
+}: DetailsProps) {
   const [openSelect, setOpenSelect] = useState<string | null>(null)
 
   const repsRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
@@ -23,7 +31,11 @@ export default function Details({
   const durationRange = Array.from({ length: 60 }, (_, i) => (i + 1).toString())
   const intensityRange = Array.from({ length: 50 }, (_, i) => (i + 1).toString())
 
-  const updateSetField = (idx: number, field: string, val: string) => {
+  const updateSetField = (
+    idx: number, 
+    field: keyof ExerciseSet, 
+    val: string
+  ) => {
     if (sets[idx].completed || exerciseCompleted) return
     const newSets = sets.map((set, i) =>
       i === idx ? { ...set, [field]: val } : set
@@ -47,7 +59,7 @@ export default function Details({
           size={openSelect === key ? 5 : 1}
           onFocus={() => setOpenSelect(key)}
           onBlur={() => setOpenSelect(null)}
-          onChange={e => updateSetField(idx, field, e.target.value)}
+          onChange={e => updateSetField(idx, field as keyof ExerciseSet, e.target.value)}
           className={styles.basicSelect}
         >
           {options.map(opt => (
@@ -70,20 +82,20 @@ export default function Details({
             <div className={styles.selectsWrapper}>
               {exerciseType === "weight" && (
                 <>
-                  {renderSelect(idx, "reps", repsRange, set.reps, "reps")}
-                  {renderSelect(idx, "weight", weightRange, set.weight, "kg")}
+                  {renderSelect(idx, "reps", repsRange, set.reps ?? "", "reps")}
+                  {renderSelect(idx, "weight", weightRange, set.weight ?? "", "kg")}
                 </>
               )}
               {exerciseType === "cardio" && (
                 <>
-                  {renderSelect(idx, "duration", durationRange, set.duration, "min")}
-                  {renderSelect(idx, "intensity", intensityRange, set.intensity, "intensity")}
+                  {renderSelect(idx, "duration", durationRange, set.duration ?? "", "min")}
+                  {renderSelect(idx, "intensity", intensityRange, set.intensity ?? "", "intensity")}
                 </>
               )}
               {exerciseType === "stretch" && (
                 <>
-                  {renderSelect(idx, "reps", repsRange, set.reps, "reps")}
-                  {renderSelect(idx, "intensity", intensityRange, set.intensity, "intensity")}
+                  {renderSelect(idx, "reps", repsRange, set.reps ?? "", "reps")}
+                  {renderSelect(idx, "intensity", intensityRange, set.intensity ?? "", "intensity")}
                 </>
               )}
             </div>
