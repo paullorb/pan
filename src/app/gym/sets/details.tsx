@@ -6,7 +6,6 @@ import styles from "./details.module.css"
 import { 
   ExerciseType, 
   ExerciseSet, 
-  ExerciseDetails 
 } from "../../lib/types/exercise"
 
 interface DetailsProps {
