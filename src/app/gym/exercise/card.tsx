@@ -15,14 +15,10 @@ import { toggleSetCompletion } from "../utils/toggleSetCompletion"
 import NextUp from "../exercises/nextUp"
 import Completed from "./completed"
 import Timeline from "../exercises/timeline"
-
-type SetItem = {
-  reps: string
-  weight: string
-  duration: string
-  intensity: string
-  completed: boolean
-}
+import { 
+  ExerciseType, 
+  ExerciseSet 
+} from "../../lib/types/exercise"
 
 export default function Card() {
   const [mode, setMode] = useState<"none" | "current" | "next">("none")
@@ -30,8 +26,8 @@ export default function Card() {
   const [hasMounted, setHasMounted] = useState(false)
   const [selectedExercise, setSelectedExercise] = useState(exercises[0])
   const [nextExercise, setNextExercise] = useState(exercises[1] || exercises[0])
-  const [sets, setSets] = useState<SetItem[]>([])
-  const [lastSets, setLastSets] = useState<SetItem[] | null>(null)
+  const [sets, setSets] = useState<ExerciseSet[]>([])
+  const [lastSets, setLastSets] = useState<ExerciseSet[] | null>(null)
 
   const { user } = useAuth()
   const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
@@ -51,7 +47,13 @@ export default function Card() {
       const localSets = JSON.parse(localStorage.getItem(localKey) || "null")
       if (!user) {
         if (isMounted) {
-          setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+          setSets(localSets || [{
+            reps: "",
+            weight: "",
+            duration: "",
+            intensity: "",
+            completed: false
+          }])
           setCompletedToday(false)
         }
         return
@@ -59,11 +61,23 @@ export default function Card() {
       const [today, last] = await Promise.all([getExercise(slug), getLastExercise(slug)])
       if (!isMounted) return
       if (today && new Date(today.date).toDateString() === new Date().toDateString()) {
-        setSets(today.sets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setSets(today.sets || [{
+          reps: "",
+          weight: "",
+          duration: "",
+          intensity: "",
+          completed: false
+        }])
         setCompletedToday(true)
         localStorage.removeItem(localKey)
       } else {
-        setSets(localSets || [{ reps: "", weight: "", duration: "", intensity: "", completed: false }])
+        setSets(localSets || [{
+          reps: "",
+          weight: "",
+          duration: "",
+          intensity: "",
+          completed: false
+        }])
         setCompletedToday(false)
       }
       setLastSets(last?.sets || null)
@@ -175,7 +189,7 @@ export default function Card() {
         lastDetails={lastSets?.slice(-1)?.[0] || null}
       />
       <Details
-        exerciseType={selectedExercise.type}
+        exerciseType={selectedExercise.type as ExerciseType}
         sets={sets}
         updateSets={setSets}
         toggleSetComplete={toggleSetComplete}
