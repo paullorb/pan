@@ -72,7 +72,7 @@ export default function Timeline({ currentExercise, completedExercises }: Timeli
         }
         
         return (
-          <div key={idx} className={`${styles.item} ${statusClass}`}>
+          <div key={ex.exerciseId} className={`${styles.item} ${statusClass}`}>
             <Block
               ex={{
                 name: exerciseData.name,
