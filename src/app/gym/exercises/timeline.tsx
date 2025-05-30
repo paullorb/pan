@@ -23,8 +23,9 @@ type CurrentExercise = {
 }
 type TimelineProps = {
   currentExercise?: CurrentExercise
+  completedExercises: string[]
 }
-export default function Timeline({ currentExercise }: TimelineProps) {
+export default function Timeline({ currentExercise, completedExercises }: TimelineProps) {
   const [exercises, setExercises] = useState<Exercise[]>([])
   const { user } = useAuth()
   const containerRef = useRef<HTMLDivElement>(null)
@@ -59,14 +60,11 @@ export default function Timeline({ currentExercise }: TimelineProps) {
   return (
     <div className={styles.container} ref={containerRef}>
       {timelineItems.map((ex, idx) => {
-        const isCurrent = currentExercise && ex.exerciseId === currentExercise.slug
-        const statusClass = isCurrent
-          ? currentExercise.completed
-            ? styles.completed
-            : styles.incomplete
-          : styles.completed
+        const isCompleted = completedExercises.includes(ex.exerciseId)
+        const statusClass = isCompleted ? styles.completed : styles.incomplete
+
         
-        const exerciseData = exercises.find(e => e.name === ex.exerciseId) || {
+        const exerciseData = exercises.find(e => e.exerciseId === ex.exerciseId) || {
           name: ex.exerciseId,
           type: ex.type,
           mainMuscle: ex.mainMuscle || "",

@@ -28,6 +28,8 @@ export default function Card() {
   const [nextExercise, setNextExercise] = useState(exercises[1] || exercises[0])
   const [sets, setSets] = useState<ExerciseSet[]>([])
   const [lastSets, setLastSets] = useState<ExerciseSet[] | null>(null)
+  const [completedExercises, setCompletedExercises] = useState<string[]>([])
+
 
   const { user } = useAuth()
   const { createExercise, deleteExercise, getExercise, getLastExercise } = useExercise()
@@ -119,35 +121,40 @@ export default function Card() {
     setSets(toggleSetCompletion(sets, i))
   }
 
-  const toggleCompletion = () => {
-    if (!user) return
-    const slug = slugify(selectedExercise.name)
-    if (!completedToday && !sets.every(s => s.completed)) return
+const toggleCompletion = () => {
+  if (!user) return
+  const slug = slugify(selectedExercise.name)
+  if (!completedToday && !sets.every(s => s.completed)) return
 
-    if (!completedToday) {
-      localStorage.removeItem(`sets_${slug}`)
-      setCompletedToday(true)
-      createExercise({
-        exerciseId: slug,
-        type: selectedExercise.type,
-        sets,
-        date: new Date().toISOString()
-      }).catch(() => {
-        setCompletedToday(false)
-        localStorage.setItem(`sets_${slug}`, JSON.stringify(sets))
-      })
-    } else {
+  if (!completedToday) {
+    localStorage.removeItem(`sets_${slug}`)
+    setCompletedToday(true)
+    createExercise({
+      exerciseId: slug,
+      type: selectedExercise.type,
+      sets,
+      date: new Date().toISOString()
+    }).then(() => {
+      setCompletedExercises(prev => [...prev, slug])
+    }).catch(() => {
       setCompletedToday(false)
-      const resetSets = sets.map(s => ({ ...s, completed: false }))
-      setSets(resetSets)
-      localStorage.setItem(`sets_${slug}`, JSON.stringify(resetSets))
-      deleteExercise(slug).catch(() => {
-        setCompletedToday(true)
-        setSets(sets)
-        localStorage.removeItem(`sets_${slug}`)
-      })
-    }
+      localStorage.setItem(`sets_${slug}`, JSON.stringify(sets))
+    })
+  } else {
+    setCompletedToday(false)
+    const resetSets = sets.map(s => ({ ...s, completed: false }))
+    setSets(resetSets)
+    localStorage.setItem(`sets_${slug}`, JSON.stringify(resetSets))
+    deleteExercise(slug).then(() => {
+      setCompletedExercises(prev => prev.filter(id => id !== slug))
+    }).catch(() => {
+      setCompletedToday(true)
+      setSets(sets)
+      localStorage.removeItem(`sets_${slug}`)
+    })
   }
+}
+
 
   const handleCompleteAndNext = async () => {
     if (!completedToday) {
@@ -165,6 +172,7 @@ export default function Card() {
           slug: slugify(selectedExercise.name),
           completed: completedToday
         }}
+        completedExercises={completedExercises}
       />
       <div className={styles.exerciseHeader}>
         <div
