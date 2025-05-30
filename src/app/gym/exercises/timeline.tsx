@@ -84,7 +84,6 @@ export default function Timeline({ currentExercise }: TimelineProps) {
               }}
               isTimeline={true}
             />
-            <div className={`${styles.line} ${statusClass}`}></div>
           </div>
         )
       })}
