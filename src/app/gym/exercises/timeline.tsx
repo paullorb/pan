@@ -59,7 +59,7 @@ export default function Timeline({ currentExercise, completedExercises }: Timeli
 
   return (
     <div className={styles.container} ref={containerRef}>
-      {timelineItems.map((ex, idx) => {
+      {timelineItems.map((ex) => {
         const isCompleted = completedExercises.includes(ex.exerciseId)
         const statusClass = isCompleted ? styles.completed : styles.incomplete
 
