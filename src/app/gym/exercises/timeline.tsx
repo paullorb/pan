@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import { useAuth } from "../../auth/authContext"
 import styles from "./timeline.module.css"
 import Block from "../list/block"
@@ -36,17 +36,20 @@ export default function Timeline({ currentExercise, completedExercises }: Timeli
       .then(res => res.json())
       .then(data => setExercises(data.exercises || []))
   }, [user])
-    let timelineItems = [...exercises]
+    const timelineItems = useMemo(() => {
+      const items = [...exercises]
+      if (currentExercise && !exercises.some(e => e.exerciseId === currentExercise.slug)) {
+        items.push({
+          exerciseId: currentExercise.slug,
+          type: currentExercise.type || "",
+          sets: [],
+          date: new Date().toISOString(),
+          name: currentExercise.name,
+        })
+      }
+      return items
+    }, [exercises, currentExercise])
 
-    if (currentExercise && !exercises.some(e => e.exerciseId === currentExercise.slug)) {
-      timelineItems.push({
-        exerciseId: currentExercise.slug,
-        type: currentExercise.type || "",
-        sets: [],
-        date: new Date().toISOString(),
-        name: currentExercise.name,
-      })
-    }
 
   useEffect(() => {
     if (containerRef.current) {
