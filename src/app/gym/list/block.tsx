@@ -5,8 +5,8 @@ import styles from "./list.module.css"
 
 type ExerciseItem = {
   name: string
-  type: string
-  mainMuscle: string
+  type?: string
+  mainMuscle?: string
   keyMovement?: string
   equipment?: string
   color?: string

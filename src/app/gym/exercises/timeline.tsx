@@ -36,20 +36,17 @@ export default function Timeline({ currentExercise, completedExercises }: Timeli
       .then(res => res.json())
       .then(data => setExercises(data.exercises || []))
   }, [user])
-  let timelineItems = exercises
-  if (currentExercise && !exercises.find(ex => ex.exerciseId === currentExercise.slug)) {
-    timelineItems = [
-      ...exercises,
-      { 
-        exerciseId: currentExercise.slug, 
-        type: currentExercise.type || "", 
-        sets: [], 
+    let timelineItems = [...exercises]
+
+    if (currentExercise && !exercises.some(e => e.exerciseId === currentExercise.slug)) {
+      timelineItems.push({
+        exerciseId: currentExercise.slug,
+        type: currentExercise.type || "",
+        sets: [],
         date: new Date().toISOString(),
         name: currentExercise.name,
-        color: currentExercise.color
-      }
-    ]
-  }
+      })
+    }
 
   useEffect(() => {
     if (containerRef.current) {
@@ -62,23 +59,13 @@ export default function Timeline({ currentExercise, completedExercises }: Timeli
       {timelineItems.map((ex) => {
         const isCompleted = completedExercises.includes(ex.exerciseId)
         const statusClass = isCompleted ? styles.completed : styles.incomplete
+        const exerciseData = ex.name ? ex : { name: ex.exerciseId }
 
-        
-        const exerciseData = exercises.find(e => e.exerciseId === ex.exerciseId) || {
-          name: ex.exerciseId,
-          type: ex.type,
-          mainMuscle: ex.mainMuscle || "",
-          color: ex.color
-        }
-        
         return (
           <div key={ex.exerciseId} className={`${styles.item} ${statusClass}`}>
             <Block
               ex={{
                 name: exerciseData.name,
-                type: exerciseData.type,
-                mainMuscle: exerciseData.mainMuscle || "",
-                color: exerciseData.color
               }}
               isTimeline={true}
             />
