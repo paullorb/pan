@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import styles from "./card.module.css"
 import exercises from "../exercises"
 import { useAuth } from "../../auth/authContext"
