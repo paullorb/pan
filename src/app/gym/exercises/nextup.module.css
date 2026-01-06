@@ -1,0 +1,11 @@
+.container {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  opacity: 0.6;
+}
+
+.changingNext {
+  color: #0275d8;
+  text-decoration: underline;
+}

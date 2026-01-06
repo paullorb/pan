@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-m);
+  border: 3px solid #ccc;
+  padding: var(--spacing-s);
+  border-radius: 10px;
+  user-select: none;
+  gap: var(--spacing-s);
+}
+
+.button {
+  border: 1px solid gray;
+  padding: var(--spacing-xs);
+  border-radius: 5px;
+  cursor: pointer;
+}

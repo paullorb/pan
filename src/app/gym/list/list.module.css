@@ -1,11 +1,31 @@
-.filterBar {
+.filters {
   display: flex;
   justify-content: center;
   background-color: white;
+  padding: 10px;
+  gap: 10px;
+  align-items: center;
+}
+
+.filters button {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: all 0.2s ease;
+}
+
+.filters button:hover {
+  background: #f0f0f0;
+  transform: translateY(-1px);
 }
 
 .sortBtn {
   cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
 }
 
 .filterLabel {
@@ -27,11 +47,18 @@
 }
 
 .tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+}
+
+.type {
+  opacity: 0.8;
 }
 
 .typeLabel {
@@ -59,6 +86,100 @@
 }
 
 .listRow:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  background-color: white;
+  transition: transform 0.2s ease;
+}
+
+.block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.blockContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.blockType {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.blockName {
+  font-weight: 500;
+}
+
+.timelineBlock {
+  min-width: 120px;
+  margin: 0 5px;
+}
+
+.blockContainer {
+  display: grid;
+  gap: 15px;
+  padding: 15px;
+}
+
+.columns2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.columns3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.columnSelector {
+  display: flex;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.columnSelector button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+}
+
+.columnSelector button.active {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.cellTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.cellTable th,
+.cellTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.cellTable th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.cellRow:hover {
   background-color: #f9f9f9;
   cursor: pointer;
 }

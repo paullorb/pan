@@ -5,6 +5,7 @@ import { CalendarProvider } from './cal/calendarContext';
 import { CategoryProvider } from './category/categoryContext';
 import { EntryProvider } from './entry/entryContext';
 import { AuthProvider } from './auth/authContext';
+import { ExerciseProvider } from './gym/exercise/exerciseContext';
 
 export default function RootLayout({ children }) {
   return (
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
           <CalendarProvider>
             <CategoryProvider>
               <EntryProvider>
-                {children}
+                <ExerciseProvider>
+                  {children}
+                </ExerciseProvider>
               </EntryProvider>
             </CategoryProvider>
           </CalendarProvider>

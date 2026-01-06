@@ -11,7 +11,6 @@ import { useEntry } from 'app/entry/entryContext'
 import { getDateKey } from 'app/entry/utils'
 
 const Header: React.FC = () => {
-  const [showCategories, setShowCategories] = useState(false)
   const { user } = useAuth()
   const [input, setInput] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)

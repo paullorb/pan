@@ -1,83 +1,50 @@
-import React from "react";
-import styles from "./entry.module.css";
-import { useEntry, Entry } from "./entryContext";
-import { useCategory, Category } from "../category/categoryContext";
-import { darkenColor } from "../category/utils";
-import SubEntry from "./subEntry";
+"use client"
+import React from "react"
+import styles from "./entry.module.css"
+import { useEntry, Entry } from "./entryContext"
+import { useCategory } from "../category/categoryContext"
+import TodaysExercises from "./todaysExercises"
+import EntryItem from "./entryItem"
 
 interface EntryListProps {
-  entries: Entry[];
+  entries: Entry[]
 }
 
 const EntryList: React.FC<EntryListProps> = ({ entries }) => {
-  const { toggleEntryDone, updateEntryCategory } = useEntry();
-  const categories = useCategory();
+  const { addEntry, toggleEntryDone, updateEntryCategory } = useEntry()
+  const categories = useCategory()
 
   const sortedEntries = entries
     .map((entry, index) => ({ ...entry, originalIndex: index }))
-    .sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
+    .sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1))
+
+  const roots = sortedEntries.filter(e => !e.parentId)
+  const childrenMap: Record<string, Entry[]> = {}
+  sortedEntries
+    .filter(e => e.parentId)
+    .forEach(e => {
+      childrenMap[e.parentId!] = childrenMap[e.parentId!] || []
+      childrenMap[e.parentId!]!.push(e)
+    })
 
   return (
-    <ul className={styles.list}>
-      {sortedEntries.map((entry) => {
-        const key = entry._id || entry.originalIndex.toString();
-        const selectedCategory = entry.category;
-        const selectedCat = categories.find((cat: Category) => cat.name === selectedCategory);
-        const borderColor = selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black";
+    <>
+      <TodaysExercises />
+      <ul className={styles.list}>
+        {roots.map(entry => (
+          <EntryItem
+            key={entry._id || entry.originalIndex}
+            entry={entry}
+            subEntries={childrenMap[entry._id!] || []}
+            categories={categories}
+            addEntry={addEntry}
+            toggleDone={toggleEntryDone}
+            updateCat={updateEntryCategory}
+          />
+        ))}
+      </ul>
+    </>
+  )
+}
 
-        return (
-          <li
-            key={key}
-            className={`${styles.item} ${entry.done ? styles.done : ""}`}
-            style={{ border: `3px solid ${borderColor}`, position: "relative" }}
-          >
-            {selectedCategory ? (
-              <span
-                className={styles.categoryFloating}
-                style={{
-                  backgroundColor: selectedCat?.backgroundColor,
-                  border: `1px solid ${selectedCat ? darkenColor(selectedCat.backgroundColor, 10) : "black"}`,
-                }}
-                onClick={() =>
-                  updateEntryCategory(entry.date, entry._id || entry.originalIndex, null)
-                }
-              >
-                {selectedCategory}
-              </span>
-            ) : (
-              <div className={styles.categoryContainer}>
-                {categories.map((cat: Category) => (
-                  <button
-                    key={cat.name}
-                    className={styles.categoryButton}
-                    style={{
-                      backgroundColor: cat.backgroundColor,
-                      border: `1px solid ${darkenColor(cat.backgroundColor, 10)}`,
-                    }}
-                    onClick={() =>
-                      updateEntryCategory(entry.date, entry._id || entry.originalIndex, cat.name)
-                    }
-                  >
-                    {cat.name}
-                  </button>
-                ))}
-              </div>
-            )}
-            <div className={styles.itemContent}>
-              {/* Pass a valid entryId to the SubEntry component */}
-              <SubEntry entryId={entry._id || entry.originalIndex.toString()} />
-              <span
-                className={styles.entryText}
-                onClick={() => toggleEntryDone(entry.date, entry.originalIndex)}
-              >
-                {entry.text}
-              </span>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-  );
-};
-
-export default EntryList;
+export default EntryList

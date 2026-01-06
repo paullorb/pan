@@ -19,16 +19,30 @@
   margin: 0 auto;
 }
 
-.leftPlaceholder {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-}
-
 .selectsWrapper {
   display: inline-flex;
   gap: var(--spacing-xxs);
 }
+
+/* Basic native select + unit */
+
+.basicSelectWrapper {
+  display: inline-flex;
+  align-items: center;
+}
+
+.basicSelect {
+  width: 60px;
+  padding: 4px;
+  font-weight: 500;
+}
+
+.unit {
+  margin-left: 4px;
+  font-size: 0.9em;
+}
+
+/* Completion circle */
 
 .setCompletionCircle {
   width: 1rem;
@@ -45,4 +59,8 @@
 .setCompletionCircle.disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.placeholder {
+  opacity: 0;
 }

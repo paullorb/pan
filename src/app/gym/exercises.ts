@@ -1,4 +1,4 @@
-const exercises = [
+const base = [
   { name: 'deadlift', mainMuscle: 'legs', type: 'weight', bestPractice: 'Keep your back straight and lift with your legs', keyMovement: 'pull' },
   { name: 'leg extension', mainMuscle: 'legs', type: 'weight', bestPractice: 'Use controlled motion and avoid locking your knees at the top', keyMovement: '' },
   { name: 'inclined leg press', mainMuscle: 'legs', type: 'weight', bestPractice: 'Focus on a full range of motion while keeping your back against the seat', keyMovement: 'push' },
@@ -52,6 +52,17 @@ const exercises = [
   { name: 'inclined bench press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Adjust the bench to target different areas of the chest and press evenly', keyMovement: 'push' },
   { name: 'iso-lateral incline press', mainMuscle: 'chest', type: 'weight', bestPractice: 'Focus on a full range of motion and control the weight throughout', keyMovement: 'push' },
   { name: 'bicep curl', mainMuscle: 'arms', type: 'weight', bestPractice: 'Keep your elbows close to your body and avoid swinging the weights', keyMovement: 'pull' },
+  { name: 'hip adductor', mainMuscle: 'legs', type: 'weight', bestPractice: 'Control the movement and avoid using excessive weight', keyMovement: '' },
+  { name: 'hip abductor', mainMuscle: 'legs', type: 'weight', bestPractice: 'Focus on a full range of motion and avoid using momentum', keyMovement: '' },
+  { name: 'lying leg curl', mainMuscle: 'legs', type: 'weight', bestPractice: 'Control the curl movement and avoid using excessive weight', keyMovement: 'pull' },
+  { name: 'seated leg curl', mainMuscle: 'legs', type: 'weight', bestPractice: 'Control the curl movement and avoid using excessive weight', keyMovement: 'pull' },
 ]
+const colorMap: { [key: string]: string } = {
+  weight: "red",
+  cardio: "green",
+  stretch: "blue"
+}
+
+const exercises = base.map(x => ({ ...x, color: colorMap[x.type] || "black" }))
 
 export default exercises
