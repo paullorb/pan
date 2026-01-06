@@ -1,0 +1,48 @@
+.detailsForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.setContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.setInner {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-s);
+  margin: 0 auto;
+}
+
+.leftPlaceholder {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.selectsWrapper {
+  display: inline-flex;
+  gap: var(--spacing-xxs);
+}
+
+.setCompletionCircle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  cursor: pointer;
+}
+
+.setCompletionCircle.completed {
+  background-color: green;
+}
+
+.setCompletionCircle.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

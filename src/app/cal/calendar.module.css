@@ -1,0 +1,97 @@
+.table {
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tr {
+  user-select: none;
+}
+
+.th,
+.td {
+  border: 1px solid #ddd;
+  text-align: center;
+  vertical-align: top;
+}
+
+.th {
+  background-color: #f2f2f2;
+}
+
+.td {
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+  padding: 0.1rem;
+}
+
+.td:hover {
+  background-color: #f1f1f1;
+}
+
+.tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.outside {
+  color: #999;
+  background-color: #fdfdfd;
+}
+
+.dayNumber {
+  letter-spacing: -0.8px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+}
+
+.todayCircle,
+.selectedCircle {
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todayCircle {
+  background-color: black;
+  color: white;
+}
+
+.selectedCircle {
+  background-color: black;
+  color: white;
+}
+
+/* Previews styling */
+.itemPreview {
+  display: block;
+  font-size: 0.7em;
+  padding-left: 0.2rem;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+
+.itemPreviewCategory {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: black;
+}
+
+.itemPreviews {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  gap: 0.1rem;
+}
+
+.cellWrapper {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+}
